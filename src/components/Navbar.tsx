@@ -38,7 +38,6 @@ export const Navbar: React.FC = () => {
       }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
-
         {/* LOGO */}
         <button
           onClick={() => navigate("/")}
@@ -50,63 +49,34 @@ export const Navbar: React.FC = () => {
           </span>
         </button>
 
-        {/* DESKTOP MENU */}
+        {/* DESKTOP */}
         <div className="hidden lg:flex items-center space-x-10">
-
-          {/* LINK SEO REAL */}
           <button
-            onClick={() => navigate("/importacion-alemania")}
+            onClick={() => navigate("/importacion-coches-alemania")}
             className="text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-gold-400 transition-colors duration-300 font-medium"
           >
             Importación Alemania
           </button>
 
-          {/* LINKS HOME */}
           <button
             onClick={() => scrollToSection("#stock")}
-            className="text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-gold-400 transition-colors duration-300 font-medium"
+            className="text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-gold-400"
           >
             Stock
           </button>
 
           <button
-            onClick={() => scrollToSection("#process")}
-            className="text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-gold-400 transition-colors duration-300 font-medium"
-          >
-            Proceso
-          </button>
-
-          <button
-            onClick={() => scrollToSection("#guarantee")}
-            className="text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-gold-400 transition-colors duration-300 font-medium"
-          >
-            Garantías
-          </button>
-
-          <button
             onClick={() => scrollToSection("#contact")}
-            className="text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-gold-400 transition-colors duration-300 font-medium"
+            className="text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-gold-400"
           >
             Contacto
-          </button>
-
-          {/* CTA */}
-          <button
-            onClick={() => scrollToSection("#import")}
-            className={`px-5 py-2 border ${
-              isScrolled
-                ? "border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-black"
-                : "border-white text-white hover:bg-white hover:text-black"
-            } text-xs font-bold uppercase tracking-widest transition-all duration-300 ml-4`}
-          >
-            Pedir Coche
           </button>
         </div>
 
         {/* MOBILE TOGGLE */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden text-white hover:text-gold-400 transition-colors z-50"
+          className="lg:hidden text-white z-50"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -115,42 +85,19 @@ export const Navbar: React.FC = () => {
       {/* MOBILE MENU */}
       <div
         className={`fixed inset-0 bg-metallic-950 z-40 flex flex-col justify-center items-center transition-opacity duration-300 ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="flex flex-col items-center space-y-8">
-          <button
-            onClick={() => {
-              navigate("/importacion-alemania");
-              setIsOpen(false);
-            }}
-            className="text-2xl font-serif text-white hover:text-gold-400"
-          >
-            Importación Alemania
-          </button>
-
-          <button
-            onClick={() => {
-              scrollToSection("#stock");
-              setIsOpen(false);
-            }}
-            className="text-2xl font-serif text-white hover:text-gold-400"
-          >
-            Stock
-          </button>
-
-          <button
-            onClick={() => {
-              scrollToSection("#contact");
-              setIsOpen(false);
-            }}
-            className="text-2xl font-serif text-white hover:text-gold-400"
-          >
-            Contacto
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            navigate("/importacion-coches-alemania");
+            setIsOpen(false);
+          }}
+          className="text-2xl font-serif text-white hover:text-gold-400"
+        >
+          Importación Alemania
+        </button>
       </div>
     </nav>
   );
 };
-

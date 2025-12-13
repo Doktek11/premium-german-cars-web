@@ -5,17 +5,19 @@ import { cars } from "./data/cars";
 
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
+import { SeoContent } from "./components/SeoContent";
 import { About } from "./components/About";
 import { Features, Guarantee } from "./components/Features";
 import { ImportForm } from "./components/ImportForm";
 import { Testimonials } from "./components/Testimonials";
 import { Footer } from "./components/Footer";
 import { WhatsAppButton } from "./components/WhatsAppButton";
+import { SEO } from "./components/SEO";
 
 export function Home() {
   const location = useLocation();
 
-  // ✅ Scroll automático cuando venimos de otra ruta
+  // Scroll automático cuando venimos de otra ruta
   useEffect(() => {
     const id = location.state?.scrollTo;
     if (id) {
@@ -30,28 +32,33 @@ export function Home() {
 
   return (
     <>
+      <SEO
+        title="Importación de coches premium desde Alemania | Premium German Cars"
+        description="Importamos coches premium desde Alemania con garantía, historial certificado y entrega llave en mano en España. BMW, Audi, Mercedes y más."
+        canonical="https://www.premiumgermancars.com/"
+      />
+
       <Navbar />
 
       <main>
-        {/* HERO */}
         <section id="home">
           <Hero />
         </section>
 
-        {/* PROCESO / ABOUT */}
+        <section id="seo">
+          <SeoContent />
+        </section>
+
         <section id="process">
           <About />
         </section>
 
-        {/* FEATURES */}
         <Features />
 
-        {/* IMPORT FORM */}
         <section id="import">
           <ImportForm />
         </section>
 
-        {/* STOCK */}
         <section id="stock" className="py-32 bg-metallic-950">
           <div className="container mx-auto px-6">
             <span className="text-gold-400 text-xs font-bold tracking-widest uppercase mb-4 block">
@@ -69,18 +76,7 @@ export function Home() {
                   to={`/car/${car.slug}`}
                   className="premium-card group bg-metallic-900 overflow-hidden flex flex-col h-full"
                 >
-                  {/* Imagen */}
                   <div className="h-64 overflow-hidden relative">
-                    <div
-                      className={`absolute top-0 right-0 z-10 px-4 py-2 text-[10px] font-bold uppercase tracking-widest ${
-                        car.status === "Disponible"
-                          ? "bg-white text-black"
-                          : "bg-metallic-900/90 text-gray-400 border-l border-b border-white/10"
-                      }`}
-                    >
-                      {car.status}
-                    </div>
-
                     <img
                       src={car.image}
                       alt={`${car.make} ${car.model}`}
@@ -89,7 +85,6 @@ export function Home() {
                     />
                   </div>
 
-                  {/* Contenido */}
                   <div className="p-8 flex flex-col flex-grow">
                     <h3 className="text-xl font-serif font-bold text-white mb-2">
                       {car.make}
@@ -113,17 +108,14 @@ export function Home() {
           </div>
         </section>
 
-        {/* GARANTÍAS */}
         <section id="guarantee">
           <Guarantee />
         </section>
 
-        {/* TESTIMONIOS */}
         <section id="testimonials">
           <Testimonials />
         </section>
 
-        {/* CONTACTO */}
         <section id="contact">
           <Footer />
         </section>
@@ -133,3 +125,4 @@ export function Home() {
     </>
   );
 }
+

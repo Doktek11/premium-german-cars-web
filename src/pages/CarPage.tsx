@@ -1,27 +1,32 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { cars } from "../data/cars";
+
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
 
-export const CarPage: React.FC = () => {
+export const CarPage = () => {
   const { slug } = useParams();
-  const navigate = useNavigate();
-
   const car = cars.find((c) => c.slug === slug);
+
+  // 🔒 Seguridad
   if (!car) return null;
 
-  const title = `${car.make} ${car.model} en venta | Importado desde Alemania`;
-  const description = `Compra ${car.make} ${car.model} importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.`;
+  // ✅ RESET SCROLL (SOLUCIÓN PROBLEMA 2)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-  const handleOrderClick = () => {
-    navigate("/", { state: { scrollTo: "#import" } });
-  };
+  const title = `${car.make} ${car.model} en venta | Importado desde Alemania`;
+  const description = `Compra ${car.make} ${car.model} importado desde Alemania. Kilómetros certificados, historial verificado y entrega en España.`;
+
+  // 📸 GALERÍA DE IMÁGENES
+  const images = car.images ?? [car.image];
 
   return (
     <>
-      {/* SEO INVISIBLE */}
       <SEO
         title={title}
         description={description}
@@ -43,57 +48,30 @@ export const CarPage: React.FC = () => {
             {car.price.toLocaleString("de-DE")} €
           </p>
 
-          {/* IMAGEN */}
-          <div className="mb-12">
-            <img
-              src={car.image}
-              alt={`${car.make} ${car.model} importado desde Alemania`}
-              className="w-full rounded-xl shadow-lg"
-              loading="eager"
-            />
+          {/* GALERÍA */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            {images.map((img, index) => (
+              <div key={index} className="overflow-hidden rounded-lg">
+                <img
+                  src={img}
+                  alt={`${car.make} ${car.model} imagen ${index + 1}`}
+                  className="w-full h-72 object-cover hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                />
+              </div>
+            ))}
           </div>
 
-          {/* BLOQUE INFO */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-
-            {/* TEXTO */}
-            <div className="text-gray-300 leading-relaxed space-y-6">
-              <p>
-                Este <strong>{car.make} {car.model}</strong> ha sido seleccionado
-                en el mercado alemán, con historial verificado y kilometraje
-                certificado.
-              </p>
-
-              <p>
-                Gestionamos todo el proceso de importación: verificación técnica,
-                transporte, homologación, matriculación y entrega final en
-                España.
-              </p>
-
-              <p>
-                Un servicio pensado para quienes buscan un coche premium con
-                total tranquilidad y transparencia.
-              </p>
-            </div>
-
-            {/* CTA */}
-            <div className="bg-metallic-900 p-10 rounded-xl border border-white/10 text-center">
-              <p className="text-xl font-serif mb-6">
-                ¿Te interesa este vehículo?
-              </p>
-
-              <button
-                onClick={handleOrderClick}
-                className="w-full px-8 py-5 bg-gold-400 text-black font-bold uppercase tracking-widest text-sm hover:bg-gold-500 transition-all duration-300"
-              >
-                Confirmar pedido
-              </button>
-
-              <p className="text-xs text-gray-400 mt-4">
-                Importación personalizada · Sin compromiso
-              </p>
-            </div>
+          {/* CTA */}
+          <div className="text-center">
+            <a
+              href="/#import"
+              className="inline-block px-10 py-5 bg-gold-400 text-black font-bold uppercase tracking-widest text-sm hover:bg-gold-500 transition-all duration-300"
+            >
+              Confirmar pedido
+            </a>
           </div>
+
         </div>
       </main>
 
@@ -102,4 +80,3 @@ export const CarPage: React.FC = () => {
     </>
   );
 };
-

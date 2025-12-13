@@ -17,12 +17,14 @@ export const CarPage: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (!car) {
-    return null;
-  }
+  if (!car) return null;
 
   const title = `${car.make} ${car.model} en venta | Importado desde Alemania`;
   const description = `Compra ${car.make} ${car.model} importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.`;
+
+  const goToImportForm = () => {
+    navigate("/", { state: { scrollTo: "#import" } });
+  };
 
   return (
     <>
@@ -42,6 +44,16 @@ export const CarPage: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
             {car.make} {car.model}
           </h1>
+
+          {/* CTA PRINCIPAL BAJO H1 */}
+          <div className="mb-8">
+            <button
+              onClick={goToImportForm}
+              className="inline-block px-8 py-4 bg-gold-400 text-black font-bold uppercase tracking-widest text-xs hover:bg-gold-500 transition-all duration-300"
+            >
+              Comenzar pedido
+            </button>
+          </div>
 
           {/* PRECIO */}
           <p className="text-gold-400 text-2xl font-serif mb-10">
@@ -105,12 +117,10 @@ export const CarPage: React.FC = () => {
             </div>
           </div>
 
-          {/* CTA */}
+          {/* CTA FINAL */}
           <div className="text-center">
             <button
-              onClick={() =>
-                navigate("/", { state: { scrollTo: "#import" } })
-              }
+              onClick={goToImportForm}
               className="inline-block px-12 py-5 bg-gold-400 text-black font-bold uppercase tracking-widest text-sm hover:bg-gold-500 transition-all duration-300"
             >
               Pedir información ahora

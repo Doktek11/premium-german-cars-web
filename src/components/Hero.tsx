@@ -1,7 +1,14 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const Hero: React.FC = () => {
+  const navigate = useNavigate();
+
+  const goToImportForm = () => {
+    navigate("/", { state: { scrollTo: "#import" } });
+  };
+
   return (
     <section
       id="home"
@@ -26,7 +33,6 @@ export const Hero: React.FC = () => {
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10 text-center md:text-left h-full flex flex-col justify-center">
         <div className="max-w-4xl animate-fade-in-up mt-20">
-
           {/* Eyebrow */}
           <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
             <div className="h-[1px] w-12 bg-gold-400" />
@@ -55,19 +61,19 @@ export const Hero: React.FC = () => {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-start">
-            <a
-              href="/importacion-coches-alemania"
+            <button
+              onClick={goToImportForm}
               className="px-8 py-5 bg-gold-400 hover:bg-gold-500 text-black font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] flex items-center justify-center gap-3"
             >
-              Comenzar Pedido
+              Comenzar pedido
               <ArrowRight size={18} />
-            </a>
+            </button>
 
             <a
               href="#stock"
               className="px-8 py-5 border border-white/20 hover:border-white text-white font-semibold text-sm uppercase tracking-widest hover:bg-white/5 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
             >
-              Explorar Stock
+              Explorar stock
             </a>
           </div>
         </div>

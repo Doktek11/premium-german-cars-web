@@ -10,23 +10,19 @@ export const Navbar: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
+  const goToSection = (id: string) => {
     if (location.pathname !== "/") {
-      navigate(`/${id}`);
-      return;
+      navigate("/", { state: { scrollTo: id } });
+    } else {
+      const el = document.querySelector(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
     }
-
-    const el = document.querySelector(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    setIsOpen(false);
   };
 
   return (
@@ -38,12 +34,13 @@ export const Navbar: React.FC = () => {
       }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
+
         {/* LOGO */}
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-2 group relative z-50"
+          className="flex items-center gap-2 z-50"
         >
-          <Car className="w-6 h-6 text-gold-400 transition-transform group-hover:scale-110" />
+          <Car className="w-6 h-6 text-gold-400" />
           <span className="text-xl font-serif font-bold tracking-widest text-white">
             PREMIUM<span className="text-gold-400">GC</span>
           </span>
@@ -53,27 +50,44 @@ export const Navbar: React.FC = () => {
         <div className="hidden lg:flex items-center space-x-10">
           <button
             onClick={() => navigate("/importacion-coches-alemania")}
-            className="text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-gold-400 transition-colors duration-300 font-medium"
+            className="nav-link"
           >
             Importación Alemania
           </button>
 
-          <button
-            onClick={() => scrollToSection("#stock")}
-            className="text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-gold-400"
-          >
+          <button onClick={() => goToSection("#home")} className="nav-link">
+            Inicio
+          </button>
+
+          <button onClick={() => goToSection("#stock")} className="nav-link">
             Stock
           </button>
 
-          <button
-            onClick={() => scrollToSection("#contact")}
-            className="text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-gold-400"
-          >
+          <button onClick={() => goToSection("#process")} className="nav-link">
+            Proceso
+          </button>
+
+          <button onClick={() => goToSection("#guarantee")} className="nav-link">
+            Garantías
+          </button>
+
+          <button onClick={() => goToSection("#contact")} className="nav-link">
             Contacto
+          </button>
+
+          <button
+            onClick={() => goToSection("#import")}
+            className={`px-5 py-2 border text-xs font-bold uppercase tracking-widest transition-all ${
+              isScrolled
+                ? "border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-black"
+                : "border-white text-white hover:bg-white hover:text-black"
+            }`}
+          >
+            Pedir Coche
           </button>
         </div>
 
-        {/* MOBILE TOGGLE */}
+        {/* MOBILE */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="lg:hidden text-white z-50"
@@ -84,18 +98,21 @@ export const Navbar: React.FC = () => {
 
       {/* MOBILE MENU */}
       <div
-        className={`fixed inset-0 bg-metallic-950 z-40 flex flex-col justify-center items-center transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-metallic-950 z-40 flex flex-col justify-center items-center transition-opacity ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        <button
-          onClick={() => {
-            navigate("/importacion-coches-alemania");
-            setIsOpen(false);
-          }}
-          className="text-2xl font-serif text-white hover:text-gold-400"
-        >
+        <button onClick={() => navigate("/importacion-coches-alemania")} className="mobile-link">
           Importación Alemania
+        </button>
+        <button onClick={() => goToSection("#stock")} className="mobile-link">
+          Stock
+        </button>
+        <button onClick={() => goToSection("#process")} className="mobile-link">
+          Proceso
+        </button>
+        <button onClick={() => goToSection("#contact")} className="mobile-link">
+          Contacto
         </button>
       </div>
     </nav>

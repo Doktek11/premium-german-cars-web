@@ -5,7 +5,6 @@ import { cars } from "./data/cars";
 
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
-import { SeoContent } from "./components/SeoContent";
 import { About } from "./components/About";
 import { Features, Guarantee } from "./components/Features";
 import { ImportForm } from "./components/ImportForm";
@@ -34,17 +33,12 @@ export function Home() {
       <Navbar />
 
       <main>
-        {/* HERO / HOME */}
+        {/* HERO */}
         <section id="home">
           <Hero />
         </section>
 
-        {/* SEO CONTENT */}
-        <section id="seo">
-          <SeoContent />
-        </section>
-
-        {/* ABOUT */}
+        {/* PROCESO / ABOUT */}
         <section id="process">
           <About />
         </section>

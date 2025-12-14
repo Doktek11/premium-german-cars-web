@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { cars } from "../data/cars";
 
 import { Navbar } from "../components/Navbar";
@@ -22,30 +23,62 @@ export const CarPage: React.FC = () => {
   const title = `${car.make} ${car.model} en venta | Importado desde Alemania`;
   const description = `Compra ${car.make} ${car.model} importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.`;
 
+  const availability =
+    car.status === "Disponible"
+      ? "https://schema.org/InStock"
+      : car.status === "Reservado"
+      ? "https://schema.org/PreOrder"
+      : "https://schema.org/OutOfStock";
+
   const goToImportForm = () => {
     navigate("/", { state: { scrollTo: "#import" } });
   };
 
   return (
     <>
-      {/* SEO */}
+      {/* SEO BÁSICO */}
       <SEO
         title={title}
         description={description}
         canonical={`https://www.premiumgermancars.com/car/${car.slug}`}
       />
 
+      {/* ✅ SCHEMA PRODUCT */}
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "@id": `https://www.premiumgermancars.com/car/${car.slug}#product`,
+            name: `${car.make} ${car.model}`,
+            description: car.description,
+            image: car.gallery && car.gallery.length > 0 ? car.gallery : [car.image],
+            brand: {
+              "@type": "Brand",
+              name: car.make,
+            },
+            offers: {
+              "@type": "Offer",
+              url: `https://www.premiumgermancars.com/car/${car.slug}`,
+              priceCurrency: "EUR",
+              price: car.price,
+              availability,
+              itemCondition: "https://schema.org/UsedCondition",
+            },
+          })}
+        </script>
+      </Helmet>
+
       <Navbar />
 
       <main className="bg-metallic-950 text-white pt-32 pb-32">
         <div className="container mx-auto px-6 max-w-6xl">
-
           {/* TÍTULO */}
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
             {car.make} {car.model}
           </h1>
 
-          {/* CTA PRINCIPAL BAJO H1 */}
+          {/* CTA BAJO H1 */}
           <div className="mb-8">
             <button
               onClick={goToImportForm}
@@ -134,3 +167,4 @@ export const CarPage: React.FC = () => {
     </>
   );
 };
+

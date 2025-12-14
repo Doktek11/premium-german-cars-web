@@ -5,6 +5,32 @@ import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
 
+/* ✅ SCHEMA SERVICE */
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Importación de coches premium desde Alemania",
+  "description":
+    "Servicio profesional de importación de coches premium desde Alemania con garantía, historial certificado y entrega llave en mano en toda España.",
+  "provider": {
+    "@type": "AutoDealer",
+    "name": "Premium German Cars",
+    "url": "https://www.premiumgermancars.com",
+    "logo": "https://www.premiumgermancars.com/favicon.svg"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "ES"
+  },
+  "serviceType": "Importación de vehículos",
+  "offers": {
+    "@type": "Offer",
+    "url": "https://www.premiumgermancars.com/importacion-coches-alemania",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock"
+  }
+};
+
 export const ImportacionAlemania: React.FC = () => {
   const navigate = useNavigate();
 
@@ -22,6 +48,7 @@ export const ImportacionAlemania: React.FC = () => {
         title="Importación de coches desde Alemania con garantía | Premium German Cars"
         description="Importación de coches premium desde Alemania con gestión integral. Vehículos certificados, historial verificado y entrega llave en mano en España."
         canonical="https://www.premiumgermancars.com/importacion-coches-alemania"
+        schema={serviceSchema}
       />
 
       <Navbar />

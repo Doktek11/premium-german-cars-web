@@ -31,6 +31,41 @@ const serviceSchema = {
   }
 };
 
+/* ✅ SCHEMA FAQ */
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuánto cuesta importar un coche desde Alemania?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text":
+          "El coste de importar un coche desde Alemania depende del modelo, transporte, impuestos y matriculación. En Premium German Cars ofrecemos presupuestos cerrados con entrega llave en mano en España."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto tarda la importación de un coche desde Alemania?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text":
+          "El proceso de importación suele tardar entre 3 y 5 semanas, incluyendo transporte, homologación y matriculación en España."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Los coches importados desde Alemania tienen garantía?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text":
+          "Sí, todos los coches importados pasan revisiones técnicas completas y cuentan con garantía, además de historial y kilometraje verificados."
+      }
+    }
+  ]
+};
+
 export const ImportacionAlemania: React.FC = () => {
   const navigate = useNavigate();
 
@@ -48,7 +83,7 @@ export const ImportacionAlemania: React.FC = () => {
         title="Importación de coches desde Alemania con garantía | Premium German Cars"
         description="Importación de coches premium desde Alemania con gestión integral. Vehículos certificados, historial verificado y entrega llave en mano en España."
         canonical="https://www.premiumgermancars.com/importacion-coches-alemania"
-        schema={serviceSchema}
+        schema={[serviceSchema, faqSchema]}
       />
 
       <Navbar />
@@ -146,3 +181,4 @@ export const ImportacionAlemania: React.FC = () => {
     </>
   );
 };
+

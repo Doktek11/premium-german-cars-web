@@ -70,6 +70,3 @@ export const PoliticaPrivacidad: React.FC = () => {
     </>
   );
 };
-
-};
-

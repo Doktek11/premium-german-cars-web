@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
-import { SEO } from "../components/SEO";
 
 export const PoliticaPrivacidad: React.FC = () => {
   useEffect(() => {
@@ -11,13 +10,6 @@ export const PoliticaPrivacidad: React.FC = () => {
 
   return (
     <>
-      {/* 🚫 NOINDEX TOTAL */}
-      <SEO
-        title="Política de Privacidad"
-        description="Política de privacidad y protección de datos."
-        noindex
-      />
-
       <Navbar />
 
       <main className="bg-metallic-950 text-white pt-32 pb-32">
@@ -30,7 +22,7 @@ export const PoliticaPrivacidad: React.FC = () => {
             <h2 className="text-xl font-serif font-bold text-white mb-3">
               1. Responsable del tratamiento
             </h2>
-            <ul className="list-disc list-inside">
+            <ul className="list-disc list-inside space-y-1">
               <li><strong>Responsable:</strong> Premium German Cars</li>
               <li><strong>NIF / CIF:</strong> B39923112</li>
               <li><strong>Email:</strong> info@premiumgermancars.com</li>
@@ -42,8 +34,9 @@ export const PoliticaPrivacidad: React.FC = () => {
               2. Datos personales
             </h2>
             <p>
-              Se recogen los datos personales facilitados voluntariamente por el
-              usuario a través de formularios o medios de contacto.
+              Se recogen únicamente los datos personales facilitados de forma
+              voluntaria por el usuario a través de los formularios o medios de
+              contacto disponibles en el sitio web.
             </p>
           </section>
 
@@ -52,8 +45,9 @@ export const PoliticaPrivacidad: React.FC = () => {
               3. Finalidad del tratamiento
             </h2>
             <p>
-              Gestionar solicitudes de información y encargos relacionados con
-              la importación de vehículos.
+              Los datos personales se utilizan exclusivamente para gestionar
+              solicitudes de información y encargos relacionados con la
+              importación de vehículos.
             </p>
           </section>
 
@@ -62,7 +56,9 @@ export const PoliticaPrivacidad: React.FC = () => {
               4. Derechos del usuario
             </h2>
             <p>
-              El usuario puede ejercer sus derechos escribiendo a{" "}
+              El usuario puede ejercer sus derechos de acceso, rectificación,
+              supresión, oposición, limitación y portabilidad enviando una
+              solicitud a{" "}
               <strong>info@premiumgermancars.com</strong>.
             </p>
           </section>
@@ -73,5 +69,7 @@ export const PoliticaPrivacidad: React.FC = () => {
       <WhatsAppButton />
     </>
   );
+};
+
 };
 

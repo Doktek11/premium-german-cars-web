@@ -12,7 +12,7 @@
     <!-- SEO DESCRIPTION -->
     <meta
       name="description"
-      content="Importamos coches premium desde Alemania con historial certificado, garantía y entrega llave en mano en España. Solicita tu vehículo hoy."
+      content="Importación de coches premium desde Alemania con historial certificado, garantía y entrega llave en mano en España. Especialistas en BMW, Audi, Mercedes y Porsche."
     />
 
     <!-- CANONICAL -->
@@ -54,31 +54,57 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
 
-    <!-- ✅ SCHEMA / STRUCTURED DATA -->
+    <!-- ✅ SCHEMA STRUCTURED DATA (PROFESIONAL) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "AutoDealer",
-        "name": "Premium German Cars",
-        "url": "https://www.premiumgermancars.com/",
-        "logo": "https://www.premiumgermancars.com/favicon.svg",
-        "description": "Especialistas en importación de coches premium desde Alemania con garantía, historial certificado y entrega llave en mano en España.",
-        "areaServed": {
-          "@type": "Country",
-          "name": "ES"
-        },
-        "knowsAbout": [
-          "Importación de coches desde Alemania",
-          "Coches premium alemanes",
-          "BMW importación",
-          "Audi importación",
-          "Mercedes-Benz importación"
-        ],
-        "inLanguage": "es-ES"
+        "@graph": [
+          {
+            "@type": "AutoDealer",
+            "@id": "https://www.premiumgermancars.com/#autodealer",
+            "name": "Premium German Cars",
+            "url": "https://www.premiumgermancars.com/",
+            "logo": "https://www.premiumgermancars.com/favicon.svg",
+            "image": "https://www.premiumgermancars.com/og.jpg",
+            "description": "Especialistas en la importación de coches premium desde Alemania con garantía, historial certificado y entrega llave en mano en España.",
+            "areaServed": {
+              "@type": "Country",
+              "name": "España"
+            },
+            "knowsAbout": [
+              "Importación de coches desde Alemania",
+              "Coches premium alemanes",
+              "BMW importación",
+              "Audi importación",
+              "Mercedes-Benz importación",
+              "Porsche importación"
+            ],
+            "inLanguage": "es-ES"
+          },
+          {
+            "@type": "Service",
+            "@id": "https://www.premiumgermancars.com/#servicio-importacion",
+            "name": "Importación de coches premium desde Alemania",
+            "serviceType": "Importación de vehículos",
+            "provider": {
+              "@id": "https://www.premiumgermancars.com/#autodealer"
+            },
+            "areaServed": {
+              "@type": "Country",
+              "name": "España"
+            },
+            "description": "Servicio integral de importación de coches premium desde Alemania. Búsqueda personalizada, verificación técnica y legal, transporte internacional, homologación y matriculación en España.",
+            "offers": {
+              "@type": "Offer",
+              "availability": "https://schema.org/InStock",
+              "priceCurrency": "EUR"
+            }
+          }
+        ]
       }
     </script>
 
@@ -104,3 +130,4 @@
     <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>
+

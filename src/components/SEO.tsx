@@ -6,6 +6,7 @@ interface SEOProps {
   description: string;
   canonical?: string;
   schema?: object | object[];
+  noindex?: boolean;
 }
 
 export const SEO: React.FC<SEOProps> = ({
@@ -13,6 +14,7 @@ export const SEO: React.FC<SEOProps> = ({
   description,
   canonical,
   schema,
+  noindex = false,
 }) => {
   return (
     <Helmet>
@@ -21,6 +23,10 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="description" content={description} />
 
       {canonical && <link rel="canonical" href={canonical} />}
+
+      {noindex && (
+        <meta name="robots" content="noindex, nofollow" />
+      )}
 
       {/* OPEN GRAPH */}
       <meta property="og:type" content="website" />

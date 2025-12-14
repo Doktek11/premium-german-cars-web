@@ -63,6 +63,32 @@ export const CarPage: React.FC = () => {
     },
   };
 
+  /* ✅ SCHEMA BREADCRUMBS */
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: "https://www.premiumgermancars.com/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Stock",
+        item: "https://www.premiumgermancars.com/#stock",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: `${car.make} ${car.model}`,
+        item: `https://www.premiumgermancars.com/car/${car.slug}`,
+      },
+    ],
+  };
+
   return (
     <>
       {/* SEO + SCHEMA */}
@@ -70,7 +96,7 @@ export const CarPage: React.FC = () => {
         title={title}
         description={description}
         canonical={`https://www.premiumgermancars.com/car/${car.slug}`}
-        schema={productSchema}
+        schema={[productSchema, breadcrumbSchema]}
       />
 
       <Navbar />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, Car } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const Navbar: React.FC = () => {
@@ -37,13 +37,20 @@ export const Navbar: React.FC = () => {
 
         {/* LOGO */}
         <button
-          onClick={() => navigate("/")}
-          className="flex items-center gap-2 z-50"
+          onClick={() => {
+            navigate("/");
+            setIsOpen(false);
+          }}
+          className="flex items-center gap-3 z-50"
+          aria-label="Premium German Cars - Inicio"
         >
-          <Car className="w-6 h-6 text-gold-400" />
-          <span className="text-xl font-serif font-bold tracking-widest text-white">
-            PREMIUM<span className="text-gold-400">GC</span>
-          </span>
+          <img
+            src="/logoPGC.svg"
+            alt="Premium German Cars - Importación de coches desde Alemania"
+            className={`transition-all duration-300 ${
+              isScrolled ? "h-9" : "h-12"
+            } w-auto`}
+          />
         </button>
 
         {/* DESKTOP */}
@@ -87,30 +94,40 @@ export const Navbar: React.FC = () => {
           </button>
         </div>
 
-        {/* MOBILE */}
+        {/* MOBILE BUTTON */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="lg:hidden text-white z-50"
+          aria-label="Menú"
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
 
       {/* MOBILE MENU */}
       <div
-        className={`fixed inset-0 bg-metallic-950 z-40 flex flex-col justify-center items-center transition-opacity ${
+        className={`fixed inset-0 bg-metallic-950 z-40 flex flex-col justify-center items-center transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        <button onClick={() => navigate("/importacion-coches-alemania")} className="mobile-link">
+        <button
+          onClick={() => {
+            navigate("/importacion-coches-alemania");
+            setIsOpen(false);
+          }}
+          className="mobile-link"
+        >
           Importación Alemania
         </button>
+
         <button onClick={() => goToSection("#stock")} className="mobile-link">
           Stock
         </button>
+
         <button onClick={() => goToSection("#process")} className="mobile-link">
           Proceso
         </button>
+
         <button onClick={() => goToSection("#contact")} className="mobile-link">
           Contacto
         </button>

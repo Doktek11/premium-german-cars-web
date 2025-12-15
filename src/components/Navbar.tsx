@@ -27,11 +27,10 @@ export const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-500 border-b ${
-        isScrolled
-          ? "bg-metallic-950/80 backdrop-blur-md py-4 border-white/10"
-          : "bg-transparent py-8 border-transparent"
-      }`}
+      className={`fixed w-full z-50 transition-all duration-500 border-b
+        bg-metallic-950/90 backdrop-blur-md
+        ${isScrolled ? "py-4 border-white/10" : "py-6 border-transparent"}
+      `}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
 
@@ -48,7 +47,7 @@ export const Navbar: React.FC = () => {
             src="/logoPGC.svg"
             alt="Premium German Cars - Importación de coches desde Alemania"
             className={`transition-all duration-300 ${
-              isScrolled ? "h-9" : "h-12"
+              isScrolled ? "h-9" : "h-11"
             } w-auto`}
           />
         </button>
@@ -84,11 +83,7 @@ export const Navbar: React.FC = () => {
 
           <button
             onClick={() => goToSection("#import")}
-            className={`px-5 py-2 border text-xs font-bold uppercase tracking-widest transition-all ${
-              isScrolled
-                ? "border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-black"
-                : "border-white text-white hover:bg-white hover:text-black"
-            }`}
+            className="px-5 py-2 border border-gold-400 text-gold-400 text-xs font-bold uppercase tracking-widest hover:bg-gold-400 hover:text-black transition-all"
           >
             Pedir Coche
           </button>

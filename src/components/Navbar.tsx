@@ -28,8 +28,9 @@ export const Navbar: React.FC = () => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-500 border-b
-        bg-metallic-950/90 backdrop-blur-md
-        ${isScrolled ? "py-4 border-white/10" : "py-6 border-transparent"}
+        ${isScrolled
+          ? "bg-metallic-950/85 backdrop-blur-md py-4 border-white/10"
+          : "bg-gradient-to-b from-black/60 to-black/20 py-8 border-transparent"}
       `}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
@@ -40,15 +41,17 @@ export const Navbar: React.FC = () => {
             navigate("/");
             setIsOpen(false);
           }}
-          className="flex items-center gap-3 z-50"
+          className="flex items-center z-50"
           aria-label="Premium German Cars - Inicio"
         >
           <img
             src="/logoPGC.svg"
             alt="Premium German Cars - Importación de coches desde Alemania"
-            className={`transition-all duration-300 ${
-              isScrolled ? "h-9" : "h-11"
-            } w-auto`}
+            className={`transition-all duration-300
+              ${isScrolled ? "h-12" : "h-16"}
+              w-auto
+              drop-shadow-[0_0_12px_rgba(212,175,55,0.25)]
+            `}
           />
         </button>
 
@@ -83,7 +86,7 @@ export const Navbar: React.FC = () => {
 
           <button
             onClick={() => goToSection("#import")}
-            className="px-5 py-2 border border-gold-400 text-gold-400 text-xs font-bold uppercase tracking-widest hover:bg-gold-400 hover:text-black transition-all"
+            className="px-6 py-3 border border-gold-400 text-gold-400 text-xs font-bold uppercase tracking-widest hover:bg-gold-400 hover:text-black transition-all"
           >
             Pedir Coche
           </button>
@@ -95,7 +98,7 @@ export const Navbar: React.FC = () => {
           className="lg:hidden text-white z-50"
           aria-label="Menú"
         >
-          {isOpen ? <X size={26} /> : <Menu size={26} />}
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 

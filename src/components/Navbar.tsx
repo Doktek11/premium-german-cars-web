@@ -28,9 +28,11 @@ export const Navbar: React.FC = () => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-500 border-b
-        ${isScrolled
-          ? "bg-metallic-950/85 backdrop-blur-md py-4 border-white/10"
-          : "bg-gradient-to-b from-black/60 to-black/20 py-8 border-transparent"}
+        ${
+          isScrolled
+            ? "bg-metallic-950/85 backdrop-blur-md py-4 border-white/10"
+            : "bg-gradient-to-b from-black/70 to-black/30 py-8 border-transparent"
+        }
       `}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
@@ -47,10 +49,14 @@ export const Navbar: React.FC = () => {
           <img
             src="/logoPGC.svg"
             alt="Premium German Cars - Importación de coches desde Alemania"
-            className={`transition-all duration-300
-              ${isScrolled ? "h-12" : "h-16"}
+            className={`
               w-auto
-              drop-shadow-[0_0_12px_rgba(212,175,55,0.25)]
+              transition-all duration-500 ease-out
+              ${isScrolled ? "h-12 scale-95 opacity-90" : "h-16 scale-100 opacity-100"}
+              
+              /* Luz premium */
+              drop-shadow-[0_0_18px_rgba(212,175,55,0.45)]
+              hover:drop-shadow-[0_0_26px_rgba(212,175,55,0.65)]
             `}
           />
         </button>
@@ -92,7 +98,7 @@ export const Navbar: React.FC = () => {
           </button>
         </div>
 
-        {/* MOBILE BUTTON */}
+        {/* MOBILE */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="lg:hidden text-white z-50"

@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- HOME -->
   <url>
     <loc>https://premiumgermancars.com/</loc>
-    <lastmod>2024-05-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- SERVICIO IMPORTACIÓN -->
+  <url>
+    <loc>https://premiumgermancars.com/importacion-coches-alemania</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- COCHE DISPONIBLE -->
+  <url>
+    <loc>https://premiumgermancars.com/car/bmw-serie-1-116i</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- COCHE RESERVADO -->
+  <url>
+    <loc>https://premiumgermancars.com/car/audi-rs6-avant</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

@@ -50,15 +50,24 @@
     <!-- FAVICON -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- GOOGLE FONTS -->
+    <!-- 🔥 GOOGLE FONTS (NO BLOQUEANTE - OPTIMIZADO PSI) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
 
-    <!-- ✅ SCHEMA STRUCTURED DATA (PROFESIONAL) -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+      />
+    </noscript>
+
+    <!-- ✅ SCHEMA STRUCTURED DATA -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -108,7 +117,7 @@
       }
     </script>
 
-    <!-- GOOGLE ANALYTICS -->
+    <!-- 📊 GOOGLE ANALYTICS (NO BLOQUEANTE) -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44"
@@ -119,7 +128,7 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-      gtag("config", "G-8KVXL3SX44");
+      gtag("config", "G-8KVXL3SX44", { anonymize_ip: true });
     </script>
   </head>
 
@@ -130,4 +139,3 @@
     <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>
-

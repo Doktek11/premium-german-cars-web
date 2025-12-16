@@ -1,15 +1,23 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
+import { SEO } from "../components/SEO";
 
-export const PoliticaPrivacidad: React.FC = () => {
+export default function PoliticaPrivacidad() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
     <>
+      {/* 🚫 NOINDEX */}
+      <SEO
+        title="Política de Privacidad"
+        description="Política de privacidad del sitio web Premium German Cars."
+        noindex
+      />
+
       <Navbar />
 
       <main className="bg-metallic-950 text-white pt-32 pb-32">
@@ -69,4 +77,4 @@ export const PoliticaPrivacidad: React.FC = () => {
       <WhatsAppButton />
     </>
   );
-};
+}

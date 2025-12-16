@@ -12,14 +12,20 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative h-screen flex items-center justify-center overflow-hidden"
+      className="relative h-screen flex items-center justify-center overflow-hidden group"
     >
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1603584173870-7b299f589389?q=80&w=2071&auto=format&fit=crop"
+          src="/amggtr.webp"
           alt="Importación de coches premium desde Alemania"
-          className="w-full h-full object-cover scale-105 animate-pulse-slow"
+          className="
+            w-full h-full object-cover scale-105
+            grayscale
+            transition-all duration-700 ease-out
+            group-hover:grayscale-0
+          "
+          loading="eager"
           fetchPriority="high"
           width="1920"
           height="1080"
@@ -81,3 +87,4 @@ export const Hero: React.FC = () => {
     </section>
   );
 };
+

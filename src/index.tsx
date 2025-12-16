@@ -1,18 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
+import App from "./App";
 import "./index.css";
 
-const root = document.getElementById("root");
+const rootElement = document.getElementById("root");
 
-if (!root) {
+if (!rootElement) {
   throw new Error("NO SE ENCUENTRA #root");
 }
 
-ReactDOM.createRoot(root).render(
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <div style={{ color: "white", padding: 40, fontSize: 24 }}>
-      REACT FUNCIONA
-    </div>
+    <App />
   </React.StrictMode>
 );
+

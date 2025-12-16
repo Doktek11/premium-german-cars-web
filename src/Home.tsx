@@ -5,8 +5,6 @@ import { cars } from "./data/cars";
 
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
-import { SeoContent } from "./components/SeoContent";
-import { WhatsAppButton } from "./components/WhatsAppButton";
 
 /* 🔥 Lazy load: solo lo que NO es crítico */
 const About = lazy(() => import("./components/About"));
@@ -19,6 +17,8 @@ const Guarantee = lazy(() =>
 const ImportForm = lazy(() => import("./components/ImportForm"));
 const Testimonials = lazy(() => import("./components/Testimonials"));
 const Footer = lazy(() => import("./components/Footer"));
+const SeoContent = lazy(() => import("./components/SeoContent"));
+const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
 
 export function Home() {
   const location = useLocation();
@@ -46,7 +46,7 @@ export function Home() {
           <Hero />
         </section>
 
-        {/* ⬇️ Todo lo que sigue se puede cargar en diferido */}
+        {/* ⬇️ Contenido secundario – lazy */}
         <Suspense fallback={null}>
           {/* ABOUT / PROCESO */}
           <section id="process">
@@ -62,7 +62,7 @@ export function Home() {
           </section>
         </Suspense>
 
-        {/* STOCK (importante para negocio, NO lazy) */}
+        {/* STOCK (negocio + SEO → NO lazy) */}
         <section id="stock" className="py-32 bg-metallic-950">
           <div className="container mx-auto px-6">
             <span className="text-gold-400 text-xs font-bold tracking-widest uppercase mb-4 block">
@@ -127,7 +127,7 @@ export function Home() {
           </div>
         </section>
 
-        {/* ⬇️ Resto lazy */}
+        {/* ⬇️ Contenido final – lazy */}
         <Suspense fallback={null}>
           {/* GARANTÍAS */}
           <section id="guarantee">
@@ -143,15 +143,18 @@ export function Home() {
           <section id="contact">
             <Footer />
           </section>
-        </Suspense>
 
-        {/* SEO OCULTO PERO INDEXABLE */}
-        <section className="sr-only">
-          <SeoContent />
-        </section>
+          {/* SEO OCULTO PERO INDEXABLE */}
+          <section className="sr-only">
+            <SeoContent />
+          </section>
+        </Suspense>
       </main>
 
-      <WhatsAppButton />
+      {/* Botón flotante – lazy */}
+      <Suspense fallback={null}>
+        <WhatsAppButton />
+      </Suspense>
     </>
   );
 }

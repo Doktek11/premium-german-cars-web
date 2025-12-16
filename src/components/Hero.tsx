@@ -11,13 +11,12 @@ export const Hero: React.FC = () => {
 
   return (
     <section
-      id="home"
       className="relative h-screen min-h-[100svh] flex items-center justify-center overflow-hidden group"
     >
       {/* Background Image (LCP) */}
       <div className="absolute inset-0 z-0">
         <picture>
-          {/* Mobile first */}
+          {/* Mobile */}
           <source
             srcSet="/amggtr-mobile.webp"
             media="(max-width: 768px)"
@@ -39,19 +38,24 @@ export const Hero: React.FC = () => {
             decoding="async"
             width="1920"
             height="1080"
-            sizes="100vw"
+            sizes="(max-width: 768px) 100vw, 100vw"
           />
         </picture>
 
         {/* Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-metallic-950 via-metallic-950/70 to-black/40" />
-        <div className="absolute inset-0 bg-black/30" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-metallic-950 via-metallic-950/70 to-black/40"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-black/30"
+        />
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10 text-center md:text-left h-full flex flex-col justify-center">
         <div className="max-w-4xl animate-fade-in-up mt-20">
-          
           {/* Eyebrow */}
           <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
             <div className="h-[1px] w-12 bg-gold-400" />
@@ -65,7 +69,7 @@ export const Hero: React.FC = () => {
             Importación de Coches Premium desde Alemania
           </h1>
 
-          {/* Claim emocional (visual, no SEO crítico) */}
+          {/* Claim emocional */}
           <p className="text-3xl md:text-5xl font-serif font-medium mb-8 leading-[1.15] text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">
             Tú lo sueñas.
             <br />

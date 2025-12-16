@@ -58,7 +58,6 @@ export const Features: React.FC = () => {
               key={index}
               className="premium-card p-10 group relative overflow-hidden"
             >
-              {/* Number Background */}
               <span className="absolute -right-4 -top-4 text-9xl font-serif text-white/[0.02] group-hover:text-gold-400/[0.05] transition-colors select-none">
                 {index + 1}
               </span>
@@ -89,23 +88,32 @@ export const Guarantee: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="order-2 lg:order-1 relative">
-            {/* Decorative elements */}
             <div className="absolute top-10 left-10 w-full h-full border border-gold-400/20 rounded z-0 hidden lg:block"></div>
 
-            <img
-              src="/m3touring.webp"
-              alt="Interior de coche premium BMW M3 Touring"
-              className="
-                relative z-10 w-full h-auto object-cover
-                grayscale hover:grayscale-0
-                transition-all duration-700
-                shadow-2xl
-              "
-              loading="lazy"
-              decoding="async"
-              width="600"
-              height="400"
-            />
+            <picture>
+              {/* Mobile */}
+              <source
+                srcSet="/m3touring-mobile.webp"
+                media="(max-width: 768px)"
+                type="image/webp"
+              />
+
+              {/* Desktop */}
+              <img
+                src="/m3touring.webp"
+                alt="Interior de coche premium BMW M3 Touring"
+                className="
+                  relative z-10 w-full h-auto object-cover
+                  grayscale hover:grayscale-0
+                  transition-all duration-700
+                  shadow-2xl
+                "
+                loading="lazy"
+                decoding="async"
+                width="600"
+                height="400"
+              />
+            </picture>
           </div>
 
           <div className="order-1 lg:order-2">
@@ -129,7 +137,7 @@ export const Guarantee: React.FC = () => {
                   </h4>
                   <p className="text-sm text-gray-400 font-light leading-relaxed">
                     Mínimo 12 meses de garantía válida en cualquier servicio
-                    oficial de la marca en España. Cobertura idéntica a nacional.
+                    oficial de la marca en España.
                   </p>
                 </div>
               </div>
@@ -144,7 +152,7 @@ export const Guarantee: React.FC = () => {
                   </h4>
                   <p className="text-sm text-gray-400 font-light leading-relaxed">
                     Certificado de kilometraje real y ausencia de daños
-                    estructurales (Unfallfrei) verificado en contrato.
+                    estructurales (Unfallfrei).
                   </p>
                 </div>
               </div>
@@ -158,8 +166,7 @@ export const Guarantee: React.FC = () => {
                     Inversión Inteligente
                   </h4>
                   <p className="text-sm text-gray-400 font-light leading-relaxed">
-                    Accede a unidades más equipadas por el mismo precio, o ahorra
-                    entre un 5–15% respecto al mercado local.
+                    Ahorra entre un 5–15% respecto al mercado local.
                   </p>
                 </div>
               </div>

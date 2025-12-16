@@ -50,20 +50,20 @@
     <!-- FAVICON -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- 🔥 GOOGLE FONTS (NO BLOQUEANTE - OPTIMIZADO PSI) -->
+    <!-- 🔥 GOOGLE FONTS (OPTIMIZADAS - NO BLOQUEANTE REAL) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
-      media="print"
-      onload="this.media='all'"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
       />
     </noscript>
 
@@ -106,7 +106,7 @@
               "@type": "Country",
               "name": "España"
             },
-            "description": "Servicio integral de importación de coches premium desde Alemania. Búsqueda personalizada, verificación técnica y legal, transporte internacional, homologación y matriculación en España.",
+            "description": "Servicio integral de importación de coches premium desde Alemania.",
             "offers": {
               "@type": "Offer",
               "availability": "https://schema.org/InStock",

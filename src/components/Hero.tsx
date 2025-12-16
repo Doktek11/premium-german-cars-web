@@ -25,7 +25,10 @@ export const Hero: React.FC = () => {
       {/* Background image */}
       <img
         src="/amggtr-mobile.webp"
-        alt="Importación de coches premium desde Alemania"
+        alt=""
+        aria-hidden="true"
+        loading="eager"
+        decoding="async"
         style={{
           position: "absolute",
           inset: 0,
@@ -38,6 +41,7 @@ export const Hero: React.FC = () => {
 
       {/* Overlay */}
       <div
+        aria-hidden="true"
         style={{
           position: "absolute",
           inset: 0,
@@ -77,7 +81,7 @@ export const Hero: React.FC = () => {
             lineHeight: 1.2,
             fontWeight: 700,
             marginBottom: "24px",
-            fontFamily: "serif",
+            fontFamily: "Playfair Display, serif",
           }}
         >
           Importación de Coches Premium desde Alemania
@@ -116,4 +120,3 @@ export const Hero: React.FC = () => {
     </section>
   );
 };
-

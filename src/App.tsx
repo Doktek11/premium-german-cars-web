@@ -2,11 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
 import { ScrollToTop } from "./components/ScrollToTop";
-
-// ✅ HOME (puede quedarse normal o lazy, ahora lo explico)
 import { Home } from "./Home";
 
-// 🔹 LAZY LOAD DE PÁGINAS PESADAS
+// 🔹 Lazy pages (DEBEN tener export default)
 const CarPage = lazy(() => import("./pages/CarPage"));
 const ImportacionAlemania = lazy(() => import("./pages/ImportacionAlemania"));
 const ImportarCocheAlemania = lazy(
@@ -17,14 +15,32 @@ const PoliticaPrivacidad = lazy(
   () => import("./pages/PoliticaPrivacidad")
 );
 
+// ✅ Fallback visible (CLAVE para no tener pantalla negra)
+function PageFallback() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#050505",
+        color: "white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 18,
+      }}
+    >
+      Cargando…
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      {/* ✅ Scroll arriba en navegación */}
       <ScrollToTop />
 
-      {/* ⏳ Suspense global (fallback nulo = sin layout shift) */}
-      <Suspense fallback={null}>
+      {/* ⛔ NUNCA fallback={null} mientras depuras */}
+      <Suspense fallback={<PageFallback />}>
         <Routes>
           {/* HOME */}
           <Route path="/" element={<Home />} />
@@ -38,7 +54,7 @@ export default function App() {
             element={<ImportacionAlemania />}
           />
 
-          {/* LANDING SEO / ADS */}
+          {/* LANDING */}
           <Route
             path="/importar-coche-alemania"
             element={<ImportarCocheAlemania />}

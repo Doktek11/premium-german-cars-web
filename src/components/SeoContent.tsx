@@ -12,16 +12,16 @@ export const SeoContent: React.FC = () => {
 
         <p>
           En <strong>Premium German Cars</strong> somos especialistas en la
-          <strong> importación de coches premium desde Alemania</strong>,
-          ofreciendo a nuestros clientes acceso directo al mercado alemán,
-          reconocido por su transparencia, mantenimiento riguroso y una amplia
-          oferta de vehículos de alta gama cuidadosamente seleccionados.
+          <strong> importación de vehículos premium procedentes de Alemania</strong>,
+          ofreciendo acceso directo al mercado alemán, reconocido por su
+          transparencia, mantenimiento riguroso y una amplia oferta de coches de
+          alta gama cuidadosamente seleccionados.
         </p>
 
         <p>
           Importar un coche desde Alemania permite acceder a marcas como
           <strong> BMW, Audi, Mercedes-Benz o Porsche</strong> en mejores
-          condiciones, con historiales completos, kilometrajes certificados y
+          condiciones, con historiales completos, kilometraje certificado y
           configuraciones superiores a las habituales en el mercado español.
         </p>
 
@@ -33,42 +33,41 @@ export const SeoContent: React.FC = () => {
         <p>
           Alemania es el mayor mercado europeo de vehículos premium. La mayoría
           de los coches cuentan con revisiones oficiales, uso mayoritariamente en
-          autopista y un nivel de equipamiento muy superior. Esto convierte la
-          importación de coches alemanes en una opción segura, transparente y
-          rentable frente a la compra nacional.
+          autopista y estándares de mantenimiento muy elevados. Todo ello
+          convierte la importación de coches alemanes en una opción segura,
+          transparente y rentable frente a la compra nacional.
         </p>
 
         {/* H3 */}
         <h3 className="text-xl md:text-2xl font-serif font-semibold text-white">
-          Proceso de importación claro y sin complicaciones
+          Proceso de importación claro, seguro y sin complicaciones
         </h3>
 
         <p>
-          Nos encargamos de todo el proceso de importación: búsqueda
-          personalizada, verificación técnica, negociación, transporte,
-          homologación, matriculación y entrega final en España. Tú solo eliges
-          el coche, y nosotros nos ocupamos de todo lo demás con un servicio
-          completamente llave en mano.
+          Gestionamos el proceso completo de importación: búsqueda personalizada,
+          verificación técnica y legal, negociación con proveedores, transporte
+          internacional, homologación, matriculación y entrega final en España.
+          Un servicio integral pensado para que el cliente no tenga que
+          preocuparse de ningún trámite.
         </p>
 
         {/* H3 */}
         <h3 className="text-xl md:text-2xl font-serif font-semibold text-white">
-          Coches alemanes certificados y entrega en España
+          Coches alemanes certificados y entrega llave en mano
         </h3>
 
         <p>
-          Cada vehículo pasa por un proceso de verificación exhaustivo antes de
-          ser ofrecido a nuestros clientes. Solo trabajamos con proveedores de
-          confianza y garantizamos que todos los coches importados cumplen con
-          los estándares de calidad, seguridad y documentación exigidos en
-          España.
+          Cada vehículo es analizado antes de ser ofrecido a nuestros clientes.
+          Solo trabajamos con proveedores de confianza y garantizamos que todos
+          los coches importados cumplen con los requisitos de calidad,
+          documentación y seguridad exigidos en España.
         </p>
 
         <p>
           Si estás buscando <strong>importar un coche premium desde Alemania</strong>{" "}
-          con tranquilidad, transparencia y un servicio profesional, en
+          con tranquilidad, transparencia y un trato profesional, en
           <strong> Premium German Cars</strong> encontrarás un equipo
-          especializado que te acompañará en todo el proceso.
+          especializado que te acompaña en cada paso del proceso.
         </p>
 
       </div>

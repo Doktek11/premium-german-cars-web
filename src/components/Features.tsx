@@ -1,5 +1,12 @@
 import React from 'react';
-import { Search, CheckCircle, Truck, FileCheck, ShieldCheck, Euro } from 'lucide-react';
+import {
+  Search,
+  CheckCircle,
+  Truck,
+  FileCheck,
+  ShieldCheck,
+  Euro
+} from 'lucide-react';
 
 export const Features: React.FC = () => {
   const steps = [
@@ -38,9 +45,10 @@ export const Features: React.FC = () => {
               <span className="text-gray-500 italic">tan sencillo.</span>
             </h2>
           </div>
+
           <p className="text-gray-400 max-w-md font-light text-justify leading-relaxed">
-            Hemos simplificado la burocracia internacional en 4 pasos transparentes
-            para que tú solo te preocupes de elegir el color.
+            Hemos simplificado la burocracia internacional en 4 pasos
+            transparentes para que tú solo te preocupes de elegir el color.
           </p>
         </div>
 
@@ -108,4 +116,57 @@ export const Guarantee: React.FC = () => {
             <h2 className="text-4xl md:text-5xl font-serif text-white mb-8 leading-tight">
               Sin riesgos. <br />
               Solo <span className="text-gold-400">certezas.</span>
+            </h2>
 
+            <div className="space-y-8">
+              <div className="flex gap-6 group">
+                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-gold-400/50 transition-colors flex-shrink-0">
+                  <ShieldCheck className="w-5 h-5 text-gold-400" />
+                </div>
+                <div>
+                  <h4 className="text-lg font-serif text-white mb-2">
+                    Garantía Oficial Europea
+                  </h4>
+                  <p className="text-sm text-gray-400 font-light leading-relaxed">
+                    Mínimo 12 meses de garantía válida en cualquier servicio
+                    oficial de la marca en España. Cobertura idéntica a nacional.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-6 group">
+                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-gold-400/50 transition-colors flex-shrink-0">
+                  <FileCheck className="w-5 h-5 text-gold-400" />
+                </div>
+                <div>
+                  <h4 className="text-lg font-serif text-white mb-2">
+                    Historial Certificado
+                  </h4>
+                  <p className="text-sm text-gray-400 font-light leading-relaxed">
+                    Certificado de kilometraje real y ausencia de daños
+                    estructurales (Unfallfrei) verificado en contrato.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-6 group">
+                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-gold-400/50 transition-colors flex-shrink-0">
+                  <Euro className="w-5 h-5 text-gold-400" />
+                </div>
+                <div>
+                  <h4 className="text-lg font-serif text-white mb-2">
+                    Inversión Inteligente
+                  </h4>
+                  <p className="text-sm text-gray-400 font-light leading-relaxed">
+                    Accede a unidades más equipadas por el mismo precio, o ahorra
+                    entre un 5–15% respecto al mercado local.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

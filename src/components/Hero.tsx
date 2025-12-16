@@ -16,20 +16,31 @@ export const Hero: React.FC = () => {
     >
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="/amggtr.webp"
-          alt="Importación de coches premium desde Alemania"
-          className="
-            w-full h-full object-cover scale-105
-            grayscale
-            transition-all duration-700 ease-out
-            group-hover:grayscale-0
-          "
-          loading="eager"
-          fetchPriority="high"
-          width="1920"
-          height="1080"
-        />
+        <picture>
+          {/* Mobile */}
+          <source
+            srcSet="/amggtr-mobile.webp"
+            media="(max-width: 768px)"
+            type="image/webp"
+          />
+
+          {/* Desktop */}
+          <img
+            src="/amggtr.webp"
+            alt="Importación de coches premium desde Alemania"
+            className="
+              w-full h-full object-cover scale-105
+              grayscale
+              transition-all duration-700 ease-out
+              group-hover:grayscale-0
+            "
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            width="1920"
+            height="1080"
+          />
+        </picture>
 
         {/* Overlays */}
         <div className="absolute inset-0 bg-gradient-to-t from-metallic-950 via-metallic-950/70 to-black/40" />
@@ -69,7 +80,14 @@ export const Hero: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-start">
             <button
               onClick={goToImportForm}
-              className="px-8 py-5 bg-gold-400 hover:bg-gold-500 text-black font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] flex items-center justify-center gap-3"
+              className="
+                px-8 py-5 bg-gold-400 hover:bg-gold-500
+                text-black font-bold text-sm uppercase tracking-widest
+                transition-all duration-300
+                shadow-[0_0_20px_rgba(212,175,55,0.3)]
+                hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]
+                flex items-center justify-center gap-3
+              "
             >
               Comenzar pedido
               <ArrowRight size={18} />
@@ -77,7 +95,12 @@ export const Hero: React.FC = () => {
 
             <a
               href="#stock"
-              className="px-8 py-5 border border-white/20 hover:border-white text-white font-semibold text-sm uppercase tracking-widest hover:bg-white/5 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
+              className="
+                px-8 py-5 border border-white/20 hover:border-white
+                text-white font-semibold text-sm uppercase tracking-widest
+                hover:bg-white/5 transition-all duration-300
+                flex items-center justify-center backdrop-blur-sm
+              "
             >
               Explorar stock
             </a>

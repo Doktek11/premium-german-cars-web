@@ -1,5 +1,4 @@
 import React from "react";
-import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const Hero: React.FC = () => {
@@ -11,9 +10,10 @@ export const Hero: React.FC = () => {
 
   return (
     <section
-      className="relative h-screen min-h-[100svh] flex items-center justify-center overflow-hidden group"
+      id="home"
+      className="relative min-h-screen h-screen flex items-center justify-center overflow-hidden group"
     >
-      {/* Background Image (LCP) */}
+      {/* Background Image (LCP SAFE) */}
       <div className="absolute inset-0 z-0">
         <picture>
           {/* Mobile */}
@@ -34,11 +34,10 @@ export const Hero: React.FC = () => {
               group-hover:grayscale-0
             "
             loading="eager"
-            fetchPriority="high"
             decoding="async"
             width="1920"
             height="1080"
-            sizes="(max-width: 768px) 100vw, 100vw"
+            sizes="100vw"
           />
         </picture>
 
@@ -55,7 +54,7 @@ export const Hero: React.FC = () => {
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10 text-center md:text-left h-full flex flex-col justify-center">
-        <div className="max-w-4xl animate-fade-in-up mt-20">
+        <div className="max-w-4xl mt-20">
           {/* Eyebrow */}
           <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
             <div className="h-[1px] w-12 bg-gold-400" />
@@ -64,12 +63,12 @@ export const Hero: React.FC = () => {
             </span>
           </div>
 
-          {/* H1 SEO */}
+          {/* H1 */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6 leading-tight tracking-tight">
             Importación de Coches Premium desde Alemania
           </h1>
 
-          {/* Claim emocional */}
+          {/* Claim */}
           <p className="text-3xl md:text-5xl font-serif font-medium mb-8 leading-[1.15] text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">
             Tú lo sueñas.
             <br />
@@ -98,7 +97,7 @@ export const Hero: React.FC = () => {
               "
             >
               Comenzar pedido
-              <ArrowRight size={18} />
+              <span aria-hidden="true">→</span>
             </button>
 
             <a
@@ -120,4 +119,3 @@ export const Hero: React.FC = () => {
     </section>
   );
 };
-

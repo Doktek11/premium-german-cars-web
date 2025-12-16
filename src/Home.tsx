@@ -7,19 +7,45 @@ import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 
-/* Lazy (contenido NO crítico) */
-const About = lazy(() => import("./components/About"));
+/* ================================
+   Lazy components (SEGUROS)
+   ================================ */
+
+// ⚠️ IMPORTANTE:
+// Todos estos componentes NO usan export default
+// Por eso los envolvemos correctamente
+
+const About = lazy(() =>
+  import("./components/About").then((m) => ({ default: m.About }))
+);
+
 const Features = lazy(() =>
   import("./components/Features").then((m) => ({ default: m.Features }))
 );
+
 const Guarantee = lazy(() =>
   import("./components/Features").then((m) => ({ default: m.Guarantee }))
 );
-const ImportForm = lazy(() => import("./components/ImportForm"));
-const Testimonials = lazy(() => import("./components/Testimonials"));
-const Footer = lazy(() => import("./components/Footer"));
-const SeoContent = lazy(() => import("./components/SeoContent"));
 
+const ImportForm = lazy(() =>
+  import("./components/ImportForm").then((m) => ({ default: m.ImportForm }))
+);
+
+const Testimonials = lazy(() =>
+  import("./components/Testimonials").then((m) => ({
+    default: m.Testimonials,
+  }))
+);
+
+const Footer = lazy(() =>
+  import("./components/Footer").then((m) => ({ default: m.Footer }))
+);
+
+const SeoContent = lazy(() =>
+  import("./components/SeoContent").then((m) => ({ default: m.SeoContent }))
+);
+
+/* Fallback neutro */
 const LazyFallback = () => (
   <div className="w-full h-10 bg-transparent" aria-hidden="true" />
 );
@@ -31,6 +57,7 @@ type ScrollState = {
 export function Home() {
   const location = useLocation();
 
+  /* Scroll seguro */
   useEffect(() => {
     const state = location.state as ScrollState | null;
     const id = state && state.scrollTo ? state.scrollTo : null;
@@ -50,21 +77,27 @@ export function Home() {
       <Navbar />
 
       <main>
+        {/* HERO */}
         <section id="home">
           <Hero />
         </section>
 
+        {/* CONTENIDO DIFERIDO */}
         <Suspense fallback={<LazyFallback />}>
+          {/* ABOUT */}
           <section id="process">
             <About />
           </section>
 
+          {/* FEATURES */}
           <Features />
 
+          {/* IMPORT FORM */}
           <section id="import">
             <ImportForm />
           </section>
 
+          {/* STOCK */}
           <section id="stock" className="py-32 bg-metallic-950">
             <div className="container mx-auto px-6">
               <span className="text-gold-400 text-xs font-bold tracking-widest uppercase mb-4 block">
@@ -82,6 +115,7 @@ export function Home() {
                     to={`/car/${car.slug}`}
                     className="premium-card group bg-metallic-900 overflow-hidden flex flex-col h-full"
                   >
+                    {/* Imagen */}
                     <div className="h-64 overflow-hidden relative">
                       <div
                         className={
@@ -103,6 +137,7 @@ export function Home() {
                       />
                     </div>
 
+                    {/* Contenido */}
                     <div className="p-8 flex flex-col flex-grow">
                       <h3 className="text-xl font-serif font-bold text-white mb-2">
                         {car.make}
@@ -126,18 +161,22 @@ export function Home() {
             </div>
           </section>
 
+          {/* GARANTÍA */}
           <section id="guarantee">
             <Guarantee />
           </section>
 
+          {/* TESTIMONIOS */}
           <section id="testimonials">
             <Testimonials />
           </section>
 
+          {/* CONTACTO */}
           <section id="contact">
             <Footer />
           </section>
 
+          {/* SEO OCULTO */}
           <section className="sr-only">
             <SeoContent />
           </section>

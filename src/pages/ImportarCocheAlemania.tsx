@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { ImportForm } from "../components/ImportForm";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
 
-export const ImportarCocheAlemania: React.FC = () => {
+export default function ImportarCocheAlemania() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -15,17 +15,17 @@ export const ImportarCocheAlemania: React.FC = () => {
       <SEO
         title="Importar coche desde Alemania | Premium German Cars"
         description="Importa tu coche desde Alemania con total garantía. Gestión completa, verificación, transporte y entrega en España."
+        canonical="https://www.premiumgermancars.com/importar-coche-alemania"
       />
 
       <Navbar />
 
       <main className="bg-metallic-950 text-white">
-
         {/* HERO */}
         <section className="pt-40 pb-24">
           <div className="container mx-auto px-6 max-w-4xl text-center space-y-8">
             <h1 className="text-4xl md:text-5xl font-serif font-bold">
-              Importar coche desde Alemania  
+              Importar coche desde Alemania
               <span className="block text-gold-400 mt-3">
                 sin riesgos y con garantía total
               </span>
@@ -33,10 +33,10 @@ export const ImportarCocheAlemania: React.FC = () => {
 
             <p className="text-gray-300 text-lg">
               Servicio profesional de importación de coches premium desde Alemania.
-              Nos encargamos de todo el proceso para que recibas tu coche listo para circular en España.
+              Nos encargamos de todo el proceso para que recibas tu coche listo para
+              circular en España.
             </p>
 
-            {/* TRUST */}
             <p className="text-sm text-gray-400">
               ✔ Kilómetros certificados · ✔ Historial verificado · ✔ Entrega llave en mano
             </p>
@@ -58,7 +58,8 @@ export const ImportarCocheAlemania: React.FC = () => {
                 Mercado alemán
               </h3>
               <p className="text-gray-300">
-                Accede al mayor mercado europeo de vehículos premium con mejor equipamiento y mantenimiento.
+                Accede al mayor mercado europeo de vehículos premium con mejor
+                equipamiento y mantenimiento.
               </p>
             </div>
 
@@ -90,11 +91,11 @@ export const ImportarCocheAlemania: React.FC = () => {
             </h2>
 
             <ol className="space-y-6 text-gray-300">
-              <li><strong>1.</strong> Asesoramiento personalizado según tus necesidades.</li>
-              <li><strong>2.</strong> Búsqueda y selección de unidades en Alemania.</li>
+              <li><strong>1.</strong> Asesoramiento personalizado.</li>
+              <li><strong>2.</strong> Búsqueda y selección en Alemania.</li>
               <li><strong>3.</strong> Verificación técnica y negociación.</li>
               <li><strong>4.</strong> Transporte, homologación y matriculación.</li>
-              <li><strong>5.</strong> Entrega del coche en España listo para disfrutar.</li>
+              <li><strong>5.</strong> Entrega en España listo para disfrutar.</li>
             </ol>
 
             <div className="text-center pt-8">
@@ -122,31 +123,11 @@ export const ImportarCocheAlemania: React.FC = () => {
             <ImportForm />
           </div>
         </section>
-
-        {/* SEO CONTENT */}
-        <section className="py-24">
-          <div className="container mx-auto px-6 max-w-4xl text-gray-300 leading-relaxed space-y-6">
-            <h2 className="text-2xl font-serif font-bold text-white">
-              Importación profesional de coches premium desde Alemania
-            </h2>
-
-            <p>
-              En Premium German Cars somos especialistas en importar coches desde Alemania
-              con un servicio completo y transparente. Trabajamos exclusivamente con vehículos
-              premium seleccionados cuidadosamente.
-            </p>
-
-            <p>
-              Si buscas importar un coche alemán con seguridad, asesoramiento profesional
-              y sin complicaciones, estás en el lugar adecuado.
-            </p>
-          </div>
-        </section>
-
       </main>
 
       <Footer />
       <WhatsAppButton />
     </>
   );
-};
+}
+

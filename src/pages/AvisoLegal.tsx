@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
 
-export const AvisoLegal: React.FC = () => {
+export default function AvisoLegal() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -89,4 +89,4 @@ export const AvisoLegal: React.FC = () => {
       <WhatsAppButton />
     </>
   );
-};
+}

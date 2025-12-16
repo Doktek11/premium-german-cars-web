@@ -1,13 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { HelmetProvider } from "react-helmet-async";
-import App from "./App";
+
 import "./index.css";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root");
+
+if (!root) {
+  throw new Error("NO SE ENCUENTRA #root");
+}
+
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
-    <HelmetProvider>
-      <App />
-    </HelmetProvider>
+    <div style={{ color: "white", padding: 40, fontSize: 24 }}>
+      REACT FUNCIONA
+    </div>
   </React.StrictMode>
 );

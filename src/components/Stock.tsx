@@ -3,14 +3,6 @@ import { cars } from "../data/cars";
 import { ArrowUpRight } from "lucide-react";
 
 export const Stock: React.FC = () => {
-
-  // 👇 función que genera slug SEO automático
-  const slugify = (car: { make: string; model: string }) =>
-    `${car.make}-${car.model}`
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^\w-]+/g, "");
-
   return (
     <section id="stock" className="py-32 bg-metallic-950">
       <div className="container mx-auto px-6">
@@ -36,102 +28,101 @@ export const Stock: React.FC = () => {
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {cars.map((car) => {
-            const slug = slugify(car);
+          {cars.map((car) => (
+            <a
+              key={car.id}
+              href={`/car/${car.slug}`}
+              aria-label={`Ver ficha del ${car.make} ${car.model}`}
+              className="premium-card group bg-metallic-900 overflow-hidden flex flex-col h-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-gold-400"
+            >
+              {/* Imagen */}
+              <div className="h-64 overflow-hidden relative">
 
-            return (
-              <div
-                key={car.id}
-                className="premium-card group bg-metallic-900 overflow-hidden flex flex-col h-full cursor-pointer"
-                onClick={() => (window.location.href = `/car/${slug}`)}
-              >
-                {/* Imagen */}
-                <div className="h-64 overflow-hidden relative">
-
-                  {/* Estado */}
-                  <div
-                    className={`absolute top-0 right-0 z-10 px-4 py-2 text-[10px] font-bold uppercase tracking-widest ${
-                      car.status === "Disponible"
-                        ? "bg-white text-black"
-                        : "bg-metallic-900/90 text-gray-400 border-l border-b border-white/10"
-                    }`}
-                  >
-                    {car.status}
-                  </div>
-
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
-
-                  <img
-                    src={car.image}
-                    alt={`${car.make} ${car.model}`}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
-                    loading="lazy"
-                    decoding="async"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        "https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop";
-                    }}
-                  />
+                {/* Estado */}
+                <div
+                  className={`absolute top-0 right-0 z-10 px-4 py-2 text-[10px] font-bold uppercase tracking-widest ${
+                    car.status === "Disponible"
+                      ? "bg-white text-black"
+                      : "bg-metallic-900/90 text-gray-400 border-l border-b border-white/10"
+                  }`}
+                >
+                  {car.status}
                 </div>
 
-                {/* Información */}
-                <div className="p-8 flex-grow flex flex-col">
-                  <div className="mb-auto">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-xl font-serif font-bold text-white leading-tight">
-                        {car.make} <br />
-                        <span className="text-gray-400 font-sans font-light">
-                          {car.model}
-                        </span>
-                      </h3>
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
 
-                      <p className="text-gold-400 font-serif text-xl">
-                        {car.price.toLocaleString("de-DE")}€
-                      </p>
-                    </div>
+                <img
+                  src={car.image}
+                  alt={`${car.make} ${car.model} - vista exterior`}
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                  loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
+                  width={400}
+                  height={256}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = "/placeholder.webp";
+                  }}
+                />
+              </div>
+
+              {/* Información */}
+              <div className="p-8 flex-grow flex flex-col">
+                <div className="mb-auto">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="text-xl font-serif font-bold text-white leading-tight">
+                      {car.make} <br />
+                      <span className="text-gray-400 font-sans font-light">
+                        {car.model}
+                      </span>
+                    </h3>
+
+                    <p className="text-gold-400 font-serif text-xl">
+                      {car.price.toLocaleString("de-DE")}€
+                    </p>
+                  </div>
+                </div>
+
+                {/* Specs */}
+                <div className="grid grid-cols-3 gap-2 border-t border-white/10 pt-6 mt-6">
+                  <div className="text-center">
+                    <span className="block text-xs text-gray-500 uppercase tracking-wider mb-1">
+                      Año
+                    </span>
+                    <span className="text-sm text-gray-300 font-medium">
+                      {car.year}
+                    </span>
                   </div>
 
-                  {/* Specs */}
-                  <div className="grid grid-cols-3 gap-2 border-t border-white/10 pt-6 mt-6">
-                    <div className="text-center">
-                      <span className="block text-xs text-gray-500 uppercase tracking-wider mb-1">
-                        Año
-                      </span>
-                      <span className="text-sm text-gray-300 font-medium">
-                        {car.year}
-                      </span>
-                    </div>
-
-                    <div className="text-center border-l border-white/5">
-                      <span className="block text-xs text-gray-500 uppercase tracking-wider mb-1">
-                        Km
-                      </span>
-                      <span className="text-sm text-gray-300 font-medium">
-                        {car.km.toLocaleString()}
-                      </span>
-                    </div>
-
-                    <div className="text-center border-l border-white/5">
-                      <span className="block text-xs text-gray-500 uppercase tracking-wider mb-1">
-                        Motor
-                      </span>
-                      <span className="text-sm text-gray-300 font-medium truncate px-1">
-                        {car.engine}
-                      </span>
-                    </div>
+                  <div className="text-center border-l border-white/5">
+                    <span className="block text-xs text-gray-500 uppercase tracking-wider mb-1">
+                      Km
+                    </span>
+                    <span className="text-sm text-gray-300 font-medium">
+                      {car.km.toLocaleString()}
+                    </span>
                   </div>
 
-                  {/* CTA */}
-                  <div className="mt-6 pt-6 border-t border-white/5 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-300">
-                    <span className="text-xs text-gold-400 uppercase tracking-widest font-bold flex items-center justify-center gap-2">
-                      Ver Ficha Completa <ArrowUpRight size={14} />
+                  <div className="text-center border-l border-white/5">
+                    <span className="block text-xs text-gray-500 uppercase tracking-wider mb-1">
+                      Motor
+                    </span>
+                    <span className="text-sm text-gray-300 font-medium truncate px-1">
+                      {car.engine}
                     </span>
                   </div>
                 </div>
 
+                {/* CTA */}
+                <div className="mt-6 pt-6 border-t border-white/5 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-300">
+                  <span className="text-xs text-gold-400 uppercase tracking-widest font-bold flex items-center justify-center gap-2">
+                    Ver Ficha Completa <ArrowUpRight size={14} />
+                  </span>
+                </div>
               </div>
-            );
-          })}
+            </a>
+          ))}
         </div>
       </div>
     </section>

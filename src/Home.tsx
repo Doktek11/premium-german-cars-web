@@ -7,7 +7,7 @@ import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 
-/* Lazy (solo contenido secundario) */
+/* Lazy (contenido NO crítico) */
 const About = lazy(() => import("./components/About"));
 const Features = lazy(() =>
   import("./components/Features").then((m) => ({ default: m.Features }))
@@ -20,17 +20,23 @@ const Testimonials = lazy(() => import("./components/Testimonials"));
 const Footer = lazy(() => import("./components/Footer"));
 const SeoContent = lazy(() => import("./components/SeoContent"));
 
-/* Fallback seguro (NO null) */
+/* Fallback visible pero neutro */
 const LazyFallback = () => (
-  <div className="w-full h-8 bg-transparent" aria-hidden="true" />
+  <div className="w-full h-10 bg-transparent" aria-hidden="true" />
 );
+
+type ScrollState = {
+  scrollTo?: string;
+};
 
 export function Home() {
   const location = useLocation();
 
-  /* Scroll desde otras rutas */
+  /* ✅ Scroll seguro (SIN optional chaining) */
   useEffect(() => {
-    const id = location.state?.scrollTo;
+    const state = location.state as ScrollState | null;
+    const id = state && state.scrollTo ? state.scrollTo : null;
+
     if (id) {
       const el = document.querySelector(id);
       if (el) {
@@ -46,12 +52,12 @@ export function Home() {
       <Navbar />
 
       <main>
-        {/* HERO – NO lazy */}
+        {/* HERO – crítico */}
         <section id="home">
           <Hero />
         </section>
 
-        {/* TODO el contenido diferido en UN solo Suspense */}
+        {/* Contenido diferido */}
         <Suspense fallback={<LazyFallback />}>
           {/* ABOUT */}
           <section id="process">
@@ -66,7 +72,7 @@ export function Home() {
             <ImportForm />
           </section>
 
-          {/* STOCK – NO lazy */}
+          {/* STOCK – negocio + SEO */}
           <section id="stock" className="py-32 bg-metallic-950">
             <div className="container mx-auto px-6">
               <span className="text-gold-400 text-xs font-bold tracking-widest uppercase mb-4 block">
@@ -84,20 +90,22 @@ export function Home() {
                     to={`/car/${car.slug}`}
                     className="premium-card group bg-metallic-900 overflow-hidden flex flex-col h-full"
                   >
+                    {/* Imagen */}
                     <div className="h-64 overflow-hidden relative">
                       <div
-                        className={`absolute top-0 right-0 z-10 px-4 py-2 text-[10px] font-bold uppercase tracking-widest ${
-                          car.status === "Disponible"
+                        className={
+                          "absolute top-0 right-0 z-10 px-4 py-2 text-[10px] font-bold uppercase tracking-widest " +
+                          (car.status === "Disponible"
                             ? "bg-white text-black"
-                            : "bg-metallic-900/90 text-gray-400 border-l border-b border-white/10"
-                        }`}
+                            : "bg-metallic-900/90 text-gray-400 border-l border-b border-white/10")
+                        }
                       >
                         {car.status}
                       </div>
 
                       <img
                         src={car.image}
-                        alt={`${car.make} ${car.model}`}
+                        alt={car.make + " " + car.model}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
                         decoding="async"
@@ -106,6 +114,7 @@ export function Home() {
                       />
                     </div>
 
+                    {/* Contenido */}
                     <div className="p-8 flex flex-col flex-grow">
                       <h3 className="text-xl font-serif font-bold text-white mb-2">
                         {car.make}
@@ -144,16 +153,15 @@ export function Home() {
             <Footer />
           </section>
 
-          {/* SEO OCULTO */}
+          {/* SEO */}
           <section className="sr-only">
             <SeoContent />
           </section>
         </Suspense>
       </main>
 
-      {/* WhatsApp SIEMPRE visible */}
+      {/* WhatsApp fijo */}
       <WhatsAppButton />
     </>
   );
 }
-

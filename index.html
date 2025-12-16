@@ -50,7 +50,7 @@
     <!-- FAVICON -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- 🔥 GOOGLE FONTS (OPTIMIZADAS - NO BLOQUEANTE REAL) -->
+    <!-- GOOGLE FONTS (NO BLOQUEANTE) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
@@ -67,7 +67,7 @@
       />
     </noscript>
 
-    <!-- ✅ SCHEMA STRUCTURED DATA -->
+    <!-- SCHEMA -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -84,40 +84,13 @@
               "@type": "Country",
               "name": "España"
             },
-            "knowsAbout": [
-              "Importación de coches desde Alemania",
-              "Coches premium alemanes",
-              "BMW importación",
-              "Audi importación",
-              "Mercedes-Benz importación",
-              "Porsche importación"
-            ],
             "inLanguage": "es-ES"
-          },
-          {
-            "@type": "Service",
-            "@id": "https://www.premiumgermancars.com/#servicio-importacion",
-            "name": "Importación de coches premium desde Alemania",
-            "serviceType": "Importación de vehículos",
-            "provider": {
-              "@id": "https://www.premiumgermancars.com/#autodealer"
-            },
-            "areaServed": {
-              "@type": "Country",
-              "name": "España"
-            },
-            "description": "Servicio integral de importación de coches premium desde Alemania.",
-            "offers": {
-              "@type": "Offer",
-              "availability": "https://schema.org/InStock",
-              "priceCurrency": "EUR"
-            }
           }
         ]
       }
     </script>
 
-    <!-- 📊 GOOGLE ANALYTICS (NO BLOQUEANTE) -->
+    <!-- GOOGLE ANALYTICS -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44"
@@ -135,7 +108,7 @@
   <body>
     <div id="root"></div>
 
-    <!-- VITE ENTRY -->
-    <script type="module" src="/src/index.tsx"></script>
+    <!-- ✅ VITE ENTRY POINT CORRECTO -->
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

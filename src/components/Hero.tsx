@@ -11,7 +11,7 @@ export const Hero: React.FC = () => {
 
   return (
     <section className="relative min-h-screen w-full bg-black overflow-hidden flex items-center justify-center">
-      {/* LCP IMAGE */}
+      {/* Background image (LCP) */}
       <img
         src="/amggtr-mobile.webp"
         alt="Importación de coches premium desde Alemania"
@@ -19,7 +19,7 @@ export const Hero: React.FC = () => {
         decoding="async"
         width="1920"
         height="1080"
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover z-0"
       />
 
       {/* Overlay */}
@@ -27,11 +27,11 @@ export const Hero: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-[2] text-white px-6 max-w-[520px] text-center">
-        <span className="block text-gold-400 text-xs font-bold tracking-widest uppercase mb-4">
+        <span className="block text-gold-400 text-xs font-bold tracking-[0.15em] uppercase mb-4">
           Excelencia Alemana
         </span>
 
-        <h1 className="text-3xl md:text-5xl font-serif font-bold mb-6 leading-tight">
+        <h1 className="text-[32px] leading-tight font-serif font-bold mb-6">
           Importación de Coches Premium desde Alemania
         </h1>
 
@@ -41,7 +41,7 @@ export const Hero: React.FC = () => {
 
         <button
           onClick={goToImportForm}
-          className="inline-flex items-center gap-3 px-8 py-4 bg-gold-400 text-black font-bold uppercase text-sm tracking-widest hover:bg-gold-500 transition-colors"
+          className="inline-flex items-center gap-3 px-7 py-4 bg-gold-400 text-black font-bold uppercase text-sm tracking-widest hover:bg-gold-500 transition-colors"
         >
           Comenzar pedido
           <ArrowRight size={18} />
@@ -50,3 +50,4 @@ export const Hero: React.FC = () => {
     </section>
   );
 };
+

@@ -1,6 +1,7 @@
 import React from "react";
 import { cars } from "../data/cars";
 import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Stock: React.FC = () => {
   return (
@@ -18,20 +19,17 @@ export const Stock: React.FC = () => {
             </h2>
           </div>
 
-          <a
-            href="#"
-            className="hidden md:flex items-center text-gray-400 uppercase tracking-widest text-xs font-bold hover:text-gold-400 transition-colors mt-4 md:mt-0 border-b border-transparent hover:border-gold-400 pb-1"
-          >
-            Ver inventario completo <ArrowUpRight className="ml-2 w-4 h-4" />
-          </a>
+          <span className="hidden md:flex items-center text-gray-400 uppercase tracking-widest text-xs font-bold mt-4 md:mt-0">
+            Vehículos Premium Seleccionados
+          </span>
         </div>
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {cars.map((car) => (
-            <a
+            <Link
               key={car.id}
-              href={`/car/${car.slug}`}
+              to={`/stock/${car.slug}`}
               aria-label={`Ver ficha del ${car.make} ${car.model}`}
               className="premium-card group bg-metallic-900 overflow-hidden flex flex-col h-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-gold-400"
             >
@@ -57,12 +55,12 @@ export const Stock: React.FC = () => {
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
                   loading="lazy"
                   decoding="async"
-                  fetchpriority="low"
                   width={400}
                   height={256}
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = "/placeholder.webp";
+                    (e.currentTarget as HTMLImageElement).src =
+                      "/placeholder.webp";
                   }}
                 />
               </div>
@@ -72,14 +70,15 @@ export const Stock: React.FC = () => {
                 <div className="mb-auto">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-xl font-serif font-bold text-white leading-tight">
-                      {car.make} <br />
+                      {car.make}
+                      <br />
                       <span className="text-gray-400 font-sans font-light">
                         {car.model}
                       </span>
                     </h3>
 
                     <p className="text-gold-400 font-serif text-xl">
-                      {car.price.toLocaleString("de-DE")}€
+                      {car.price.toLocaleString("de-DE")} €
                     </p>
                   </div>
                 </div>
@@ -115,16 +114,17 @@ export const Stock: React.FC = () => {
                 </div>
 
                 {/* CTA */}
-                <div className="mt-6 pt-6 border-t border-white/5 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-300">
+                <div className="mt-6 pt-6 border-t border-white/5 opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 duration-300">
                   <span className="text-xs text-gold-400 uppercase tracking-widest font-bold flex items-center justify-center gap-2">
                     Ver Ficha Completa <ArrowUpRight size={14} />
                   </span>
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
     </section>
   );
 };
+

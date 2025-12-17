@@ -14,6 +14,7 @@ const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
 const PoliticaPrivacidad = lazy(() =>
   import("./pages/PoliticaPrivacidad")
 );
+const FaqPage = lazy(() => import("./pages/Faq")); // ✅ NUEVO FAQ
 
 function PageFallback() {
   return (
@@ -39,8 +40,13 @@ export default function App() {
 
       <Suspense fallback={<PageFallback />}>
         <Routes>
+          {/* HOME */}
           <Route path="/" element={<Home />} />
+
+          {/* COCHES */}
           <Route path="/car/:slug" element={<CarPage />} />
+
+          {/* IMPORTACIÓN */}
           <Route
             path="/importacion-coches-alemania"
             element={<ImportacionAlemania />}
@@ -49,11 +55,16 @@ export default function App() {
             path="/importar-coche-alemania"
             element={<ImportarCocheAlemania />}
           />
+
+          {/* LEGALES */}
           <Route path="/aviso-legal" element={<AvisoLegal />} />
           <Route
             path="/politica-de-privacidad"
             element={<PoliticaPrivacidad />}
           />
+
+          {/* FAQ */}
+          <Route path="/faq" element={<FaqPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

@@ -17,7 +17,6 @@ export default function CarPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  // ✅ NUNCA devolver null en páginas
   if (!car) {
     return (
       <div
@@ -114,6 +113,7 @@ export default function CarPage() {
 
       <main className="bg-metallic-950 text-white pt-32 pb-32">
         <div className="container mx-auto px-6 max-w-6xl">
+          {/* TÍTULO */}
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
             {car.make} {car.model}
           </h1>
@@ -131,6 +131,7 @@ export default function CarPage() {
             {car.price.toLocaleString("de-DE")} €
           </p>
 
+          {/* GALERÍA */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
             {car.gallery?.map((img, index) => (
               <img
@@ -142,6 +143,17 @@ export default function CarPage() {
               />
             ))}
           </div>
+
+          {/* ✅ DESCRIPCIÓN (AQUÍ ESTABA EL FALLO) */}
+          <section className="mb-20 max-w-3xl">
+            <h2 className="text-2xl md:text-3xl font-serif font-bold mb-6 border-l-4 border-gold-400 pl-4">
+              Descripción del vehículo
+            </h2>
+
+            <div className="text-gray-300 leading-relaxed whitespace-pre-line">
+              {car.description}
+            </div>
+          </section>
 
           <Footer />
           <WhatsAppButton />

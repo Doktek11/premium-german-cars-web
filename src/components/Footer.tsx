@@ -26,7 +26,7 @@ const faqs: FAQItem[] = [
   {
     question: "¿Qué incluye vuestro servicio?",
     answer:
-      "Incluye negociación, revisión técnica in situ o peritaje, contrato de compraventa, transporte asegurado, ITV en España, pago de impuestos (Matriculación, Circulación) y gestoría.",
+      "Incluye búsqueda personalizada, negociación, revisión técnica in situ o peritaje, contrato de compraventa, transporte asegurado, ITV en España, pago de impuestos (Matriculación, Circulación) y gestoría.",
   },
 ];
 
@@ -35,7 +35,7 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="bg-metallic-950 text-white pt-20 pb-10 border-t border-white/10">
-      {/* FAQ */}
+      {/* FAQ CORTO */}
       <div className="container mx-auto px-6 mb-20">
         <h3 className="text-2xl font-serif font-bold mb-8 text-center">
           Preguntas Frecuentes
@@ -57,10 +57,22 @@ export const Footer: React.FC = () => {
                   openFaq === idx ? "max-h-48 pb-6" : "max-h-0"
                 }`}
               >
-                <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
+                <p className="text-gray-400 leading-relaxed text-sm">
+                  {faq.answer}
+                </p>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* LINK A FAQ COMPLETO */}
+        <div className="text-center mt-10">
+          <Link
+            to="/faq"
+            className="inline-block text-gold-400 text-sm font-bold uppercase tracking-widest hover:underline"
+          >
+            Ver todas las preguntas frecuentes
+          </Link>
         </div>
       </div>
 
@@ -81,10 +93,18 @@ export const Footer: React.FC = () => {
           </p>
 
           <div className="flex space-x-4">
-            <a className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">
+            <a
+              href="#"
+              aria-label="Instagram"
+              className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors"
+            >
               <Instagram size={20} />
             </a>
-            <a className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">
+            <a
+              href="#"
+              aria-label="Facebook"
+              className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors"
+            >
               <Facebook size={20} />
             </a>
           </div>
@@ -98,7 +118,11 @@ export const Footer: React.FC = () => {
           <ul className="space-y-4 text-gray-400 text-sm">
             <li className="flex items-start gap-3">
               <MapPin className="text-gold-400 w-5 h-5" />
-              <span>43850<br />Cambrils, España</span>
+              <span>
+                43850
+                <br />
+                Cambrils, España
+              </span>
             </li>
             <li className="flex items-center gap-3">
               <Phone className="text-gold-400 w-5 h-5" />
@@ -117,11 +141,36 @@ export const Footer: React.FC = () => {
             Enlaces
           </h4>
           <ul className="space-y-2 text-gray-400 text-sm">
-            <li><a href="#home" className="hover:text-gold-400">Inicio</a></li>
-            <li><a href="#about" className="hover:text-gold-400">Quiénes Somos</a></li>
-            <li><a href="#stock" className="hover:text-gold-400">Stock Disponible</a></li>
-            <li><a href="#import" className="hover:text-gold-400">Importación a la Carta</a></li>
-            <li><a href="#guarantee" className="hover:text-gold-400">Garantías</a></li>
+            <li>
+              <a href="#home" className="hover:text-gold-400">
+                Inicio
+              </a>
+            </li>
+            <li>
+              <a href="#about" className="hover:text-gold-400">
+                Quiénes Somos
+              </a>
+            </li>
+            <li>
+              <a href="#stock" className="hover:text-gold-400">
+                Stock Disponible
+              </a>
+            </li>
+            <li>
+              <a href="#import" className="hover:text-gold-400">
+                Importación a la Carta
+              </a>
+            </li>
+            <li>
+              <a href="#guarantee" className="hover:text-gold-400">
+                Garantías
+              </a>
+            </li>
+            <li>
+              <Link to="/faq" className="hover:text-gold-400">
+                Preguntas Frecuentes
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -164,3 +213,4 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
+

@@ -65,10 +65,7 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* FOOTER GRID */}
-      <div
-        className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12"
-        id="contact"
-      >
+      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
         {/* LOGO */}
         <div>
           <Link to="/" className="flex items-center gap-2 mb-6">
@@ -84,18 +81,10 @@ export const Footer: React.FC = () => {
           </p>
 
           <div className="flex space-x-4">
-            <a
-              href="#"
-              aria-label="Instagram"
-              className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors"
-            >
+            <a className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">
               <Instagram size={20} />
             </a>
-            <a
-              href="#"
-              aria-label="Facebook"
-              className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors"
-            >
+            <a className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">
               <Facebook size={20} />
             </a>
           </div>
@@ -108,19 +97,15 @@ export const Footer: React.FC = () => {
           </h4>
           <ul className="space-y-4 text-gray-400 text-sm">
             <li className="flex items-start gap-3">
-              <MapPin className="text-gold-400 w-5 h-5 flex-shrink-0" />
-              <span>
-                43850
-                <br />
-                Cambrils, España
-              </span>
+              <MapPin className="text-gold-400 w-5 h-5" />
+              <span>43850<br />Cambrils, España</span>
             </li>
             <li className="flex items-center gap-3">
-              <Phone className="text-gold-400 w-5 h-5 flex-shrink-0" />
+              <Phone className="text-gold-400 w-5 h-5" />
               <span>+34 603 743 608</span>
             </li>
             <li className="flex items-center gap-3">
-              <Mail className="text-gold-400 w-5 h-5 flex-shrink-0" />
+              <Mail className="text-gold-400 w-5 h-5" />
               <span>info@premiumgermancars.com</span>
             </li>
           </ul>
@@ -132,37 +117,11 @@ export const Footer: React.FC = () => {
             Enlaces
           </h4>
           <ul className="space-y-2 text-gray-400 text-sm">
-            <li>
-              <a href="#home" className="hover:text-gold-400 transition-colors">
-                Inicio
-              </a>
-            </li>
-            <li>
-              <a href="#about" className="hover:text-gold-400 transition-colors">
-                Quiénes Somos
-              </a>
-            </li>
-            <li>
-              <a href="#stock" className="hover:text-gold-400 transition-colors">
-                Stock Disponible
-              </a>
-            </li>
-            <li>
-              <a
-                href="#import"
-                className="hover:text-gold-400 transition-colors"
-              >
-                Importación a la Carta
-              </a>
-            </li>
-            <li>
-              <a
-                href="#guarantee"
-                className="hover:text-gold-400 transition-colors"
-              >
-                Garantías
-              </a>
-            </li>
+            <li><a href="#home" className="hover:text-gold-400">Inicio</a></li>
+            <li><a href="#about" className="hover:text-gold-400">Quiénes Somos</a></li>
+            <li><a href="#stock" className="hover:text-gold-400">Stock Disponible</a></li>
+            <li><a href="#import" className="hover:text-gold-400">Importación a la Carta</a></li>
+            <li><a href="#guarantee" className="hover:text-gold-400">Garantías</a></li>
           </ul>
         </div>
 
@@ -193,17 +152,11 @@ export const Footer: React.FC = () => {
         <p className="text-gray-600 text-xs">
           © {new Date().getFullYear()} Premium German Cars. Todos los derechos
           reservados. |{" "}
-          <Link
-            to="/aviso-legal"
-            className="hover:text-gold-400 transition-colors"
-          >
+          <Link to="/aviso-legal" className="hover:text-gold-400">
             Aviso Legal
           </Link>{" "}
           |{" "}
-          <Link
-            to="/politica-privacidad"
-            className="hover:text-gold-400 transition-colors"
-          >
+          <Link to="/politica-de-privacidad" className="hover:text-gold-400">
             Política de Privacidad
           </Link>
         </p>

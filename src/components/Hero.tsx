@@ -22,14 +22,14 @@ export const Hero: React.FC = () => {
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* DARKER OVERLAY */}
-      <div className="absolute inset-0 bg-black/75 z-[1]" />
+      {/* DARKER OVERLAY (más oscuro que antes) */}
+      <div className="absolute inset-0 bg-black/80 z-[1]" />
 
       {/* CONTENT */}
       <div className="relative z-[2] text-white px-6 max-w-[520px] text-center flex flex-col items-center">
         {/* LOGO */}
         <img
-          src="/logoPGC.webp"
+          src="/logoPGC.svg"
           alt="Premium German Cars"
           width={140}
           height={140}
@@ -61,3 +61,4 @@ export const Hero: React.FC = () => {
     </section>
   );
 };
+

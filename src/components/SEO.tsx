@@ -24,9 +24,7 @@ export const SEO: React.FC<SEOProps> = ({
 
       {canonical && <link rel="canonical" href={canonical} />}
 
-      {noindex && (
-        <meta name="robots" content="noindex, nofollow" />
-      )}
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
 
       {/* OPEN GRAPH */}
       <meta property="og:type" content="website" />
@@ -38,10 +36,13 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
 
-      {/* STRUCTURED DATA */}
+      {/* STRUCTURED DATA (JSON-LD) */}
       {schema &&
         (Array.isArray(schema) ? schema : [schema]).map((item, index) => (
-          <script key={index} type="application/ld+json">
+          <script
+            key={`schema-${index}`}
+            type="application/ld+json"
+          >
             {JSON.stringify(item)}
           </script>
         ))}

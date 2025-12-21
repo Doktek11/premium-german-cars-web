@@ -26,10 +26,11 @@ export default function ImportarCocheAlemania() {
           <div className="container mx-auto px-6 max-w-4xl text-center space-y-8">
             <h1 className="text-4xl md:text-5xl font-serif font-bold">
               Importación de coches premium desde Alemania a España
-              <span className="block text-gold-400 mt-4">
-                Servicio llave en mano, seguro y transparente
-              </span>
             </h1>
+
+            <h2 className="text-gold-400 text-xl font-serif">
+              Servicio llave en mano, seguro y transparente
+            </h2>
 
             <p className="text-gray-300 text-lg leading-relaxed">
               En <strong>Premium German Cars</strong> somos especialistas en la
@@ -99,50 +100,29 @@ export default function ImportarCocheAlemania() {
               <li>
                 <strong>1. Búsqueda y asesoramiento personalizado.</strong>{" "}
                 Analizamos tus necesidades y filtramos el mercado alemán para
-                encontrar la unidad ideal (BMW, Audi, Mercedes-Benz, Porsche,
-                Volkswagen, entre otras).
+                encontrar la unidad ideal.
               </li>
-
               <li>
                 <strong>2. Verificación técnica y revisión del historial.</strong>{" "}
-                Comprobamos libro de mantenimiento, accidentes, propietarios y
-                kilometraje real antes de cualquier pago.
+                Comprobamos libro de mantenimiento, accidentes y kilometraje.
               </li>
-
               <li>
-                <strong>3. Negociación y gestión de compra segura.</strong>{" "}
-                Negociamos directamente con concesionarios oficiales o
-                proveedores contrastados, asegurando documentación correcta
-                para exportación.
+                <strong>3. Negociación y compra segura.</strong> Gestión directa
+                con proveedores contrastados.
               </li>
-
               <li>
-                <strong>4. Transporte profesional asegurado.</strong>{" "}
-                Organizamos el transporte mediante camiones portavehículos con
-                seguro a todo riesgo hasta España.
+                <strong>4. Transporte asegurado.</strong> Camiones
+                portavehículos con seguro a todo riesgo.
               </li>
-
               <li>
-                <strong>5. Homologación, ITV e impuestos.</strong>{" "}
-                Gestionamos ficha técnica reducida, ITV de matriculación e
-                impuestos como el Impuesto de Matriculación y el IEDMT.
+                <strong>5. Homologación e impuestos.</strong> ITV, ficha técnica
+                e impuestos gestionados.
               </li>
-
               <li>
-                <strong>6. Matriculación y entrega final.</strong>{" "}
-                Entregamos el vehículo matriculado, con placas españolas
-                definitivas y toda la documentación a tu nombre.
+                <strong>6. Matriculación y entrega.</strong> Vehículo listo para
+                circular.
               </li>
             </ol>
-
-            <div className="text-center pt-10">
-              <a
-                href="#form"
-                className="inline-block px-8 py-3 border border-gold-400 text-gold-400 text-sm font-bold uppercase tracking-widest hover:bg-gold-400 hover:text-black transition"
-              >
-                Quiero importar mi coche
-              </a>
-            </div>
           </div>
         </section>
 
@@ -154,22 +134,18 @@ export default function ImportarCocheAlemania() {
             </h2>
 
             <p className="text-gray-300 leading-relaxed">
-              El coste de importar un coche desde Alemania depende de varios
-              factores como el precio del vehículo, el tipo de factura (IVA o
-              REBU), las emisiones de CO₂, el transporte y los trámites
-              administrativos.
+              El coste depende del precio del vehículo, tipo de factura,
+              emisiones de CO₂, transporte y trámites administrativos.
             </p>
 
             <p className="text-gray-300 leading-relaxed">
-              De forma orientativa, el coste total del servicio de importación
-              suele situarse entre <strong>2.500 € y 4.500 €</strong>, dependiendo
-              de la complejidad del expediente. En Premium German Cars trabajamos
-              siempre con presupuestos cerrados y sin gastos ocultos.
+              De forma orientativa, el coste total suele situarse entre{" "}
+              <strong>2.500 € y 4.500 €</strong>, siempre con presupuesto cerrado.
             </p>
           </div>
         </section>
 
-        {/* FORMULARIO */}
+        {/* FORM */}
         <section id="form" className="py-32">
           <div className="container mx-auto px-6 max-w-3xl text-center space-y-8">
             <h2 className="text-3xl font-serif font-bold">
@@ -177,9 +153,7 @@ export default function ImportarCocheAlemania() {
             </h2>
 
             <p className="text-gray-300 leading-relaxed">
-              ¿Tienes en mente un modelo concreto o buscas asesoramiento?
-              Cuéntanos qué coche quieres importar y te ayudamos sin
-              compromiso.
+              Cuéntanos qué coche quieres importar y te ayudamos sin compromiso.
             </p>
 
             <ImportForm />
@@ -192,3 +166,4 @@ export default function ImportarCocheAlemania() {
     </>
   );
 }
+

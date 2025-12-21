@@ -14,7 +14,7 @@ const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
 const PoliticaPrivacidad = lazy(() =>
   import("./pages/PoliticaPrivacidad")
 );
-const FaqPage = lazy(() => import("./pages/Faq")); // ✅ NUEVO FAQ
+const FaqPage = lazy(() => import("./pages/Faq")); // ✅ FAQ ÚNICO
 
 function PageFallback() {
   return (
@@ -70,3 +70,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+

@@ -10,12 +10,63 @@ export default function ImportarCocheAlemania() {
     window.scrollTo(0, 0);
   }, []);
 
+  // ✅ FAQ Schema específico para esta landing
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "¿Cuánto cuesta importar un coche desde Alemania?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text:
+            "El coste total de importar un coche desde Alemania suele situarse entre 2.500 € y 4.500 €, dependiendo del vehículo, las emisiones de CO₂, el tipo de factura, el transporte y los trámites administrativos.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "¿Es seguro importar un coche desde Alemania?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text:
+            "Sí, siempre que el proceso se realice con verificación técnica, comprobación de historial y proveedores contrastados. En Premium German Cars revisamos cada vehículo antes de la compra.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "¿Cuánto tarda el proceso de importación?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text:
+            "El proceso completo de importación desde Alemania hasta la matriculación en España suele tardar entre 15 y 20 días.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "¿El coche se entrega matriculado en España?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text:
+            "Sí, entregamos el vehículo completamente matriculado, con placas españolas definitivas y toda la documentación a nombre del cliente.",
+        },
+      },
+    ],
+  };
+
   return (
     <>
+      {/* SEO */}
       <SEO
         title="Importación de coches desde Alemania | Premium German Cars"
         description="Especialistas en la importación de coches premium desde Alemania a España. Servicio llave en mano, verificación, transporte, homologación y matriculación."
         canonical="https://www.premiumgermancars.com/importar-coche-alemania"
+      />
+
+      {/* ✅ FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <Navbar />
@@ -62,8 +113,8 @@ export default function ImportarCocheAlemania() {
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 Alemania es el mercado automotriz más potente de Europa, con un
-                stock muy superior al español, mejor mantenimiento y mayor
-                equipamiento en marcas premium.
+                stock muy superior al español y mejor mantenimiento en marcas
+                premium.
               </p>
             </div>
 
@@ -73,7 +124,7 @@ export default function ImportarCocheAlemania() {
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 Actuamos como bróker de coches en Alemania, buscando la unidad
-                exacta según marca, modelo, presupuesto, motor y equipamiento.
+                exacta según marca, modelo, presupuesto y equipamiento.
               </p>
             </div>
 
@@ -83,7 +134,7 @@ export default function ImportarCocheAlemania() {
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 Verificamos historial, kilometraje y estado mecánico antes de
-                cerrar cualquier operación para evitar fraudes.
+                cerrar cualquier operación.
               </p>
             </div>
           </div>
@@ -99,16 +150,15 @@ export default function ImportarCocheAlemania() {
             <ol className="space-y-8 text-gray-300 leading-relaxed">
               <li>
                 <strong>1. Búsqueda y asesoramiento personalizado.</strong>{" "}
-                Analizamos tus necesidades y filtramos el mercado alemán para
-                encontrar la unidad ideal.
+                Filtramos el mercado alemán según tus necesidades.
               </li>
               <li>
                 <strong>2. Verificación técnica y revisión del historial.</strong>{" "}
-                Comprobamos libro de mantenimiento, accidentes y kilometraje.
+                Comprobamos mantenimiento, accidentes y kilometraje.
               </li>
               <li>
                 <strong>3. Negociación y compra segura.</strong> Gestión directa
-                con proveedores contrastados.
+                con proveedores fiables.
               </li>
               <li>
                 <strong>4. Transporte asegurado.</strong> Camiones
@@ -166,4 +216,3 @@ export default function ImportarCocheAlemania() {
     </>
   );
 }
-

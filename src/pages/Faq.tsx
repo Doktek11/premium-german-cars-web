@@ -67,10 +67,27 @@ const faqs = [
 export default function Faq() {
   const [open, setOpen] = useState<number | null>(null);
 
-  // ✅ FAQ Schema JSON-LD (automático y SEO safe)
+  // ✅ Organization Schema (SIN showroom, SEO safe)
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://www.premiumgermancars.com/#organization",
+    name: "Premium German Cars",
+    url: "https://www.premiumgermancars.com/",
+    description:
+      "Especialistas en la importación de coches premium desde Alemania con servicio llave en mano, verificación, transporte, homologación y matriculación en España.",
+    areaServed: {
+      "@type": "Country",
+      name: "España",
+    },
+    inLanguage: "es-ES",
+  };
+
+  // ✅ FAQ Schema
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": "https://www.premiumgermancars.com/faq#faq",
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -83,10 +100,12 @@ export default function Faq() {
 
   return (
     <>
-      {/* ✅ FAQ Schema para Google */}
+      {/* ✅ Structured Data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([organizationSchema, faqSchema]),
+        }}
       />
 
       <main className="bg-black text-white min-h-screen py-20 px-6">
@@ -131,4 +150,3 @@ export default function Faq() {
     </>
   );
 }
-

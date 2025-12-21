@@ -67,45 +67,68 @@ const faqs = [
 export default function Faq() {
   const [open, setOpen] = useState<number | null>(null);
 
+  // ✅ FAQ Schema JSON-LD (automático y SEO safe)
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
-    <main className="bg-black text-white min-h-screen py-20 px-6">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
-          Preguntas frecuentes sobre importar coches desde Alemania
-        </h1>
+    <>
+      {/* ✅ FAQ Schema para Google */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
-        <p className="text-gray-400 mb-12">
-          Resolvemos las dudas más habituales sobre la importación de vehículos
-          premium desde Alemania: costes, impuestos, seguridad, plazos y
-          garantías.
-        </p>
+      <main className="bg-black text-white min-h-screen py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
+            Preguntas frecuentes sobre importar coches desde Alemania
+          </h1>
 
-        <div className="space-y-4">
-          {faqs.map((faq, idx) => (
-            <div key={idx} className="border-b border-white/10">
-              <button
-                onClick={() => setOpen(open === idx ? null : idx)}
-                aria-expanded={open === idx}
-                className="w-full py-4 flex justify-between items-center text-left hover:text-gold-400 transition-colors"
-              >
-                <h2 className="text-lg font-medium">{faq.question}</h2>
-                {open === idx ? <Minus /> : <Plus />}
-              </button>
+          <p className="text-gray-400 mb-12">
+            Resolvemos las dudas más habituales sobre la importación de vehículos
+            premium desde Alemania: costes, impuestos, seguridad, plazos y
+            garantías.
+          </p>
 
-              <div
-                role="region"
-                className={`overflow-hidden transition-all duration-300 ${
-                  open === idx ? "max-h-96 pb-6" : "max-h-0"
-                }`}
-              >
-                <p className="text-gray-400 leading-relaxed text-sm">
-                  {faq.answer}
-                </p>
+          <div className="space-y-4">
+            {faqs.map((faq, idx) => (
+              <div key={idx} className="border-b border-white/10">
+                <button
+                  onClick={() => setOpen(open === idx ? null : idx)}
+                  aria-expanded={open === idx}
+                  className="w-full py-4 flex justify-between items-center text-left hover:text-gold-400 transition-colors"
+                >
+                  <h2 className="text-lg font-medium">{faq.question}</h2>
+                  {open === idx ? <Minus /> : <Plus />}
+                </button>
+
+                <div
+                  role="region"
+                  className={`overflow-hidden transition-all duration-300 ${
+                    open === idx ? "max-h-96 pb-6" : "max-h-0"
+                  }`}
+                >
+                  <p className="text-gray-400 leading-relaxed text-sm">
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
+

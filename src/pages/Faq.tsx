@@ -85,6 +85,7 @@ export default function Faq() {
             <div key={idx} className="border-b border-white/10">
               <button
                 onClick={() => setOpen(open === idx ? null : idx)}
+                aria-expanded={open === idx}
                 className="w-full py-4 flex justify-between items-center text-left hover:text-gold-400 transition-colors"
               >
                 <h2 className="text-lg font-medium">{faq.question}</h2>
@@ -92,6 +93,7 @@ export default function Faq() {
               </button>
 
               <div
+                role="region"
                 className={`overflow-hidden transition-all duration-300 ${
                   open === idx ? "max-h-96 pb-6" : "max-h-0"
                 }`}

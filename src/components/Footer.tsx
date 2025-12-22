@@ -167,6 +167,11 @@ export const Footer: React.FC = () => {
               </a>
             </li>
             <li>
+              <Link to="/blog" className="hover:text-gold-400">
+                Blog
+              </Link>
+            </li>
+            <li>
               <Link to="/faq" className="hover:text-gold-400">
                 Preguntas Frecuentes
               </Link>
@@ -201,6 +206,10 @@ export const Footer: React.FC = () => {
         <p className="text-gray-600 text-xs">
           © {new Date().getFullYear()} Premium German Cars. Todos los derechos
           reservados. |{" "}
+          <Link to="/blog" className="hover:text-gold-400">
+            Blog
+          </Link>{" "}
+          |{" "}
           <Link to="/aviso-legal" className="hover:text-gold-400">
             Aviso Legal
           </Link>{" "}
@@ -213,4 +222,3 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
-

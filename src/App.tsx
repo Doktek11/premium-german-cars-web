@@ -19,7 +19,7 @@ const FaqPage = lazy(() => import("./pages/Faq"));
 // 🔹 BLOG (✅ IMPORTS CORRECTOS)
 const BlogIndex = lazy(() => import("./pages/blog/index"));
 const BlogBMWReestreno2026 = lazy(() =>
-  import("./pages/blog/bmw-reestreno-alemania-2026")
+  import("./pages/blog/Bmw-Reestreno-Alemania-2026")
 );
 
 function PageFallback() {

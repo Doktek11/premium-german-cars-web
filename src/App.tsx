@@ -14,7 +14,13 @@ const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
 const PoliticaPrivacidad = lazy(() =>
   import("./pages/PoliticaPrivacidad")
 );
-const FaqPage = lazy(() => import("./pages/Faq")); // ✅ FAQ ÚNICO
+const FaqPage = lazy(() => import("./pages/Faq"));
+
+// 🔹 BLOG
+const BlogIndex = lazy(() => import("./pages/blog"));
+const BlogBMWReestreno2026 = lazy(() =>
+  import("./pages/blog/bmw-reestreno-alemania-2026")
+);
 
 function PageFallback() {
   return (
@@ -56,6 +62,13 @@ export default function App() {
             element={<ImportarCocheAlemania />}
           />
 
+          {/* BLOG */}
+          <Route path="/blog" element={<BlogIndex />} />
+          <Route
+            path="/blog/bmw-reestreno-alemania-2026"
+            element={<BlogBMWReestreno2026 />}
+          />
+
           {/* LEGALES */}
           <Route path="/aviso-legal" element={<AvisoLegal />} />
           <Route
@@ -70,4 +83,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-

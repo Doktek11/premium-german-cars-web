@@ -36,7 +36,6 @@ export const Navbar: React.FC = () => {
       `}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
-
         {/* LOGO */}
         <button
           onClick={() => {
@@ -53,8 +52,6 @@ export const Navbar: React.FC = () => {
               w-auto
               transition-all duration-500 ease-out
               ${isScrolled ? "h-12 scale-95 opacity-90" : "h-16 scale-100 opacity-100"}
-              
-              /* Luz premium */
               drop-shadow-[0_0_18px_rgba(212,175,55,0.45)]
               hover:drop-shadow-[0_0_26px_rgba(212,175,55,0.65)]
             `}
@@ -88,6 +85,14 @@ export const Navbar: React.FC = () => {
 
           <button onClick={() => goToSection("#contact")} className="nav-link">
             Contacto
+          </button>
+
+          {/* 🆕 BLOG */}
+          <button
+            onClick={() => navigate("/blog")}
+            className="nav-link"
+          >
+            Blog
           </button>
 
           <button
@@ -134,6 +139,17 @@ export const Navbar: React.FC = () => {
 
         <button onClick={() => goToSection("#contact")} className="mobile-link">
           Contacto
+        </button>
+
+        {/* 🆕 BLOG MOBILE */}
+        <button
+          onClick={() => {
+            navigate("/blog");
+            setIsOpen(false);
+          }}
+          className="mobile-link"
+        >
+          Blog
         </button>
       </div>
     </nav>

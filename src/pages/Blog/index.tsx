@@ -1,85 +1,63 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
-import { ScrollToTop } from "./components/ScrollToTop";
-import { Home } from "./Home";
+import { Navbar } from "../../components/Navbar";
+import { Footer } from "../../components/Footer";
+import { WhatsAppButton } from "../../components/WhatsAppButton";
+import { SEO } from "../../components/SEO";
 
-// 🔹 Lazy pages → REQUIEREN export default
-const CarPage = lazy(() => import("./pages/CarPage"));
-const ImportacionAlemania = lazy(() => import("./pages/ImportacionAlemania"));
-const ImportarCocheAlemania = lazy(() =>
-  import("./pages/ImportarCocheAlemania")
-);
-const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
-const PoliticaPrivacidad = lazy(() =>
-  import("./pages/PoliticaPrivacidad")
-);
-const FaqPage = lazy(() => import("./pages/Faq"));
+export default function BlogIndex() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-// 🔹 BLOG (✅ RUTAS CASE-SENSITIVE CORRECTAS)
-const BlogIndex = lazy(() => import("./pages/Blog/index"));
-const BlogBMWReestreno2026 = lazy(() =>
-  import("./pages/Blog/bmw-reestreno-alemania-2026")
-);
-
-function PageFallback() {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#050505",
-        color: "white",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      Cargando…
-    </div>
-  );
-}
+    <>
+      <SEO
+        title="Blog sobre importación de coches desde Alemania | Premium German Cars"
+        description="Guías, consejos y análisis expertos sobre la importación de coches premium desde Alemania."
+        canonical="https://www.premiumgermancars.com/blog"
+      />
 
-export default function App() {
-  return (
-    <BrowserRouter>
-      <ScrollToTop />
+      <Navbar />
 
-      <Suspense fallback={<PageFallback />}>
-        <Routes>
-          {/* HOME */}
-          <Route path="/" element={<Home />} />
+      <main className="bg-black text-white min-h-screen pt-40 pb-24 px-6">
+        <div className="max-w-5xl mx-auto space-y-16">
+          <header className="text-center space-y-6">
+            <h1 className="text-4xl md:text-5xl font-serif font-bold">
+              Blog sobre importación de coches desde Alemania
+            </h1>
 
-          {/* COCHES */}
-          <Route path="/car/:slug" element={<CarPage />} />
+            <p className="text-gray-400 max-w-3xl mx-auto leading-relaxed">
+              Guías prácticas y consejos profesionales para importar coches
+              premium desde Alemania con total seguridad.
+            </p>
+          </header>
 
-          {/* IMPORTACIÓN */}
-          <Route
-            path="/importacion-coches-alemania"
-            element={<ImportacionAlemania />}
-          />
-          <Route
-            path="/importar-coche-alemania"
-            element={<ImportarCocheAlemania />}
-          />
+          <section className="grid md:grid-cols-2 gap-12">
+            <article className="border border-white/10 p-8 hover:border-gold-400 transition">
+              <h2 className="text-2xl font-serif font-bold mb-4">
+                Guía para comprar un BMW de reestreno en 2026
+              </h2>
 
-          {/* BLOG */}
-          <Route path="/blog" element={<BlogIndex />} />
-          <Route
-            path="/blog/bmw-reestreno-alemania-2026"
-            element={<BlogBMWReestreno2026 />}
-          />
+              <p className="text-gray-400 mb-6 leading-relaxed">
+                Claves para elegir bien un BMW importado desde Alemania:
+                procedencia, tecnología, garantía y errores a evitar.
+              </p>
 
-          {/* LEGALES */}
-          <Route path="/aviso-legal" element={<AvisoLegal />} />
-          <Route
-            path="/politica-de-privacidad"
-            element={<PoliticaPrivacidad />}
-          />
+              <Link
+                to="/blog/bmw-reestreno-alemania-2026"
+                className="inline-block text-gold-400 font-semibold hover:underline"
+              >
+                Leer artículo →
+              </Link>
+            </article>
+          </section>
+        </div>
+      </main>
 
-          {/* FAQ */}
-          <Route path="/faq" element={<FaqPage />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+      <Footer />
+      <WhatsAppButton />
+    </>
   );
 }

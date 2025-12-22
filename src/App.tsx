@@ -16,7 +16,7 @@ const PoliticaPrivacidad = lazy(() =>
 );
 const FaqPage = lazy(() => import("./pages/Faq"));
 
-// 🔹 BLOG (✅ RUTAS CASE-SENSITIVE CORRECTAS)
+// 🔹 BLOG (⚠️ RESPETA MAYÚSCULAS EXACTAS)
 const BlogIndex = lazy(() => import("./pages/Blog/index"));
 const BlogBMWReestreno2026 = lazy(() =>
   import("./pages/Blog/Bmw-Reestreno-Alemania-2026")

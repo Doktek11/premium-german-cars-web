@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
 import { WhatsAppButton } from '../../components/WhatsAppButton';
-import { Calendar, User, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, Car } from 'lucide-react';
 
 const blogPosts = [
   {
@@ -11,7 +11,6 @@ const blogPosts = [
     excerpt: "Analizamos los rumores sobre la colaboración entre Mercedes-Benz y BMW para el uso de motores de 4 cilindros.",
     date: "17 Dic, 2025",
     author: "Premium German Cars",
-    image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&q=80",
     slug: "motores-bmw-en-mercedes-2027",
     category: "Actualidad"
   },
@@ -21,7 +20,6 @@ const blogPosts = [
     excerpt: "Todo lo que necesitas saber para importar tu próximo BMW desde Alemania con las mejores garantías.",
     date: "15 Dic, 2025",
     author: "Premium German Cars",
-    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80",
     slug: "bmw-reestreno-alemania-2026",
     category: "Guías"
   },
@@ -31,7 +29,6 @@ const blogPosts = [
     excerpt: "¿Vale la pena comprar local o importar? Comparamos el mercado de ocasión frente a la importación directa.",
     date: "10 Dic, 2025",
     author: "Premium German Cars",
-    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80",
     slug: "coche-segunda-mano-reus-tarragona",
     category: "Mercado"
   }
@@ -48,20 +45,42 @@ export default function BlogIndex() {
               Blog <span className="text-gold-400">Premium</span>
             </h1>
           </header>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogPosts.map((post) => (
-              <article key={post.id} className="bg-metallic-900 border border-white/10 rounded-lg overflow-hidden flex flex-col group">
-                <div className="relative h-64 overflow-hidden">
-                  <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              <article key={post.id} className="bg-metallic-900 border border-white/10 rounded-lg overflow-hidden flex flex-col group hover:border-gold-400/50 transition-colors duration-300">
+                
+                {/* CONTENEDOR DE IMAGEN SUSTITUIDO POR PLACEHOLDER ELEGANTE */}
+                <div className="relative h-64 overflow-hidden bg-gradient-to-br from-metallic-800 to-black flex items-center justify-center">
+                  <Car className="w-16 h-16 text-gold-400/20 group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute top-4 left-4">
+                    <span className="bg-gold-400 text-black text-[10px] font-bold px-2 py-1 uppercase tracking-tighter">
+                      {post.category}
+                    </span>
+                  </div>
                 </div>
+
                 <div className="p-8 flex flex-col flex-grow text-white">
                   <div className="flex items-center gap-4 text-gray-400 text-sm mb-4">
-                    <span className="flex items-center gap-1"><Calendar size={14} /> {post.date}</span>
+                    <span className="flex items-center gap-1">
+                      <Calendar size={14} className="text-gold-400" /> {post.date}
+                    </span>
                   </div>
-                  <h2 className="text-2xl font-serif font-bold mb-4">{post.title}</h2>
-                  <p className="text-gray-400 mb-8 flex-grow">{post.excerpt}</p>
-                  <Link to={`/blog/${post.slug}`} className="text-gold-400 font-bold uppercase text-xs tracking-widest flex items-center gap-2">
-                    Leer más <ArrowRight size={16} />
+                  
+                  <h2 className="text-2xl font-serif font-bold mb-4 group-hover:text-gold-400 transition-colors line-clamp-2">
+                    {post.title}
+                  </h2>
+                  
+                  <p className="text-gray-400 mb-8 flex-grow line-clamp-3">
+                    {post.excerpt}
+                  </p>
+                  
+                  <Link 
+                    to={`/blog/${post.slug}`} 
+                    className="text-gold-400 font-bold uppercase text-xs tracking-widest flex items-center gap-2 group/link"
+                  >
+                    Leer más 
+                    <ArrowRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </article>

@@ -7,6 +7,9 @@
     background-color: #050505;
     color: #e5e5e5;
     font-weight: 300;
+    /* Mejora el renderizado de fuentes en todos los navegadores */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   html {
@@ -16,6 +19,22 @@
   ::selection {
     background: #D4AF37;
     color: #000;
+  }
+
+  /* Barra de scroll personalizada estilo Premium */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #050505;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1a1a1a;
+    border-radius: 10px;
+    border: 2px solid #050505;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #D4AF37;
   }
 }
 

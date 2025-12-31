@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Car, Instagram, Facebook, Phone, Mail, MapPin, Plus, Minus } from 'lucide-react';
 import { FAQItem } from '../types';
 
@@ -22,7 +23,7 @@ export const Footer: React.FC = () => {
 
     return (
         <footer className="bg-metallic-950 text-white pt-20 pb-10 border-t border-white/10">
-            {/* FAQ Section included in footer area */}
+            {/* FAQ Section */}
             <div className="container mx-auto px-6 mb-20">
                 <h3 className="text-2xl font-serif font-bold mb-8 text-center">Preguntas Frecuentes</h3>
                 <div className="max-w-3xl mx-auto space-y-4">
@@ -45,12 +46,12 @@ export const Footer: React.FC = () => {
 
             <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12" id="contact">
                 <div>
-                     <a href="#" className="flex items-center gap-2 mb-6">
+                     <Link to="/" className="flex items-center gap-2 mb-6">
                         <Car className="w-8 h-8 text-gold-400" />
                         <span className="text-lg font-serif font-bold tracking-wider">
                             PREMIUM<span className="text-gold-400"> GERMAN CARS</span>
                         </span>
-                    </a>
+                    </Link>
                     <p className="text-gray-400 text-sm leading-relaxed mb-6">
                         Pasión por el motor. Excelencia en el servicio. Tu puente directo a los mejores coches de Alemania.
                     </p>
@@ -85,10 +86,11 @@ export const Footer: React.FC = () => {
                 <div>
                     <h4 className="text-lg font-bold mb-6 uppercase tracking-wider">Enlaces</h4>
                     <ul className="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#home" className="hover:text-gold-400 transition-colors">Inicio</a></li>
-                        <li><a href="#about" className="hover:text-gold-400 transition-colors">Quiénes Somos</a></li>
+                        <li><Link to="/" className="hover:text-gold-400 transition-colors">Inicio</Link></li>
+                        <li><Link to="/importacion-coches-alemania" className="hover:text-gold-400 transition-colors">Importación</Link></li>
+                        {/* ENLACE AL BLOG AÑADIDO */}
+                        <li><Link to="/blog" className="hover:text-gold-400 transition-colors text-gold-400 font-medium">Blog Premium</Link></li>
                         <li><a href="#stock" className="hover:text-gold-400 transition-colors">Stock Disponible</a></li>
-                        <li><a href="#import" className="hover:text-gold-400 transition-colors">Importación a la Carta</a></li>
                         <li><a href="#guarantee" className="hover:text-gold-400 transition-colors">Garantías</a></li>
                     </ul>
                 </div>

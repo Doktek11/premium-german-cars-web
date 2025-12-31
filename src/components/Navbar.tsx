@@ -77,4 +77,47 @@ export const Navbar: React.FC = () => {
 
           <button
             onClick={() => goToSection("#import")}
-            className={`px-5 py-2 border text-xs font-
+            className={`px-5 py-2 border text-xs font-bold uppercase tracking-widest transition-all ${
+              isScrolled
+                ? "border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-black"
+                : "border-white text-white hover:bg-white hover:text-black"
+            }`}
+          >
+            Pedir Coche
+          </button>
+        </div>
+
+        {/* MOBILE TOGGLE */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="lg:hidden text-white z-50"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* MOBILE MENU */}
+      <div
+        className={`fixed inset-0 bg-metallic-900 z-40 flex flex-col justify-center items-center transition-opacity duration-300 ${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <button onClick={() => { navigate("/"); setIsOpen(false); }} className="mobile-link">
+          Inicio
+        </button>
+        <button onClick={() => { navigate("/importacion-coches-alemania"); setIsOpen(false); }} className="mobile-link">
+          Importación Alemania
+        </button>
+        <button onClick={() => { navigate("/blog"); setIsOpen(false); }} className="mobile-link text-gold-400">
+          Blog
+        </button>
+        <button onClick={() => goToSection("#stock")} className="mobile-link">
+          Stock
+        </button>
+        <button onClick={() => goToSection("#contact")} className="mobile-link">
+          Contacto
+        </button>
+      </div>
+    </nav>
+  );
+};

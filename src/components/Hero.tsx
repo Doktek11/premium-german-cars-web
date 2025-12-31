@@ -7,7 +7,7 @@ export const Hero: React.FC = () => {
       id="home"
       className="relative h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background Image - Ahora usa tu imagen amggtr-mobile.webp */}
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
           src="/amggtr-mobile.webp"
@@ -16,12 +16,12 @@ export const Hero: React.FC = () => {
           fetchPriority="high"
         />
 
-        {/* Overlays - Capas de color para el efecto gris y legibilidad */}
-        {/* Capa 1: Degradado gris oscuro desde abajo */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-[#2a2a2a]/80 to-[#333333]/40" />
+        {/* Overlays - Ajustados para ser menos transparentes */}
+        {/* Capa 1: Degradado base más denso */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-[#1a1a1a]/90 to-[#262626]/60" />
         
-        {/* Capa 2: Tinte gris general para suavizar la imagen del AMG GTR */}
-        <div className="absolute inset-0 bg-gray-900/40 backdrop-grayscale-[0.2]" />
+        {/* Capa 2: Tinte gris oscuro reforzado (de /40 a /75) */}
+        <div className="absolute inset-0 bg-gray-950/75 backdrop-grayscale-[0.3]" />
       </div>
 
       {/* Content */}
@@ -49,7 +49,7 @@ export const Hero: React.FC = () => {
           </h2>
 
           {/* Subtítulo */}
-          <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl font-light leading-relaxed tracking-wide mx-auto md:mx-0">
+          <p className="text-lg md:text-xl text-gray-200 mb-12 max-w-2xl font-light leading-relaxed tracking-wide mx-auto md:mx-0">
             Acceso directo al mercado alemán. Vehículos certificados, gestión
             integral y entrega llave en mano en España.
           </p>

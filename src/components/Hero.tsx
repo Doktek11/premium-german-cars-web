@@ -7,20 +7,21 @@ export const Hero: React.FC = () => {
       id="home"
       className="relative h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background Image */}
+      {/* Background Image - Ahora usa tu imagen amggtr-mobile.webp */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1603584173870-7b299f589389?q=80&w=2071&auto=format&fit=crop"
-          alt="Importación de coches premium desde Alemania"
+          src="/amggtr-mobile.webp"
+          alt="Importación de coches premium desde Alemania - Premium German Cars"
           className="w-full h-full object-cover scale-105 animate-pulse-slow"
           fetchPriority="high"
-          width="1920"
-          height="1080"
         />
 
-        {/* Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-metallic-950 via-metallic-950/70 to-black/40" />
-        <div className="absolute inset-0 bg-black/30" />
+        {/* Overlays - Capas de color para el efecto gris y legibilidad */}
+        {/* Capa 1: Degradado gris oscuro desde abajo */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-[#2a2a2a]/80 to-[#333333]/40" />
+        
+        {/* Capa 2: Tinte gris general para suavizar la imagen del AMG GTR */}
+        <div className="absolute inset-0 bg-gray-900/40 backdrop-grayscale-[0.2]" />
       </div>
 
       {/* Content */}
@@ -35,7 +36,7 @@ export const Hero: React.FC = () => {
             </span>
           </div>
 
-          {/* H1 SEO */}
+          {/* H1 SEO - Premium German Cars */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6 leading-tight tracking-tight">
             Importación de Coches Premium desde Alemania
           </h1>
@@ -55,7 +56,6 @@ export const Hero: React.FC = () => {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-start">
-            {/* CORREGIDO: Ahora apunta a la sección del formulario en el Home */}
             <a
               href="#import"
               className="px-8 py-5 bg-gold-400 hover:bg-gold-500 text-black font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] flex items-center justify-center gap-3"

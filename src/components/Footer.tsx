@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Car, Instagram, Facebook, Phone, Mail, MapPin, Plus, Minus } from 'lucide-react';
+import { Instagram, Facebook, Phone, Mail, MapPin, Plus, Minus } from 'lucide-react';
 import { FAQItem } from '../types';
 
 const faqs: FAQItem[] = [
@@ -46,27 +46,30 @@ export const Footer: React.FC = () => {
 
             <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12" id="contact">
                 <div>
-                     <Link to="/" className="flex items-center gap-2 mb-6">
-                        <Car className="w-8 h-8 text-gold-400" />
-                        <span className="text-lg font-serif font-bold tracking-wider">
-                            PREMIUM<span className="text-gold-400"> GERMAN CARS</span>
-                        </span>
+                    {/* SUSTITUCIÓN DEL LOGO EN EL FOOTER */}
+                    <Link to="/" className="inline-block mb-6 transition-transform hover:scale-105">
+                        <img 
+                            src="/logoPGC.svg" 
+                            alt="Logo Premium German Cars" 
+                            className="h-10 w-auto brightness-0 invert" 
+                        />
                     </Link>
+                    
                     <p className="text-gray-400 text-sm leading-relaxed mb-6">
                         Pasión por el motor. Excelencia en el servicio. Tu puente directo a los mejores coches de Alemania.
                     </p>
                     <div className="flex space-x-4">
-                        <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">
                             <Instagram size={20} />
                         </a>
-                        <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">
                             <Facebook size={20} />
                         </a>
                     </div>
                 </div>
 
                 <div>
-                    <h4 className="text-lg font-bold mb-6 uppercase tracking-wider">Contacto</h4>
+                    <h4 className="text-lg font-bold mb-6 uppercase tracking-wider text-gold-400">Contacto</h4>
                     <ul className="space-y-4 text-gray-400 text-sm">
                         <li className="flex items-start gap-3">
                             <MapPin className="text-gold-400 w-5 h-5 flex-shrink-0" />
@@ -84,19 +87,18 @@ export const Footer: React.FC = () => {
                 </div>
 
                 <div>
-                    <h4 className="text-lg font-bold mb-6 uppercase tracking-wider">Enlaces</h4>
+                    <h4 className="text-lg font-bold mb-6 uppercase tracking-wider text-gold-400">Enlaces</h4>
                     <ul className="space-y-2 text-gray-400 text-sm">
                         <li><Link to="/" className="hover:text-gold-400 transition-colors">Inicio</Link></li>
                         <li><Link to="/importacion-coches-alemania" className="hover:text-gold-400 transition-colors">Importación</Link></li>
-                        {/* ENLACE AL BLOG AÑADIDO */}
-                        <li><Link to="/blog" className="hover:text-gold-400 transition-colors text-gold-400 font-medium">Blog Premium</Link></li>
-                        <li><a href="#stock" className="hover:text-gold-400 transition-colors">Stock Disponible</a></li>
-                        <li><a href="#guarantee" className="hover:text-gold-400 transition-colors">Garantías</a></li>
+                        <li><Link to="/blog" className="hover:text-gold-400 transition-colors font-medium">Blog Premium</Link></li>
+                        <li><button onClick={() => document.getElementById('stock')?.scrollIntoView({behavior: 'smooth'})} className="hover:text-gold-400 transition-colors">Stock Disponible</button></li>
+                        <li><button onClick={() => document.getElementById('guarantee')?.scrollIntoView({behavior: 'smooth'})} className="hover:text-gold-400 transition-colors">Garantías</button></li>
                     </ul>
                 </div>
                 
                 <div>
-                     <h4 className="text-lg font-bold mb-6 uppercase tracking-wider">Horario</h4>
+                     <h4 className="text-lg font-bold mb-6 uppercase tracking-wider text-gold-400">Horario</h4>
                      <ul className="space-y-2 text-gray-400 text-sm">
                         <li className="flex justify-between">
                             <span>Lunes - Viernes</span>

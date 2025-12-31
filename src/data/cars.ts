@@ -13,7 +13,7 @@ export const cars: Car[] = [
     make: "BMW",
     model: "Serie 1 116i",
     year: 2023,
-    price: 27400,
+    price: 26500,
     km: 31500,
     image: "/bmwconcesionario.webp",
     engine: "1.5 Turbo 109cv",
@@ -37,7 +37,7 @@ export const cars: Car[] = [
     km: 44500,
     image: "/rs6dos.webp",
     engine: "4.0 V8 TFSI",
-    status: "Reservado",
+    status: "Vendido",
     slug: slugify("Audi", "RS6 Avant"),
     description: "La combinación definitiva de rendimiento y practicidad. Este Audi RS6 Avant cuenta con todos los extras imaginables, incluyendo frenos cerámicos y paquete dinámico RS.",
     gallery: ["/rs6.webp", "/rs6dos.webp", "/rs6tres.webp"]

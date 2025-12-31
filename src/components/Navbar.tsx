@@ -48,6 +48,10 @@ export const Navbar: React.FC = () => {
 
         {/* DESKTOP */}
         <div className="hidden lg:flex items-center space-x-10">
+          <button onClick={() => goToSection("#home")} className="nav-link">
+            Inicio
+          </button>
+
           <button
             onClick={() => navigate("/importacion-coches-alemania")}
             className="nav-link"
@@ -55,20 +59,16 @@ export const Navbar: React.FC = () => {
             Importación Alemania
           </button>
 
-          <button onClick={() => goToSection("#home")} className="nav-link">
-            Inicio
-          </button>
-
           <button onClick={() => goToSection("#stock")} className="nav-link">
             Stock
           </button>
 
-          <button onClick={() => goToSection("#process")} className="nav-link">
-            Proceso
-          </button>
-
-          <button onClick={() => goToSection("#guarantee")} className="nav-link">
-            Garantías
+          {/* BOTÓN BLOG AÑADIDO */}
+          <button
+            onClick={() => navigate("/blog")}
+            className={`nav-link ${location.pathname.startsWith('/blog') ? 'text-gold-400' : ''}`}
+          >
+            Blog
           </button>
 
           <button onClick={() => goToSection("#contact")} className="nav-link">
@@ -87,7 +87,7 @@ export const Navbar: React.FC = () => {
           </button>
         </div>
 
-        {/* MOBILE */}
+        {/* MOBILE TOGGLE */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="lg:hidden text-white z-50"
@@ -102,14 +102,17 @@ export const Navbar: React.FC = () => {
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        <button onClick={() => navigate("/importacion-coches-alemania")} className="mobile-link">
+        <button onClick={() => { navigate("/"); setIsOpen(false); }} className="mobile-link">
+          Inicio
+        </button>
+        <button onClick={() => { navigate("/importacion-coches-alemania"); setIsOpen(false); }} className="mobile-link">
           Importación Alemania
+        </button>
+        <button onClick={() => { navigate("/blog"); setIsOpen(false); }} className="mobile-link text-gold-400">
+          Blog
         </button>
         <button onClick={() => goToSection("#stock")} className="mobile-link">
           Stock
-        </button>
-        <button onClick={() => goToSection("#process")} className="mobile-link">
-          Proceso
         </button>
         <button onClick={() => goToSection("#contact")} className="mobile-link">
           Contacto

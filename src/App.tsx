@@ -1,16 +1,27 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 // Componentes Principales
 import { Home } from "./Home";
 import { CarPage } from "./pages/CarPage";
 import { ImportacionAlemania } from "./pages/ImportacionAlemania";
-import ScrollToTop from "./ScrollToTop"; // Importación desde el archivo externo para mayor limpieza
 
 // IMPORTACIONES DEL BLOG
 import BlogIndex from "./pages/Blog/index";
 import MotoresBmwMercedes2027 from "./pages/Blog/motores-bmw-en-mercedes-2027";
 import BmwReestreno2026 from "./pages/Blog/bmw-reestreno-alemania-2026";
 import CochesReusTarragona from "./pages/Blog/coche-segunda-mano-reus-tarragona";
+
+// ✅ Definimos ScrollToTop aquí dentro para evitar errores de "Could not resolve"
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 export default function App() {
   return (
@@ -47,8 +58,6 @@ export default function App() {
           path="/blog/coche-segunda-mano-reus-tarragona" 
           element={<CochesReusTarragona />} 
         />
-
-        {/* Puedes añadir una ruta de captura 404 aquí en el futuro si lo deseas */}
       </Routes>
     </BrowserRouter>
   );

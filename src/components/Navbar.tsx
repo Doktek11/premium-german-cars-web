@@ -35,7 +35,7 @@ export const Navbar: React.FC = () => {
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
         
-        {/* LOGO CON FILTRO PARA QUE SEA VISIBLE (BLANCO) */}
+        {/* LOGO CORREGIDO CON DIMENSIONES EXPLÍCITAS PARA CLS */}
         <button
           onClick={() => navigate("/")}
           className="flex items-center z-50 transition-transform hover:scale-105"
@@ -43,6 +43,9 @@ export const Navbar: React.FC = () => {
           <img 
             src="/logoPGC.svg" 
             alt="Logo Premium German Cars" 
+            /* Se añaden dimensiones base para evitar el salto de diseño */
+            width="180"
+            height="48"
             className="h-8 md:h-12 w-auto brightness-0 invert" 
           />
         </button>

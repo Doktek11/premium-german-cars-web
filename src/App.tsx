@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import { Home } from "./Home";
 import { CarPage } from "./pages/CarPage";
@@ -10,9 +11,23 @@ import MotoresBmwMercedes2027 from "./pages/Blog/motores-bmw-en-mercedes-2027";
 import BmwReestreno2026 from "./pages/Blog/bmw-reestreno-alemania-2026";
 import CochesReusTarragona from "./pages/Blog/coche-segunda-mano-reus-tarragona";
 
+// ✅ Componente interno para forzar el scroll al inicio en cada cambio de ruta
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
+      {/* Ejecuta el scroll automático */}
+      <ScrollToTop />
+      
       <Routes>
         {/* HOME */}
         <Route path="/" element={<Home />} />

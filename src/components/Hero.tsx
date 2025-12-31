@@ -55,8 +55,9 @@ export const Hero: React.FC = () => {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-start">
+            {/* CORREGIDO: Ahora apunta a la sección del formulario en el Home */}
             <a
-              href="/importacion-coches-alemania"
+              href="#import"
               className="px-8 py-5 bg-gold-400 hover:bg-gold-500 text-black font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] flex items-center justify-center gap-3"
             >
               Comenzar Pedido

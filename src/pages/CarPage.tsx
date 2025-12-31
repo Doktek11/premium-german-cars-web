@@ -28,7 +28,6 @@ export const CarPage: React.FC = () => {
 
   return (
     <>
-      {/* SEO */}
       <SEO
         title={title}
         description={description}
@@ -37,94 +36,82 @@ export const CarPage: React.FC = () => {
 
       <Navbar />
 
-      <main className="bg-metallic-950 text-white pt-32 pb-32">
+      <main className="bg-black text-white pt-32 pb-32">
         <div className="container mx-auto px-6 max-w-6xl">
 
-          {/* TÍTULO */}
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
-            {car.make} {car.model}
-          </h1>
+          {/* CABECERA */}
+          <div className="mb-12">
+             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
+              {car.make} <span className="text-gold-400">{car.model}</span>
+            </h1>
+            <p className="text-gold-400 text-3xl font-serif">
+              {car.price.toLocaleString("de-DE")} €
+            </p>
+          </div>
 
-          {/* CTA PRINCIPAL BAJO H1 */}
-          <div className="mb-8">
+          {/* CTA RÁPIDO */}
+          <div className="mb-12">
             <button
               onClick={goToImportForm}
-              className="inline-block px-8 py-4 bg-gold-400 text-black font-bold uppercase tracking-widest text-xs hover:bg-gold-500 transition-all duration-300"
+              className="inline-block px-8 py-4 bg-gold-400 text-black font-bold uppercase tracking-widest text-xs hover:bg-white transition-all duration-300 shadow-lg shadow-gold-400/10"
             >
               Comenzar pedido
             </button>
           </div>
 
-          {/* PRECIO */}
-          <p className="text-gold-400 text-2xl font-serif mb-10">
-            {car.price.toLocaleString("de-DE")} €
-          </p>
-
-          {/* GALERÍA */}
+          {/* GALERÍA OPTIMIZADA WEBP */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
             {car.gallery?.map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt={`${car.make} ${car.model} imagen ${index + 1}`}
-                className="w-full h-[360px] object-cover rounded-lg"
-                loading="lazy"
-              />
+              <div key={index} className="overflow-hidden rounded-lg bg-metallic-900 border border-white/5">
+                <img
+                  src={img}
+                  alt={`${car.make} ${car.model} imagen ${index + 1}`}
+                  className="w-full h-[360px] object-cover hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                />
+              </div>
             ))}
           </div>
 
-          {/* DESCRIPCIÓN */}
-          <div className="max-w-3xl mb-16">
-            <h2 className="text-2xl font-serif font-bold mb-6">
-              Descripción del vehículo
-            </h2>
-
-            <p className="text-gray-300 leading-relaxed whitespace-pre-line">
-              {car.description}
-            </p>
-          </div>
-
-          {/* DATOS CLAVE */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-            <div>
-              <span className="block text-xs uppercase tracking-widest text-gray-400 mb-1">
-                Año
-              </span>
-              <span className="font-semibold">{car.year}</span>
+          {/* INFO TÉCNICA Y DESCRIPCIÓN */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-2">
+                <h2 className="text-2xl font-serif font-bold mb-6 border-b border-gold-400/20 pb-4">
+                  Descripción del vehículo
+                </h2>
+                <p className="text-gray-300 leading-relaxed whitespace-pre-line text-lg">
+                  {car.description}
+                </p>
             </div>
 
-            <div>
-              <span className="block text-xs uppercase tracking-widest text-gray-400 mb-1">
-                Kilómetros
-              </span>
-              <span className="font-semibold">
-                {car.km.toLocaleString("de-DE")} km
-              </span>
+            <div className="bg-metallic-900 p-8 rounded-lg border border-white/10 h-fit">
+              <h3 className="text-gold-400 font-bold uppercase tracking-tighter mb-6">Especificaciones</h3>
+              <div className="space-y-6">
+                <div className="flex justify-between border-b border-white/5 pb-2">
+                  <span className="text-gray-400 text-sm uppercase">Año</span>
+                  <span className="font-semibold">{car.year}</span>
+                </div>
+                <div className="flex justify-between border-b border-white/5 pb-2">
+                  <span className="text-gray-400 text-sm uppercase">Kilómetros</span>
+                  <span className="font-semibold">{car.km.toLocaleString("de-DE")} km</span>
+                </div>
+                <div className="flex justify-between border-b border-white/5 pb-2">
+                  <span className="text-gray-400 text-sm uppercase">Motor</span>
+                  <span className="font-semibold">{car.engine}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400 text-sm uppercase">Estado</span>
+                  <span className="text-gold-400 font-bold">{car.status}</span>
+                </div>
+              </div>
+              
+              <button
+                onClick={goToImportForm}
+                className="w-full mt-10 py-4 border border-gold-400 text-gold-400 font-bold uppercase tracking-widest text-xs hover:bg-gold-400 hover:text-black transition-all"
+              >
+                Solicitar Dossier
+              </button>
             </div>
-
-            <div>
-              <span className="block text-xs uppercase tracking-widest text-gray-400 mb-1">
-                Motor
-              </span>
-              <span className="font-semibold">{car.engine}</span>
-            </div>
-
-            <div>
-              <span className="block text-xs uppercase tracking-widest text-gray-400 mb-1">
-                Estado
-              </span>
-              <span className="font-semibold">{car.status}</span>
-            </div>
-          </div>
-
-          {/* CTA FINAL */}
-          <div className="text-center">
-            <button
-              onClick={goToImportForm}
-              className="inline-block px-12 py-5 bg-gold-400 text-black font-bold uppercase tracking-widest text-sm hover:bg-gold-500 transition-all duration-300"
-            >
-              Pedir información ahora
-            </button>
           </div>
         </div>
       </main>

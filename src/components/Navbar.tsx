@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, Car } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const Navbar: React.FC = () => {
@@ -29,21 +29,22 @@ export const Navbar: React.FC = () => {
     <nav
       className={`fixed w-full z-50 transition-all duration-500 border-b ${
         isScrolled
-          ? "bg-metallic-950/80 backdrop-blur-md py-4 border-white/10"
+          ? "bg-metallic-900/90 backdrop-blur-md py-4 border-white/10"
           : "bg-transparent py-8 border-transparent"
       }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
 
-        {/* LOGO */}
+        {/* LOGO SUSTITUIDO POR TU SVG */}
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-2 z-50"
+          className="flex items-center z-50 transition-transform hover:scale-105"
         >
-          <Car className="w-6 h-6 text-gold-400" />
-          <span className="text-xl font-serif font-bold tracking-widest text-white">
-            PREMIUM<span className="text-gold-400">GC</span>
-          </span>
+          <img 
+            src="/logoPGC.svg" 
+            alt="Logo Premium German Cars" 
+            className="h-8 md:h-10 w-auto" 
+          />
         </button>
 
         {/* DESKTOP */}
@@ -63,7 +64,6 @@ export const Navbar: React.FC = () => {
             Stock
           </button>
 
-          {/* BOTÓN BLOG AÑADIDO */}
           <button
             onClick={() => navigate("/blog")}
             className={`nav-link ${location.pathname.startsWith('/blog') ? 'text-gold-400' : ''}`}
@@ -96,9 +96,9 @@ export const Navbar: React.FC = () => {
         </button>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE MENU - TAMBIÉN CON EL NEGRO SUAVIZADO */}
       <div
-        className={`fixed inset-0 bg-metallic-950 z-40 flex flex-col justify-center items-center transition-opacity ${
+        className={`fixed inset-0 bg-metallic-900 z-40 flex flex-col justify-center items-center transition-opacity ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >

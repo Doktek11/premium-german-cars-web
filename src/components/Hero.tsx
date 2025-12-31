@@ -5,23 +5,23 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative h-screen flex items-center justify-center overflow-hidden"
+      className="relative h-screen flex items-center justify-center overflow-hidden bg-[#1a1a1a]"
     >
-      {/* Background Image - Ahora usa tu imagen amggtr-mobile.webp */}
+      {/* Background Image - Optimizada para LCP */}
       <div className="absolute inset-0 z-0">
         <img
           src="/amggtr-mobile.webp"
           alt="Importación de coches premium desde Alemania - Premium German Cars"
           className="w-full h-full object-cover scale-105 animate-pulse-slow"
+          /* CORRECCIONES PARA LCP Y RENDIMIENTO */
           fetchPriority="high"
+          loading="eager"
+          decoding="sync"
         />
 
         {/* Overlays - Capas de color para el efecto gris y legibilidad */}
-        {/* Capa 1: Degradado gris oscuro desde abajo */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-[#2a2a2a]/80 to-[#333333]/40" />
-        
-        {/* Capa 2: Tinte gris general para suavizar la imagen del AMG GTR */}
-        <div className="absolute inset-0 bg-gray-900/40 backdrop-grayscale-[0.2]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-[#1a1a1a]/90 to-[#262626]/60" />
+        <div className="absolute inset-0 bg-gray-950/75 backdrop-grayscale-[0.3]" />
       </div>
 
       {/* Content */}
@@ -49,7 +49,7 @@ export const Hero: React.FC = () => {
           </h2>
 
           {/* Subtítulo */}
-          <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl font-light leading-relaxed tracking-wide mx-auto md:mx-0">
+          <p className="text-lg md:text-xl text-gray-200 mb-12 max-w-2xl font-light leading-relaxed tracking-wide mx-auto md:mx-0">
             Acceso directo al mercado alemán. Vehículos certificados, gestión
             integral y entrega llave en mano en España.
           </p>

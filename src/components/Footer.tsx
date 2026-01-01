@@ -46,7 +46,6 @@ export const Footer: React.FC = () => {
 
             <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12" id="contact">
                 <div>
-                    {/* SUSTITUCIÓN DEL LOGO EN EL FOOTER */}
                     <Link to="/" className="inline-block mb-6 transition-transform hover:scale-105">
                         <img 
                             src="/logoPGC.svg" 
@@ -116,10 +115,15 @@ export const Footer: React.FC = () => {
                 </div>
             </div>
 
+            {/* Créditos y Enlaces Legales Discretos */}
             <div className="border-t border-white/5 py-8 text-center">
-                <p className="text-gray-600 text-xs">
-                    © {new Date().getFullYear()} Premium German Cars. Todos los derechos reservados. | Aviso Legal | Política de Privacidad
-                </p>
+                <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 text-[10px] text-gray-600 uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity duration-500">
+                    <p>© {new Date().getFullYear()} Premium German Cars</p>
+                    <span className="hidden md:inline">|</span>
+                    <Link to="/aviso-legal" className="hover:text-gold-400 transition-colors">Aviso Legal</Link>
+                    <span className="hidden md:inline">|</span>
+                    <Link to="/politica-privacidad" className="hover:text-gold-400 transition-colors">Política de Privacidad</Link>
+                </div>
             </div>
         </footer>
     );

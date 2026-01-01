@@ -12,6 +12,10 @@ import MotoresBmwMercedes2027 from "./pages/Blog/motores-bmw-en-mercedes-2027";
 import BmwReestreno2026 from "./pages/Blog/bmw-reestreno-alemania-2026";
 import CochesReusTarragona from "./pages/Blog/coche-segunda-mano-reus-tarragona";
 
+// IMPORTACIONES LEGALES
+import AvisoLegal from "./pages/Legal/AvisoLegal";
+import PoliticaPrivacidad from "./pages/Legal/PoliticaPrivacidad";
+
 // ✅ Definimos ScrollToTop aquí dentro para evitar errores de "Could not resolve"
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -58,6 +62,11 @@ export default function App() {
           path="/blog/coche-segunda-mano-reus-tarragona" 
           element={<CochesReusTarragona />} 
         />
+
+        {/* PÁGINAS LEGALES */}
+        <Route path="/aviso-legal" element={<AvisoLegal />} />
+        <Route path="/politica-privacidad" element={<PoliticaPrivacidad />} />
+
       </Routes>
     </BrowserRouter>
   );

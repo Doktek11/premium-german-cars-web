@@ -2,14 +2,14 @@ import React from "react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
-import { ShieldCheck, Zap, Search, ArrowRight } from "lucide-react";
+import { ShieldCheck, Zap, Search, ArrowRight, Cpu, Star } from "lucide-react";
 
 const BmwReestreno2026 = () => {
   return (
     <>
       <SEO 
         title="BMW de Reestreno en Alemania 2026: Guía de Compra | Premium German Cars"
-        description="Descubre cómo conseguir un BMW de reestreno directamente de concesionarios oficiales en Alemania con garantía europea."
+        description="Claves para importar un BMW de reestreno desde Alemania en 2026: garantía oficial, tecnología Live Cockpit y cómo evitar coches de flota."
       />
       <Navbar />
       
@@ -19,69 +19,84 @@ const BmwReestreno2026 = () => {
           <div className="mb-12">
             <span className="text-gold-400 font-bold tracking-widest text-xs uppercase italic">Guía de Importación 2026</span>
             <h1 className="text-4xl md:text-5xl font-serif font-bold mt-4 mb-6 leading-tight">
-              BMW de Reestreno en Alemania: ¿Por qué 2026 es el mejor año para importar?
+              Guía para comprar un BMW de reestreno en 2026: claves al importar desde Alemania
             </h1>
             <div className="flex items-center gap-4 text-gray-500 text-sm italic">
               <span>Premium German Cars</span>
               <span className="w-1 h-1 bg-gold-400 rounded-full"></span>
-              <span>15 Dic, 2025</span>
+              <span>1 Ene, 2026</span>
             </div>
           </div>
 
-          {/* Imagen de Marca de Agua */}
+          {/* Imagen de Marca de Agua / Hero Articulo */}
           <div className="h-80 w-full bg-gradient-to-br from-metallic-800 to-black border border-white/5 flex items-center justify-center mb-16 relative overflow-hidden">
              <img src="/logoPGC.svg" className="w-48 opacity-10 brightness-0 invert" alt="BMW Premium" />
              <div className="absolute bottom-4 right-6 text-gold-400/30 font-serif italic text-6xl select-none">M Power</div>
           </div>
 
           {/* Contenido Principal */}
-          <div className="prose prose-invert prose-gold max-w-none">
-            <p className="text-xl text-gray-300 leading-relaxed mb-8 font-light">
-              El concepto de <strong>"Jahreswagen"</strong> (coche de un año) en Alemania es la joya de la corona para los entusiastas de BMW. En 2026, el mercado alemán ofrece una oportunidad única para adquirir modelos de última generación con ahorros que pueden superar el 30% respecto al precio de configurador en España.
+          <div className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed text-justify">
+            <p className="text-xl text-gray-200 mb-8 font-light italic">
+              "Comprar un coche no es solo una transacción; es una inversión en tu día a día. Y cuando hablamos de BMW, esa decisión cobra todavía más importancia."
             </p>
 
-            <h2 className="text-2xl font-serif font-bold text-gold-400 mt-12 mb-6 uppercase tracking-wider">Los pilares del Reestreno BMW</h2>
-            
-            <div className="space-y-8 mb-12">
-              <div className="flex gap-6 p-6 bg-metallic-900 border-l-2 border-gold-400">
-                <ShieldCheck className="text-gold-400 shrink-0" size={32} />
+            <p className="mb-8">
+              Si estás buscando un <strong>BMW de reestreno importado de Alemania</strong> —vehículos con menos de 3 años y bajo kilometraje—, el mercado alemán ofrece una oportunidad única con ahorros que pueden superar el 30%. Sin embargo, hay tres factores clave que marcarán la diferencia entre una gran compra o un problema a largo plazo.
+            </p>
+
+            {/* Punto 1 */}
+            <h2 className="text-2xl font-serif font-bold text-gold-400 mt-12 mb-6 uppercase tracking-wider">1. El mito del precio más bajo: Selección particular</h2>
+            <div className="bg-metallic-900/50 p-6 border-l-2 border-gold-400 mb-8">
+              <p className="mb-4">
+                Es tentador filtrar por “precio más bajo”. Sin embargo, muchas de esas unidades proceden de <strong>flotas de alquiler</strong>. En <strong>Premium German Cars</strong> creemos que el verdadero valor está en la procedencia: un único propietario e historial completo trazable por bastidor.
+              </p>
+              <p className="text-sm text-gray-400">
+                Estas unidades suelen contar con libro de mantenimiento digital BMW, asegurando que el vehículo ha seguido los estándares de la marca desde el primer día.
+              </p>
+            </div>
+
+            {/* Punto 2 */}
+            <h2 className="text-2xl font-serif font-bold text-gold-400 mt-12 mb-6 uppercase tracking-wider">2. Tecnología: Live Cockpit Professional</h2>
+            <div className="flex flex-col md:flex-row gap-8 mb-8 items-center">
+              <div className="flex-1">
+                <p>
+                  Asegúrate de que tu BMW se sienta como un coche actual. El <strong>Live Cockpit Professional</strong>, con su cuadro totalmente digital y navegación avanzada, se ha convertido en el estándar imprescindible.
+                </p>
+                <p className="mt-4">
+                  Optar hoy por una unidad sin esta tecnología puede hacer que el coche se perciba como “antiguo” en pocos años, afectando directamente a su <strong>valor de reventa</strong>.
+                </p>
+              </div>
+              <div className="bg-white/5 p-6 border border-white/10 rounded-sm flex flex-col items-center justify-center text-center w-full md:w-48">
+                <Cpu className="text-gold-400 mb-2" size={32} />
+                <span className="text-[10px] uppercase font-bold tracking-widest text-white">Tecnología 2026</span>
+              </div>
+            </div>
+
+            {/* Punto 3 */}
+            <h2 className="text-2xl font-serif font-bold text-gold-400 mt-12 mb-6 uppercase tracking-wider">3. Garantía Oficial BMW Premium Selection</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+              <div className="flex gap-4 p-6 bg-metallic-900">
+                <ShieldCheck className="text-gold-400 shrink-0" size={24} />
                 <div>
-                  <h4 className="font-bold text-white text-lg mb-1">Garantía BMW Premium Selection</h4>
-                  <p className="text-gray-400 text-sm">Casi todas nuestras unidades de reestreno cuentan con certificación oficial, garantizando 24 meses de cobertura europea y revisión de 360°.</p>
+                  <h4 className="font-bold text-white mb-1">Cobertura Europea</h4>
+                  <p className="text-xs text-gray-400">Válida en cualquier concesionario BMW de España y Europa sin intermediarios.</p>
                 </div>
               </div>
-
-              <div className="flex gap-6 p-6 bg-metallic-900 border-l-2 border-gold-400">
-                <Zap className="text-gold-400 shrink-0" size={32} />
+              <div className="flex gap-4 p-6 bg-metallic-900">
+                <Star className="text-gold-400 shrink-0" size={24} />
                 <div>
-                  <h4 className="font-bold text-white text-lg mb-1">Equipamiento "Full Extras"</h4>
-                  <p className="text-gray-400 text-sm">A diferencia del mercado nacional, los BMW alemanes suelen incluir paquetes M-Sport completos, Head-Up Display y suspensiones adaptativas de serie.</p>
+                  <h4 className="font-bold text-white mb-1">Revisión 360°</h4>
+                  <p className="text-xs text-gray-400">Unidades certificadas que garantizan que el coche cumple con los estándares más estrictos.</p>
                 </div>
               </div>
             </div>
 
-            <h2 className="text-2xl font-serif font-bold text-gold-400 mt-12 mb-6 italic">Modelos más demandados en 2026</h2>
-            <p className="mb-6">
-              Basándonos en las solicitudes gestionadas en nuestra sede de Cambrils, estos son los modelos con mejor relación calidad-precio este año:
-            </p>
-            <ul className="list-none space-y-3 mb-10">
-              <li className="flex items-center gap-2">
-                <span className="text-gold-400">▸</span> <strong>BMW Serie 3 (G20 LCI II):</strong> Un equilibrio perfecto entre tecnología y dinamismo.
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-gold-400">▸</span> <strong>BMW X5 (G05):</strong> El rey de los SUV premium con motores microhíbridos que obtienen etiqueta ECO.
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-gold-400">▸</span> <strong>BMW i4:</strong> La transición eléctrica con la conducción más purista del mercado.
-              </li>
-            </ul>
-
-            <div className="bg-gold-400/5 p-8 border border-gold-400/20 my-12">
-              <h3 className="text-xl font-bold text-gold-400 mb-4 flex items-center gap-2">
+            <div className="bg-gold-400/5 p-8 border border-gold-400/20 my-12 text-center">
+              <h3 className="text-xl font-bold text-gold-400 mb-4 flex items-center justify-center gap-2">
                 <Search size={20} /> El consejo de Premium German Cars
               </h3>
               <p className="text-gray-300 italic">
-                "No te limites a mirar el precio final. En un BMW de reestreno, lo más importante es verificar el historial digital de mantenimiento grabado en la llave. Nosotros realizamos esa lectura antes de recomendarte cualquier unidad."
+                "No te limites a mirar el precio. En un BMW de reestreno, verificamos el historial digital grabado en la llave antes de recomendarte cualquier unidad."
               </p>
             </div>
 
@@ -91,13 +106,13 @@ const BmwReestreno2026 = () => {
             </p>
           </div>
 
-          {/* Banner de Contacto */}
+          {/* Banner de Contacto Final */}
           <div className="mt-20 p-1 bg-gradient-to-r from-gold-600 to-gold-400">
             <div className="bg-black p-10 text-center">
               <h3 className="text-3xl font-serif font-bold mb-4 text-white">¿Buscamos tu BMW?</h3>
-              <p className="text-gray-400 mb-8 max-w-md mx-auto">Configura tu búsqueda y recibe en menos de 24h las mejores unidades disponibles en la red oficial alemana.</p>
+              <p className="text-gray-400 mb-8 max-w-md mx-auto">Configura tu búsqueda y recibe las mejores unidades disponibles en la red oficial alemana.</p>
               <a href="/#import" className="inline-flex items-center gap-3 bg-gold-400 text-black px-10 py-4 font-bold uppercase tracking-tighter hover:bg-white transition-all duration-300">
-                Solicitar presupuesto sin compromiso <ArrowRight size={18} />
+                Solicitar presupuesto <ArrowRight size={18} />
               </a>
             </div>
           </div>

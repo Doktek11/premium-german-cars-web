@@ -2,14 +2,14 @@ import React from "react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
-import { CheckCircle, AlertTriangle, ArrowRight } from "lucide-react";
+import { CheckCircle, car, ShieldCheck, Euro, MapPin, ArrowRight } from "lucide-react";
 
 const CochesReusTarragona = () => {
   return (
     <>
       <SEO 
         title="Coches de segunda mano en Reus y Tarragona | Premium German Cars"
-        description="¿Comprar en concesionarios de Tarragona o importar de Alemania? Analizamos la mejor opción para tu próximo coche premium."
+        description="¿Buscas un coche de ocasión en Tarragona o Reus? Descubre por qué la importación de reestreno premium en Cambrils es tu mejor opción. Ahorro y garantía oficial."
       />
       <Navbar />
       
@@ -17,9 +17,9 @@ const CochesReusTarragona = () => {
         <div className="container mx-auto px-6 max-w-4xl">
           {/* Cabecera */}
           <div className="mb-12">
-            <span className="text-gold-400 font-bold tracking-widest text-xs uppercase">Mercado Local vs Importación</span>
+            <span className="text-gold-400 font-bold tracking-widest text-xs uppercase">Especialistas en la Provincia de Tarragona</span>
             <h1 className="text-4xl md:text-5xl font-serif font-bold mt-4 mb-6 leading-tight">
-              Coches de segunda mano en Reus y Tarragona: ¿Vale la pena la importación?
+              ¿Buscas un coche de segunda mano en Reus o Tarragona? Descubre por qué somos tu mejor opción
             </h1>
             <div className="flex items-center gap-4 text-gray-500 text-sm italic">
               <span>Por Premium German Cars</span>
@@ -28,71 +28,98 @@ const CochesReusTarragona = () => {
             </div>
           </div>
 
-          {/* Imagen Destacada (Placeholder Premium) */}
-          <div className="h-96 w-full bg-gradient-to-br from-metallic-800 to-black border border-white/10 flex items-center justify-center mb-16 overflow-hidden">
-             <img src="/logoPGC.svg" className="w-40 opacity-10 brightness-0 invert" alt="Logo PGC" />
+          {/* Imagen Destacada */}
+          <div className="h-96 w-full bg-gradient-to-br from-metallic-800 to-black border border-white/10 flex items-center justify-center mb-16 overflow-hidden relative">
+              <img src="/amggtr-mobile.webp" className="w-full h-full object-cover opacity-40" alt="Coche Premium en Tarragona" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <img src="/logoPGC.svg" className="w-48 brightness-0 invert" alt="Logo PGC" />
+              </div>
           </div>
 
           {/* Cuerpo del Artículo */}
-          <div className="prose prose-invert prose-gold max-w-none">
-            <p className="text-xl text-gray-300 leading-relaxed mb-8">
-              Si resides en la provincia de Tarragona y buscas un vehículo de gama alta, es probable que hayas recorrido los concesionarios de <strong>Reus, Tarragona o las naves de Les Gavarres</strong>. Sin embargo, el mercado local a menudo presenta limitaciones en stock y precios inflados.
+          <div className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed">
+            <p className="text-xl mb-8 font-light">
+              Comprar un coche de segunda mano no debería ser un salto al vacío. Si vives en <strong>Tarragona, Reus, Salou, Valls</strong> o alrededores, seguramente te has encontrado con el mismo dilema: comprar a un particular asumiendo riesgos o acudir a un concesionario multimarca donde no siempre conoces el historial real.
             </p>
 
-            <h2 className="text-2xl font-serif font-bold text-gold-400 mt-12 mb-6">El dilema del comprador local</h2>
-            <p className="mb-6">
-              Encontrar un BMW M, un Audi RS o un Porsche con una configuración específica en nuestra zona puede ser una tarea de meses. Los vehículos disponibles suelen ser:
-            </p>
-            <ul className="space-y-4 mb-10">
-              <li className="flex gap-3 items-start text-gray-300">
-                <AlertTriangle className="text-gold-400 shrink-0 mt-1" size={18} />
-                <span>Modelos con equipamiento básico o estándar.</span>
-              </li>
-              <li className="flex gap-3 items-start text-gray-300">
-                <AlertTriangle className="text-gold-400 shrink-0 mt-1" size={18} />
-                <span>Precios condicionados por la alta demanda local.</span>
-              </li>
-              <li className="flex gap-3 items-start text-gray-300">
-                <AlertTriangle className="text-gold-400 shrink-0 mt-1" size={18} />
-                <span>Historiales de mantenimiento no siempre transparentes.</span>
-              </li>
-            </ul>
-
-            <h2 className="text-2xl font-serif font-bold text-gold-400 mt-12 mb-6">Por qué Alemania sigue siendo la mejor opción</h2>
             <p className="mb-8">
-              Desde nuestras oficinas en Cambrils, gestionamos cada semana solicitudes de clientes que han decidido dar el salto al mercado alemán. Las ventajas son indiscutibles:
+              En <strong>Premium German Cars</strong> hemos redefinido la compra de coches de ocasión en la provincia de Tarragona. Nos alejamos del concepto tradicional de compraventa para ofrecerte un servicio boutique de importación: acercamos la excelencia automovilística alemana a la <strong>Costa Daurada</strong>.
             </p>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-12">
-              <div className="bg-metallic-900 p-6 border border-white/5">
-                <CheckCircle className="text-gold-400 mb-4" />
-                <h4 className="font-bold mb-2">Variedad Infinita</h4>
-                <p className="text-sm text-gray-400 font-light">Acceso a más de 1.5 millones de vehículos con configuraciones exclusivas.</p>
+            <h2 className="text-3xl font-serif font-bold text-gold-400 mt-12 mb-6 text-white">La diferencia entre un coche usado y un Reestreno Premium</h2>
+            <p className="mb-6">
+              Muchos clientes llegan a nuestra sede en <strong>Cambrils</strong> después de visitar decenas de anuncios con kilometrajes dudosos o mantenimientos poco claros en naves de Les Gavarres o Reus. Nosotros nos especializamos en:
+            </p>
+
+            {/* Bloques de valor */}
+            <div className="grid md:grid-cols-1 gap-6 mb-12">
+              <div className="bg-metallic-900 p-8 border border-white/5 rounded-sm">
+                <div className="flex items-center gap-4 mb-4">
+                  <Euro className="text-gold-400" size={32} />
+                  <h3 className="text-xl font-bold text-white">1. Transparencia total y ahorro real</h3>
+                </div>
+                <p className="font-light">
+                  Mostramos la factura original de compra para que compruebes el ahorro frente a su precio nuevo. 
+                  <span className="block mt-2 text-gold-400 font-medium italic">Ejemplo real: en un BMW Serie 1 reciente, el ahorro superaba los 9.400 € respecto a su precio de estreno.</span>
+                </p>
               </div>
-              <div className="bg-metallic-900 p-6 border border-white/5">
-                <CheckCircle className="text-gold-400 mb-4" />
-                <h4 className="font-bold mb-2">Estado Impecable</h4>
-                <p className="text-sm text-gray-400 font-light">Los coches alemanes suelen estar mejor mantenidos gracias a su cultura automovilística.</p>
+
+              <div className="bg-metallic-900 p-8 border border-white/5 rounded-sm">
+                <div className="flex items-center gap-4 mb-4">
+                  <ShieldCheck className="text-gold-400" size={32} />
+                  <h3 className="text-xl font-bold text-white">2. Garantía oficial de fábrica</h3>
+                </div>
+                <p className="font-light">
+                  Trabajamos exclusivamente con vehículos que mantienen la <strong>garantía oficial del fabricante</strong>. Tienes la misma tranquilidad que un concesionario oficial en Tarragona capital, pero con un precio mucho más competitivo.
+                </p>
+              </div>
+
+              <div className="bg-metallic-900 p-8 border border-white/5 rounded-sm">
+                <div className="flex items-center gap-4 mb-4">
+                  <CheckCircle className="text-gold-400" size={32} />
+                  <h3 className="text-xl font-bold text-white">3. Equipamiento superior: Unidades "Full Equip"</h3>
+                </div>
+                <p className="font-light mb-4">
+                  Seleccionamos unidades cargadas de extras que son difíciles de encontrar en el mercado nacional de ocasión:
+                </p>
+                <ul className="grid grid-cols-2 gap-2 text-sm">
+                  <li className="flex items-center gap-2">• Live Cockpit Professional</li>
+                  <li className="flex items-center gap-2">• Paquetes M / S-Line</li>
+                  <li className="flex items-center gap-2">• Asistentes avanzados</li>
+                  <li className="flex items-center gap-2">• Tecnología de última generación</li>
+                </ul>
               </div>
             </div>
 
-            <blockquote className="border-l-4 border-gold-400 pl-6 py-4 italic text-gray-300 bg-white/5 mb-10">
-              "En Premium German Cars no solo importamos coches, importamos tranquilidad. Revisamos cada unidad en origen antes de que cruce la frontera hacia Tarragona."
-            </blockquote>
+            <h2 className="text-3xl font-serif font-bold text-gold-400 mt-12 mb-6 text-white">¿Por qué Premium German Cars es diferente?</h2>
+            <div className="space-y-6 mb-12">
+               <div className="flex gap-4">
+                  <MapPin className="text-gold-400 shrink-0" />
+                  <p><strong>Ubicación estratégica:</strong> Estamos en Cambrils, a pocos minutos de Reus y Tarragona. Un espacio cómodo para ver y probar nuestras unidades sin compromiso.</p>
+               </div>
+               <div className="flex gap-4">
+                  <ShieldCheck className="text-gold-400 shrink-0" />
+                  <p><strong>Inspección rigurosa:</strong> Cada vehículo pasa un control de calidad exhaustivo bajo estándares alemanes antes de cruzar la frontera.</p>
+               </div>
+            </div>
 
-            <h2 className="text-2xl font-serif font-bold text-gold-400 mt-12 mb-6">Nuestro proceso en Cambrils</h2>
-            <p className="mb-6">
-              Si buscas un coche de segunda mano en Reus o alrededores, te invitamos a que nos visites. Nos encargamos de todo: desde la negociación en alemán hasta la matriculación final.
-            </p>
+            <blockquote className="border-l-4 border-gold-400 pl-6 py-6 italic text-gray-300 bg-white/5 mb-10 text-lg">
+              "No tenemos cientos de vehículos; tenemos los mejores. Seleccionamos cada unidad como si fuera para nosotros mismos."
+            </blockquote>
           </div>
 
           {/* CTA Final */}
-          <div className="mt-20 p-10 bg-gradient-to-r from-metallic-900 to-black border border-gold-400/20 text-center">
-            <h3 className="text-2xl font-serif font-bold mb-4 italic">¿Tienes un modelo en mente?</h3>
-            <p className="text-gray-400 mb-8">Déjanos encontrar la unidad perfecta para ti en el mercado oficial alemán.</p>
-            <a href="/#import" className="inline-flex items-center gap-3 bg-gold-400 text-black px-8 py-4 font-bold uppercase tracking-widest hover:bg-gold-500 transition-all">
-              Consultar ahora <ArrowRight size={18} />
-            </a>
+          <div className="mt-20 p-12 bg-gradient-to-r from-metallic-900 to-black border border-gold-400/30 text-center">
+            <h3 className="text-3xl font-serif font-bold mb-6 italic text-white">¿Listo para tu reestreno Premium?</h3>
+            <p className="text-gray-400 mb-10 text-lg">Consulta nuestro stock actualizado o reserva tu visita en Cambrils.</p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <a href="#stock" className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-10 py-4 font-bold uppercase tracking-widest hover:bg-gold-500 transition-all">
+                Ver Stock Actual <ArrowRight size={18} />
+              </a>
+              <a href="#contact" className="inline-flex items-center justify-center gap-3 border border-white/20 text-white px-10 py-4 font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
+                Contactar
+              </a>
+            </div>
           </div>
         </div>
       </main>

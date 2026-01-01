@@ -58,7 +58,13 @@ export const Footer: React.FC = () => {
                         Pasión por el motor. Excelencia en el servicio. Tu puente directo a los mejores coches de Alemania.
                     </p>
                     <div className="flex space-x-4">
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">
+                        {/* ENLACE INSTAGRAM ACTUALIZADO */}
+                        <a 
+                            href="https://www.instagram.com/premiumgermancars1?igsh=MWEzejNrZDhjbmowYg%3D%3D" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors"
+                        >
                             <Instagram size={20} />
                         </a>
                         <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Calculator } from "lucide-react"; // Añadimos icono Calculator
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const Navbar: React.FC = () => {
@@ -35,7 +35,6 @@ export const Navbar: React.FC = () => {
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
         
-        {/* LOGO CORREGIDO CON DIMENSIONES EXPLÍCITAS PARA CLS */}
         <button
           onClick={() => navigate("/")}
           className="flex items-center z-50 transition-transform hover:scale-105"
@@ -43,7 +42,6 @@ export const Navbar: React.FC = () => {
           <img 
             src="/logoPGC.svg" 
             alt="Logo Premium German Cars" 
-            /* Se añaden dimensiones base para evitar el salto de diseño */
             width="180"
             height="48"
             className="h-8 md:h-12 w-auto brightness-0 invert" 
@@ -58,9 +56,18 @@ export const Navbar: React.FC = () => {
 
           <button
             onClick={() => navigate("/importacion-coches-alemania")}
-            className="nav-link"
+            className={`nav-link ${location.pathname === '/importacion-coches-alemania' ? 'text-gold-400' : ''}`}
           >
-            Importación Alemania
+            Importación
+          </button>
+
+          {/* NUEVO ENLACE CALCULADORA */}
+          <button
+            onClick={() => navigate("/calculadora-impuesto-matriculacion")}
+            className={`nav-link flex items-center gap-2 ${location.pathname === '/calculadora-impuesto-matriculacion' ? 'text-gold-400' : ''}`}
+          >
+            <Calculator size={14} className="text-gold-400" />
+            Calculadora
           </button>
 
           <button onClick={() => goToSection("#stock")} className="nav-link">
@@ -111,13 +118,16 @@ export const Navbar: React.FC = () => {
         <button onClick={() => { navigate("/importacion-coches-alemania"); setIsOpen(false); }} className="mobile-link">
           Importación Alemania
         </button>
-        <button onClick={() => { navigate("/blog"); setIsOpen(false); }} className="mobile-link text-gold-400">
-          Blog
+        <button onClick={() => { navigate("/calculadora-impuesto-matriculacion"); setIsOpen(false); }} className="mobile-link">
+          Calculadora Impuestos
         </button>
-        <button onClick={() => goToSection("#stock")} className="mobile-link">
+        <button onClick={() => { navigate("/blog"); setIsOpen(false); }} className="mobile-link">
+          Blog Premium
+        </button>
+        <button onClick={() => { goToSection("#stock"); setIsOpen(false); }} className="mobile-link">
           Stock
         </button>
-        <button onClick={() => goToSection("#contact")} className="mobile-link">
+        <button onClick={() => { goToSection("#contact"); setIsOpen(false); }} className="mobile-link">
           Contacto
         </button>
       </div>

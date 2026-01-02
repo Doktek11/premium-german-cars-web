@@ -8,6 +8,7 @@ import { ImportacionAlemania } from "./pages/ImportacionAlemania";
 
 // IMPORTACIONES DEL BLOG
 import BlogIndex from "./pages/Blog/index";
+import ArticuloModelos2026 from "./pages/Blog/ArticuloModelos2026"; // <-- Nueva importación
 import MotoresBmwMercedes2027 from "./pages/Blog/motores-bmw-en-mercedes-2027";
 import BmwReestreno2026 from "./pages/Blog/bmw-reestreno-alemania-2026";
 import CochesReusTarragona from "./pages/Blog/coche-segunda-mano-reus-tarragona";
@@ -50,6 +51,12 @@ export default function App() {
         <Route path="/blog" element={<BlogIndex />} />
         
         {/* ARTÍCULOS INDIVIDUALES DEL BLOG */}
+        {/* Nuevo Artículo Destacado 2026 */}
+        <Route 
+          path="/blog/mejores-modelos-importar-alemania-2026" 
+          element={<ArticuloModelos2026 />} 
+        />
+
         <Route 
           path="/blog/motores-bmw-en-mercedes-2027" 
           element={<MotoresBmwMercedes2027 />} 
@@ -66,6 +73,9 @@ export default function App() {
         {/* PÁGINAS LEGALES */}
         <Route path="/aviso-legal" element={<AvisoLegal />} />
         <Route path="/politica-privacidad" element={<PoliticaPrivacidad />} />
+
+        {/* Ruta opcional por si alguien escribe mal una URL (Catch-all) */}
+        <Route path="*" element={<Home />} />
 
       </Routes>
     </BrowserRouter>

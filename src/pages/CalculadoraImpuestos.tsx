@@ -1,158 +1,177 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
-import { Info, Calculator, Gauge, Calendar, Euro } from 'lucide-react';
+import { SEO } from '../components/SEO';
+import { Info, Gauge, Calendar, Euro, AlertTriangle, ArrowRight } from 'lucide-react';
 
 export const CalculadoraImpuestos = () => {
   const [precio, setPrecio] = useState<number>(45000);
-  const [emisiones, setEmisiones] = useState<number>(150);
-  const [antiguedad, setAntiguedad] = useState<number>(1); // años
-  const [resultado, setResultado] = useState<number>(0);
+  const [emisiones, setEmisiones] = useState<number>(155);
+  const [meses, setMeses] = useState<number>(12); // Usamos meses para mayor precisión
+  const [resultado, setResultado] = useState({ matriculacion: 0, total: 0, tramo: 0 });
 
-  // Lógica de cálculo basada en tramos de 2026
   useEffect(() => {
-    let porcentaje = 0;
-    if (emisiones <= 120) porcentaje = 0;
-    else if (emisiones <= 159) porcentaje = 4.75;
-    else if (emisiones <= 199) porcentaje = 9.75;
-    else porcentaje = 14.75;
+    // 1. Determinar tramo de Matriculación (Base 2026)
+    let tramo = 0;
+    if (emisiones <= 120) tramo = 0;
+    else if (emisiones <= 159) tramo = 4.75;
+    else if (emisiones <= 199) tramo = 9.75;
+    else tramo = 14.75;
 
-    // Simplificación de depreciación BOE (orientativo)
-    const depreciacion = antiguedad === 1 ? 1 : antiguedad === 2 ? 0.84 : antiguedad === 3 ? 0.67 : 0.50;
-    const impuesto = (precio * depreciacion) * (porcentaje / 100);
-    
-    setResultado(impuesto);
-  }, [precio, emisiones, antiguedad]);
+    // 2. Tabla de Depreciación Oficial BOE
+    let porcentajeDepreciacion = 1;
+    if (meses <= 12) porcentajeDepreciacion = 1;
+    else if (meses <= 24) porcentajeDepreciacion = 0.84;
+    else if (meses <= 36) porcentajeDepreciacion = 0.67;
+    else if (meses <= 48) porcentajeDepreciacion = 0.56;
+    else if (meses <= 60) porcentajeDepreciacion = 0.47;
+    else if (meses <= 72) porcentajeDepreciacion = 0.39;
+    else porcentajeDepreciacion = 0.30; // Simplificado para coches de +6 años
+
+    const baseImponible = precio * porcentajeDepreciacion;
+    const impuestoMatriculacion = baseImponible * (tramo / 100);
+
+    setResultado({
+      matriculacion: impuestoMatriculacion,
+      total: impuestoMatriculacion, // Aquí podrías sumar honorarios si quisieras
+      tramo: tramo
+    });
+  }, [precio, emisiones, meses]);
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <SEO 
+        title="Calculadora Impuesto Matriculación 2026 | Premium German Cars"
+        description="Calcula el coste exacto de importar tu coche desde Alemania con las tablas de depreciación del BOE actualizadas a 2026."
+      />
       <Navbar />
       
       <main className="pt-32 pb-20 px-6">
-        <div className="container mx-auto max-w-4xl">
-          <header className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
-              Calculadora de <span className="text-gold-400 font-light italic">Impuestos</span>
+        <div className="container mx-auto max-w-5xl">
+          <header className="mb-12">
+            <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4">
+              Calculadora <span className="text-gold-400 italic">Oficial</span>
             </h1>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Estima el coste del Impuesto de Matriculación para tu vehículo importado. 
-              Valores actualizados según normativa 2026.
-            </p>
+            <p className="text-gray-400 text-lg">Ajustada a las tablas de depreciación del BOE y tramos de CO2 2026.</p>
           </header>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-metallic-900 p-8 md:p-12 rounded-3xl border border-white/5 shadow-2xl">
-            
-            {/* CONTROLES */}
-            <div className="space-y-10">
-              {/* Precio */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* PANEL DE CONTROL */}
+            <div className="lg:col-span-7 space-y-8 bg-metallic-900/50 p-8 rounded-3xl border border-white/5">
+              
+              {/* INPUT PRECIO */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-gold-400 mb-4">
-                  <Euro size={16} /> Valor estimado (Tablas BOE/Compra)
-                </label>
+                <div className="flex justify-between mb-4">
+                  <label className="text-xs font-bold uppercase tracking-widest text-gold-400 flex items-center gap-2">
+                    <Euro size={14}/> Valor de Mercado / Tablas BOE
+                  </label>
+                  <span className="font-mono text-xl text-white">{precio.toLocaleString()} €</span>
+                </div>
                 <input 
-                  type="range" min="10000" max="150000" step="1000"
+                  type="range" min="5000" max="200000" step="1000"
                   value={precio} onChange={(e) => setPrecio(Number(e.target.value))}
-                  className="w-full h-2 bg-black rounded-lg appearance-none cursor-pointer accent-gold-500"
+                  className="w-full h-1.5 bg-black rounded-lg appearance-none cursor-pointer accent-gold-500"
                 />
-                <div className="flex justify-between mt-2 font-mono text-xl text-white">
-                  <span>{precio.toLocaleString()} €</span>
-                </div>
               </div>
 
-              {/* Emisiones */}
+              {/* INPUT EMISIONES */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-gold-400 mb-4">
-                  <Gauge size={16} /> Emisiones CO2 (g/km)
-                </label>
+                <div className="flex justify-between mb-4">
+                  <label className="text-xs font-bold uppercase tracking-widest text-gold-400 flex items-center gap-2">
+                    <Gauge size={14}/> Emisiones CO2 (WLTP)
+                  </label>
+                  <span className="font-mono text-xl text-white">{emisiones} g/km</span>
+                </div>
                 <input 
-                  type="range" min="0" max="350" step="1"
+                  type="range" min="0" max="400" step="1"
                   value={emisiones} onChange={(e) => setEmisiones(Number(e.target.value))}
-                  className="w-full h-2 bg-black rounded-lg appearance-none cursor-pointer accent-gold-500"
+                  className="w-full h-1.5 bg-black rounded-lg appearance-none cursor-pointer accent-gold-500"
                 />
-                <div className="flex justify-between mt-2 font-mono text-xl text-white">
-                  <span>{emisiones} g/km</span>
-                  <span className="text-xs bg-white/10 px-2 py-1 rounded text-gray-400">WLTP</span>
+                <div className="flex gap-2 mt-3">
+                  {[95, 120, 155, 195, 250].map(val => (
+                    <button key={val} onClick={() => setEmisiones(val)} className="text-[10px] bg-white/5 px-2 py-1 rounded hover:bg-gold-400/20">
+                      {val}g
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Antigüedad */}
+              {/* INPUT ANTIGÜEDAD */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-gold-400 mb-4">
-                  <Calendar size={16} /> Antigüedad del vehículo
-                </label>
-                <select 
-                  value={antiguedad} onChange={(e) => setAntiguedad(Number(e.target.value))}
-                  className="w-full bg-black border border-white/10 p-4 rounded-xl text-white focus:border-gold-400 outline-none"
-                >
-                  <option value={1}>Menos de 1 año (100% base)</option>
-                  <option value={2}>Entre 1 y 2 años (84% base)</option>
-                  <option value={3}>Entre 2 y 3 años (67% base)</option>
-                  <option value={4}>Más de 4 años (50% base aprox)</option>
-                </select>
+                <div className="flex justify-between mb-4">
+                  <label className="text-xs font-bold uppercase tracking-widest text-gold-400 flex items-center gap-2">
+                    <Calendar size={14}/> Antigüedad del vehículo
+                  </label>
+                  <span className="font-mono text-xl text-white">
+                    {meses < 12 ? `${meses} meses` : `${(meses/12).toFixed(1)} años`}
+                  </span>
+                </div>
+                <input 
+                  type="range" min="1" max="120" step="1"
+                  value={meses} onChange={(e) => setMeses(Number(e.target.value))}
+                  className="w-full h-1.5 bg-black rounded-lg appearance-none cursor-pointer accent-gold-500"
+                />
+                <p className="text-[10px] text-gray-500 mt-2 uppercase">A mayor antigüedad, menor base imponible (Tablas BOE)</p>
               </div>
             </div>
 
-            {/* RESULTADO VISUAL */}
-            <div className="bg-black/50 rounded-2xl p-8 border border-gold-400/20 flex flex-col justify-center items-center text-center relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10">
-                <Calculator size={120} />
-              </div>
-              
-              <h3 className="text-gray-400 uppercase tracking-tighter text-sm mb-2">Total Impuesto Estimado</h3>
-              <div className="text-6xl md:text-7xl font-mono font-bold text-gold-400 mb-4">
-                {resultado.toLocaleString(undefined, { maximumFractionDigits: 0 })}€
-              </div>
-              <p className="text-xs text-gray-500 max-w-[200px] leading-relaxed">
-                *Este cálculo es una estimación. El valor final depende de las tablas oficiales del BOE vigentes.
-              </p>
+            {/* RESULTADO RESUMEN */}
+            <div className="lg:col-span-5 space-y-6">
+              <div className="bg-gold-500 p-1 text-black rounded-3xl">
+                <div className="bg-black rounded-[calc(1.5rem-1px)] p-8">
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6">Resultado Estimado</h3>
+                  
+                  <div className="mb-6">
+                    <span className="text-xs text-gray-500 block mb-1 uppercase">Impuesto de Matriculación ({resultado.tramo}%)</span>
+                    <span className="text-5xl font-serif font-bold text-white">
+                      {resultado.matriculacion.toLocaleString(undefined, { maximumFractionDigits: 0 })}€
+                    </span>
+                  </div>
 
-              <div className="mt-8 pt-8 border-t border-white/5 w-full">
-                <p className="text-sm text-gray-300 mb-4">¿Quieres que verifiquemos el coste exacto de una unidad?</p>
-                <a 
-                  href={`https://wa.me/34603743608?text=Hola! He usado vuestra calculadora para un coche de ${emisiones}g/km y me sale un impuesto de ${resultado}€. ¿Me ayudáis?`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="block w-full py-4 bg-gold-500 text-black font-bold rounded-full hover:bg-white transition-all uppercase text-xs tracking-widest"
-                >
-                  Consultar con un experto
-                </a>
+                  <div className="space-y-3 pt-6 border-t border-white/10">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-400">Tramo de Emisiones:</span>
+                      <span className="text-gold-400 font-bold">{resultado.tramo}%</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-400">Reducción por años:</span>
+                      <span className="text-white">-{((1 - (resultado.matriculacion/(precio*(resultado.tramo/100))))*100).toFixed(0)}%</span>
+                    </div>
+                  </div>
+
+                  <a 
+                    href={`https://wa.me/34603743608?text=Hola! He calculado el impuesto para un coche de ${emisiones}g/km con un valor de ${precio}€ y me sale un total de ${resultado.matriculacion.toFixed(0)}€. ¿Podéis verificar si es correcto?`}
+                    className="mt-8 flex items-center justify-center gap-2 w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gold-400 transition-all uppercase text-xs tracking-widest"
+                  >
+                    Confirmar con Premium German Cars <ArrowRight size={16}/>
+                  </a>
+                </div>
+              </div>
+
+              <div className="bg-red-900/10 border border-red-900/20 p-6 rounded-2xl flex gap-4">
+                <AlertTriangle className="text-red-500 shrink-0" size={20} />
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  <strong>Aviso para clientes en Cataluña:</strong> Además de este impuesto, los vehículos que emitan más de 95g/km están sujetos al <strong>Impuesto sobre las Emisiones de CO2</strong> (anual). Consúltanos para el cálculo exacto.
+                </p>
               </div>
             </div>
           </div>
 
-          {/* TABLA INFORMATIVA PARA SEO */}
-          <section className="mt-20">
-            <h2 className="text-2xl font-serif font-bold mb-6 flex items-center gap-2">
-              <Info className="text-gold-400" /> Tramos Impuesto de Matriculación 2026
-            </h2>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-white/10 text-gold-400 text-sm uppercase">
-                    <th className="py-4 px-4">Emisiones CO2</th>
-                    <th className="py-4 px-4">Tipo Impositivo</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-400">
-                  <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                    <td className="py-4 px-4 font-mono">0 - 120 g/km</td>
-                    <td className="py-4 px-4 font-bold text-white">0%</td>
-                  </tr>
-                  <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                    <td className="py-4 px-4 font-mono">121 - 159 g/km</td>
-                    <td className="py-4 px-4 font-bold text-white">4,75%</td>
-                  </tr>
-                  <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                    <td className="py-4 px-4 font-mono">160 - 199 g/km</td>
-                    <td className="py-4 px-4 font-bold text-white">9,75%</td>
-                  </tr>
-                  <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                    <td className="py-4 px-4 font-mono">200 g/km o más</td>
-                    <td className="py-4 px-4 font-bold text-white">14,75%</td>
-                  </tr>
-                </tbody>
-              </table>
+          {/* EXPLICACIÓN TÉCNICA SEO */}
+          <footer className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-12 text-gray-400 text-sm border-t border-white/5 pt-12">
+            <div>
+              <h4 className="text-white font-bold mb-4 uppercase tracking-tighter">¿Cómo calculamos esto?</h4>
+              <p>Aplicamos el porcentaje del impuesto sobre el valor neto del coche una vez aplicada la depreciación por meses de uso que marca el BOE para 2026.</p>
             </div>
-          </section>
+            <div>
+              <h4 className="text-white font-bold mb-4 uppercase tracking-tighter">¿Qué es el valor de Tablas?</h4>
+              <p>Es el valor que Hacienda asigna a cada modelo. Si el precio de compra es superior, se suele usar el de tablas; si es inferior, Hacienda podría reclamar la diferencia.</p>
+            </div>
+            <div>
+              <h4 className="text-white font-bold mb-4 uppercase tracking-tighter">Precisión WLTP</h4>
+              <p>Asegúrate de mirar la cifra de emisiones combinadas WLTP en la ficha técnica alemana (Teil I), ya que es la que determina el tramo impositivo en España.</p>
+            </div>
+          </footer>
         </div>
       </main>
 

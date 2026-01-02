@@ -63,7 +63,7 @@ export const CalculadoraImpuestos = () => {
     <div className="min-h-screen bg-black text-white">
       <SEO 
         title="Calculadora Impuesto Matriculación 2026 | Premium German Cars"
-        description="Calcula el coste de importar tu coche desde Alemania con datos reales del BOE."
+        description="Calcula gratis el impuesto de matriculación para importar tu coche de Alemania. Datos oficiales BOE 2026 actualizados por nuestro equipo experto."
       />
       <Navbar />
       

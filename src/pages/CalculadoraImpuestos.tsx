@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
+import { WhatsAppButton } from '../components/WhatsAppButton'; // ✅ ARREGLADO: Importación añadida
 import { Gauge, Calendar, Euro, AlertTriangle, ArrowRight } from 'lucide-react';
 
 export const CalculadoraImpuestos = () => {
@@ -18,7 +19,7 @@ export const CalculadoraImpuestos = () => {
     else if (emisiones <= 199) tramo = 9.75;
     else tramo = 14.75;
 
-    // 2. Tabla de Depreciación
+    // 2. Tabla de Depreciación Oficial BOE
     let coef = 1;
     if (meses <= 12) coef = 1;
     else if (meses <= 24) coef = 0.84;
@@ -37,12 +38,12 @@ export const CalculadoraImpuestos = () => {
     });
   }, [precio, emisiones, meses]);
 
-  // Función de seguridad para calcular el porcentaje de reducción sin romper la web
+  // ✅ ARREGLADO: Función de seguridad para evitar división por cero (NaN)
   const getReduccionText = () => {
-    if (resultado.tramo === 0) return "0%";
-    const baseTeorica = precio * (resultado.tramo / 100);
-    if (baseTeorica === 0) return "0%";
-    const red = ((1 - (resultado.matriculacion / baseTeorica)) * 100).toFixed(0);
+    if (resultado.tramo === 0 || precio === 0) return "0%";
+    const baseTeoricaSinDepreciacion = precio * (resultado.tramo / 100);
+    if (baseTeoricaSinDepreciacion === 0) return "0%";
+    const red = ((1 - (resultado.matriculacion / baseTeoricaSinDepreciacion)) * 100).toFixed(0);
     return `-${red}%`;
   };
 
@@ -64,7 +65,8 @@ export const CalculadoraImpuestos = () => {
           </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-7 space-y-12 bg-metallic-900/50 p-8 rounded-3xl border border-white/5">
+            {/* PANEL DE CONTROL */}
+            <div className="lg:col-span-7 space-y-12 bg-metallic-900/50 p-8 rounded-3xl border border-white/5 shadow-2xl">
               
               {/* PRECIO */}
               <div>
@@ -95,7 +97,7 @@ export const CalculadoraImpuestos = () => {
                 />
               </div>
 
-              {/* MESES */}
+              {/* ANTIGÜEDAD */}
               <div>
                 <div className="flex justify-between mb-4">
                   <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2">
@@ -110,11 +112,11 @@ export const CalculadoraImpuestos = () => {
               </div>
             </div>
 
-            {/* RESULTADO */}
+            {/* BLOQUE DE RESULTADOS */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="bg-gold-500 p-1 rounded-3xl">
+              <div className="bg-gold-500 p-1 rounded-3xl shadow-xl">
                 <div className="bg-black rounded-[calc(1.5rem-1.5px)] p-8">
-                  <span className="text-xs text-gray-500 uppercase block mb-2">Impuesto Estimado</span>
+                  <span className="text-xs text-gray-500 uppercase block mb-2 tracking-widest">Impuesto Estimado</span>
                   <div className="text-5xl font-serif font-bold text-white mb-6">
                     {Math.round(resultado.matriculacion).toLocaleString()}€
                   </div>
@@ -125,13 +127,13 @@ export const CalculadoraImpuestos = () => {
                       <span className="text-gold-400 font-bold">{resultado.tramo}%</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Reducción BOE:</span>
-                      <span className="text-white">{getReduccionText()}</span>
+                      <span className="text-gray-400">Reducción por meses:</span>
+                      <span className="text-white font-mono">{getReduccionText()}</span>
                     </div>
                   </div>
 
                   <a 
-                    href={`https://wa.me/34603743608?text=Hola! He calculado el impuesto para un coche de ${emisiones}g/km y sale ${Math.round(resultado.matriculacion)}€. ¿Es correcto?`}
+                    href={`https://wa.me/34603743608?text=Hola! He calculado el impuesto para un coche de ${emisiones}g/km con un valor de ${precio}€ y sale ${Math.round(resultado.matriculacion)}€. ¿Es correcto?`}
                     target="_blank" rel="noopener noreferrer"
                     className="mt-8 flex items-center justify-center gap-2 w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gold-400 transition-all uppercase text-xs tracking-widest"
                   >
@@ -140,10 +142,10 @@ export const CalculadoraImpuestos = () => {
                 </div>
               </div>
               
-              <div className="bg-red-900/10 border border-red-900/20 p-6 rounded-2xl flex gap-4">
+              <div className="bg-red-900/10 border border-red-900/20 p-6 rounded-2xl flex gap-4 items-start">
                 <AlertTriangle className="text-red-500 shrink-0" size={20} />
                 <p className="text-[10px] text-gray-400 leading-tight">
-                  Aviso: Clientes en Cataluña sujetos a impuesto anual de CO2 adicional.
+                  <strong>Nota Importante:</strong> Este cálculo es una estimación. Clientes con residencia fiscal en Cataluña pueden estar sujetos al impuesto anual sobre emisiones de CO2 de la Generalitat.
                 </p>
               </div>
             </div>

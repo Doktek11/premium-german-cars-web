@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
-import { WhatsAppButton } from '../components/WhatsAppButton'; // ✅ ARREGLADO: Importación añadida
-import { Gauge, Calendar, Euro, AlertTriangle, ArrowRight } from 'lucide-react';
+import { WhatsAppButton } from '../components/WhatsAppButton';
+import { Gauge, Calendar, Euro, AlertTriangle, ArrowRight, Info } from 'lucide-react';
 
 export const CalculadoraImpuestos = () => {
   const [precio, setPrecio] = useState<number>(45000);
@@ -38,7 +38,6 @@ export const CalculadoraImpuestos = () => {
     });
   }, [precio, emisiones, meses]);
 
-  // ✅ ARREGLADO: Función de seguridad para evitar división por cero (NaN)
   const getReduccionText = () => {
     if (resultado.tramo === 0 || precio === 0) return "0%";
     const baseTeoricaSinDepreciacion = precio * (resultado.tramo / 100);
@@ -68,19 +67,32 @@ export const CalculadoraImpuestos = () => {
             {/* PANEL DE CONTROL */}
             <div className="lg:col-span-7 space-y-12 bg-metallic-900/50 p-8 rounded-3xl border border-white/5 shadow-2xl">
               
-              {/* PRECIO */}
+              {/* PRECIO / VALOR BOE */}
               <div>
-                <div className="flex justify-between mb-4">
-                  <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2">
-                    <Euro size={14}/> Valor del Vehículo
-                  </label>
-                  <span className="font-mono text-xl text-white">{precio.toLocaleString()} €</span>
+                <div className="flex justify-between items-end mb-4">
+                  <div className="flex flex-col">
+                    <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 mb-1">
+                      <Euro size={14}/> Valor del Vehículo
+                    </label>
+                    <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">
+                      (Valor actual en España / Tablas BOE)
+                    </span>
+                  </div>
+                  <span className="font-mono text-2xl text-white font-bold">{precio.toLocaleString()} €</span>
                 </div>
+                
                 <input 
                   type="range" min="5000" max="150000" step="1000"
                   value={precio} onChange={(e) => setPrecio(Number(e.target.value))}
                   className="w-full h-1.5 bg-black rounded-lg appearance-none cursor-pointer accent-gold-500"
                 />
+
+                <div className="mt-4 p-3 bg-white/5 border border-white/10 rounded-xl flex gap-3 items-center">
+                  <Info size={16} className="text-gold-400 shrink-0" />
+                  <p className="text-[10px] text-gray-400 leading-snug">
+                    <strong className="text-white">Nota:</strong> No es el precio de compra en Alemania. Indica el valor oficial en España (Valor Venal) para un cálculo preciso. Suele ser inferior al valor de mercado.
+                  </p>
+                </div>
               </div>
 
               {/* EMISIONES */}
@@ -127,7 +139,7 @@ export const CalculadoraImpuestos = () => {
                       <span className="text-gold-400 font-bold">{resultado.tramo}%</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Reducción por meses:</span>
+                      <span className="text-gray-400">Reducción BOE:</span>
                       <span className="text-white font-mono">{getReduccionText()}</span>
                     </div>
                   </div>
@@ -145,7 +157,7 @@ export const CalculadoraImpuestos = () => {
               <div className="bg-red-900/10 border border-red-900/20 p-6 rounded-2xl flex gap-4 items-start">
                 <AlertTriangle className="text-red-500 shrink-0" size={20} />
                 <p className="text-[10px] text-gray-400 leading-tight">
-                  <strong>Nota Importante:</strong> Este cálculo es una estimación. Clientes con residencia fiscal en Cataluña pueden estar sujetos al impuesto anual sobre emisiones de CO2 de la Generalitat.
+                  <strong>Aviso:</strong> Este cálculo es una estimación basada en tramos de 2026. Clientes en Cataluña están sujetos al impuesto anual de CO2 de la Generalitat.
                 </p>
               </div>
             </div>

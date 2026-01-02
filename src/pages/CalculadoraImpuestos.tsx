@@ -3,7 +3,7 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
 import { WhatsAppButton } from '../components/WhatsAppButton';
-import { Gauge, Calendar, Euro, AlertTriangle, ArrowRight, Info, CheckCircle2, Car } from 'lucide-react';
+import { Gauge, Calendar, Euro, AlertTriangle, ArrowRight, Info, CheckCircle2, Car, ShieldCheck, FileText, Globe } from 'lucide-react';
 
 export const CalculadoraImpuestos = () => {
   const [precio, setPrecio] = useState<number>(45000);
@@ -11,7 +11,6 @@ export const CalculadoraImpuestos = () => {
   const [meses, setMeses] = useState<number>(36);
   const [resultado, setResultado] = useState({ matriculacion: 0, tramo: 0 });
 
-  // Datos para la tabla FAQ
   const ejemplosImportacion = [
     { modelo: "Audi A3 Sportback 35 TFSI", valor: "21.105€", co2: "128g", impuesto: "1.002€" },
     { modelo: "VW Golf GTI (Mk8)", valor: "28.140€", co2: "163g", impuesto: "2.743€" },
@@ -26,14 +25,12 @@ export const CalculadoraImpuestos = () => {
   ];
 
   useEffect(() => {
-    // 1. Determinar tramo
     let tramo = 0;
     if (emisiones <= 120) tramo = 0;
     else if (emisiones <= 159) tramo = 4.75;
     else if (emisiones <= 199) tramo = 9.75;
     else tramo = 14.75;
 
-    // 2. Tabla de Depreciación Oficial BOE
     let coef = 1;
     if (meses <= 12) coef = 1;
     else if (meses <= 24) coef = 0.84;
@@ -81,8 +78,6 @@ export const CalculadoraImpuestos = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
             {/* PANEL DE CONTROL */}
             <div className="lg:col-span-7 space-y-12 bg-white/[0.03] p-8 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-sm">
-              
-              {/* PRECIO / VALOR BOE */}
               <div>
                 <div className="flex justify-between items-end mb-4">
                   <div className="flex flex-col">
@@ -110,7 +105,6 @@ export const CalculadoraImpuestos = () => {
                 </div>
               </div>
 
-              {/* EMISIONES */}
               <div>
                 <div className="flex justify-between mb-4">
                   <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 tracking-widest">
@@ -124,7 +118,6 @@ export const CalculadoraImpuestos = () => {
                 />
               </div>
 
-              {/* ANTIGÜEDAD */}
               <div>
                 <div className="flex justify-between mb-4">
                   <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 tracking-widest">
@@ -192,7 +185,7 @@ export const CalculadoraImpuestos = () => {
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02]">
+            <div className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] mb-16">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -216,7 +209,41 @@ export const CalculadoraImpuestos = () => {
                 </table>
               </div>
             </div>
-            <p className="mt-8 text-[10px] text-gray-500 text-center uppercase tracking-widest font-bold">
+
+            {/* BLOQUE DE TEXTO SEO ESTRATÉGICO */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-20 text-gray-400 border-t border-white/5 pt-20">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-white mb-2">
+                  <FileText className="text-gold-400" size={20} />
+                  <h3 className="font-bold uppercase text-xs tracking-widest">Cálculo Preciso BOE 2026</h3>
+                </div>
+                <p className="text-sm leading-relaxed">
+                  Nuestra calculadora utiliza las tablas oficiales del <strong className="text-white">BOE 2026</strong> para ofrecerte una estimación precisa del coste de importar un coche de Alemania. No solo calculamos el impuesto de matriculación según las emisiones de CO2, sino que en <strong className="text-white">Premium German Cars</strong> te asesoramos en todo el proceso de importación de vehículos de alta gama.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-white mb-2">
+                  <Globe className="text-gold-400" size={20} />
+                  <h3 className="font-bold uppercase text-xs tracking-widest">Gestión de Importación</h3>
+                </div>
+                <p className="text-sm leading-relaxed">
+                  Traer un coche de la Unión Europea implica trámites complejos como la obtención de la <strong className="text-white">ficha técnica reducida</strong>, la superación de la <strong className="text-white">ITV de importación</strong> y la liquidación de tasas. Ofrecemos un servicio "llave en mano" que incluye transporte, homologación y matriculación definitiva.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-white mb-2">
+                  <ShieldCheck className="text-gold-400" size={20} />
+                  <h3 className="font-bold uppercase text-xs tracking-widest">Confianza Premium</h3>
+                </div>
+                <p className="text-sm leading-relaxed">
+                  Verificamos la trazabilidad de cada unidad mediante su <strong className="text-white">número de bastidor</strong> para garantizar que tu inversión sea segura. Consulta ejemplos de nuestro trabajo en <strong className="text-white font-mono">premiumgermancars.com</strong> y descubre por qué somos líderes en asesoría automotriz alemana.
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-20 text-[10px] text-gray-500 text-center uppercase tracking-widest font-bold">
               Premium German Cars — Gestión Integral de Impuestos y Tasas
             </p>
           </section>

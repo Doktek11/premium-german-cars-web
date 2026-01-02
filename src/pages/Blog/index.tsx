@@ -6,6 +6,14 @@ import { Calendar, ArrowRight } from 'lucide-react';
 
 const blogPosts = [
   {
+    id: 4,
+    title: "Los 5 modelos más inteligentes para importar de Alemania en 2026",
+    excerpt: "Calidad real, historial transparente y valor de reventa. Descubre por qué la trazabilidad certificada es la clave para una importación segura.",
+    date: "02 Ene, 2026",
+    slug: "mejores-modelos-importar-alemania-2026",
+    category: "Guías"
+  },
+  {
     id: 1,
     title: "¿Corazón BMW en un Mercedes? El posible pacto de motores para 2027",
     excerpt: "Analizamos los rumores sobre la colaboración entre Mercedes-Benz y BMW para el uso de motores de 4 cilindros.",
@@ -43,7 +51,7 @@ export default function BlogIndex() {
               Blog <span className="text-gold-400">Premium</span>
             </h1>
             <p className="text-gray-400 text-lg italic">
-              Actualidad, guías de importación y análisis del mercado automotriz alemán.
+              Actualidad, guías de importación y análisis del mercado automotriz alemán en Premium German Cars.
             </p>
           </header>
           
@@ -54,11 +62,11 @@ export default function BlogIndex() {
                 className="bg-metallic-900 border border-white/5 overflow-hidden flex flex-col group hover:border-gold-400/30 transition-all duration-500 shadow-2xl"
               >
                 
-                {/* CONTENEDOR DE IMAGEN SUSTITUIDO POR TU LOGO (MARCA DE AGUA) */}
+                {/* CONTENEDOR DE IMAGEN CON OVERLAY DE CATEGORÍA */}
                 <div className="relative h-64 overflow-hidden bg-gradient-to-br from-metallic-800 to-black flex items-center justify-center">
                   <img 
                     src="/logoPGC.svg" 
-                    alt="Premium German Cars" 
+                    alt={`Artículo sobre ${post.title}`} 
                     className="w-32 h-auto opacity-10 group-hover:opacity-25 group-hover:scale-110 transition-all duration-700 brightness-0 invert"
                   />
                   
@@ -86,6 +94,7 @@ export default function BlogIndex() {
                   
                   <Link 
                     to={`/blog/${post.slug}`} 
+                    aria-label={`Leer artículo completo sobre ${post.title}`}
                     className="text-gold-400 font-bold uppercase text-[10px] tracking-[0.2em] flex items-center gap-3 group/link mt-auto"
                   >
                     Leer artículo completo

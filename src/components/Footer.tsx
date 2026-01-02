@@ -31,6 +31,7 @@ export const Footer: React.FC = () => {
                         <div key={idx} className="border-b border-white/10">
                             <button 
                                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                                aria-expanded={openFaq === idx}
                                 className="w-full py-4 flex justify-between items-center text-left hover:text-gold-400 transition-colors"
                             >
                                 <span className="font-medium text-lg">{faq.question}</span>
@@ -46,10 +47,10 @@ export const Footer: React.FC = () => {
 
             <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12" id="contact">
                 <div>
-                    <Link to="/" className="inline-block mb-6 transition-transform hover:scale-105">
+                    <Link to="/" className="inline-block mb-6 transition-transform hover:scale-105" aria-label="Ir al inicio">
                         <img 
                             src="/logoPGC.svg" 
-                            alt="Logo Premium German Cars" 
+                            alt="Premium German Cars - Importación de coches en Cambrils" 
                             className="h-10 w-auto brightness-0 invert" 
                         />
                     </Link>
@@ -58,16 +59,22 @@ export const Footer: React.FC = () => {
                         Pasión por el motor. Excelencia en el servicio. Tu puente directo a los mejores coches de Alemania.
                     </p>
                     <div className="flex space-x-4">
-                        {/* ENLACE INSTAGRAM ACTUALIZADO */}
                         <a 
                             href="https://www.instagram.com/premiumgermancars1?igsh=MWEzejNrZDhjbmowYg%3D%3D" 
                             target="_blank" 
                             rel="noopener noreferrer" 
+                            aria-label="Síguenos en Instagram de Premium German Cars"
                             className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors"
                         >
                             <Instagram size={20} />
                         </a>
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors">
+                        <a 
+                            href="https://facebook.com" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            aria-label="Síguenos en Facebook de Premium German Cars"
+                            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors"
+                        >
                             <Facebook size={20} />
                         </a>
                     </div>
@@ -78,7 +85,7 @@ export const Footer: React.FC = () => {
                     <ul className="space-y-4 text-gray-400 text-sm">
                         <li className="flex items-start gap-3">
                             <MapPin className="text-gold-400 w-5 h-5 flex-shrink-0" />
-                            <span> 43850<br/>Cambrils, España</span>
+                            <span> 43850<br/>Cambrils, Tarragona</span>
                         </li>
                         <li className="flex items-center gap-3">
                             <Phone className="text-gold-400 w-5 h-5 flex-shrink-0" />
@@ -121,14 +128,14 @@ export const Footer: React.FC = () => {
                 </div>
             </div>
 
-            {/* Créditos y Enlaces Legales Discretos */}
+            {/* Créditos y Enlaces Legales Corregidos para SEO y Accesibilidad */}
             <div className="border-t border-white/5 py-8 text-center">
-                <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 text-[10px] text-gray-600 uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity duration-500">
+                <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 text-[10px] text-gray-400 uppercase tracking-widest transition-opacity duration-500">
                     <p>© {new Date().getFullYear()} Premium German Cars</p>
-                    <span className="hidden md:inline">|</span>
-                    <Link to="/aviso-legal" className="hover:text-gold-400 transition-colors">Aviso Legal</Link>
-                    <span className="hidden md:inline">|</span>
-                    <Link to="/politica-privacidad" className="hover:text-gold-400 transition-colors">Política de Privacidad</Link>
+                    <span className="hidden md:inline text-gray-600">|</span>
+                    <Link to="/aviso-legal" className="hover:text-gold-400 transition-colors py-2 md:py-0">Aviso Legal</Link>
+                    <span className="hidden md:inline text-gray-600">|</span>
+                    <Link to="/politica-privacidad" className="hover:text-gold-400 transition-colors py-2 md:py-0">Política de Privacidad</Link>
                 </div>
             </div>
         </footer>

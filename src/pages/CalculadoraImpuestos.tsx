@@ -3,7 +3,7 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
 import { WhatsAppButton } from '../components/WhatsAppButton';
-import { Gauge, Calendar, Euro, AlertTriangle, ArrowRight, Info, CheckCircle2, Car, ShieldCheck, FileText, Globe } from 'lucide-react';
+import { Gauge, Calendar, Euro, AlertTriangle, ArrowRight, Info, CheckCircle2, Car, ShieldCheck, FileText, Globe, RotateCcw } from 'lucide-react';
 
 export const CalculadoraImpuestos = () => {
   const [precio, setPrecio] = useState<number>(45000);
@@ -23,6 +23,13 @@ export const CalculadoraImpuestos = () => {
     { modelo: "Cupra Formentor VZ", valor: "30.820€", co2: "175g", impuesto: "3.005€" },
     { modelo: "Audi A4 Avant 40 TFSI", valor: "32.160€", co2: "148g", impuesto: "1.527€" },
   ];
+
+  // Función para resetear la calculadora
+  const resetCalculadora = () => {
+    setPrecio(0);
+    setEmisiones(0);
+    setMeses(1);
+  };
 
   useEffect(() => {
     let tramo = 0;
@@ -66,33 +73,49 @@ export const CalculadoraImpuestos = () => {
       
       <main className="pt-32 pb-20 px-6">
         <div className="container mx-auto max-w-5xl">
-          <header className="mb-12 text-center md:text-left">
-            <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter">
-              Calculadora <span className="text-gold-400 italic">Oficial</span>
-            </h1>
-            <p className="text-gray-400 text-lg max-w-2xl">
-              Herramienta de precisión basada en los tramos de CO2 2026 y las tablas de depreciación del BOE.
-            </p>
+          <header className="mb-12 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-center md:text-left">
+              <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter">
+                Calculadora <span className="text-gold-400 italic">Oficial</span>
+              </h1>
+              <p className="text-gray-400 text-lg max-w-2xl">
+                Herramienta de precisión basada en los tramos de CO2 2026 y las tablas de depreciación del BOE.
+              </p>
+            </div>
+            <button 
+              onClick={resetCalculadora}
+              className="flex items-center gap-2 px-6 py-3 border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all"
+            >
+              <RotateCcw size={14} /> Limpiar Datos
+            </button>
           </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
             {/* PANEL DE CONTROL */}
             <div className="lg:col-span-7 space-y-12 bg-white/[0.03] p-8 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-sm">
               <div>
-                <div className="flex justify-between items-end mb-4">
+                <div className="flex justify-between items-end mb-4 text-left">
                   <div className="flex flex-col">
-                    <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 mb-1 tracking-widest">
+                    <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 mb-1 tracking-widest text-left">
                       <Euro size={14}/> Valor del Vehículo
                     </label>
-                    <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">
-                      (Valor actual en España / Tablas BOE)
+                    <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider text-left">
+                      (Valor Venal BOE exacto)
                     </span>
                   </div>
-                  <span className="font-mono text-2xl text-white font-bold">{precio.toLocaleString()} €</span>
+                  <div className="flex items-center border-b-2 border-gold-500 pb-1 focus-within:border-white transition-colors">
+                    <input 
+                      type="number"
+                      value={precio}
+                      onChange={(e) => setPrecio(Number(e.target.value))}
+                      className="bg-transparent text-2xl text-white font-mono font-bold text-right outline-none w-32"
+                    />
+                    <span className="text-2xl font-bold ml-1 text-white">€</span>
+                  </div>
                 </div>
                 
                 <input 
-                  type="range" min="5000" max="150000" step="1000"
+                  type="range" min="0" max="150000" step="100"
                   value={precio} onChange={(e) => setPrecio(Number(e.target.value))}
                   className="w-full h-1.5 bg-black rounded-lg appearance-none cursor-pointer accent-gold-500"
                 />
@@ -100,7 +123,7 @@ export const CalculadoraImpuestos = () => {
                 <div className="mt-4 p-4 bg-gold-400/5 border border-gold-400/10 rounded-xl flex gap-3 items-center">
                   <Info size={18} className="text-gold-400 shrink-0" />
                   <p className="text-[11px] text-gray-400 leading-snug italic">
-                    <strong className="text-white not-italic">Nota de experto:</strong> No utilices el precio de compra en Alemania. Debes indicar el valor oficial en España (Valor Venal) para un cálculo exacto.
+                    <strong className="text-white not-italic">Nota para profesionales:</strong> Introduce el valor exacto de las tablas de Hacienda para obtener el cálculo real.
                   </p>
                 </div>
               </div>
@@ -163,7 +186,7 @@ export const CalculadoraImpuestos = () => {
               
               <div className="bg-red-900/5 border border-red-900/20 p-6 rounded-2xl flex gap-4">
                 <AlertTriangle className="text-red-700 shrink-0" size={20} />
-                <p className="text-[10px] text-gray-500 leading-relaxed uppercase tracking-wider font-medium">
+                <p className="text-[10px] text-gray-500 leading-relaxed uppercase tracking-wider font-medium text-left">
                   Este cálculo es orientativo. Los residentes en Cataluña podrían estar sujetos al impuesto anual de CO2 adicional.
                 </p>
               </div>
@@ -173,7 +196,7 @@ export const CalculadoraImpuestos = () => {
           {/* SECCIÓN FAQ / TABLA DE EJEMPLOS */}
           <section className="mt-32 pt-20 border-t border-white/10">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-              <div>
+              <div className="text-left">
                 <h2 className="text-3xl font-serif font-bold flex items-center gap-3">
                   <CheckCircle2 className="text-gold-400" size={28} />
                   Referencias Reales <span className="text-gold-400 italic font-normal text-xl ml-2">(Coches 3 años)</span>
@@ -212,30 +235,30 @@ export const CalculadoraImpuestos = () => {
 
             {/* BLOQUE DE TEXTO SEO ESTRATÉGICO ACTUALIZADO */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-20 text-gray-400 border-t border-white/5 pt-20">
-              <div className="space-y-4">
+              <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <FileText className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest">¿Cómo calcular el precio de matriculación?</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">¿Cómo calcular el precio de matriculación?</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
                   Muchos usuarios se preguntan <strong className="text-white">cómo calcular el precio de matriculación de un coche en España</strong> de forma fiable. Nuestra herramienta utiliza las tablas oficiales del <strong className="text-white">BOE 2026</strong> y los tramos de CO2 actuales para darte una cifra exacta, evitando los errores comunes de las calculadoras genéricas.
                 </p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <Globe className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest">Matricular un coche alemán en España</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">Matricular un coche alemán en España</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
                   Si necesitas saber <strong className="text-white">cuánto cuesta matricular un coche alemán en España</strong>, debes tener en cuenta no solo el impuesto (Modelo 576), sino también la ficha reducida y la ITV. En <strong className="text-white">Premium German Cars</strong> simplificamos este proceso para que la importación de tu vehículo sea transparente y sin sorpresas económicas.
                 </p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <ShieldCheck className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest">Costes de importar un coche</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">Costes de importar un coche</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
                   Los <strong className="text-white">costes de importar un coche</strong> varían según la edad del vehículo y sus emisiones. Analizamos cada caso mediante el <strong className="text-white">número de bastidor</strong> para garantizar que tu inversión sea segura. Descubre por qué somos la asesoría de referencia en <strong className="text-white font-mono italic">premiumgermancars.com</strong> para quienes buscan seguridad y ahorro.

@@ -8,6 +8,7 @@ import { Home } from "./Home";
 import { CarPage } from "./pages/CarPage";
 import { ImportacionAlemania } from "./pages/ImportacionAlemania";
 import { CalculadoraImpuestos } from "./pages/CalculadoraImpuestos";
+import { FAQPage } from "./pages/FAQPage"; // <--- NUEVA IMPORTACIÓN
 
 // IMPORTACIONES DEL BLOG
 import BlogIndex from "./pages/Blog/index";
@@ -48,6 +49,12 @@ export default function App() {
           element={<CalculadoraImpuestos />} 
         />
 
+        {/* NUEVA RUTA PREGUNTAS FRECUENTES (FAQ) */}
+        <Route 
+          path="/preguntas-frecuentes" 
+          element={<FAQPage />} 
+        />
+
         <Route path="/blog" element={<BlogIndex />} />
         
         <Route 
@@ -73,7 +80,7 @@ export default function App() {
         <Route path="*" element={<Home />} />
       </Routes>
 
-      {/* 2. INSERTAMOS EL SENSOR AQUÍ PARA RASTREAR TODAS LAS PÁGINAS */}
+      {/* 2. ANALYTICS PARA RASTREAR EL RENDIMIENTO */}
       <Analytics />
     </BrowserRouter>
   );

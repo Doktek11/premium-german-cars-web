@@ -210,35 +210,35 @@ export const CalculadoraImpuestos = () => {
               </div>
             </div>
 
-            {/* BLOQUE DE TEXTO SEO ESTRATÉGICO */}
+            {/* BLOQUE DE TEXTO SEO ESTRATÉGICO ACTUALIZADO */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-20 text-gray-400 border-t border-white/5 pt-20">
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <FileText className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest">Cálculo Preciso BOE 2026</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest">¿Cómo calcular el precio de matriculación?</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
-                  Nuestra calculadora utiliza las tablas oficiales del <strong className="text-white">BOE 2026</strong> para ofrecerte una estimación precisa del coste de importar un coche de Alemania. No solo calculamos el impuesto de matriculación según las emisiones de CO2, sino que en <strong className="text-white">Premium German Cars</strong> te asesoramos en todo el proceso de importación de vehículos de alta gama.
+                  Muchos usuarios se preguntan <strong className="text-white">cómo calcular el precio de matriculación de un coche en España</strong> de forma fiable. Nuestra herramienta utiliza las tablas oficiales del <strong className="text-white">BOE 2026</strong> y los tramos de CO2 actuales para darte una cifra exacta, evitando los errores comunes de las calculadoras genéricas.
                 </p>
               </div>
 
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <Globe className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest">Gestión de Importación</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest">Matricular un coche alemán en España</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
-                  Traer un coche de la Unión Europea implica trámites complejos como la obtención de la <strong className="text-white">ficha técnica reducida</strong>, la superación de la <strong className="text-white">ITV de importación</strong> y la liquidación de tasas. Ofrecemos un servicio "llave en mano" que incluye transporte, homologación y matriculación definitiva.
+                  Si necesitas saber <strong className="text-white">cuánto cuesta matricular un coche alemán en España</strong>, debes tener en cuenta no solo el impuesto (Modelo 576), sino también la ficha reducida y la ITV. En <strong className="text-white">Premium German Cars</strong> simplificamos este proceso para que la importación de tu vehículo sea transparente y sin sorpresas económicas.
                 </p>
               </div>
 
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <ShieldCheck className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest">Confianza Premium</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest">Costes de importar un coche</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
-                  Verificamos la trazabilidad de cada unidad mediante su <strong className="text-white">número de bastidor</strong> para garantizar que tu inversión sea segura. Consulta ejemplos de nuestro trabajo en <strong className="text-white font-mono">premiumgermancars.com</strong> y descubre por qué somos líderes en asesoría automotriz alemana.
+                  Los <strong className="text-white">costes de importar un coche</strong> varían según la edad del vehículo y sus emisiones. Analizamos cada caso mediante el <strong className="text-white">número de bastidor</strong> para garantizar que tu inversión sea segura. Descubre por qué somos la asesoría de referencia en <strong className="text-white font-mono italic">premiumgermancars.com</strong> para quienes buscan seguridad y ahorro.
                 </p>
               </div>
             </div>

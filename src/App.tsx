@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+// 1. IMPORTAMOS EL COMPONENTE DE VERCEL
+import { Analytics } from "@vercel/analytics/react";
 
 // Componentes Principales
 import { Home } from "./Home";
 import { CarPage } from "./pages/CarPage";
 import { ImportacionAlemania } from "./pages/ImportacionAlemania";
-import { CalculadoraImpuestos } from "./pages/CalculadoraImpuestos"; // <-- Nueva importación
+import { CalculadoraImpuestos } from "./pages/CalculadoraImpuestos";
 
 // IMPORTACIONES DEL BLOG
 import BlogIndex from "./pages/Blog/index";
@@ -70,6 +72,9 @@ export default function App() {
 
         <Route path="*" element={<Home />} />
       </Routes>
+
+      {/* 2. INSERTAMOS EL SENSOR AQUÍ PARA RASTREAR TODAS LAS PÁGINAS */}
+      <Analytics />
     </BrowserRouter>
   );
 }

@@ -63,10 +63,10 @@ const ComoImportarCocheAlemania = () => {
               <p className="text-xl md:text-2xl font-bold text-white mb-8 leading-snug">
                 Cada año en España se repite la misma historia: alguien encuentra un “chollo” en Alemania, firma la compra con ilusión… y semanas después descubre que importar ese coche le cuesta miles de euros más de lo previsto.
               </p>
-              <p className="mb-6 text-justify">
+              <p className="mb-6 text-justify text-lg">
                 En 2026, la importación ya no va solo de encontrar buen precio en plataformas como Mobile.de o AutoScout24. Va de entender la fiscalidad real, las emisiones y la documentación que protege su inversión. El mercado ha cambiado, y Hacienda también.
               </p>
-              <blockquote className="border-l-2 border-gold-400 bg-white/[0.02] p-8 my-12 font-bold text-white text-lg">
+              <blockquote className="border-l-2 border-gold-400 bg-white/[0.02] p-8 my-12 font-bold text-white text-lg md:text-xl">
                 "Nuestra idea es clara: que el coche siga siendo una buena compra cuando ya está matriculado en España, no solo cuando aparece anunciado en Alemania."
               </blockquote>
             </section>
@@ -75,29 +75,29 @@ const ComoImportarCocheAlemania = () => {
             <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4">
               Bloque 1: La Búsqueda Estratégica
             </h2>
-            <h3 className="text-2xl text-white font-bold mb-8">¿Por qué los coches de 2 a 3 años son la mejor opción?</h3>
-            <p className="mb-10 text-justify">
+            <h3 className="text-2xl md:text-3xl text-white font-bold mb-8">¿Por qué los coches de 2 a 3 años son la mejor opción?</h3>
+            <p className="mb-10 text-justify text-lg">
               Aquí es donde fallan la mayoría de particulares: solo miran el precio en Alemania, sin calcular el valor oficial de Hacienda (BOE). Los coches de 24 a 36 meses ofrecen el mejor equilibrio entre precio, estado y fiscalidad al cumplir la curva de depreciación oficial.
             </p>
 
             <div className="bg-[#0a0a0a] p-10 border border-white/5 rounded-sm mb-20">
-              <h4 className="text-gold-400 font-bold mb-8 uppercase tracking-widest text-xs flex items-center gap-2">
-                <Info size={14} /> El concepto clave: reestreno
+              <h4 className="text-gold-400 font-bold mb-8 uppercase tracking-widest text-sm flex items-center gap-2">
+                <Info size={16} /> El concepto clave: reestreno
               </h4>
               <div className="grid md:grid-cols-2 gap-10">
-                <div className="space-y-6 text-sm text-justify">
+                <div className="space-y-6 text-base text-justify">
                   <div>
-                    <span className="text-white font-bold block mb-1 uppercase tracking-tighter">Depreciación BOE</span>
+                    <span className="text-white font-bold block mb-1 uppercase tracking-tighter text-lg">Depreciación BOE</span>
                     <p>Al cumplir los 24 o 36 meses, el valor oficial para el impuesto de matriculación cae notablemente, aunque el coche esté como nuevo.</p>
                   </div>
                   <div>
-                    <span className="text-white font-bold block mb-1 uppercase tracking-tighter">Garantía Oficial Europea</span>
+                    <span className="text-white font-bold block mb-1 uppercase tracking-tighter text-lg">Garantía Oficial Europea</span>
                     <p>Programas como Junge Sterne o Premium Selection permiten mantener la cobertura oficial en España.</p>
                   </div>
                 </div>
                 <div className="bg-white/5 p-6 border-l border-gold-400">
                   <span className="text-[10px] uppercase font-black text-gray-500 block mb-4 tracking-widest text-center">Filtros Indispensables PGC</span>
-                  <ul className="space-y-3 text-[11px] uppercase tracking-wider font-bold text-gray-300">
+                  <ul className="space-y-3 text-sm uppercase tracking-wider font-bold text-gray-200">
                     <li className="flex items-center gap-2">✔ Historial Completo</li>
                     <li className="flex items-center gap-2">✔ KM Coherente y verificable</li>
                     <li className="flex items-center gap-2 text-gold-400">✔ IVA Deducible (MwSt. ausweisbar)</li>
@@ -106,7 +106,7 @@ const ComoImportarCocheAlemania = () => {
               </div>
             </div>
 
-            {/* BLOQUE 2: DOCUMENTACIÓN */}
+            {/* BLOQUE 2: DOCUMENTACIÓN - Aumentada legibilidad */}
             <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4">
               Bloque 2: Los 3 Documentos que “Salvan” la Importación
             </h2>
@@ -116,10 +116,10 @@ const ComoImportarCocheAlemania = () => {
                 { t: "Teil I & II", d: "Documentos originales de circulación y propiedad. Nunca copias ni escaneos." },
                 { t: "Kaufvertrag", d: "Factura o contrato. La base legal para justificar IVA o ITP correctamente." }
               ].map((doc, i) => (
-                <div key={i} className="p-6 bg-[#0a0a0a] border border-white/5 hover:border-gold-400/30 transition-colors">
-                  <span className="text-gold-400 font-black text-xl mb-4 block">0{i+1}</span>
-                  <h4 className="text-white font-bold uppercase tracking-widest text-xs mb-2">{doc.t}</h4>
-                  <p className="text-[11px] leading-relaxed text-gray-400">{doc.d}</p>
+                <div key={i} className="p-8 bg-[#0a0a0a] border border-white/10 hover:border-gold-400/30 transition-colors">
+                  <span className="text-gold-400 font-black text-2xl mb-4 block">0{i+1}</span>
+                  <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-3">{doc.t}</h4>
+                  <p className="text-sm md:text-base leading-relaxed text-gray-200 font-medium">{doc.d}</p>
                 </div>
               ))}
             </div>
@@ -128,25 +128,25 @@ const ComoImportarCocheAlemania = () => {
             <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4">
               Bloque 3: El Nuevo Escenario de las Emisiones CO₂ 2026
             </h2>
-            <h3 className="text-2xl text-white font-bold mb-8">La diferencia fiscal de miles de euros</h3>
-            <p className="mb-10 text-justify">
+            <h3 className="text-2xl md:text-3xl text-white font-bold mb-8">La diferencia fiscal de miles de euros</h3>
+            <p className="mb-10 text-justify text-lg">
               En 2026, el impuesto de matriculación en España es más exigente que nunca. Dos coches visualmente idénticos pueden generar una diferencia fiscal abismal según su motorización y homologación de emisiones.
             </p>
 
             <div className="grid md:grid-cols-2 gap-8 mb-20">
               <div className="bg-gradient-to-br from-green-900/20 to-transparent p-8 border border-green-900/30">
-                <span className="text-green-500 font-black text-2xl mb-2 block">0 %</span>
-                <h4 className="text-white font-bold uppercase text-xs mb-4">Eficiencia Máxima</h4>
-                <p className="text-xs text-gray-400 font-medium">Vehículos por debajo de 120 g/km. Incluye híbridos enchufables y motores diésel de última generación.</p>
+                <span className="text-green-500 font-black text-3xl mb-2 block">0 %</span>
+                <h4 className="text-white font-bold uppercase text-sm mb-4">Eficiencia Máxima</h4>
+                <p className="text-sm text-gray-300 font-medium">Vehículos por debajo de 120 g/km. Incluye híbridos enchufables y motores diésel de última generación.</p>
               </div>
               <div className="bg-gradient-to-br from-red-900/20 to-transparent p-8 border border-red-900/30">
-                <span className="text-red-500 font-black text-2xl mb-2 block">14,75 %</span>
-                <h4 className="text-white font-bold uppercase text-xs mb-4">Tramo Máximo</h4>
-                <p className="text-xs text-gray-400 font-medium">Deportivos, SUV de gran tonelaje o motorizaciones antiguas. El impacto fiscal aquí es crítico.</p>
+                <span className="text-red-500 font-black text-3xl mb-2 block">14,75 %</span>
+                <h4 className="text-white font-bold uppercase text-sm mb-4">Tramo Máximo</h4>
+                <p className="text-sm text-gray-300 font-medium">Deportivos, SUV de gran tonelaje o motorizaciones antiguas. El impacto fiscal aquí es crítico.</p>
               </div>
             </div>
             
-            <p className="bg-gold-400/5 p-6 border-l-2 border-gold-400 text-white font-bold text-sm mb-20">
+            <p className="bg-gold-400/5 p-8 border-l-2 border-gold-400 text-white font-bold text-base mb-20">
               <span className="text-gold-400 font-black uppercase tracking-widest block mb-2 text-xs">Consejo PGC:</span>
               A veces, elegir un motor ligeramente más moderno puede suponer un ahorro de 3.000 € o más simplemente por bajar un tramo de emisiones. Nunca propongas una importación sin calcular antes el impacto del Modelo 576.
             </p>
@@ -157,12 +157,12 @@ const ComoImportarCocheAlemania = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
               <div className="bg-[#0a0a0a] border border-white/10 p-10 rounded-sm hover:border-white/20 transition-colors">
-                <h4 className="text-gray-400 font-bold mb-6 uppercase text-sm tracking-[0.2em] border-b border-white/5 pb-4">
+                <h4 className="text-gray-400 font-bold mb-6 uppercase text-base tracking-[0.2em] border-b border-white/5 pb-4">
                   Traer el coche rodando
                 </h4>
                 <ul className="space-y-4">
                   {["Placas temporales (Zollkennzeichen)", "Combustible, peajes y pernoctas", "Desgaste mecánico y kilómetros", "Responsabilidad legal en ruta"].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-white font-medium">
+                    <li key={i} className="flex items-start gap-3 text-base text-white font-medium">
                       <span className="text-red-600 font-black">•</span> {item}
                     </li>
                   ))}
@@ -171,13 +171,13 @@ const ComoImportarCocheAlemania = () => {
 
               <div className="bg-[#0a0a0a] border border-gold-400/40 p-10 rounded-sm relative shadow-[0_0_50px_rgba(212,175,55,0.05)]">
                 <div className="absolute -top-3 left-10 bg-gold-400 text-black text-[9px] font-black uppercase px-4 py-1 tracking-[0.2em]">Recomendación PGC</div>
-                <h4 className="text-gold-400 font-bold mb-6 uppercase text-sm tracking-[0.2em] border-b border-gold-400/20 pb-4">
+                <h4 className="text-gold-400 font-bold mb-6 uppercase text-base tracking-[0.2em] border-b border-gold-400/20 pb-4">
                   Camión Especializado
                 </h4>
                 <ul className="space-y-4">
                   {["Seguridad total y seguro CMR", "Cero desgaste mecánico", "Costes cerrados e inamovibles", "Entrega directa personalizada"].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-white font-bold">
-                      <CheckCircle2 size={16} className="text-gold-400 shrink-0 mt-0.5" /> {item}
+                    <li key={i} className="flex items-start gap-3 text-base text-white font-bold">
+                      <CheckCircle2 size={20} className="text-gold-400 shrink-0 mt-0.5" /> {item}
                     </li>
                   ))}
                 </ul>
@@ -198,8 +198,8 @@ const ComoImportarCocheAlemania = () => {
                 <div key={i} className="flex items-center gap-10 group">
                   <span className="font-bold text-5xl text-gold-400/20 group-hover:text-gold-400 transition-colors w-20 shrink-0">{step.n}</span>
                   <div>
-                    <h4 className="text-white font-bold uppercase text-xs tracking-widest mb-1">{step.t}</h4>
-                    <p className="text-sm text-gray-400">{step.d}</p>
+                    <h4 className="text-white font-bold uppercase text-sm tracking-widest mb-1">{step.t}</h4>
+                    <p className="text-base text-gray-300 font-medium">{step.d}</p>
                   </div>
                 </div>
               ))}
@@ -211,7 +211,7 @@ const ComoImportarCocheAlemania = () => {
                 <h2 className="text-3xl font-bold mb-6 text-white leading-tight">
                   Importar Bien <span className="text-gold-400 italic">No es Suerte</span>
                 </h2>
-                <p className="text-gray-400 mb-10 text-sm max-w-2xl mx-auto font-bold">
+                <p className="text-gray-300 mb-10 text-base max-w-2xl mx-auto font-bold">
                   En <strong>Premium German Cars</strong> controlamos cada variable para que el coche que ve en Alemania siga siendo una gran inversión cuando ya circula en España.
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 justify-center">
@@ -236,4 +236,3 @@ const ComoImportarCocheAlemania = () => {
 };
 
 export default ComoImportarCocheAlemania;
-

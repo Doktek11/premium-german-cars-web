@@ -2,8 +2,7 @@ import { Link } from 'react-router-dom';
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
 import { WhatsAppButton } from '../../components/WhatsAppButton';
-import { Calendar, ArrowRight } from 'lucide-center';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { Calendar, ArrowRight } from 'lucide-react';
 
 const blogPosts = [
   {
@@ -60,7 +59,7 @@ export default function BlogIndex() {
               Blog <span className="text-gold-400">Premium</span>
             </h1>
             <p className="text-gray-400 text-lg italic leading-relaxed">
-              Actualidad, protocolos de importación y análisis estratégico del mercado automotriz alemán para clientes de <span className="text-white font-semibold">Premium German Cars</span>.
+              Actualidad, protocolos de importación y análisis estratégico del mercado automotriz alemán para clientes de <span className="text-white font-semibold italic">Premium German Cars</span>.
             </p>
           </header>
           
@@ -71,7 +70,7 @@ export default function BlogIndex() {
                 className="bg-[#0a0a0a] border border-white/5 overflow-hidden flex flex-col group hover:border-gold-400/30 transition-all duration-500 shadow-2xl"
               >
                 
-                {/* CONTENEDOR DE IMAGEN CON OVERLAY DE CATEGORÍA */}
+                {/* CONTENEDOR DE IMAGEN */}
                 <div className="relative h-64 overflow-hidden bg-gradient-to-br from-[#111] to-black flex items-center justify-center">
                   <img 
                     src="/logoPGC.svg" 
@@ -86,17 +85,16 @@ export default function BlogIndex() {
                     </span>
                   </div>
 
-                  {/* EFECTO DE LUZ AL HACER HOVER */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                 </div>
 
                 <div className="p-8 flex flex-col flex-grow text-white">
                   <div className="flex items-center gap-2 text-gray-500 text-[10px] mb-6 uppercase tracking-[0.2em] font-bold">
-                    <CalendarIcon size={12} className="text-gold-400" /> 
+                    <Calendar size={12} className="text-gold-400" /> 
                     {post.date}
                   </div>
                   
-                  <h2 className="text-2xl font-serif font-bold mb-4 group-hover:text-gold-400 transition-colors duration-300 line-clamp-2 leading-tight">
+                  <h2 className="text-2xl font-serif font-bold mb-4 group-hover:text-gold-400 transition-colors duration-300 line-clamp-2 leading-[1.2]">
                     {post.title}
                   </h2>
                   
@@ -106,7 +104,6 @@ export default function BlogIndex() {
                   
                   <Link 
                     to={`/blog/${post.slug}`} 
-                    aria-label={`Leer artículo completo sobre ${post.title}`}
                     className="text-white font-bold uppercase text-[10px] tracking-[0.3em] flex items-center gap-3 group/link mt-auto border-t border-white/5 pt-6 group-hover:text-gold-400 transition-colors"
                   >
                     Leer artículo completo

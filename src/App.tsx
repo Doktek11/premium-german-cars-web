@@ -8,7 +8,7 @@ import { Home } from "./Home";
 import { CarPage } from "./pages/CarPage";
 import { ImportacionAlemania } from "./pages/ImportacionAlemania";
 import { CalculadoraImpuestos } from "./pages/CalculadoraImpuestos";
-import { FAQPage } from "./pages/FAQPage"; // <--- NUEVA IMPORTACIÓN
+import { FAQPage } from "./pages/FAQPage"; 
 
 // IMPORTACIONES DEL BLOG
 import BlogIndex from "./pages/Blog/index";
@@ -16,6 +16,8 @@ import ArticuloModelos2026 from "./pages/Blog/ArticuloModelos2026";
 import MotoresBmwMercedes2027 from "./pages/Blog/motores-bmw-en-mercedes-2027";
 import BmwReestreno2026 from "./pages/Blog/bmw-reestreno-alemania-2026";
 import CochesReusTarragona from "./pages/Blog/coche-segunda-mano-reus-tarragona";
+// NUEVA IMPORTACIÓN: GUÍA 2026
+import ComoImportarCocheAlemania from "./pages/Blog/como-importar-coche-alemania";
 
 // IMPORTACIONES LEGALES
 import AvisoLegal from "./pages/Legal/AvisoLegal";
@@ -43,13 +45,13 @@ export default function App() {
           element={<ImportacionAlemania />}
         />
 
-        {/* NUEVA RUTA CALCULADORA */}
+        {/* RUTA CALCULADORA */}
         <Route 
           path="/calculadora-impuesto-matriculacion" 
           element={<CalculadoraImpuestos />} 
         />
 
-        {/* NUEVA RUTA PREGUNTAS FRECUENTES (FAQ) */}
+        {/* RUTA PREGUNTAS FRECUENTES (FAQ) */}
         <Route 
           path="/preguntas-frecuentes" 
           element={<FAQPage />} 
@@ -57,6 +59,7 @@ export default function App() {
 
         <Route path="/blog" element={<BlogIndex />} />
         
+        {/* RUTAS DEL BLOG */}
         <Route 
           path="/blog/mejores-modelos-importar-alemania-2026" 
           element={<ArticuloModelos2026 />} 
@@ -73,10 +76,16 @@ export default function App() {
           path="/blog/coche-segunda-mano-reus-tarragona" 
           element={<CochesReusTarragona />} 
         />
+        {/* NUEVA RUTA: GUÍA IMPORTACIÓN 2026 */}
+        <Route 
+          path="/blog/como-importar-coche-alemania" 
+          element={<ComoImportarCocheAlemania />} 
+        />
 
         <Route path="/aviso-legal" element={<AvisoLegal />} />
         <Route path="/politica-privacidad" element={<PoliticaPrivacidad />} />
 
+        {/* REDIRECCIÓN POR DEFECTO A HOME */}
         <Route path="*" element={<Home />} />
       </Routes>
 

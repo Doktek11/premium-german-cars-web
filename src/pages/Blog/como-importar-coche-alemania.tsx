@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
@@ -49,11 +48,11 @@ const ComoImportarCocheAlemania = () => {
 
           {/* HERO VISUAL */}
           <div className="aspect-[21/9] w-full bg-[#0a0a0a] border border-white/5 flex flex-col items-center justify-center mb-20 relative overflow-hidden group">
-             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold-400/5 via-transparent to-transparent opacity-50"></div>
-             <img src="/logoPGC.svg" className="w-64 opacity-20 brightness-0 invert transition-transform duration-700 group-hover:scale-110" alt="PGC Logo" />
-             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gold-400/40 font-serif italic text-xs tracking-[0.5em] uppercase">
-               Expertos en Mercado Alemán
-             </div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold-400/5 via-transparent to-transparent opacity-50"></div>
+              <img src="/logoPGC.svg" className="w-64 opacity-20 brightness-0 invert transition-transform duration-700 group-hover:scale-110" alt="PGC Logo" />
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gold-400/40 font-serif italic text-xs tracking-[0.5em] uppercase">
+                Expertos en Mercado Alemán
+              </div>
           </div>
 
           <div className="prose prose-invert prose-gold max-w-none text-gray-400 leading-relaxed">
@@ -106,7 +105,7 @@ const ComoImportarCocheAlemania = () => {
               </div>
             </div>
 
-            {/* BLOQUE 2: DOCUMENTACIÓN - Aumentada legibilidad */}
+            {/* BLOQUE 2: DOCUMENTACIÓN */}
             <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4">
               Bloque 2: Los 3 Documentos que “Salvan” la Importación
             </h2>

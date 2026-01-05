@@ -2,9 +2,18 @@ import { Link } from 'react-router-dom';
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
 import { WhatsAppButton } from '../../components/WhatsAppButton';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight } from 'lucide-center';
+import { Calendar as CalendarIcon } from 'lucide-react';
 
 const blogPosts = [
+  {
+    id: 5,
+    title: "Guía 2026: Importar un Coche de Alemania sin Sorpresas Fiscales",
+    excerpt: "Protocolo completo 2026. Entienda la fiscalidad de las emisiones de CO2, la documentación necesaria y cómo evitar los errores más comunes en la logística profesional.",
+    date: "05 Ene, 2026",
+    slug: "como-importar-coche-alemania",
+    category: "Protocolo PGC"
+  },
   {
     id: 4,
     title: "Los 5 modelos más inteligentes para importar de Alemania en 2026",
@@ -50,8 +59,8 @@ export default function BlogIndex() {
             <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-6">
               Blog <span className="text-gold-400">Premium</span>
             </h1>
-            <p className="text-gray-400 text-lg italic">
-              Actualidad, guías de importación y análisis del mercado automotriz alemán en Premium German Cars.
+            <p className="text-gray-400 text-lg italic leading-relaxed">
+              Actualidad, protocolos de importación y análisis estratégico del mercado automotriz alemán para clientes de <span className="text-white font-semibold">Premium German Cars</span>.
             </p>
           </header>
           
@@ -59,46 +68,49 @@ export default function BlogIndex() {
             {blogPosts.map((post) => (
               <article 
                 key={post.id} 
-                className="bg-metallic-900 border border-white/5 overflow-hidden flex flex-col group hover:border-gold-400/30 transition-all duration-500 shadow-2xl"
+                className="bg-[#0a0a0a] border border-white/5 overflow-hidden flex flex-col group hover:border-gold-400/30 transition-all duration-500 shadow-2xl"
               >
                 
                 {/* CONTENEDOR DE IMAGEN CON OVERLAY DE CATEGORÍA */}
-                <div className="relative h-64 overflow-hidden bg-gradient-to-br from-metallic-800 to-black flex items-center justify-center">
+                <div className="relative h-64 overflow-hidden bg-gradient-to-br from-[#111] to-black flex items-center justify-center">
                   <img 
                     src="/logoPGC.svg" 
                     alt={`Artículo sobre ${post.title}`} 
-                    className="w-32 h-auto opacity-10 group-hover:opacity-25 group-hover:scale-110 transition-all duration-700 brightness-0 invert"
+                    className="w-32 h-auto opacity-10 group-hover:opacity-30 group-hover:scale-110 transition-all duration-700 brightness-0 invert"
                   />
                   
                   {/* CATEGORÍA */}
                   <div className="absolute top-6 left-6">
-                    <span className="bg-gold-400 text-black text-[10px] font-bold px-3 py-1 uppercase tracking-[0.2em]">
+                    <span className="bg-gold-400 text-black text-[9px] font-black px-4 py-1.5 uppercase tracking-[0.2em] shadow-lg">
                       {post.category}
                     </span>
                   </div>
+
+                  {/* EFECTO DE LUZ AL HACER HOVER */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                 </div>
 
                 <div className="p-8 flex flex-col flex-grow text-white">
-                  <div className="flex items-center gap-2 text-gray-500 text-xs mb-6 uppercase tracking-widest">
-                    <Calendar size={14} className="text-gold-400" /> 
+                  <div className="flex items-center gap-2 text-gray-500 text-[10px] mb-6 uppercase tracking-[0.2em] font-bold">
+                    <CalendarIcon size={12} className="text-gold-400" /> 
                     {post.date}
                   </div>
                   
-                  <h2 className="text-2xl font-serif font-bold mb-4 group-hover:text-gold-400 transition-colors duration-300 line-clamp-2">
+                  <h2 className="text-2xl font-serif font-bold mb-4 group-hover:text-gold-400 transition-colors duration-300 line-clamp-2 leading-tight">
                     {post.title}
                   </h2>
                   
-                  <p className="text-gray-400 mb-8 flex-grow line-clamp-3 text-sm leading-relaxed">
+                  <p className="text-gray-500 mb-8 flex-grow line-clamp-3 text-sm leading-relaxed italic">
                     {post.excerpt}
                   </p>
                   
                   <Link 
                     to={`/blog/${post.slug}`} 
                     aria-label={`Leer artículo completo sobre ${post.title}`}
-                    className="text-gold-400 font-bold uppercase text-[10px] tracking-[0.2em] flex items-center gap-3 group/link mt-auto"
+                    className="text-white font-bold uppercase text-[10px] tracking-[0.3em] flex items-center gap-3 group/link mt-auto border-t border-white/5 pt-6 group-hover:text-gold-400 transition-colors"
                   >
                     Leer artículo completo
-                    <ArrowRight size={14} className="group-hover/link:translate-x-2 transition-transform duration-300" />
+                    <ArrowRight size={14} className="group-hover/link:translate-x-2 transition-transform duration-300 text-gold-400" />
                   </Link>
                 </div>
               </article>

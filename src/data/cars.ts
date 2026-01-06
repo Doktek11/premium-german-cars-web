@@ -1,73 +1,128 @@
-// src/data/cars.ts
-import { Car } from "../types";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { cars } from "../data/cars";
 
-const slugify = (make: string, model: string) =>
-  `${make}-${model}`
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w-]+/g, "");
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
+import { WhatsAppButton } from "../components/WhatsAppButton";
+import { SEO } from "../components/SEO";
 
-export const cars: Car[] = [
-  {
-    id: 1,
-    make: "BMW",
-    model: "Serie 1 116i",
-    year: 2023,
-    price: 26500,
-    km: 31500,
-    image: "/bmwconcesionario.webp",
-    engine: "1.5 Turbo 109cv",
-    status: "Disponible",
-    slug: slugify("BMW", "Serie 1 116i"),
-    description: `Un compacto premium que sorprende desde el primer kilómetro... BMW Serie 1 116i de importación alemana. Unidad en estado impecable, con historial de mantenimiento completo y un equipamiento superior al habitual: navegación profesional, sensores de aparcamiento, llantas deportivas y paquete LED. Perfecto para quien busca un compacto premium eficiente y moderno.`,
-    gallery: [
-      "/bmwconcesionario.webp",
-      "/bmwconcesionario2.webp",
-      "/cockpit.webp",
-      "/interior.webp",
-      "/interiordos.webp"
-    ]
-  },
-  {
-    id: 2,
-    make: "Audi",
-    model: "RS6 Avant",
-    year: 2022,
-    price: 115000,
-    km: 44500,
-    image: "/rs6dos.webp",
-    engine: "4.0 V8 TFSI",
-    status: "Vendido",
-    slug: slugify("Audi", "RS6 Avant"),
-    description: "La combinación definitiva de rendimiento y practicidad. Este Audi RS6 Avant cuenta con todos los extras imaginables, incluyendo frenos cerámicos y paquete dinámico RS.",
-    gallery: ["/rs6.webp", "/rs6dos.webp", "/rs6tres.webp"]
-  },
-  {
-    id: 3,
-    make: "Mercedes-Benz",
-    model: "C63 AMG",
-    year: 2021,
-    price: 72000,
-    km: 38200,
-    image: "/mercedes1.webp",
-    engine: "4.0 V8 Biturbo",
-    status: "Vendido",
-    slug: slugify("Mercedes-Benz", "C63 AMG"),
-    description: `Máxima expresión del ADN AMG. Mercedes-AMG C63 con motor 4.0 V8 Biturbo hecho a mano, sonido inconfundible y prestaciones que lo mantienen en la cima de su segmento.`,
-    gallery: ["/mercedes1.webp", "/mercedes2.webp", "/mercedes3.webp"]
-  },
-  {
-    id: 4,
-    make: "Audi",
-    model: "A3 Sportback 35 TFSI",
-    year: 2021,
-    price: 25500,
-    km: 42000,
-    image: "/audi1.webp",
-    engine: "1.5 TFSI 150cv",
-    status: "Vendido",
-    slug: slugify("Audi", "A3 Sportback 35 TFSI"),
-    description: `Audi A3 Sportback 35 TFSI gasolina de 150 CV, eficiente y con un rendimiento equilibrado para uso diario.`,
-    gallery: ["/audi1.webp", "/audi2.webp", "/audi3.webp", "/audi4.webp"]
-  }
-];
+export const CarPage: React.FC = () => {
+  const { slug } = useParams();
+
+  const car = cars.find((c) => c.slug === slug);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  if (!car) return null;
+
+  const title = `${car.make} ${car.model} en venta | Importado desde Alemania`;
+  const description = `Compra ${car.make} ${car.model} importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.`;
+
+  // FUNCIÓN PARA WHATSAPP DINÁMICO
+  const handleWhatsAppContact = (tipo: "pedido" | "dossier") => {
+    const telefono = "34603743608";
+    const mensaje = tipo === "pedido" 
+      ? `Hola! Estoy interesado en iniciar el pedido de este ${car.make} ${car.model} (${car.price}€) que he visto en la web.`
+      : `Hola! Me gustaría recibir el dossier completo del ${car.make} ${car.model} de ${car.price}€ que tenéis disponible.`;
+    
+    window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, "_blank");
+  };
+
+  return (
+    <>
+      <SEO
+        title={title}
+        description={description}
+        canonical={`https://www.premiumgermancars.com/car/${car.slug}`}
+      />
+
+      <Navbar />
+
+      <main className="bg-black text-white pt-32 pb-32">
+        <div className="container mx-auto px-6 max-w-6xl">
+
+          {/* CABECERA */}
+          <div className="mb-12">
+             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
+              {car.make} <span className="text-gold-400">{car.model}</span>
+            </h1>
+            <p className="text-gold-400 text-3xl font-serif">
+              {car.price.toLocaleString("de-DE")} €
+            </p>
+          </div>
+
+          {/* CTA RÁPIDO */}
+          <div className="mb-12">
+            <button
+              onClick={() => handleWhatsAppContact("pedido")}
+              className="inline-block px-8 py-4 bg-gold-400 text-black font-bold uppercase tracking-widest text-xs hover:bg-white transition-all duration-300 shadow-lg shadow-gold-400/10"
+            >
+              Comenzar pedido
+            </button>
+          </div>
+
+          {/* GALERÍA OPTIMIZADA WEBP */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+            {car.gallery?.map((img, index) => (
+              <div key={index} className="overflow-hidden rounded-lg bg-metallic-900 border border-white/5">
+                <img
+                  src={img}
+                  alt={`${car.make} ${car.model} imagen ${index + 1}`}
+                  className="w-full h-[360px] object-cover hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* INFO TÉCNICA Y DESCRIPCIÓN */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-2">
+                <h2 className="text-2xl font-serif font-bold mb-6 border-b border-gold-400/20 pb-4">
+                  Descripción del vehículo
+                </h2>
+                <p className="text-gray-300 leading-relaxed whitespace-pre-line text-lg">
+                  {car.description}
+                </p>
+            </div>
+
+            <div className="bg-metallic-900 p-8 rounded-lg border border-white/10 h-fit">
+              <h3 className="text-gold-400 font-bold uppercase tracking-tighter mb-6">Especificaciones</h3>
+              <div className="space-y-6">
+                <div className="flex justify-between border-b border-white/5 pb-2">
+                  <span className="text-gray-400 text-sm uppercase">Año</span>
+                  <span className="font-semibold">{car.year}</span>
+                </div>
+                <div className="flex justify-between border-b border-white/5 pb-2">
+                  <span className="text-gray-400 text-sm uppercase">Kilómetros</span>
+                  <span className="font-semibold">{car.km.toLocaleString("de-DE")} km</span>
+                </div>
+                <div className="flex justify-between border-b border-white/5 pb-2">
+                  <span className="text-gray-400 text-sm uppercase">Motor</span>
+                  <span className="font-semibold">{car.engine}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400 text-sm uppercase">Estado</span>
+                  <span className="text-gold-400 font-bold">{car.status}</span>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => handleWhatsAppContact("dossier")}
+                className="w-full mt-10 py-4 border border-gold-400 text-gold-400 font-bold uppercase tracking-widest text-xs hover:bg-gold-400 hover:text-black transition-all"
+              >
+                Solicitar Dossier
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+      <WhatsAppButton />
+    </>
+  );
+};

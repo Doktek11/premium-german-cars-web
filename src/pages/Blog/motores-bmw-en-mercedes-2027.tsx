@@ -107,7 +107,12 @@ const MotoresBmwMercedes2027 = () => {
               Tanto si eres fiel a la propulsión de Múnich como si buscas el confort de Stuttgart, seleccionamos para ti las mejores unidades con historial 100% transparente.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <a href="/#import" className="bg-gold-400 text-black px-10 py-4 font-bold uppercase tracking-widest hover:bg-gold-500 transition-all flex items-center justify-center gap-2">
+              <a 
+                href="https://wa.me/34603743608?text=Hola,%20me%20gustaría%20información%20sobre%20la%20importación%20de%20un%20BMW%20o%20Mercedes%20con%20ingeniería%20propia." 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gold-400 text-black px-10 py-4 font-bold uppercase tracking-widest hover:bg-gold-500 transition-all flex items-center justify-center gap-2"
+              >
                 Configurar mi pedido <ArrowRight size={18} />
               </a>
               <a href="/blog" className="border border-white/20 text-white px-10 py-4 font-bold uppercase tracking-widest hover:bg-white/5 transition-all">

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { cars } from "../data/cars";
 
 import { Navbar } from "../components/Navbar";
@@ -9,7 +9,6 @@ import { SEO } from "../components/SEO";
 
 export const CarPage: React.FC = () => {
   const { slug } = useParams();
-  const navigate = useNavigate();
 
   const car = cars.find((c) => c.slug === slug);
 
@@ -22,8 +21,14 @@ export const CarPage: React.FC = () => {
   const title = `${car.make} ${car.model} en venta | Importado desde Alemania`;
   const description = `Compra ${car.make} ${car.model} importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.`;
 
-  const goToImportForm = () => {
-    navigate("/", { state: { scrollTo: "#import" } });
+  // FUNCIÓN DE CONTACTO DIRECTO POR WHATSAPP
+  const handleWhatsAppContact = (tipo: "pedido" | "dossier") => {
+    const telefono = "34603743608";
+    const mensaje = tipo === "pedido" 
+      ? `Hola! Estoy interesado en iniciar el pedido de este ${car.make} ${car.model} (${car.price.toLocaleString("de-DE")}€) que he visto en la web de Premium German Cars.`
+      : `Hola! Me gustaría recibir el dossier completo del ${car.make} ${car.model} de ${car.price.toLocaleString("de-DE")}€ que tenéis disponible.`;
+    
+    window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, "_blank");
   };
 
   return (
@@ -52,7 +57,7 @@ export const CarPage: React.FC = () => {
           {/* CTA RÁPIDO */}
           <div className="mb-12">
             <button
-              onClick={goToImportForm}
+              onClick={() => handleWhatsAppContact("pedido")}
               className="inline-block px-8 py-4 bg-gold-400 text-black font-bold uppercase tracking-widest text-xs hover:bg-white transition-all duration-300 shadow-lg shadow-gold-400/10"
             >
               Comenzar pedido
@@ -106,7 +111,7 @@ export const CarPage: React.FC = () => {
               </div>
               
               <button
-                onClick={goToImportForm}
+                onClick={() => handleWhatsAppContact("dossier")}
                 className="w-full mt-10 py-4 border border-gold-400 text-gold-400 font-bold uppercase tracking-widest text-xs hover:bg-gold-400 hover:text-black transition-all"
               >
                 Solicitar Dossier

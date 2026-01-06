@@ -215,7 +215,7 @@ const ComoImportarCocheAlemania = () => {
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 justify-center">
                   <a 
-                    href="https://wa.me/34tu_numero_aqui?text=Hola,%20he%20le%C3%ADdo%20la%20gu%C3%ADa%20de%20importaci%C3%B3n%202026%20y%20necesito%20asesoramiento%20para%20un%20proyecto." 
+                    href="https://wa.me/34603743608?text=Hola,%20he%20le%C3%ADdo%20la%20gu%C3%ADa%20de%20importaci%C3%B3n%202026%20y%20necesito%20asesoramiento%20para%20un%20proyecto." 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white transition-all duration-500"

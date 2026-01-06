@@ -4,7 +4,7 @@ import { MessageCircle } from 'lucide-react';
 
 export const WhatsAppButton = () => {
   const { pathname } = useLocation();
-  const phoneNumber = "34600000000"; // Reemplaza con tu número real
+  const phoneNumber = "34603743608"; // Reemplaza con tu número real
 
   // Personalizamos el mensaje según la página donde esté el usuario
   let message = "Hola! Vengo de la web de Premium German Cars y me gustaría recibir más información.";

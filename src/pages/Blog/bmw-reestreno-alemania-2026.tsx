@@ -106,12 +106,17 @@ const BmwReestreno2026 = () => {
             </p>
           </div>
 
-          {/* Banner de Contacto Final */}
+          {/* Banner de Contacto Final Corregido */}
           <div className="mt-20 p-1 bg-gradient-to-r from-gold-600 to-gold-400">
             <div className="bg-black p-10 text-center">
               <h3 className="text-3xl font-serif font-bold mb-4 text-white">¿Buscamos tu BMW?</h3>
               <p className="text-gray-400 mb-8 max-w-md mx-auto">Configura tu búsqueda y recibe las mejores unidades disponibles en la red oficial alemana.</p>
-              <a href="/#import" className="inline-flex items-center gap-3 bg-gold-400 text-black px-10 py-4 font-bold uppercase tracking-tighter hover:bg-white transition-all duration-300">
+              <a 
+                href="https://wa.me/34tu_numero_aqui?text=Hola,%20estoy%20interesado%20en%20importar%20un%20BMW%20de%20reestreno%20visto%20en%20la%20web" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 bg-gold-400 text-black px-10 py-4 font-bold uppercase tracking-tighter hover:bg-white transition-all duration-300"
+              >
                 Solicitar presupuesto <ArrowRight size={18} />
               </a>
             </div>

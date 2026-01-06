@@ -204,7 +204,7 @@ const ComoImportarCocheAlemania = () => {
               ))}
             </div>
 
-            {/* CONCLUSIÓN Y CTA */}
+            {/* CONCLUSIÓN Y CTA CORREGIDO */}
             <div className="bg-[#050505] border border-gold-400/20 p-12 text-center relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400/50 to-transparent"></div>
                 <h2 className="text-3xl font-bold mb-6 text-white leading-tight">
@@ -214,7 +214,12 @@ const ComoImportarCocheAlemania = () => {
                   En <strong>Premium German Cars</strong> controlamos cada variable para que el coche que ve en Alemania siga siendo una gran inversión cuando ya circula en España.
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 justify-center">
-                  <a href="/#import" className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white transition-all duration-500">
+                  <a 
+                    href="https://wa.me/34tu_numero_aqui?text=Hola,%20he%20le%C3%ADdo%20la%20gu%C3%ADa%20de%20importaci%C3%B3n%202026%20y%20necesito%20asesoramiento%20para%20un%20proyecto." 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white transition-all duration-500"
+                  >
                     Solicitar Info <Mail size={16} />
                   </a>
                   <Link to="/calculadora-impuesto-matriculacion" className="inline-flex items-center justify-center gap-3 border border-white/10 text-white px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500">

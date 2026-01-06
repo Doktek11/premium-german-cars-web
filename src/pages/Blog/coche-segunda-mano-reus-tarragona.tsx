@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
-import { CheckCircle, car, ShieldCheck, Euro, MapPin, ArrowRight } from "lucide-react";
+import { CheckCircle, ShieldCheck, Euro, MapPin, ArrowRight } from "lucide-react";
 
 const CochesReusTarragona = () => {
   return (
@@ -93,14 +93,14 @@ const CochesReusTarragona = () => {
 
             <h2 className="text-3xl font-serif font-bold text-gold-400 mt-12 mb-6 text-white">¿Por qué Premium German Cars es diferente?</h2>
             <div className="space-y-6 mb-12">
-               <div className="flex gap-4">
+                <div className="flex gap-4">
                   <MapPin className="text-gold-400 shrink-0" />
                   <p><strong>Ubicación estratégica:</strong> Estamos en Cambrils, a pocos minutos de Reus y Tarragona. Un espacio cómodo para ver y probar nuestras unidades sin compromiso.</p>
-               </div>
-               <div className="flex gap-4">
+                </div>
+                <div className="flex gap-4">
                   <ShieldCheck className="text-gold-400 shrink-0" />
                   <p><strong>Inspección rigurosa:</strong> Cada vehículo pasa un control de calidad exhaustivo bajo estándares alemanes antes de cruzar la frontera.</p>
-               </div>
+                </div>
             </div>
 
             <blockquote className="border-l-4 border-gold-400 pl-6 py-6 italic text-gray-300 bg-white/5 mb-10 text-lg">
@@ -111,13 +111,15 @@ const CochesReusTarragona = () => {
           {/* CTA Final */}
           <div className="mt-20 p-12 bg-gradient-to-r from-metallic-900 to-black border border-gold-400/30 text-center">
             <h3 className="text-3xl font-serif font-bold mb-6 italic text-white">¿Listo para tu reestreno Premium?</h3>
-            <p className="text-gray-400 mb-10 text-lg">Consulta nuestro stock actualizado o reserva tu visita en Cambrils.</p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <a href="#stock" className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-10 py-4 font-bold uppercase tracking-widest hover:bg-gold-500 transition-all">
-                Ver Stock Actual <ArrowRight size={18} />
-              </a>
-              <a href="#contact" className="inline-flex items-center justify-center gap-3 border border-white/20 text-white px-10 py-4 font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
-                Contactar
+            <p className="text-gray-400 mb-10 text-lg">Reserva tu visita en Cambrils o solicita información sobre unidades disponibles en la zona de Tarragona y Reus.</p>
+            <div className="flex justify-center">
+              <a 
+                href="https://wa.me/34603743608?text=Hola,%20estoy%20en%20la%20zona%20de%20Tarragona/Reus%20y%20me%20gustaría%20solicitar%20información%20sobre%20vuestros%20coches%20de%20reestreno." 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-12 py-5 font-bold uppercase tracking-widest hover:bg-gold-500 transition-all"
+              >
+                Contactar por WhatsApp <ArrowRight size={18} />
               </a>
             </div>
           </div>

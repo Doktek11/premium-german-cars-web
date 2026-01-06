@@ -179,7 +179,7 @@ const ArticuloModelos2026 = () => {
                 <h2 className="text-2xl md:text-3xl font-serif font-bold mb-4 text-white uppercase tracking-tighter italic">No se trata solo de importar... sino de elegir bien</h2>
                 <p className="text-gray-400 mb-8 max-w-md mx-auto text-sm md:text-base font-light">En Premium German Cars analizamos cada vehículo como si fuera para nosotros mismos.</p>
                 <a 
-                  href="https://wa.me/34tu_numero_aqui?text=Hola,%20he%20visto%20vuestro%20art%C3%ADculo%20sobre%20los%20mejores%20coches%20de%202026%20y%20me%20gustar%C3%ADa%20consultar%20por%20uno%20de%20vuestros%20modelos%20seleccionados." 
+                  href="https://wa.me/34603743608?text=Hola,%20he%20visto%20vuestro%20art%C3%ADculo%20sobre%20los%20mejores%20coches%20de%202026%20y%20me%20gustar%C3%ADa%20consultar%20por%20uno%20de%20vuestros%20modelos%20seleccionados." 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 bg-gold-400 text-black px-10 py-4 font-bold uppercase tracking-tighter hover:bg-white transition-all duration-300"

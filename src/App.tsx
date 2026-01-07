@@ -16,8 +16,10 @@ import ArticuloModelos2026 from "./pages/Blog/ArticuloModelos2026";
 import MotoresBmwMercedes2027 from "./pages/Blog/motores-bmw-en-mercedes-2027";
 import BmwReestreno2026 from "./pages/Blog/bmw-reestreno-alemania-2026";
 import CochesReusTarragona from "./pages/Blog/coche-segunda-mano-reus-tarragona";
-// NUEVA IMPORTACIÓN: GUÍA 2026
+// IMPORTACIÓN: GUÍA 2026
 import ComoImportarCocheAlemania from "./pages/Blog/como-importar-coche-alemania";
+// NUEVA IMPORTACIÓN: ARTÍCULO RIESGOS 7 ENERO
+import RiesgosImportarCocheAlemania from "./pages/Blog/5-riesgos-importar-coche-alemania";
 
 // IMPORTACIONES LEGALES
 import AvisoLegal from "./pages/Legal/AvisoLegal";
@@ -76,10 +78,14 @@ export default function App() {
           path="/blog/coche-segunda-mano-reus-tarragona" 
           element={<CochesReusTarragona />} 
         />
-        {/* NUEVA RUTA: GUÍA IMPORTACIÓN 2026 */}
         <Route 
           path="/blog/como-importar-coche-alemania" 
           element={<ComoImportarCocheAlemania />} 
+        />
+        {/* NUEVA RUTA: 5 RIESGOS IMPORTACIÓN */}
+        <Route 
+          path="/blog/5-riesgos-importar-coche-alemania" 
+          element={<RiesgosImportarCocheAlemania />} 
         />
 
         <Route path="/aviso-legal" element={<AvisoLegal />} />

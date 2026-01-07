@@ -6,6 +6,14 @@ import { Calendar, ArrowRight } from 'lucide-react';
 
 const blogPosts = [
   {
+    id: 6,
+    title: "Los 5 Riesgos Más Comunes al Importar un Coche de Alemania (y Cómo Evitarlos)",
+    excerpt: "Evite estafas, problemas de IVA y vicios ocultos. Conozca nuestro protocolo de verificación de tolerancia cero para una importación segura en 2026.",
+    date: "07 Ene, 2026",
+    slug: "5-riesgos-importar-coche-alemania",
+    category: "Seguridad"
+  },
+  {
     id: 5,
     title: "Guía 2026: Importar un Coche de Alemania sin Sorpresas Fiscales",
     excerpt: "Protocolo completo 2026. Entienda la fiscalidad de las emisiones de CO2, la documentación necesaria y cómo evitar los errores más comunes en la logística profesional.",

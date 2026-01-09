@@ -6,6 +6,14 @@ import { Calendar, ArrowRight } from 'lucide-react';
 
 const blogPosts = [
   {
+    id: 7,
+    title: "BMW y Alpina: El nacimiento de una nueva era en el lujo automotriz alemán",
+    excerpt: "Analizamos la integración de Alpina en BMW Group. ¿Qué significa para los coleccionistas y por qué las unidades artesanalas son la inversión clave de 2026?",
+    date: "09 Ene, 2026",
+    slug: "bmw-alpina-nueva-era-lujo-aleman",
+    category: "Actualidad"
+  },
+  {
     id: 6,
     title: "Los 5 Riesgos Más Comunes al Importar un Coche de Alemania (y Cómo Evitarlos)",
     excerpt: "Evite estafas, problemas de IVA y vicios ocultos. Conozca nuestro protocolo de verificación de tolerancia cero para una importación segura en 2026.",

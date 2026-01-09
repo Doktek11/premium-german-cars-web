@@ -18,8 +18,10 @@ import BmwReestreno2026 from "./pages/Blog/bmw-reestreno-alemania-2026";
 import CochesReusTarragona from "./pages/Blog/coche-segunda-mano-reus-tarragona";
 // IMPORTACIÓN: GUÍA 2026
 import ComoImportarCocheAlemania from "./pages/Blog/como-importar-coche-alemania";
-// NUEVA IMPORTACIÓN: ARTÍCULO RIESGOS 7 ENERO
+// ARTÍCULO RIESGOS 7 ENERO
 import RiesgosImportarCocheAlemania from "./pages/Blog/5-riesgos-importar-coche-alemania";
+// NUEVA IMPORTACIÓN: ARTÍCULO BMW ALPINA 9 ENERO
+import BMWAlpinaNuevaEra from "./pages/Blog/BMWAlpinaNuevaEra";
 
 // IMPORTACIONES LEGALES
 import AvisoLegal from "./pages/Legal/AvisoLegal";
@@ -82,10 +84,15 @@ export default function App() {
           path="/blog/como-importar-coche-alemania" 
           element={<ComoImportarCocheAlemania />} 
         />
-        {/* NUEVA RUTA: 5 RIESGOS IMPORTACIÓN */}
+        {/* RUTA: 5 RIESGOS IMPORTACIÓN */}
         <Route 
           path="/blog/5-riesgos-importar-coche-alemania" 
           element={<RiesgosImportarCocheAlemania />} 
+        />
+        {/* NUEVA RUTA: BMW ALPINA 2026 */}
+        <Route 
+          path="/blog/bmw-alpina-nueva-era-lujo-aleman" 
+          element={<BMWAlpinaNuevaEra />} 
         />
 
         <Route path="/aviso-legal" element={<AvisoLegal />} />

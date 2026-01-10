@@ -18,7 +18,7 @@ import {
   RotateCcw, 
   Bot, 
   Search 
-} from 'lucide-react';
+} from 'lucide-center';
 
 export const CalculadoraImpuestos = () => {
   const [precio, setPrecio] = useState<number>(45000);
@@ -79,10 +79,12 @@ export const CalculadoraImpuestos = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* ESTE ES EL CAMBIO CLAVE PARA GOOGLE */}
       <SEO 
-        title="Calculadora Impuesto Matriculación 2026 | Premium German Cars"
-        description="Calcula gratis el impuesto de matriculación para importar tu coche de Alemania. Datos oficiales BOE 2026 actualizados por nuestro equipo experto."
+        title="Calculadora Impuesto Matriculación 2026 con IA | Premium German Cars"
+        description="Usa nuestra calculadora puntera con asistente de IA integrado que te da el trabajo hecho. Calcula el impuesto de matriculación con datos oficiales BOE 2026."
       />
+      
       <Navbar />
       
       <main className="pt-32 pb-20 px-6">
@@ -104,7 +106,6 @@ export const CalculadoraImpuestos = () => {
             </button>
           </header>
 
-          {/* PASO 1: INTEGRACIÓN DEL ASESOR GPT */}
           <div className="mb-10 bg-gradient-to-r from-gold-900/10 to-transparent border border-gold-500/20 p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-sm">
             <div className="flex gap-5 items-start">
               <div className="bg-gold-500/20 p-3 rounded-2xl">
@@ -130,7 +131,6 @@ export const CalculadoraImpuestos = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
-            {/* PANEL DE CONTROL */}
             <div className="lg:col-span-7 space-y-12 bg-white/[0.03] p-8 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-sm">
               <div className="text-left">
                 <h3 className="text-[10px] font-black uppercase text-gray-500 tracking-[0.3em] mb-8 border-b border-white/5 pb-4">
@@ -197,7 +197,6 @@ export const CalculadoraImpuestos = () => {
               </div>
             </div>
 
-            {/* BLOQUE DE RESULTADOS */}
             <div className="lg:col-span-5 space-y-6">
               <div className="bg-gold-500 p-[1px] rounded-3xl shadow-2xl shadow-gold-500/10">
                 <div className="bg-black rounded-[calc(1.5rem-1px)] p-8">
@@ -235,7 +234,6 @@ export const CalculadoraImpuestos = () => {
             </div>
           </div>
 
-          {/* SECCIÓN FAQ / TABLA DE EJEMPLOS */}
           <section className="mt-32 pt-20 border-t border-white/10">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
               <div className="text-left">
@@ -275,35 +273,34 @@ export const CalculadoraImpuestos = () => {
               </div>
             </div>
 
-            {/* BLOQUE DE TEXTO SEO ESTRATÉGICO */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-20 text-gray-400 border-t border-white/5 pt-20">
               <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <FileText className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest">¿Cómo calcular el precio de matriculación?</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest">Matriculación con Asistente de IA</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
-                  Muchos usuarios se preguntan <strong className="text-white">cómo calcular el precio de matriculación de un coche en España</strong> de forma fiable. Nuestra herramienta utiliza las tablas oficiales del <strong className="text-white">BOE 2026</strong> y los tramos de CO2 actuales.
+                  Muchos usuarios buscan <strong className="text-white">cómo calcular el impuesto de matriculación</strong> sin errores. Nuestra herramienta pionera incluye un <strong className="text-white">asistente de IA</strong> que consulta las tablas del <strong className="text-white">BOE 2026</strong> por ti, ahorrándote trámites tediosos.
                 </p>
               </div>
 
               <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <Globe className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest">Matricular un coche alemán en España</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest">Importar de Alemania ahora es más fácil</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
-                  Si necesitas saber <strong className="text-white">cuánto cuesta matricular un coche alemán en España</strong>, debes tener en cuenta no solo el impuesto (Modelo 576), sino también la ficha reducida y la ITV.
+                  Calcular <strong className="text-white">cuánto cuesta matricular un coche alemán en España</strong> ya no es un misterio. Con la tecnología de <strong className="text-white">Premium German Cars</strong>, obtienes el desglose exacto del Modelo 576 y gastos de gestión en segundos.
                 </p>
               </div>
 
               <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <ShieldCheck className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest">Costes de importar un coche</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest">Seguridad en tu inversión Premium</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
-                  Los <strong className="text-white">costes de importar un coche</strong> varían según la edad del vehículo y sus emisiones. Analizamos cada caso mediante el <strong className="text-white">número de bastidor</strong>.
+                  No te la juegues con los <strong className="text-white">costes de importar un coche</strong>. Nuestra calculadora puntera analiza emisiones y antigüedad para que tu presupuesto sea 100% real. Confía en la asesoría líder de <strong className="text-white">premiumgermancars.com</strong>.
                 </p>
               </div>
             </div>

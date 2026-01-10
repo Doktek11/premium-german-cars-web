@@ -18,7 +18,7 @@ import {
   RotateCcw, 
   Bot, 
   Search 
-} from 'lucide-center';
+} from 'lucide-react';
 
 export const CalculadoraImpuestos = () => {
   const [precio, setPrecio] = useState<number>(45000);

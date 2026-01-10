@@ -3,7 +3,22 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
 import { WhatsAppButton } from '../components/WhatsAppButton';
-import { Gauge, Calendar, Euro, AlertTriangle, ArrowRight, Info, CheckCircle2, Car, ShieldCheck, FileText, Globe, RotateCcw } from 'lucide-react';
+import { 
+  Gauge, 
+  Calendar, 
+  Euro, 
+  AlertTriangle, 
+  ArrowRight, 
+  Info, 
+  CheckCircle2, 
+  Car, 
+  ShieldCheck, 
+  FileText, 
+  Globe, 
+  RotateCcw, 
+  Bot, 
+  Search 
+} from 'lucide-react';
 
 export const CalculadoraImpuestos = () => {
   const [precio, setPrecio] = useState<number>(45000);
@@ -24,7 +39,6 @@ export const CalculadoraImpuestos = () => {
     { modelo: "Audi A4 Avant 40 TFSI", valor: "32.160€", co2: "148g", impuesto: "1.527€" },
   ];
 
-  // Función para resetear la calculadora
   const resetCalculadora = () => {
     setPrecio(0);
     setEmisiones(0);
@@ -78,7 +92,7 @@ export const CalculadoraImpuestos = () => {
               <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter">
                 Calculadora <span className="text-gold-400 italic">Oficial</span>
               </h1>
-              <p className="text-gray-400 text-lg max-w-2xl">
+              <p className="text-gray-400 text-lg max-w-2xl text-left">
                 Herramienta de precisión basada en los tramos de CO2 2026 y las tablas de depreciación del BOE.
               </p>
             </div>
@@ -90,16 +104,44 @@ export const CalculadoraImpuestos = () => {
             </button>
           </header>
 
+          {/* PASO 1: INTEGRACIÓN DEL ASESOR GPT */}
+          <div className="mb-10 bg-gradient-to-r from-gold-900/10 to-transparent border border-gold-500/20 p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-sm">
+            <div className="flex gap-5 items-start">
+              <div className="bg-gold-500/20 p-3 rounded-2xl">
+                <Bot className="text-gold-400" size={32} />
+              </div>
+              <div className="text-left">
+                <h3 className="text-gold-400 font-bold uppercase text-xs tracking-[0.2em] mb-2 flex items-center gap-2">
+                  <Search size={14}/> Paso 1: Averigua los datos del coche
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed max-w-xl">
+                  ¿No conoces el valor inicial o el CO2 exacto? Consulta a nuestro <strong>Asistente IA</strong> especializado en el BOE para obtener los valores antes de calcular.
+                </p>
+              </div>
+            </div>
+            <a 
+              href="https://chatgpt.com/g/g-69622c5453908191bd59a9c9a7586e21-pgc-asistente-de-valoracion-oficial" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="whitespace-nowrap px-8 py-4 bg-gold-500 text-black font-black rounded-xl hover:bg-white transition-all uppercase text-[10px] tracking-widest flex items-center gap-3 shadow-xl shadow-gold-500/10"
+            >
+              Conocer Valor BOE <ArrowRight size={16}/>
+            </a>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
             {/* PANEL DE CONTROL */}
             <div className="lg:col-span-7 space-y-12 bg-white/[0.03] p-8 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-sm">
-              <div>
-                <div className="flex justify-between items-end mb-4 text-left">
+              <div className="text-left">
+                <h3 className="text-[10px] font-black uppercase text-gray-500 tracking-[0.3em] mb-8 border-b border-white/5 pb-4">
+                  Paso 2: Introduce los valores obtenidos
+                </h3>
+                <div className="flex justify-between items-end mb-4">
                   <div className="flex flex-col">
-                    <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 mb-1 tracking-widest text-left">
+                    <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 mb-1 tracking-widest">
                       <Euro size={14}/> Valor del Vehículo
                     </label>
-                    <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider text-left">
+                    <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">
                       (Valor Venal BOE exacto)
                     </span>
                   </div>
@@ -120,10 +162,10 @@ export const CalculadoraImpuestos = () => {
                   className="w-full h-1.5 bg-black rounded-lg appearance-none cursor-pointer accent-gold-500"
                 />
 
-                <div className="mt-4 p-4 bg-gold-400/5 border border-gold-400/10 rounded-xl flex gap-3 items-center">
+                <div className="mt-4 p-4 bg-gold-400/5 border border-gold-400/10 rounded-xl flex gap-3 items-center text-left">
                   <Info size={18} className="text-gold-400 shrink-0" />
                   <p className="text-[11px] text-gray-400 leading-snug italic">
-                    <strong className="text-white not-italic">Nota para profesionales:</strong> Introduce el valor exacto de las tablas de Hacienda para obtener el cálculo real.
+                    <strong className="text-white not-italic">Nota para profesionales:</strong> Introduce el valor que te ha proporcionado el Asesor IA para obtener el cálculo real.
                   </p>
                 </div>
               </div>
@@ -184,9 +226,9 @@ export const CalculadoraImpuestos = () => {
                 </div>
               </div>
               
-              <div className="bg-red-900/5 border border-red-900/20 p-6 rounded-2xl flex gap-4">
+              <div className="bg-red-900/5 border border-red-900/20 p-6 rounded-2xl flex gap-4 text-left">
                 <AlertTriangle className="text-red-700 shrink-0" size={20} />
-                <p className="text-[10px] text-gray-500 leading-relaxed uppercase tracking-wider font-medium text-left">
+                <p className="text-[10px] text-gray-500 leading-relaxed uppercase tracking-wider font-medium">
                   Este cálculo es orientativo. Los residentes en Cataluña podrían estar sujetos al impuesto anual de CO2 adicional.
                 </p>
               </div>
@@ -233,35 +275,35 @@ export const CalculadoraImpuestos = () => {
               </div>
             </div>
 
-            {/* BLOQUE DE TEXTO SEO ESTRATÉGICO ACTUALIZADO */}
+            {/* BLOQUE DE TEXTO SEO ESTRATÉGICO */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-20 text-gray-400 border-t border-white/5 pt-20">
               <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <FileText className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">¿Cómo calcular el precio de matriculación?</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest">¿Cómo calcular el precio de matriculación?</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
-                  Muchos usuarios se preguntan <strong className="text-white">cómo calcular el precio de matriculación de un coche en España</strong> de forma fiable. Nuestra herramienta utiliza las tablas oficiales del <strong className="text-white">BOE 2026</strong> y los tramos de CO2 actuales para darte una cifra exacta, evitando los errores comunes de las calculadoras genéricas.
+                  Muchos usuarios se preguntan <strong className="text-white">cómo calcular el precio de matriculación de un coche en España</strong> de forma fiable. Nuestra herramienta utiliza las tablas oficiales del <strong className="text-white">BOE 2026</strong> y los tramos de CO2 actuales.
                 </p>
               </div>
 
               <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <Globe className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">Matricular un coche alemán en España</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest">Matricular un coche alemán en España</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
-                  Si necesitas saber <strong className="text-white">cuánto cuesta matricular un coche alemán en España</strong>, debes tener en cuenta no solo el impuesto (Modelo 576), sino también la ficha reducida y la ITV. En <strong className="text-white">Premium German Cars</strong> simplificamos este proceso para que la importación de tu vehículo sea transparente y sin sorpresas económicas.
+                  Si necesitas saber <strong className="text-white">cuánto cuesta matricular un coche alemán en España</strong>, debes tener en cuenta no solo el impuesto (Modelo 576), sino también la ficha reducida y la ITV.
                 </p>
               </div>
 
               <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <ShieldCheck className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">Costes de importar un coche</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest">Costes de importar un coche</h3>
                 </div>
                 <p className="text-sm leading-relaxed">
-                  Los <strong className="text-white">costes de importar un coche</strong> varían según la edad del vehículo y sus emisiones. Analizamos cada caso mediante el <strong className="text-white">número de bastidor</strong> para garantizar que tu inversión sea segura. Descubre por qué somos la asesoría de referencia en <strong className="text-white font-mono italic">premiumgermancars.com</strong> para quienes buscan seguridad y ahorro.
+                  Los <strong className="text-white">costes de importar un coche</strong> varían según la edad del vehículo y sus emisiones. Analizamos cada caso mediante el <strong className="text-white">número de bastidor</strong>.
                 </p>
               </div>
             </div>

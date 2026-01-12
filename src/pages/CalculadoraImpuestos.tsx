@@ -24,6 +24,7 @@ export const CalculadoraImpuestos = () => {
   const [precio, setPrecio] = useState<number>(45000);
   const [emisiones, setEmisiones] = useState<number>(155);
   const [meses, setMeses] = useState<number>(36);
+  const [esComunidadIncrementada, setEsComunidadIncrementada] = useState<boolean>(false);
   const [resultado, setResultado] = useState({ matriculacion: 0, tramo: 0 });
 
   const ejemplosImportacion = [
@@ -39,7 +40,7 @@ export const CalculadoraImpuestos = () => {
     { modelo: "Audi A4 Avant 40 TFSI", valor: "32.160€", co2: "148g", impuesto: "1.527€" },
   ];
 
-  // FUNCIÓN MEJORADA PARA EL ASISTENTE IA (INTELIGENCIA DE VENTANA)
+  // FUNCIÓN MEJORADA PARA EL ASISTENTE IA
   const abrirAsistenteIA = () => {
     const url = "https://chatgpt.com/g/g-69622c5453908191bd59a9c9a7586e21-pgc-asistente-de-valoracion-oficial";
     const esMovil = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -64,6 +65,7 @@ export const CalculadoraImpuestos = () => {
     setPrecio(0);
     setEmisiones(0);
     setMeses(1);
+    setEsComunidadIncrementada(false);
   };
 
   useEffect(() => {
@@ -71,7 +73,10 @@ export const CalculadoraImpuestos = () => {
     if (emisiones <= 120) tramo = 0;
     else if (emisiones <= 159) tramo = 4.75;
     else if (emisiones <= 199) tramo = 9.75;
-    else tramo = 14.75;
+    else {
+      // Aplicar 16% si es comunidad incrementada o no declara CO2, de lo contrario 14.75%
+      tramo = esComunidadIncrementada ? 16 : 14.75;
+    }
 
     let coef = 1;
     if (meses <= 12) coef = 1;
@@ -89,7 +94,7 @@ export const CalculadoraImpuestos = () => {
       matriculacion: impuesto,
       tramo: tramo
     });
-  }, [precio, emisiones, meses]);
+  }, [precio, emisiones, meses, esComunidadIncrementada]);
 
   const getReduccionText = () => {
     if (resultado.tramo === 0 || precio === 0) return "0%";
@@ -154,6 +159,27 @@ export const CalculadoraImpuestos = () => {
                 <h3 className="text-[10px] font-black uppercase text-gray-500 tracking-[0.3em] mb-8 border-b border-white/5 pb-4">
                   Paso 2: Introduce los valores obtenidos
                 </h3>
+
+                {/* SELECTOR DE TIPO INCREMENTADO / NO DECLARA EMISIONES */}
+                <div 
+                  className={`mb-10 p-5 rounded-2xl border transition-all cursor-pointer ${esComunidadIncrementada ? 'bg-gold-500/10 border-gold-500' : 'bg-white/5 border-white/10 hover:border-white/30'}`}
+                  onClick={() => setEsComunidadIncrementada(!esComunidadIncrementada)}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`mt-1 w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${esComunidadIncrementada ? 'bg-gold-500 border-gold-500' : 'border-gray-600'}`}>
+                      {esComunidadIncrementada && <CheckCircle2 size={16} className="text-black" />}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[11px] font-black uppercase tracking-widest text-white mb-1">
+                        ¿Coche antiguo o sin emisiones acreditadas?
+                      </span>
+                      <p className="text-[10px] text-gray-400 leading-tight uppercase font-medium">
+                        Selecciona esta casilla si el vehículo <strong className="text-gold-400">no declara emisiones de CO2</strong>, no cumple normativas Euronorma o resides en CCAA con tipo incrementado al <strong className="text-white">16%</strong> (Cataluña, Andalucía, Asturias, Cantabria o Baleares).
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="flex justify-between items-end mb-4">
                   <div className="flex flex-col">
                     <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 mb-1 tracking-widest">
@@ -183,7 +209,7 @@ export const CalculadoraImpuestos = () => {
                 <div className="mt-4 p-4 bg-gold-400/5 border border-gold-400/10 rounded-xl flex gap-3 items-center text-left">
                   <Info size={18} className="text-gold-400 shrink-0" />
                   <p className="text-[11px] text-gray-400 leading-snug italic">
-                    <strong className="text-white not-italic">Nota para profesionales:</strong> Introduce el valor que te ha proporcionado el Asesor IA para obtener el cálculo real.
+                    <strong className="text-white not-italic">Uso profesional:</strong> Si el coche no figura con CO2 en ficha técnica, el impuesto se calcula obligatoriamente sobre el tramo máximo.
                   </p>
                 </div>
               </div>
@@ -225,7 +251,7 @@ export const CalculadoraImpuestos = () => {
 
                   <div className="space-y-4 pt-6 border-t border-white/10 text-sm">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">Tramo Emisiones:</span>
+                      <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">Tramo Aplicado:</span>
                       <span className="text-gold-400 font-mono font-bold text-lg">{resultado.tramo}%</span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -246,7 +272,9 @@ export const CalculadoraImpuestos = () => {
               <div className="bg-red-900/5 border border-red-900/20 p-6 rounded-2xl flex gap-4 text-left">
                 <AlertTriangle className="text-red-700 shrink-0" size={20} />
                 <p className="text-[10px] text-gray-500 leading-relaxed uppercase tracking-wider font-medium">
-                  Este cálculo es orientativo. Los residentes en Cataluña podrían estar sujetos al impuesto anual de CO2 adicional.
+                  {esComunidadIncrementada 
+                    ? "ATENCIÓN: Se está aplicando el tipo del 16% (Tramo 4) por falta de acreditación de emisiones o normativa autonómica incrementada."
+                    : "Este cálculo es orientativo. Los residentes en Cataluña podrían estar sujetos al impuesto anual de CO2 adicional o al tipo del 16% si no acreditan emisiones."}
                 </p>
               </div>
             </div>

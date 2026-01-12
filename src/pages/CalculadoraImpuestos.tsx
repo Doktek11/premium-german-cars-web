@@ -39,6 +39,27 @@ export const CalculadoraImpuestos = () => {
     { modelo: "Audi A4 Avant 40 TFSI", valor: "32.160€", co2: "148g", impuesto: "1.527€" },
   ];
 
+  // FUNCIÓN MEJORADA PARA EL ASISTENTE IA (INTELIGENCIA DE VENTANA)
+  const abrirAsistenteIA = () => {
+    const url = "https://chatgpt.com/g/g-69622c5453908191bd59a9c9a7586e21-pgc-asistente-de-valoracion-oficial";
+    const esMovil = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (esMovil) {
+      window.open(url, '_blank');
+    } else {
+      const ancho = 480;
+      const alto = window.screen.height * 0.85;
+      const izquierda = window.screen.width - ancho - 40;
+      const tope = 60;
+      
+      window.open(
+        url, 
+        'AsistentePGC', 
+        `width=${ancho},height=${alto},top=${tope},left=${izquierda},toolbar=no,menubar=no,status=no,location=no`
+      );
+    }
+  };
+
   const resetCalculadora = () => {
     setPrecio(0);
     setEmisiones(0);
@@ -79,7 +100,6 @@ export const CalculadoraImpuestos = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* ESTE ES EL CAMBIO CLAVE PARA GOOGLE */}
       <SEO 
         title="Calculadora Impuesto Matriculación 2026 con IA | Premium German Cars"
         description="Usa nuestra calculadora puntera con asistente de IA integrado que te da el trabajo hecho. Calcula el impuesto de matriculación con datos oficiales BOE 2026."
@@ -120,14 +140,12 @@ export const CalculadoraImpuestos = () => {
                 </p>
               </div>
             </div>
-            <a 
-              href="https://chatgpt.com/g/g-69622c5453908191bd59a9c9a7586e21-pgc-asistente-de-valoracion-oficial" 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <button 
+              onClick={abrirAsistenteIA}
               className="whitespace-nowrap px-8 py-4 bg-gold-500 text-black font-black rounded-xl hover:bg-white transition-all uppercase text-[10px] tracking-widest flex items-center gap-3 shadow-xl shadow-gold-500/10"
             >
               Conocer Valor BOE <ArrowRight size={16}/>
-            </a>
+            </button>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">

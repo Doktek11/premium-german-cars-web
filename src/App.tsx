@@ -16,12 +16,12 @@ import ArticuloModelos2026 from "./pages/Blog/ArticuloModelos2026";
 import MotoresBmwMercedes2027 from "./pages/Blog/motores-bmw-en-mercedes-2027";
 import BmwReestreno2026 from "./pages/Blog/bmw-reestreno-alemania-2026";
 import CochesReusTarragona from "./pages/Blog/coche-segunda-mano-reus-tarragona";
-// IMPORTACIÓN: GUÍA 2026
 import ComoImportarCocheAlemania from "./pages/Blog/como-importar-coche-alemania";
-// ARTÍCULO RIESGOS 7 ENERO
 import RiesgosImportarCocheAlemania from "./pages/Blog/5-riesgos-importar-coche-alemania";
-// NUEVA IMPORTACIÓN: ARTÍCULO BMW ALPINA 9 ENERO
 import BMWAlpinaNuevaEra from "./pages/Blog/BMWAlpinaNuevaEra";
+
+// NUEVA IMPORTACIÓN: GUÍA CALCULADORA 13 ENERO
+import GuiaCalculadora2026 from "./pages/Blog/GuiaCalculadora2026";
 
 // IMPORTACIONES LEGALES
 import AvisoLegal from "./pages/Legal/AvisoLegal";
@@ -64,6 +64,13 @@ export default function App() {
         <Route path="/blog" element={<BlogIndex />} />
         
         {/* RUTAS DEL BLOG */}
+        
+        {/* NUEVA RUTA: GUÍA CALCULADORA BOE 2025 */}
+        <Route 
+          path="/blog/guia-calculo-impuesto-matriculacion-boe-2025" 
+          element={<GuiaCalculadora2026 />} 
+        />
+
         <Route 
           path="/blog/mejores-modelos-importar-alemania-2026" 
           element={<ArticuloModelos2026 />} 
@@ -84,12 +91,10 @@ export default function App() {
           path="/blog/como-importar-coche-alemania" 
           element={<ComoImportarCocheAlemania />} 
         />
-        {/* RUTA: 5 RIESGOS IMPORTACIÓN */}
         <Route 
           path="/blog/5-riesgos-importar-coche-alemania" 
           element={<RiesgosImportarCocheAlemania />} 
         />
-        {/* NUEVA RUTA: BMW ALPINA 2026 */}
         <Route 
           path="/blog/bmw-alpina-nueva-era-lujo-aleman" 
           element={<BMWAlpinaNuevaEra />} 

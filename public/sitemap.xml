@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
-  {/* PÁGINAS PRINCIPALES - ACTUALIZADAS A HOY */}
   <url>
     <loc>https://premiumgermancars.com/</loc>
-    <lastmod>2026-01-09</lastmod>
+    <lastmod>2026-01-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -25,7 +24,7 @@
 
   <url>
     <loc>https://premiumgermancars.com/calculadora-impuesto-matriculacion</loc>
-    <lastmod>2026-01-04</lastmod>
+    <lastmod>2026-01-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -39,14 +38,18 @@
 
   <url>
     <loc>https://premiumgermancars.com/blog</loc>
-    <lastmod>2026-01-09</lastmod>
+    <lastmod>2026-01-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  {/* ARTÍCULOS DEL BLOG */}
+  <url>
+    <loc>https://premiumgermancars.com/blog/guia-calculo-impuesto-matriculacion-boe-2025</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
   
-  {/* NUEVO ARTÍCULO ALPINA - 9 ENERO */}
   <url>
     <loc>https://premiumgermancars.com/blog/bmw-alpina-nueva-era-lujo-aleman</loc>
     <lastmod>2026-01-09</lastmod>

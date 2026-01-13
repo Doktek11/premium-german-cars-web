@@ -6,6 +6,14 @@ import { Calendar, ArrowRight } from 'lucide-react';
 
 const blogPosts = [
   {
+    id: 8,
+    title: "Guía definitiva: Cómo calcular el impuesto de matriculación BOE 2025",
+    excerpt: "Utilice nuestra calculadora con IA para obtener valores BOE exactos y calcular la depreciación real mes a mes. Sin errores, sin sorpresas fiscales.",
+    date: "13 Ene, 2026",
+    slug: "guia-calculo-impuesto-matriculacion-boe-2025",
+    category: "Herramientas"
+  },
+  {
     id: 7,
     title: "BMW y Alpina: El nacimiento de una nueva era en el lujo automotriz alemán",
     excerpt: "Analizamos la integración de Alpina en BMW Group. ¿Qué significa para los coleccionistas y por qué las unidades artesanalas son la inversión clave de 2026?",
@@ -114,7 +122,7 @@ export default function BlogIndex() {
                     {post.title}
                   </h2>
                   
-                  <p className="text-gray-500 mb-8 flex-grow line-clamp-3 text-sm leading-relaxed italic">
+                  <p className="text-gray-500 mb-8 flex-grow line-clamp-3 text-sm leading-relaxed italic text-justify">
                     {post.excerpt}
                   </p>
                   

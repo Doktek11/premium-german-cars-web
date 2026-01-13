@@ -2,7 +2,8 @@ import React from 'react';
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
-import { CheckCircle, Calculator, Cpu, BadgeEuro, Mail, ArrowRight } from 'lucide-react';
+// AÑADIDO: AlertTriangle en los imports
+import { CheckCircle, Calculator, Cpu, BadgeEuro, Mail, ArrowRight, AlertTriangle } from 'lucide-react';
 
 const GuiaCalculadora2026 = () => {
   return (
@@ -30,7 +31,7 @@ const GuiaCalculadora2026 = () => {
           </header>
 
           {/* Hero Visual PGC */}
-          <div className="h-64 md:h-80 w-full bg-gradient-to-br from-metallic-800 to-black border border-white/5 flex items-center justify-center mb-16 relative overflow-hidden">
+          <div className="h-64 md:h-80 w-full bg-gradient-to-br from-gray-900 to-black border border-white/5 flex items-center justify-center mb-16 relative overflow-hidden">
              <img src="/logoPGC.svg" className="w-48 opacity-10 brightness-0 invert" alt="PGC Logo" />
              <div className="absolute bottom-4 right-6 text-gold-400/30 font-serif italic text-4xl md:text-6xl select-none">AI Powered</div>
           </div>
@@ -53,7 +54,7 @@ const GuiaCalculadora2026 = () => {
               El primer paso no es la calculadora, sino averiguar los datos exactos del vehículo. En la parte superior de la herramienta verás el botón <strong>“Conocer valor BOE”</strong>, que te conecta con nuestro asistente de IA especializado.
             </p>
 
-            <div className="mb-12 border border-white/10 bg-metallic-900/30 p-4 rounded-sm">
+            <div className="mb-12 border border-white/10 bg-gray-900/30 p-4 rounded-sm">
               <img 
                 src="/calculadora-impuesto-matriculacion-2026.webp" 
                 alt="Interfaz calculadora Premium German Cars paso 1" 
@@ -62,7 +63,7 @@ const GuiaCalculadora2026 = () => {
               <p className="text-center text-xs text-gray-500 italic uppercase tracking-widest">Interfaz principal: accede al asistente de IA gratuito</p>
             </div>
 
-            <div className="bg-metallic-900/50 p-8 border border-white/10 rounded-sm mb-12">
+            <div className="bg-gray-900/50 p-8 border border-white/10 rounded-sm mb-12">
               <h3 className="text-xl font-bold mb-4 flex items-center text-white italic">
                 <Cpu className="text-gold-400 mr-3" size={20} /> ¿Cómo interactuar con la IA?
               </h3>
@@ -81,7 +82,7 @@ const GuiaCalculadora2026 = () => {
               Una vez tienes los datos facilitados por nuestro asistente, es hora de volcar la información en la calculadora para aplicar la depreciación real.
             </p>
 
-            <div className="mb-12 border border-white/10 bg-metallic-900/30 p-4 rounded-sm">
+            <div className="mb-12 border border-white/10 bg-gray-900/30 p-4 rounded-sm">
               <img 
                 src="/valor-boe-coche-alemania-ia.webp" 
                 alt="Consulta valor venal BOE IA paso 2" 
@@ -95,7 +96,7 @@ const GuiaCalculadora2026 = () => {
               Demostración Práctica: BMW 320d
             </h2>
 
-            <div className="mb-10 p-6 md:p-8 border border-white/10 bg-metallic-900/30 rounded-sm">
+            <div className="mb-10 p-6 md:p-8 border border-white/10 bg-gray-900/30 rounded-sm">
               <div className="flex flex-col md:flex-row gap-8 items-center mb-8">
                 <div className="flex-1 text-justify">
                   <h3 className="text-xl font-bold text-white mb-4 italic">Precisión por meses: el factor clave</h3>
@@ -125,7 +126,7 @@ const GuiaCalculadora2026 = () => {
               <h3 className="text-xl font-bold mb-4 flex items-center text-white">
                 <AlertTriangle className="text-red-500 mr-3" size={20} /> ¿Coche antiguo o sin emisiones acreditadas?
               </h3>
-              <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+              <p className="text-sm md:text-base text-gray-300 leading-relaxed text-justify">
                 Si tu vehículo no declara emisiones o resides en una CCAA con tipo incrementado (como Cataluña), marca la casilla correspondiente. Nuestra calculadora ajustará el cálculo al <strong>16%</strong> de forma automática para evitar sorpresas en Hacienda.
               </p>
             </div>

@@ -7,26 +7,37 @@ export const Hero: React.FC = () => {
       id="home"
       className="relative h-screen flex items-center justify-center overflow-hidden bg-[#1a1a1a]"
     >
-      {/* Background Image - Optimizada para LCP */}
+      {/* Background Image - Optimizada al 100% para LCP y CLS */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="/amggtr-mobile.webp"
-          alt="Importación de coches premium desde Alemania - Premium German Cars"
-          className="w-full h-full object-cover scale-105 animate-pulse-slow"
-          /* CORRECCIONES PARA LCP Y RENDIMIENTO */
-          fetchPriority="high"
-          loading="eager"
-          decoding="sync"
-        />
+        <picture>
+          {/* Versión Desktop - Google elegirá según el ancho de pantalla */}
+          <source 
+            media="(min-width: 1024px)" 
+            srcSet="/amggtr-desktop.webp" 
+          />
+          <img
+            src="/amggtr-mobile.webp"
+            alt="Importación de coches premium desde Alemania - Premium German Cars"
+            // Reserva de espacio para evitar CLS (ajusta a las medidas reales de tu archivo)
+            width="800"
+            height="1200"
+            className="w-full h-full object-cover scale-105" // Quitamos animaciones en el elemento LCP
+            /* ATRIBUTOS CRÍTICOS PARA GOOGLE */
+            fetchPriority="high"
+            loading="eager"
+            decoding="sync"
+          />
+        </picture>
 
-        {/* Overlays - Capas de color para el efecto gris y legibilidad */}
+        {/* Overlays - Cargan instantáneamente por CSS, evitando parpadeos visuales */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-[#1a1a1a]/90 to-[#262626]/60" />
         <div className="absolute inset-0 bg-gray-950/75 backdrop-grayscale-[0.3]" />
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10 text-center md:text-left h-full flex flex-col justify-center">
-        <div className="max-w-4xl animate-fade-in-up mt-20">
+        {/* Usamos opacity-100 por defecto para evitar que el texto "aparezca" tarde para Google */}
+        <div className="max-w-4xl mt-20">
 
           {/* Eyebrow */}
           <div className="flex items-center justify-center md:justify-start gap-4 mb-6">

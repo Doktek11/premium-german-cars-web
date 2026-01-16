@@ -23,9 +23,6 @@ import BMWAlpinaNuevaEra from "./pages/Blog/BMWAlpinaNuevaEra";
 // NUEVA IMPORTACIÓN: GUÍA CALCULADORA 13 ENERO
 import GuiaCalculadora2026 from "./pages/Blog/GuiaCalculadora2026";
 
-// AÑADIMOS EL NUEVO ARTÍCULO DE MOTORES
-import EleccionMotor2026 from "./pages/Blog/EleccionMotor2026";
-
 // IMPORTACIONES LEGALES
 import AvisoLegal from "./pages/Legal/AvisoLegal";
 import PoliticaPrivacidad from "./pages/Legal/PoliticaPrivacidad";
@@ -68,12 +65,6 @@ export default function App() {
         
         {/* RUTAS DEL BLOG */}
         
-        {/* RUTA NUEVA: ELECCIÓN DE MOTOR 2026 */}
-        <Route 
-          path="/blog/que-motor-elegir-importar-alemania-2026" 
-          element={<EleccionMotor2026 />} 
-        />
-
         {/* NUEVA RUTA: GUÍA CALCULADORA BOE 2025 */}
         <Route 
           path="/blog/guia-calculo-impuesto-matriculacion-boe-2025" 

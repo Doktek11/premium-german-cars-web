@@ -26,7 +26,7 @@ export const Features: React.FC = () => {
   ];
 
   return (
-    <section id="process" className="py-20 md:py-32 bg-metallic-950 relative overflow-hidden">
+    <section id="process" className="py-20 md:py-32 bg-[#050505] relative overflow-hidden">
         <div className="container mx-auto px-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-20 gap-8">
                 <div className="max-w-2xl">
@@ -42,8 +42,8 @@ export const Features: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {steps.map((step, index) => (
-                    <div key={index} className="premium-card p-8 md:p-10 group relative overflow-hidden transition-all duration-300 hover:bg-white/[0.02]">
-                        {/* Number Background - Optimizado para no causar saltos visuales */}
+                    <div key={index} className="premium-card p-8 md:p-10 group relative overflow-hidden transition-all duration-300 hover:bg-white/[0.02] border border-white/5 rounded-sm">
+                        {/* Number Background - Optimizado */}
                         <span className="absolute -right-4 -top-4 text-8xl md:text-9xl font-serif text-white/[0.02] group-hover:text-gold-400/[0.05] transition-colors select-none pointer-events-none">
                             {index + 1}
                         </span>
@@ -65,17 +65,17 @@ export const Features: React.FC = () => {
 
 export const Guarantee: React.FC = () => {
     return (
-        <section id="guarantee" className="py-20 md:py-32 bg-metallic-900 border-t border-white/5 overflow-hidden">
+        <section id="guarantee" className="py-20 md:py-32 bg-[#0a0a0a] border-t border-white/5 overflow-hidden">
              <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                     <div className="order-2 lg:order-1 relative">
                         {/* Decorative elements */}
                         <div className="absolute top-6 left-6 w-full h-full border border-gold-400/20 rounded z-0 hidden lg:block"></div>
-                        <div className="relative z-10 overflow-hidden rounded shadow-2xl">
+                        <div className="relative z-10 overflow-hidden rounded shadow-2xl bg-black/40">
                             <img 
                                 src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=1200&auto=format&fit=crop" 
                                 alt="Interior de coche de lujo Premium German Cars" 
-                                className="w-full h-[300px] md:h-auto object-cover grayscale hover:grayscale-0 transition-all duration-1000 transform hover:scale-105"
+                                className="w-full h-[300px] md:h-auto object-cover grayscale hover:grayscale-0 transition-all duration-700 transform hover:scale-105"
                                 loading="lazy"
                                 decoding="async"
                                 width="600"

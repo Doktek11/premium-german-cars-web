@@ -19,9 +19,9 @@ import CochesReusTarragona from "./pages/Blog/coche-segunda-mano-reus-tarragona"
 import ComoImportarCocheAlemania from "./pages/Blog/como-importar-coche-alemania";
 import RiesgosImportarCocheAlemania from "./pages/Blog/5-riesgos-importar-coche-alemania";
 import BMWAlpinaNuevaEra from "./pages/Blog/BMWAlpinaNuevaEra";
-import GuiaCalculadora2026 from "./pages/Blog/GuiaCalculadora2026";
 
-// NUEVA IMPORTACIÓN: ARTÍCULO DE MOTORES (EL QUE FALTABA)
+// NUEVAS IMPORTACIONES ENERO 2026
+import GuiaCalculadora2026 from "./pages/Blog/GuiaCalculadora2026";
 import EleccionMotor2026 from "./pages/Blog/EleccionMotor2026";
 
 // IMPORTACIONES LEGALES
@@ -42,28 +42,41 @@ export default function App() {
       <ScrollToTop />
       
       <Routes>
-        {/* RUTAS PRINCIPALES */}
+        {/* --- RUTAS PRINCIPALES --- */}
         <Route path="/" element={<Home />} />
         <Route path="/car/:slug" element={<CarPage />} />
-        <Route path="/importacion-coches-alemania" element={<ImportacionAlemania />} />
-        <Route path="/calculadora-impuesto-matriculacion" element={<CalculadoraImpuestos />} />
-        <Route path="/preguntas-frecuentes" element={<FAQPage />} />
+        
+        <Route
+          path="/importacion-coches-alemania"
+          element={<ImportacionAlemania />}
+        />
 
-        {/* SECCIÓN BLOG */}
+        <Route 
+          path="/calculadora-impuesto-matriculacion" 
+          element={<CalculadoraImpuestos />} 
+        />
+
+        <Route 
+          path="/preguntas-frecuentes" 
+          element={<FAQPage />} 
+        />
+
+        {/* --- SECCIÓN BLOG --- */}
         <Route path="/blog" element={<BlogIndex />} />
         
-        {/* Artículo: Elección de Motor 2026 (EL QUE HEMOS REVISADO AHORA) */}
+        {/* 1. Guía de Motores 2026 (El que faltaba) */}
         <Route 
           path="/blog/que-motor-elegir-importar-alemania-2026" 
           element={<EleccionMotor2026 />} 
         />
 
-        {/* Artículo: Guía Calculadora 13 Enero */}
+        {/* 2. Guía Calculadora 13 Enero */}
         <Route 
           path="/blog/guia-calculo-impuesto-matriculacion-boe-2025" 
           element={<GuiaCalculadora2026 />} 
         />
 
+        {/* 3. Resto de artículos */}
         <Route 
           path="/blog/mejores-modelos-importar-alemania-2026" 
           element={<ArticuloModelos2026 />} 
@@ -93,7 +106,7 @@ export default function App() {
           element={<BMWAlpinaNuevaEra />} 
         />
 
-        {/* RUTAS LEGALES */}
+        {/* --- RUTAS LEGALES --- */}
         <Route path="/aviso-legal" element={<AvisoLegal />} />
         <Route path="/politica-privacidad" element={<PoliticaPrivacidad />} />
 

@@ -6,7 +6,7 @@ export const Hero: React.FC = () => {
     <section
       id="home"
       className="relative h-screen flex items-center justify-center overflow-hidden bg-[#0f0f0f]"
-      style={{ backgroundColor: '#0f0f0f' }} // Forzamos el fondo oscuro inmediato para mejorar FCP
+      style={{ backgroundColor: '#0f0f0f', contain: 'layout' }} // Optimizamos el aislamiento del renderizado
     >
       {/* Background Image - Optimizada al 100% para LCP y CLS */}
       <div className="absolute inset-0 z-0">
@@ -22,7 +22,7 @@ export const Hero: React.FC = () => {
             alt="Importación de coches premium desde Alemania - Premium German Cars"
             width="800"
             height="1200"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover grayscale-[0.2]" // Reemplazamos backdrop-filter por filtro nativo (mucho más rápido)
             /* ATRIBUTOS MAESTROS PARA GOOGLE */
             fetchPriority="high"
             loading="eager"
@@ -30,22 +30,24 @@ export const Hero: React.FC = () => {
           />
         </picture>
 
-        {/* Overlays Optimizado - Una sola capa de gradiente compleja es más rápida que tres capas simples */}
+        {/* Overlays Optimizado - Unificamos capas para evitar Overdraw */}
         <div 
-          className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-[#0f0f0f]/80 to-transparent" 
-          style={{ background: 'linear-gradient(to top, #0f0f0f 0%, rgba(15,15,15,0.8) 50%, rgba(38,38,38,0.4) 100%)' }}
+          className="absolute inset-0" 
+          style={{ 
+            background: 'linear-gradient(to top, #0f0f0f 0%, rgba(15,15,15,0.7) 50%, rgba(0,0,0,0.4) 100%)' 
+          }}
         />
-        <div className="absolute inset-0 bg-black/40 backdrop-grayscale-[0.2]" />
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10 text-center md:text-left h-full flex flex-col justify-center">
-        <div className="max-w-4xl mt-20">
+        <div className="max-w-4xl mt-20 will-change-transform">
 
           {/* Eyebrow */}
           <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
             <div className="h-[1px] w-12 bg-gold-400" />
-            <span className="text-gold-400 text-xs md:text-sm font-bold tracking-ultra uppercase">
+            <span className="text-gold-400 text-xs md:text-sm font-bold tracking-[0.3em] uppercase">
               Excelencia Alemana
             </span>
           </div>
@@ -55,11 +57,11 @@ export const Hero: React.FC = () => {
             Importación de Coches Premium desde Alemania
           </h1>
 
-          {/* Claim emocional */}
-          <h2 className="text-3xl md:text-5xl font-serif font-medium mb-8 leading-[1.15] text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">
+          {/* Claim emocional - Optimizado eliminando text-transparent en móvil para evitar saltos de pintura */}
+          <h2 className="text-3xl md:text-5xl font-serif font-medium mb-8 leading-[1.15] text-white">
             Tú lo sueñas.
             <br />
-            Nosotros lo traemos.
+            <span className="text-gray-400">Nosotros lo traemos.</span>
           </h2>
 
           {/* Subtítulo */}
@@ -72,7 +74,7 @@ export const Hero: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-start">
             <a
               href="#import"
-              className="px-8 py-5 bg-gold-400 hover:bg-gold-500 text-black font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] flex items-center justify-center gap-3"
+              className="px-8 py-5 bg-gold-400 hover:bg-gold-500 text-black font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-xl flex items-center justify-center gap-3"
             >
               Comenzar Pedido
               <ArrowRight size={18} />
@@ -80,7 +82,7 @@ export const Hero: React.FC = () => {
 
             <a
               href="#stock"
-              className="px-8 py-5 border border-white/20 hover:border-white text-white font-semibold text-sm uppercase tracking-widest hover:bg-white/5 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
+              className="px-8 py-5 border border-white/20 hover:border-white text-white font-semibold text-sm uppercase tracking-widest hover:bg-white/5 transition-all duration-300 flex items-center justify-center"
             >
               Explorar Stock
             </a>

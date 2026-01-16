@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Menu, X, Calculator } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -9,24 +9,35 @@ export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Optimización de scroll con passive listener y chequeo de seguridad
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true }); // Añadido passive para mejor rendimiento de scroll
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Cerrar menú móvil al cambiar de ruta
+  // Cerrar menú móvil al cambiar de ruta para ahorrar memoria
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
 
-  const goToSection = (id: string) => {
+  const goToSection = useCallback((id: string) => {
     if (location.pathname !== "/") {
       navigate("/", { state: { scrollTo: id } });
     } else {
       const el = document.querySelector(id);
       if (el) {
-        const offset = 80; // Compensación por la altura del navbar
+        const offset = 80;
         const elementPosition = el.getBoundingClientRect().top + window.scrollY;
         window.scrollTo({
           top: elementPosition - offset,
@@ -35,13 +46,13 @@ export const Navbar: React.FC = () => {
       }
     }
     setIsOpen(false);
-  };
+  }, [location.pathname, navigate]);
 
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-500 border-b ${
         isScrolled
-          ? "bg-metallic-900/90 backdrop-blur-md py-4 border-white/10 shadow-xl"
+          ? "bg-[#0a0a0a]/90 backdrop-blur-md py-4 border-white/10 shadow-xl"
           : "bg-transparent py-8 border-transparent"
       }`}
     >
@@ -50,22 +61,22 @@ export const Navbar: React.FC = () => {
         <button
           onClick={() => navigate("/")}
           className="flex items-center z-50 transition-transform hover:scale-105 active:scale-95"
-          aria-label="Ir al inicio"
+          aria-label="Ir al inicio de Premium German Cars"
         >
           <img 
             src="/logoPGC.svg" 
             alt="Logo Premium German Cars" 
             width="180"
             height="48"
-            // Optimizaciones de carga
             fetchPriority="high"
             loading="eager"
             decoding="sync"
             className="h-8 md:h-12 w-auto brightness-0 invert" 
+            style={{ minHeight: '32px' }} // Evita CLS en carga inicial
           />
         </button>
 
-        {/* DESKTOP */}
+        {/* DESKTOP - Mantenemos tu esencia 97/100 */}
         <div className="hidden lg:flex items-center space-x-10">
           <button onClick={() => goToSection("#home")} className="nav-link font-medium tracking-wide">
             Inicio
@@ -113,24 +124,25 @@ export const Navbar: React.FC = () => {
           </button>
         </div>
 
-        {/* MOBILE TOGGLE */}
+        {/* MOBILE TOGGLE - Target táctil optimizado */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden text-white z-50 p-2 hover:bg-white/5 rounded-full transition-colors"
+          className="lg:hidden text-white z-50 p-3 hover:bg-white/5 rounded-full transition-colors"
           aria-expanded={isOpen}
-          aria-label="Abrir menú"
+          aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE MENU - Animaciones optimizadas por GPU */}
       <div
-        className={`fixed inset-0 bg-metallic-950 z-40 flex flex-col justify-center items-center transition-all duration-500 ease-in-out ${
+        className={`fixed inset-0 bg-[#050505] z-40 flex flex-col justify-center items-center transition-transform duration-500 ease-in-out ${
           isOpen 
-            ? "opacity-100 translate-x-0" 
-            : "opacity-0 translate-x-full pointer-events-none"
+            ? "translate-x-0" 
+            : "translate-x-full"
         }`}
+        style={{ willChange: 'transform' }}
       >
         <div className="flex flex-col space-y-8 items-center">
             <button onClick={() => { navigate("/"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors">
@@ -154,7 +166,7 @@ export const Navbar: React.FC = () => {
             
             <button
               onClick={() => { goToSection("#import"); setIsOpen(false); }}
-              className="mt-4 px-10 py-4 bg-gold-500 text-black font-bold uppercase tracking-widest text-sm rounded-sm active:scale-95 transition-transform"
+              className="mt-4 px-10 py-4 bg-gold-500 text-black font-bold uppercase tracking-widest text-sm rounded-sm active:scale-95 transition-transform shadow-xl shadow-gold-500/20"
             >
               Pedir Coche
             </button>

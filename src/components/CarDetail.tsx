@@ -68,14 +68,20 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                      </div>
                 </div>
 
-                {/* Single Image Carousel / Slider */}
+                {/* Single Image Carousel / Slider - OPTIMIZADO PARA CLS Y LCP */}
                 <div className="mb-12 md:mb-16 relative group select-none">
-                    <div className="w-full h-[50vh] md:h-[70vh] bg-metallic-900 rounded-lg overflow-hidden relative border border-white/5 shadow-2xl">
+                    {/* Añadido aspect-video para reservar espacio y evitar saltos (CLS) */}
+                    <div className="w-full aspect-video md:h-[70vh] bg-metallic-900 rounded-lg overflow-hidden relative border border-white/5 shadow-2xl">
                         
-                        {/* Image */}
+                        {/* Image - Optimizada con fetchPriority y decoding */}
                         <img 
+                            key={allImages[currentImageIndex]} 
                             src={allImages[currentImageIndex]} 
                             alt={`${car.make} ${car.model} view ${currentImageIndex + 1}`} 
+                            // Atributos de alto rendimiento
+                            fetchPriority={currentImageIndex === 0 ? "high" : "low"}
+                            loading="eager"
+                            decoding="sync"
                             className="w-full h-full object-cover md:object-contain bg-black/50 transition-opacity duration-300" 
                         />
 

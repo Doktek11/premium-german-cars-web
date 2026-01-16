@@ -5,38 +5,41 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative h-screen flex items-center justify-center overflow-hidden bg-[#1a1a1a]"
+      className="relative h-screen flex items-center justify-center overflow-hidden bg-[#0f0f0f]"
+      style={{ backgroundColor: '#0f0f0f' }} // Forzamos el fondo oscuro inmediato para mejorar FCP
     >
       {/* Background Image - Optimizada al 100% para LCP y CLS */}
       <div className="absolute inset-0 z-0">
         <picture>
-          {/* Versión Desktop - Google elegirá según el ancho de pantalla */}
+          {/* Versión Desktop */}
           <source 
             media="(min-width: 1024px)" 
             srcSet="/amggtr-desktop.webp" 
           />
+          {/* Versión Mobile - Es la que marca el LCP en PageSpeed */}
           <img
             src="/amggtr-mobile.webp"
             alt="Importación de coches premium desde Alemania - Premium German Cars"
-            // Reserva de espacio para evitar CLS (ajusta a las medidas reales de tu archivo)
             width="800"
             height="1200"
-            className="w-full h-full object-cover scale-105" // Quitamos animaciones en el elemento LCP
-            /* ATRIBUTOS CRÍTICOS PARA GOOGLE */
+            className="w-full h-full object-cover"
+            /* ATRIBUTOS MAESTROS PARA GOOGLE */
             fetchPriority="high"
             loading="eager"
             decoding="sync"
           />
         </picture>
 
-        {/* Overlays - Cargan instantáneamente por CSS, evitando parpadeos visuales */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-[#1a1a1a]/90 to-[#262626]/60" />
-        <div className="absolute inset-0 bg-gray-950/75 backdrop-grayscale-[0.3]" />
+        {/* Overlays Optimizado - Una sola capa de gradiente compleja es más rápida que tres capas simples */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-[#0f0f0f]/80 to-transparent" 
+          style={{ background: 'linear-gradient(to top, #0f0f0f 0%, rgba(15,15,15,0.8) 50%, rgba(38,38,38,0.4) 100%)' }}
+        />
+        <div className="absolute inset-0 bg-black/40 backdrop-grayscale-[0.2]" />
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10 text-center md:text-left h-full flex flex-col justify-center">
-        {/* Usamos opacity-100 por defecto para evitar que el texto "aparezca" tarde para Google */}
         <div className="max-w-4xl mt-20">
 
           {/* Eyebrow */}

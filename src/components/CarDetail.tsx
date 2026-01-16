@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Car } from '../types';
 import { X, Calendar, Gauge, Fuel, Check, ChevronLeft, ChevronRight, Phone, Mail } from 'lucide-react';
 
@@ -10,7 +10,7 @@ interface CarDetailProps {
 export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
     
     // Combine main image and gallery into a unique list of images
-    const allImages = React.useMemo(() => {
+    const allImages = useMemo(() => {
         const images = [car.image, ...(car.gallery || [])];
         // Filter duplicates just in case
         return Array.from(new Set(images));
@@ -18,9 +18,14 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-    // Scroll to top when component mounts
+    // Bloquear scroll del body al abrir el detalle para evitar saltos visuales
     useEffect(() => {
+        const originalStyle = window.getComputedStyle(document.body).overflow;
+        document.body.style.overflow = 'hidden';
         window.scrollTo(0, 0);
+        return () => {
+            document.body.style.overflow = originalStyle;
+        };
     }, []);
 
     const nextImage = () => {
@@ -32,9 +37,9 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 bg-black overflow-y-auto min-h-screen animate-fade-in">
-            {/* Sticky Header */}
-            <div className="sticky top-0 z-50 bg-metallic-950/90 backdrop-blur-md border-b border-white/10 px-6 py-4 flex justify-between items-center shadow-lg">
+        <div className="fixed inset-0 z-[60] bg-[#050505] overflow-y-auto min-h-screen animate-fade-in">
+            {/* Sticky Header - Optimizado con color sólido inicial */}
+            <div className="sticky top-0 z-[70] bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/10 px-6 py-4 flex justify-between items-center shadow-2xl">
                 <div className="flex items-center gap-2">
                      <span className="text-lg md:text-xl font-serif font-bold text-white">
                         PREMIUM<span className="text-gold-400"> GERMAN CARS</span>
@@ -68,29 +73,27 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                      </div>
                 </div>
 
-                {/* Single Image Carousel / Slider - OPTIMIZADO PARA CLS Y LCP */}
+                {/* Single Image Carousel / Slider - OPTIMIZADO */}
                 <div className="mb-12 md:mb-16 relative group select-none">
-                    {/* Añadido aspect-video para reservar espacio y evitar saltos (CLS) */}
-                    <div className="w-full aspect-video md:h-[70vh] bg-metallic-900 rounded-lg overflow-hidden relative border border-white/5 shadow-2xl">
+                    <div className="w-full aspect-video md:h-[70vh] bg-[#0a0a0a] rounded-lg overflow-hidden relative border border-white/5 shadow-2xl">
                         
-                        {/* Image - Optimizada con fetchPriority y decoding */}
+                        {/* Image Principal con decoding sync solo para la primera */}
                         <img 
                             key={allImages[currentImageIndex]} 
                             src={allImages[currentImageIndex]} 
-                            alt={`${car.make} ${car.model} view ${currentImageIndex + 1}`} 
-                            // Atributos de alto rendimiento
+                            alt={`${car.make} ${car.model}`} 
                             fetchPriority={currentImageIndex === 0 ? "high" : "low"}
                             loading="eager"
-                            decoding="sync"
-                            className="w-full h-full object-cover md:object-contain bg-black/50 transition-opacity duration-300" 
+                            decoding={currentImageIndex === 0 ? "sync" : "async"}
+                            className="w-full h-full object-cover md:object-contain bg-black transition-opacity duration-300" 
                         />
 
-                        {/* Navigation Arrows - Only if more than 1 image */}
+                        {/* Navigation Arrows */}
                         {allImages.length > 1 && (
                             <>
                                 <button 
                                     onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                                    className="absolute top-1/2 left-4 transform -translate-y-1/2 p-3 rounded-full bg-black/40 text-white backdrop-blur-sm hover:bg-gold-500 hover:text-black transition-all duration-300 border border-white/10 hover:border-transparent z-10"
+                                    className="absolute top-1/2 left-4 transform -translate-y-1/2 p-3 rounded-full bg-black/60 text-white backdrop-blur-sm hover:bg-gold-500 hover:text-black transition-all duration-300 border border-white/10 z-10"
                                     aria-label="Anterior"
                                 >
                                     <ChevronLeft size={32} />
@@ -98,7 +101,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                                 
                                 <button 
                                     onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                                    className="absolute top-1/2 right-4 transform -translate-y-1/2 p-3 rounded-full bg-black/40 text-white backdrop-blur-sm hover:bg-gold-500 hover:text-black transition-all duration-300 border border-white/10 hover:border-transparent z-10"
+                                    className="absolute top-1/2 right-4 transform -translate-y-1/2 p-3 rounded-full bg-black/60 text-white backdrop-blur-sm hover:bg-gold-500 hover:text-black transition-all duration-300 border border-white/10 z-10"
                                     aria-label="Siguiente"
                                 >
                                     <ChevronRight size={32} />
@@ -106,7 +109,6 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                             </>
                         )}
 
-                        {/* Image Counter Badge */}
                         <div className="absolute bottom-6 right-6 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full text-white text-xs font-bold tracking-widest border border-white/10">
                             {currentImageIndex + 1} / {allImages.length}
                         </div>
@@ -116,7 +118,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
                     {/* Main Content */}
                     <div className="lg:col-span-2 order-2 lg:order-1">
-                        <div className="bg-metallic-900/50 p-6 md:p-8 rounded-lg border border-white/5">
+                        <div className="bg-[#0a0a0a]/50 p-6 md:p-8 rounded-lg border border-white/5">
                             <h3 className="text-2xl font-bold text-white mb-6 border-l-4 border-gold-400 pl-4">Descripción del Vehículo</h3>
                             
                             <div className="prose prose-invert prose-lg text-gray-300 leading-relaxed whitespace-pre-line mb-10 font-light text-justify">
@@ -126,7 +128,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                             <h3 className="text-xl font-bold text-white mb-6 border-l-4 border-gold-400 pl-4">Características Destacadas</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {['Garantía Oficial 12 Meses', 'Certificado de Kilometraje', 'Libro de Mantenimiento al día', 'Vehículo No Fumador', 'Revisión 200 puntos check', 'Entrega en domicilio disponible'].map((item, i) => (
-                                    <div key={i} className="flex items-center gap-3 p-3 bg-black/40 rounded border border-white/5">
+                                    <div key={i} className="flex items-center gap-3 p-3 bg-black/40 rounded border border-white/5 transition-colors hover:border-gold-400/30">
                                         <Check className="text-gold-400 w-5 h-5 flex-shrink-0" />
                                         <span className="text-sm text-gray-300">{item}</span>
                                     </div>
@@ -135,9 +137,9 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                         </div>
                     </div>
 
-                    {/* Sidebar / CTO */}
+                    {/* Sidebar / CTA */}
                     <div className="lg:col-span-1 order-1 lg:order-2">
-                        <div className="bg-metallic-900 border border-white/10 p-6 md:p-8 rounded-lg sticky top-32 shadow-2xl">
+                        <div className="bg-[#0a0a0a] border border-white/10 p-6 md:p-8 rounded-lg sticky top-32 shadow-2xl">
                             <h3 className="text-xl font-bold text-white mb-6 uppercase tracking-wider">Resumen</h3>
                             
                             <div className="space-y-5 mb-8">
@@ -153,7 +155,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                                         <Gauge className="text-gold-400 w-5 h-5" />
                                         <span className="text-gray-300">Kilometraje</span>
                                     </div>
-                                    <span className="font-bold text-white text-lg">{car.km.toLocaleString()} km</span>
+                                    <span className="font-bold text-white text-lg">{car.km.toLocaleString('de-DE')} km</span>
                                 </div>
                                 <div className="flex items-center justify-between pb-4 border-b border-white/5">
                                     <div className="flex items-center gap-3">
@@ -167,7 +169,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                             <div className="space-y-3">
                                 <a 
                                     href={`mailto:info@premiumgermancars.com?subject=Interés en ${car.make} ${car.model}`}
-                                    className="w-full py-4 bg-gold-500 hover:bg-gold-600 text-black font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 rounded shadow-lg hover:shadow-gold-500/20"
+                                    className="w-full py-4 bg-gold-400 hover:bg-gold-500 text-black font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 rounded shadow-lg shadow-gold-400/20"
                                 >
                                     <Mail size={18} /> Solicitar Info
                                 </a>
@@ -179,7 +181,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                                 </a>
                             </div>
                             
-                            <p className="text-xs text-center text-gray-500 mt-6 leading-tight">
+                            <p className="text-[10px] text-center text-gray-500 mt-6 leading-tight uppercase tracking-tighter">
                                 *Financiación a medida disponible.<br/>Consúltanos sin compromiso.
                             </p>
                         </div>

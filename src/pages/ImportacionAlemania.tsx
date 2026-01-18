@@ -3,7 +3,8 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
-import { X, CheckCircle2, ShieldCheck, Gem, Clock, ArrowRight } from "lucide-react";
+import { X, CheckCircle2, ShieldCheck, Gem, Clock, ArrowRight, Calculator } from "lucide-react";
+import { Link } from "react-router-dom"; // Asumiendo que usas react-router para navegar internamente
 
 export const ImportacionAlemania: React.FC = () => {
   useEffect(() => {
@@ -101,7 +102,6 @@ export const ImportacionAlemania: React.FC = () => {
         <section className="container mx-auto px-6 max-w-6xl mb-32">
           <h2 className="text-3xl md:text-4xl font-serif font-bold mb-16 text-center">¿Por qué elegir Premium German Cars?</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Beneficio 1 */}
             <div className="space-y-4">
               <ShieldCheck className="text-gold-400" size={40} />
               <h3 className="text-xl font-bold uppercase tracking-wider">Garantía y trazabilidad certificada</h3>
@@ -109,7 +109,6 @@ export const ImportacionAlemania: React.FC = () => {
                 No negociamos con la seguridad. Cada vehículo cuenta con historial 100% documentado y kilometraje coherente. Si no es transparente, no lo trabajamos.
               </p>
             </div>
-            {/* Beneficio 2 */}
             <div className="space-y-4">
               <Gem className="text-gold-400" size={40} />
               <h3 className="text-xl font-bold uppercase tracking-wider">Exclusividad seleccionada</h3>
@@ -117,7 +116,6 @@ export const ImportacionAlemania: React.FC = () => {
                 Accede a niveles de equipamiento y motorizaciones superiores poco comunes en el mercado nacional. Tú pones los requisitos, nosotros filtramos el mercado.
               </p>
             </div>
-            {/* Beneficio 3 */}
             <div className="space-y-4">
               <Clock className="text-gold-400" size={40} />
               <h3 className="text-xl font-bold uppercase tracking-wider">Reducción real de riesgos</h3>
@@ -133,7 +131,6 @@ export const ImportacionAlemania: React.FC = () => {
           <div className="container mx-auto px-6 max-w-4xl">
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 text-center">Nuestro proceso "Llave en Mano"</h2>
             <p className="text-gray-400 text-center mb-16 italic">Cero preocupaciones. Control total.</p>
-            
             <div className="space-y-12">
               {steps.map((step, i) => (
                 <div key={i} className="flex gap-6 md:gap-10 relative">
@@ -158,10 +155,26 @@ export const ImportacionAlemania: React.FC = () => {
           <div className="bg-gradient-to-br from-metallic-900 to-black p-12 md:p-20 rounded-3xl border border-gold-400/20 text-center relative overflow-hidden">
             <div className="max-w-3xl mx-auto relative z-10">
               <h2 className="text-3xl md:text-5xl font-serif font-bold mb-8">¿Buscas un modelo o configuración concreta?</h2>
-              <p className="text-gray-400 text-lg mb-10 leading-relaxed">
+              <p className="text-gray-400 text-lg mb-12 leading-relaxed">
                 No te limites al stock reducido de tu zona. El mercado alemán ofrece miles de unidades... pero solo unas pocas merecen realmente la pena. 
                 Clientes de toda <strong>Cataluña</strong> confían en nuestro criterio.
               </p>
+
+              {/* COLETILLA CALCULADORA */}
+              <div className="mb-14 p-8 bg-black/40 rounded-2xl border border-gold-400/10 backdrop-blur-sm">
+                <p className="text-white text-xl font-light mb-6">
+                  ¿Tienes ya una unidad vista y quieres saber el coste real?
+                </p>
+                <Link 
+                  to="/calculadora" 
+                  className="inline-flex items-center gap-2 text-gold-400 font-bold uppercase tracking-[0.2em] hover:text-white transition-colors group"
+                >
+                  <Calculator size={20} className="group-hover:rotate-12 transition-transform" />
+                  Calcula ahora cuánto costaría traer el coche que quieres
+                  <ArrowRight size={18} />
+                </Link>
+              </div>
+
               <a
                 href="https://wa.me/34603743608?text=Hola!%20Me%20gustaría%20solicitar%20un%20presupuesto%20personalizado%20para%20importar%20un%20coche."
                 target="_blank"

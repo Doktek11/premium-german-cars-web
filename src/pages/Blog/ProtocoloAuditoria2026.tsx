@@ -12,7 +12,7 @@ import {
   AlertOctagon, 
   MessageCircle,
   ArrowRight,
-  CheckCircle // Corregido: Importado para que no dé error en el historial
+  CheckCircle 
 } from 'lucide-react';
 
 const ProtocoloAuditoria2026 = () => {
@@ -20,7 +20,7 @@ const ProtocoloAuditoria2026 = () => {
     <>
       <SEO 
         title="Protocolo de Auditoría Técnica en Alemania | Premium German Cars" 
-        description="Descubre nuestro protocolo exclusivo de revisión en Alemania: historial digital oficial, análisis de pintura y pruebas en Autobahn para una importación segura."
+        description="Revisión de coches en Alemania: nuestro protocolo incluye historial digital oficial, medición de pintura y test en Autobahn para una importación 100% segura."
       />
       <Navbar />
       

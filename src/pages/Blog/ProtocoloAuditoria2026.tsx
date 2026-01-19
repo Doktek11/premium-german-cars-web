@@ -11,7 +11,8 @@ import {
   FileCheck, 
   AlertOctagon, 
   MessageCircle,
-  ArrowRight
+  ArrowRight,
+  CheckCircle // Corregido: Importado para que no dé error en el historial
 } from 'lucide-react';
 
 const ProtocoloAuditoria2026 = () => {
@@ -45,7 +46,7 @@ const ProtocoloAuditoria2026 = () => {
               <div className="absolute bottom-4 right-6 text-gold-400/30 font-serif italic text-4xl md:text-6xl select-none uppercase tracking-tighter">Verified</div>
           </div>
 
-          {/* INTRODUCCIÓN / CITA */}
+          {/* CONTENIDO PRINCIPAL */}
           <div className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed">
             <p className="text-lg md:text-xl text-gray-200 mb-8 font-light italic border-l-4 border-gold-400 pl-6 text-justify">
               «En la importación de vehículos premium, usted no paga por un coche; paga por el criterio técnico de quien lo selecciona.»
@@ -68,7 +69,7 @@ const ProtocoloAuditoria2026 = () => {
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-gold-400 mt-12 mb-6 uppercase tracking-wider flex items-center gap-3">
               <Database className="text-gold-400" size={28} /> 1. El historial digital
             </h2>
-            <h3 className="text-xl font-bold mb-4 text-white italic italic">La verdad oculta tras el libro de revisiones sellado</h3>
+            <h3 className="text-xl font-bold mb-4 text-white italic">La verdad oculta tras el libro de revisiones sellado</h3>
             <p className="mb-6 text-justify font-light">
               Un libro de mantenimiento físico con sellos se puede manipular. Por eso, el primer paso de nuestro proceso de importación de coches desde Alemania es una <strong>auditoría digital completa</strong>.
             </p>
@@ -160,7 +161,7 @@ const ProtocoloAuditoria2026 = () => {
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-gold-400 mt-16 mb-6 uppercase tracking-wider flex items-center gap-3">
               <Truck className="text-gold-400" size={28} /> 4. Logística premium y entrega llave en mano
             </h2>
-            <h3 className="text-xl font-bold mb-4 text-white italic italic">Servicio desde Tarragona para toda España</h3>
+            <h3 className="text-xl font-bold mb-4 text-white italic">Servicio desde Tarragona para toda España</h3>
             <p className="mb-6 text-justify font-light">
               Aunque nuestra sede y centro de operaciones se encuentra en la provincia de <strong>Tarragona (Reus / Cambrils)</strong>, nuestro servicio de importación de coches desde Alemania es nacional. Este enfoque es el mismo tanto para clientes de Tarragona y Reus como para cualquier punto de España.
             </p>
@@ -186,7 +187,7 @@ const ProtocoloAuditoria2026 = () => {
             {/* CONCLUSIÓN Y CTA */}
             <div className="mt-12 p-1 bg-gradient-to-r from-gold-600 to-gold-400">
               <div className="bg-black p-8 md:p-12 text-center">
-                <p className="text-white mb-8 max-w-2xl mx-auto text-lg md:text-xl font-serif italic italic leading-tight">
+                <p className="text-white mb-8 max-w-2xl mx-auto text-lg md:text-xl font-serif italic leading-tight">
                   "Porque en la importación de alta gama, la diferencia no está en el coche… sino en quién asume la responsabilidad de elegirlo por usted."
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 justify-center">

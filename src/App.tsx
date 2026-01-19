@@ -26,6 +26,9 @@ import GuiaCalculadora2026 from "./pages/Blog/GuiaCalculadora2026";
 // NUEVA IMPORTACIÓN: COSTE IMPORTACIÓN 2026
 import CosteImportacionAlemania from "./pages/Blog/CosteImportacionAlemania";
 
+// NUEVA IMPORTACIÓN: PROTOCOLO AUDITORÍA 19 ENERO ( PREMIUM GERMAN CARS )
+import ProtocoloAuditoria2026 from "./pages/Blog/ProtocoloAuditoria2026";
+
 // IMPORTACIONES LEGALES
 import AvisoLegal from "./pages/Legal/AvisoLegal";
 import PoliticaPrivacidad from "./pages/Legal/PoliticaPrivacidad";
@@ -68,6 +71,12 @@ export default function App() {
         
         {/* RUTAS DEL BLOG */}
         
+        {/* NUEVA RUTA: PROTOCOLO AUDITORÍA TÉCNICA (19 ENERO 2026) */}
+        <Route 
+          path="/blog/revision-coche-alemania-protocolo-auditoria" 
+          element={<ProtocoloAuditoria2026 />} 
+        />
+
         {/* NUEVA RUTA: GUÍA CALCULADORA BOE 2025 */}
         <Route 
           path="/blog/guia-calculo-impuesto-matriculacion-boe-2025" 

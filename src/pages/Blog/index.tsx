@@ -6,6 +6,14 @@ import { Calendar, ArrowRight } from 'lucide-react';
 
 const blogPosts = [
   {
+    id: 9,
+    title: "¿Cuánto cuesta realmente importar un coche de Alemania en 2026?",
+    excerpt: "Descubre los costes reales, impuestos y el impacto del ITP del 16% en Cataluña. Evite errores administrativos y optimice su inversión.",
+    date: "19 Ene, 2026",
+    slug: "cuanto-cuesta-importar-coche-alemania-2026",
+    category: "Guía Fiscal"
+  },
+  {
     id: 8,
     title: "Guía definitiva: Cómo calcular el impuesto de matriculación BOE 2025",
     excerpt: "Utilice nuestra calculadora con IA para obtener valores BOE exactos y calcular la depreciación real mes a mes. Sin errores, sin sorpresas fiscales.",

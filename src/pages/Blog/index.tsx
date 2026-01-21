@@ -6,6 +6,14 @@ import { Calendar, ArrowRight } from 'lucide-react';
 
 const blogPosts = [
   {
+    id: 10,
+    title: "Protocolo de Auditoría 2026: Transparencia Total en cada Importación",
+    excerpt: "Conozca nuestro riguroso proceso de verificación técnica. Desde la revisión de historial en BMW hasta el control de calidad en destino. Seguridad absoluta para su inversión.",
+    date: "21 Ene, 2026",
+    slug: "protocolo-auditoria-2026",
+    category: "Seguridad"
+  },
+  {
     id: 9,
     title: "¿Cuánto cuesta realmente importar un coche de Alemania en 2026?",
     excerpt: "Descubre los costes reales, impuestos y el impacto del ITP del 16% en Cataluña. Evite errores administrativos y optimice su inversión.",

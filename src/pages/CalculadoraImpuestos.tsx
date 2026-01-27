@@ -105,8 +105,8 @@ export const CalculadoraImpuestos = () => {
   return (
     <div className="min-h-screen bg-black text-white">
       <SEO 
-        title="¿Cuánto cuesta matricular un coche de Alemania? | Calculadora 2026"
-        description="Calcula gratis el impuesto de matriculación con datos oficiales BOE 2026. Incluye asistente de IA para valor venal y asesoría de Premium German Cars."
+        title="Impuesto de Matriculación Diésel o Gasolina 2026 | Calculadora PGC"
+        description="Calcula gratis el impuesto de matriculación para coches diésel o gasolina con datos oficiales BOE 2026. Incluye asistente de IA para valor venal."
       />
       
       <Navbar />
@@ -116,10 +116,11 @@ export const CalculadoraImpuestos = () => {
           <header className="mb-12 flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-center md:text-left">
               <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter text-left">
-                ¿Cuánto cuesta <span className="text-gold-400 italic">matricularlo?</span>
+                Impuesto <span className="text-gold-400 italic">Diésel o Gasolina:</span> <br/>
+                <span className="text-2xl md:text-4xl">¿Cuánto cuesta matricularlo?</span>
               </h1>
               <p className="text-gray-400 text-lg max-w-2xl text-left">
-                Herramienta de precisión basada en los tramos de CO2 2026 y las tablas de depreciación del BOE.
+                Herramienta de precisión basada en los tramos de CO2 2026 y las tablas de depreciación del BOE para vehículos de importación.
               </p>
             </div>
             <button 
@@ -278,6 +279,31 @@ export const CalculadoraImpuestos = () => {
             </div>
           </div>
 
+          {/* SECCIÓN INFORMATIVA DETALLADA (SOLUCIÓN SEMRUSH LONG-FORM) */}
+          <section className="mb-24 p-8 md:p-12 bg-white/[0.02] border border-white/5 rounded-3xl text-left">
+            <h2 className="text-3xl font-serif font-bold mb-6 italic text-gold-400">
+              Impuesto de matriculación: ¿Diésel o Gasolina?
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-gray-400 leading-relaxed">
+              <div className="space-y-4">
+                <p>
+                  A la hora de importar un coche de Alemania, la duda entre <strong>diésel o gasolina</strong> es crucial para el presupuesto final. El impuesto de matriculación en España no discrimina por el tipo de combustible de forma directa, sino por las <strong>emisiones de CO2 homologadas (WLTP)</strong>.
+                </p>
+                <p>
+                  Los motores <strong>diésel modernos</strong> suelen ofrecer cifras de CO2 más ajustadas que sus homólogos de gasolina de igual potencia. Esto puede significar que un vehículo diésel se mantenga en el tramo del <strong>4,75%</strong>, mientras que la versión de gasolina salte al <strong>9,75%</strong>, duplicando el coste del impuesto.
+                </p>
+              </div>
+              <div className="space-y-4">
+                <p>
+                  Por otro lado, los vehículos de <strong>gasolina</strong> suelen tener un mantenimiento menos complejo a largo plazo y etiquetas ambientales que pueden ser más favorables en ciertas zonas de bajas emisiones, compensando el posible pago extra inicial. 
+                </p>
+                <p>
+                  En <strong>Premium German Cars</strong> recomendamos siempre verificar la cifra exacta de CO2 en el Certificado de Conformidad (COC). Si el coche emite menos de 120g/km, el impuesto será de <strong>0€</strong>, independientemente de si es diésel o gasolina.
+                </p>
+              </div>
+            </div>
+          </section>
+
           {/* FAQ SECCIÓN PARA SEO */}
           <section className="mb-24 pt-20 border-t border-white/10 text-left">
             <h2 className="text-3xl font-serif font-bold mb-10 flex items-center gap-3 italic">
@@ -341,7 +367,7 @@ export const CalculadoraImpuestos = () => {
                   <h3 className="font-bold uppercase text-xs tracking-widest text-left">Matriculación con Asistente de IA</h3>
                 </div>
                 <p className="text-sm leading-relaxed text-left">
-                  Muchos usuarios buscan <strong className="text-white">cómo calcular el impuesto de matriculación</strong> sin errores. Nuestra herramienta pionera incluye un <strong className="text-white">asistente de IA</strong> que consulta las tablas del <strong className="text-white">BOE 2026</strong> por ti, ahorrándote trámites tediosos.
+                  Muchos usuarios buscan <strong>cómo calcular el impuesto de matriculación</strong> sin errores. Nuestra herramienta pionera incluye un <strong>asistente de IA</strong> que consulta las tablas del <strong>BOE 2026</strong> por ti, ahorrándote trámites tediosos.
                 </p>
               </div>
 
@@ -351,7 +377,7 @@ export const CalculadoraImpuestos = () => {
                   <h3 className="font-bold uppercase text-xs tracking-widest text-left">Importar de Alemania ahora es más fácil</h3>
                 </div>
                 <p className="text-sm leading-relaxed text-left">
-                  Calcular <strong className="text-white">cuánto cuesta matricular un coche alemán en España</strong> ya no es un misterio. Con la tecnología de <strong className="text-white">Premium German Cars</strong>, obtienes el desglose exacto del Modelo 576 y gastos de gestión en segundos.
+                  Calcular <strong>cuánto cuesta matricular un coche alemán en España</strong> ya no es un misterio. Con la tecnología de <strong>Premium German Cars</strong>, obtienes el desglose exacto del Modelo 576 y gastos de gestión en segundos.
                 </p>
               </div>
 
@@ -361,7 +387,7 @@ export const CalculadoraImpuestos = () => {
                   <h3 className="font-bold uppercase text-xs tracking-widest text-left">Seguridad en tu inversión Premium</h3>
                 </div>
                 <p className="text-sm leading-relaxed text-left">
-                  No te la juegues con los <strong className="text-white">costes de importar un coche</strong>. Nuestra calculadora puntera analiza emisiones y antigüedad para que tu presupuesto sea 100% real. Confía en la asesoría líder de <strong className="text-white">premiumgermancars.com</strong>.
+                  No te la juegues con los <strong>costes de importar un coche</strong>. Nuestra calculadora puntera analiza emisiones y antigüedad para que tu presupuesto sea 100% real. Confía en la asesoría líder de <strong>premiumgermancars.com</strong>.
                 </p>
               </div>
             </div>

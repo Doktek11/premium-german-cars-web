@@ -20,6 +20,9 @@ import ComoImportarCocheAlemania from "./pages/Blog/como-importar-coche-alemania
 import RiesgosImportarCocheAlemania from "./pages/Blog/5-riesgos-importar-coche-alemania";
 import BMWAlpinaNuevaEra from "./pages/Blog/BMWAlpinaNuevaEra";
 
+// NUEVA IMPORTACIÓN: ARTÍCULO ESTRATÉGICO (+900% TENDENCIA)
+import ImportacionAlemaniaMejorOpcion from "./pages/Blog/ImportarCocheAlemanGuia";
+
 // NUEVA IMPORTACIÓN: GUÍA CALCULADORA 13 ENERO
 import GuiaCalculadora2026 from "./pages/Blog/GuiaCalculadora2026";
 
@@ -70,6 +73,12 @@ export default function App() {
         <Route path="/blog" element={<BlogIndex />} />
         
         {/* RUTAS DEL BLOG */}
+
+        {/* NUEVA RUTA: ARTÍCULO ESTRATÉGICO 27 ENERO */}
+        <Route 
+          path="/blog/importar-coche-aleman-guia-importacion-alemania" 
+          element={<ImportacionAlemaniaMejorOpcion />} 
+        />
         
         {/* NUEVA RUTA: PROTOCOLO AUDITORÍA TÉCNICA (19 ENERO 2026) */}
         <Route 

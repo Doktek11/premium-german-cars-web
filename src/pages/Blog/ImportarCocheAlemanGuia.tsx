@@ -155,10 +155,10 @@ const ImportacionAlemaniaMejorOpcion = () => {
             <section className="mb-24">
               <h3 className="text-2xl font-bold text-white mb-8">¿Buscas el mejor importador de coches alemanes?</h3>
               <p className="text-lg mb-10 text-justify">
-                En <strong>Premium German Cars</strong> no nos limitamos a importar; seleccionamos. Nuestro sello de calidad garantiza vehículos con menos de 35.000 km, historial verificable y <strong>garantía oficial en España</strong>.
+                En <strong>Premium German Cars</strong> no nos limitamos a importar; seleccionamos. Nuestro sello de calidad garantiza vehículos con menos de 75.000 km, historial verificable y <strong>garantía oficial en España</strong>.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
-                {["Menos de 35k KM", "Historial Verificado", "Garantía en España"].map((doc, i) => (
+                {["Menos de 75k KM", "Historial Verificado", "Garantía en España"].map((doc, i) => (
                   <div key={i} className="p-4 border border-white/5 bg-[#050505]">
                     <span className="text-gold-400 font-bold text-[10px] uppercase tracking-widest">{doc}</span>
                   </div>

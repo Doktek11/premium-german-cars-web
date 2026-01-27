@@ -3,14 +3,21 @@
   
   <url>
     <loc>https://premiumgermancars.com/</loc>
-    <lastmod>2026-01-19</lastmod>
+    <lastmod>2026-01-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
     <loc>https://premiumgermancars.com/stock</loc>
-    <lastmod>2026-01-05</lastmod>
+    <lastmod>2026-01-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.premiumgermancars.com/car/bmw-serie-1-116i</loc>
+    <lastmod>2026-01-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -38,12 +45,18 @@
 
   <url>
     <loc>https://premiumgermancars.com/blog</loc>
-    <lastmod>2026-01-19</lastmod>
+    <lastmod>2026-01-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  {/* RUTA CORREGIDA: PROTOCOLO DE AUDITORÍA */}
+  <url>
+    <loc>https://premiumgermancars.com/blog/importar-coche-aleman-guia-importacion-alemania</loc>
+    <lastmod>2026-01-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <url>
     <loc>https://premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria</loc>
     <lastmod>2026-01-19</lastmod>

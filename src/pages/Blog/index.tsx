@@ -6,6 +6,14 @@ import { Calendar, ArrowRight } from 'lucide-react';
 
 const blogPosts = [
   {
+    id: 11,
+    title: "Importación de Alemania: ¿Por qué es la mejor forma de comprar tu coche premium en 2026?",
+    excerpt: "Analizamos el mercado actual: por qué la demanda de importación desde Alemania ha crecido un 900% y cómo acceder a unidades de reestreno con garantía oficial en España.",
+    date: "27 Ene, 2026",
+    slug: "importar-coche-aleman-guia-importacion-alemania",
+    category: "Estrategia"
+  },
+  {
     id: 10,
     title: "Protocolo de Auditoría 2026: Transparencia Total en cada Importación",
     excerpt: "Conozca nuestro riguroso proceso de verificación técnica. Desde la revisión de historial en BMW hasta el control de calidad en destino. Seguridad absoluta para su inversión.",

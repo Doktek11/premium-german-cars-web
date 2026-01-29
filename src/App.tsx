@@ -32,6 +32,9 @@ import CosteImportacionAlemania from "./pages/Blog/CosteImportacionAlemania";
 // NUEVA IMPORTACIÓN: PROTOCOLO AUDITORÍA 19 ENERO ( PREMIUM GERMAN CARS )
 import ProtocoloAuditoria2026 from "./pages/Blog/ProtocoloAuditoria2026";
 
+// NUEVA IMPORTACIÓN: CERTIFICADO DE CONFORMIDAD COC
+import CertificadoConformidadCOC from "./pages/Blog/certificado-de-conformidad-coc";
+
 // IMPORTACIONES LEGALES
 import AvisoLegal from "./pages/Legal/AvisoLegal";
 import PoliticaPrivacidad from "./pages/Legal/PoliticaPrivacidad";
@@ -73,6 +76,12 @@ export default function App() {
         <Route path="/blog" element={<BlogIndex />} />
         
         {/* RUTAS DEL BLOG */}
+
+        {/* NUEVA RUTA: CERTIFICADO DE CONFORMIDAD COC */}
+        <Route 
+          path="/blog/certificado-conformidad-coc-itv-matriculacion" 
+          element={<CertificadoConformidadCOC />} 
+        />
 
         {/* NUEVA RUTA: ARTÍCULO ESTRATÉGICO 27 ENERO */}
         <Route 

@@ -42,7 +42,8 @@ const CertificadoConformidadCOC = () => {
               <span className="inline-block bg-gold-950/20 text-gold-400 px-4 py-1 rounded-full text-[10px] uppercase tracking-widest font-black border border-gold-400/20">
                 Documentación & Normativa Técnica
               </span>
-              <h1 className="text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">
+              {/* AJUSTE 1: Título ligeramente más pequeño */}
+              <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight">
                 Certificado de Conformidad (COC): <span className="text-gold-400 block md:inline italic">qué es, por qué lo necesitas y cómo evitar problemas en la ITV</span>
               </h1>
             </div>
@@ -64,7 +65,6 @@ const CertificadoConformidadCOC = () => {
 
           <div className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed">
             
-            {/* INTRODUCCIÓN COMPLETA */}
             <section className="mb-20">
               <p className="text-xl md:text-2xl font-bold text-white mb-8 leading-snug">
                 Si estás importando un coche desde Europa o estás a punto de matricularlo en España, hay un documento que marca la diferencia entre un trámite rápido o un proceso largo y costoso: el Certificado de Conformidad, también conocido como COC (Certificate of Conformity).
@@ -74,7 +74,7 @@ const CertificadoConformidadCOC = () => {
               </p>
             </section>
 
-            {/* SECCIÓN 1: ¿QUÉ ES EL COC? (TEXTO EXTENDIDO) */}
+            {/* SECCIÓN 1: ¿QUÉ ES EL COC? */}
             <section className="mb-24">
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
                 <FileText size={14} /> 01. ¿Qué es el Certificado de Conformidad (COC)?
@@ -86,21 +86,21 @@ const CertificadoConformidadCOC = () => {
                 En otras palabras, el Certificado de Conformidad confirma que el vehículo fue fabricado conforme a los estándares técnicos exigidos en la Unión Europea y que, por tanto, puede matricularse en España sin necesidad de una homologación individual. Este documento es válido en todos los países miembros de la UE y resulta imprescindible para matricular un coche importado en España, especialmente cuando procede de Alemania u otro país europeo.
               </p>
 
+              {/* AJUSTE 2: Letra más grande y blanca en recuadros */}
               <div className="grid md:grid-cols-2 gap-6 my-10">
-                <div className="bg-[#0a0a0a] p-6 border border-white/5">
-                  <CheckCircle2 className="text-gold-400 mb-4" size={20} />
-                  <h4 className="text-white font-bold text-xs uppercase mb-2 tracking-widest">Con COC</h4>
-                  <p className="text-xs text-gray-500 italic">ITV más rápida y sin complicaciones técnicas adicionales.</p>
+                <div className="bg-[#0a0a0a] p-8 border border-white/10">
+                  <CheckCircle2 className="text-gold-400 mb-4" size={24} />
+                  <h4 className="text-white font-bold text-sm uppercase mb-3 tracking-widest">Con COC</h4>
+                  <p className="text-sm text-gray-200 italic leading-relaxed">ITV más rápida y sin complicaciones técnicas adicionales.</p>
                 </div>
-                <div className="bg-[#0a0a0a] p-6 border border-red-900/30">
-                  <AlertTriangle className="text-red-500 mb-4" size={20} />
-                  <h4 className="text-white font-bold text-xs uppercase mb-2 tracking-widest">Sin COC</h4>
-                  <p className="text-xs text-gray-500 italic">Homologación individual obligatoria (más cara y lenta).</p>
+                <div className="bg-[#0a0a0a] p-8 border border-red-900/30">
+                  <AlertTriangle className="text-red-500 mb-4" size={24} />
+                  <h4 className="text-white font-bold text-sm uppercase mb-3 tracking-widest">Sin COC</h4>
+                  <p className="text-sm text-gray-200 italic leading-relaxed">Homologación individual obligatoria (más cara y lenta).</p>
                 </div>
               </div>
             </section>
 
-            {/* SECCIÓN 2: OBLIGATORIEDAD */}
             <section className="mb-24">
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
                 <ShieldCheck size={14} /> 02. Certificado de Conformidad europeo: ¿por qué es obligatorio?
@@ -119,7 +119,6 @@ const CertificadoConformidadCOC = () => {
               </div>
             </section>
 
-            {/* SECCIÓN 3: PUNTO CRÍTICO */}
             <section className="mb-24">
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
                 <ShieldCheck size={14} /> 03. Certificado de Conformidad coche: el punto crítico en la importación
@@ -138,12 +137,24 @@ const CertificadoConformidadCOC = () => {
                 </div>
               </div>
 
+              {/* AJUSTE 3: CTA INTERMEDIO HACIA CALCULADORA */}
+              <div className="my-16 p-1 bg-gradient-to-r from-gold-400/20 to-transparent">
+                <div className="bg-[#050505] p-8 border border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+                  <div>
+                    <h4 className="text-white font-bold text-xl mb-2">¿Quieres saber cuánto pagarás de impuestos?</h4>
+                    <p className="text-gray-400 text-sm">Usa los datos de emisiones de tu COC en nuestra calculadora avanzada.</p>
+                  </div>
+                  <Link to="/calculadora-impuesto-matriculacion" className="bg-white text-black px-8 py-4 font-black uppercase text-[10px] tracking-widest hover:bg-gold-400 transition-colors flex items-center gap-2 whitespace-nowrap">
+                    Calcular Impuestos <Calculator size={14} />
+                  </Link>
+                </div>
+              </div>
+
               <p className="text-gray-400 italic text-sm">
                 En <strong>Premium German Cars</strong>, especialistas en importación de vehículos premium desde Alemania, gestionamos el Certificado de Conformidad (COC) a diario. Aunque este documento es habitual en coches europeos, no siempre se entrega automáticamente, especialmente en vehículos de segunda mano o procedentes de renting y leasing.
               </p>
             </section>
 
-            {/* SECCIÓN 4: ¿QUÉ COCHES LO NECESITAN? */}
             <section className="mb-24">
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
                 <Car size={14} /> 04. ¿Qué coches necesitan Certificado de Conformidad (COC)?
@@ -171,7 +182,6 @@ const CertificadoConformidadCOC = () => {
               </div>
             </section>
 
-            {/* SECCIÓN 5: ITV TIEMPOS */}
             <section className="mb-24">
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
                 <Clock size={14} /> 05. ¿Cuánto tarda la ITV con y sin Certificado de Conformidad?
@@ -179,7 +189,7 @@ const CertificadoConformidadCOC = () => {
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="border border-white/5 p-6">
                   <h4 className="text-gold-400 font-bold mb-4 uppercase text-[10px]">Con Certificado de Conformidad</h4>
-                  <ul className="text-xs space-y-3 text-gray-400">
+                  <ul className="text-xs space-y-3 text-gray-200 font-medium">
                     <li>✓ Inspección más directa</li>
                     <li>✓ Datos técnicos ya reconocidos</li>
                     <li>✓ Menos comprobaciones adicionales</li>
@@ -188,7 +198,7 @@ const CertificadoConformidadCOC = () => {
                 </div>
                 <div className="border border-red-900/20 p-6">
                   <h4 className="text-red-500 font-bold mb-4 uppercase text-[10px]">Sin Certificado de Conformidad</h4>
-                  <ul className="text-xs space-y-3 text-gray-400">
+                  <ul className="text-xs space-y-3 text-gray-200 font-medium">
                     <li>✗ Necesidad de homologación individual</li>
                     <li>✗ Informes técnicos adicionales</li>
                     <li>✗ Posibles reformas a legalizar</li>
@@ -198,7 +208,6 @@ const CertificadoConformidadCOC = () => {
               </div>
             </section>
 
-            {/* SECCIÓN 6: CÓMO CONSEGUIRLO */}
             <section className="mb-24">
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
                 <Search size={14} /> 06. ¿Cómo conseguir el Certificado de Conformidad?
@@ -211,20 +220,19 @@ const CertificadoConformidadCOC = () => {
                   <HelpCircle className="text-gold-400 shrink-0" />
                   <div>
                     <h5 className="text-white font-bold mb-1">Solicitarlo directamente al fabricante</h5>
-                    <p className="text-xs text-gray-500">Documento válido pero proceso que puede ser lento y con coste variable según la marca.</p>
+                    <p className="text-xs text-gray-400">Documento válido pero proceso que puede ser lento y con coste variable según la marca.</p>
                   </div>
                 </div>
                 <div className="flex gap-4 p-6 bg-[#0a0a0a] border-l-2 border-gold-400">
                   <ShieldCheck className="text-gold-400 shrink-0" />
                   <div>
                     <h5 className="text-white font-bold mb-1">A través de gestores especializados (PGC)</h5>
-                    <p className="text-xs text-gray-500">Tramitación más rápida, revisión de datos técnicos y certificados adaptados a los requisitos de la ITV española.</p>
+                    <p className="text-xs text-gray-400">Tramitación más rápida, revisión de datos técnicos y certificados adaptados a los requisitos de la ITV española.</p>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* SECCIÓN FAQ COMPLETA */}
             <section className="mb-24">
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
                 <HelpCircle size={14} /> 07. Preguntas Frecuentes sobre el COC
@@ -239,13 +247,12 @@ const CertificadoConformidadCOC = () => {
                 ].map((faq, i) => (
                   <div key={i} className="border-b border-white/5 pb-6">
                     <h4 className="text-white font-bold text-sm mb-2 italic">{faq.q}</h4>
-                    <p className="text-xs text-gray-500 leading-relaxed">{faq.a}</p>
+                    <p className="text-xs text-gray-400 leading-relaxed font-medium">{faq.a}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            {/* CONCLUSIÓN Y CTA */}
             <div className="bg-[#0a0a0a] border border-gold-400/20 p-12 text-center relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400/50 to-transparent"></div>
                 <h2 className="text-3xl font-bold mb-6 text-white leading-tight">

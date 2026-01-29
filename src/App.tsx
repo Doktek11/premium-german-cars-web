@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 // 1. IMPORTAMOS EL COMPONENTE DE VERCEL
 import { Analytics } from "@vercel/analytics/react";
 
@@ -53,6 +53,7 @@ export default function App() {
       <ScrollToTop />
       
       <Routes>
+        {/* RUTAS PRINCIPALES */}
         <Route path="/" element={<Home />} />
         <Route path="/car/:slug" element={<CarPage />} />
         
@@ -73,35 +74,36 @@ export default function App() {
           element={<FAQPage />} 
         />
 
+        {/* SECCIÓN BLOG */}
         <Route path="/blog" element={<BlogIndex />} />
         
-        {/* RUTAS DEL BLOG */}
+        {/* RUTAS ESPECÍFICAS DEL BLOG (Ordenadas por relevancia y fecha) */}
 
-        {/* NUEVA RUTA: CERTIFICADO DE CONFORMIDAD COC */}
+        {/* CERTIFICADO DE CONFORMIDAD COC */}
         <Route 
           path="/blog/certificado-conformidad-coc-itv-matriculacion" 
           element={<CertificadoConformidadCOC />} 
         />
 
-        {/* NUEVA RUTA: ARTÍCULO ESTRATÉGICO 27 ENERO */}
+        {/* ARTÍCULO ESTRATÉGICO 27 ENERO */}
         <Route 
           path="/blog/importar-coche-aleman-guia-importacion-alemania" 
           element={<ImportacionAlemaniaMejorOpcion />} 
         />
         
-        {/* NUEVA RUTA: PROTOCOLO AUDITORÍA TÉCNICA (19 ENERO 2026) */}
+        {/* PROTOCOLO AUDITORÍA TÉCNICA (19 ENERO 2026) */}
         <Route 
           path="/blog/revision-coche-alemania-protocolo-auditoria" 
           element={<ProtocoloAuditoria2026 />} 
         />
 
-        {/* NUEVA RUTA: GUÍA CALCULADORA BOE 2025 */}
+        {/* GUÍA CALCULADORA BOE 2025 */}
         <Route 
           path="/blog/guia-calculo-impuesto-matriculacion-boe-2025" 
           element={<GuiaCalculadora2026 />} 
         />
 
-        {/* NUEVA RUTA: COSTE REAL IMPORTACIÓN 2026 */}
+        {/* COSTE REAL IMPORTACIÓN 2026 */}
         <Route 
           path="/blog/cuanto-cuesta-importar-coche-alemania-2026" 
           element={<CosteImportacionAlemania />} 
@@ -136,8 +138,14 @@ export default function App() {
           element={<BMWAlpinaNuevaEra />} 
         />
 
+        {/* RUTAS LEGALES */}
         <Route path="/aviso-legal" element={<AvisoLegal />} />
         <Route path="/politica-privacidad" element={<PoliticaPrivacidad />} />
+
+        {/* SOLUCIÓN A ERRORES DE REDIRECCIÓN: 
+            Cualquier ruta no encontrada redirige a la home o al index del blog 
+            Esto evita que Google vea un "Redirect Error" infinito. */}
+        <Route path="*" element={<Navigate to="/" replace />} />
 
       </Routes>
 

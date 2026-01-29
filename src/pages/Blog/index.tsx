@@ -6,6 +6,14 @@ import { Calendar, ArrowRight } from 'lucide-react';
 
 const blogPosts = [
   {
+    id: 12,
+    title: "Certificado de Conformidad (COC): Guía para una matriculación sin errores",
+    excerpt: "Evite la homologación individual y retrasos en la ITV. Todo lo que necesita saber sobre el COC al importar su vehículo desde Alemania.",
+    date: "29 Ene, 2026",
+    slug: "certificado-conformidad-coc-itv-matriculacion",
+    category: "Normativa"
+  },
+  {
     id: 11,
     title: "Importación de Alemania: ¿Por qué es la mejor forma de comprar tu coche premium en 2026?",
     excerpt: "Analizamos el mercado actual: por qué la demanda de importación desde Alemania ha crecido un 900% y cómo acceder a unidades de reestreno con garantía oficial en España.",

@@ -21,7 +21,7 @@ const CosteImportacionAlemania2026 = () => {
     <>
       <SEO 
         title="¿Cuánto cuesta importar un coche de Alemania en 2026? | PGC"
-        description="Guía completa sobre impuestos, ITP del 16% en Cataluña y costes reales de importación. Aprende a evitar errores fiscales en tu coche alemán."
+        description="Domina la logística y fiscalidad para importar tu coche de Alemania. Expertos en transporte de coches, ITP en Cataluña y etiquetas DGT."
         article={true}
         image="/logoPGC.svg"
         canonical="https://premiumgermancars.com/blog/cuanto-costa-importar-coche-alemania-2026"
@@ -57,7 +57,7 @@ const CosteImportacionAlemania2026 = () => {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold-600/5 via-transparent to-transparent opacity-50"></div>
               <img src="/logoPGC.svg" className="w-64 opacity-20 brightness-0 invert transition-transform duration-700 group-hover:scale-110" alt="PGC Logo" />
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gold-400/40 font-serif italic text-xs tracking-[0.5em] uppercase text-center w-full px-4">
-                Transparencia Fiscal en Cataluña y España
+                Estrategia en Logística y Fiscalidad Premium
               </div>
           </div>
 
@@ -66,114 +66,105 @@ const CosteImportacionAlemania2026 = () => {
             {/* INTRODUCCIÓN */}
             <section className="mb-20">
               <p className="text-xl md:text-2xl font-bold text-white mb-8 leading-snug">
-                Cada mes vemos clientes de Reus, Tarragona y otras zonas de Cataluña que llegan convencidos de haber ahorrado tras encontrar un precio en Mobile.de… y descubren demasiado tarde que la realidad fiscal es otra.
+                Cada mes recibimos clientes en nuestra base de Cambrils que llegan convencidos de haber encontrado una gran oportunidad en Mobile.de. Sin embargo, cuando hablamos de coches importados de Alemania, el ahorro real rara vez está en el precio del anuncio.
               </p>
               <p className="mb-6 text-justify text-lg text-gray-400">
-                El error más común es pensar que el precio en Alemania es el precio final. Dependiendo de tu comunidad autónoma —especialmente en <strong>Cataluña</strong>— el “ahorro” puede diluirse por completo debido a normativas que muchos compradores desconocen. Importar bien no consiste solo en traer el coche, sino en entender cómo la administración interpreta ese vehículo.
+                Importar un coche de Alemania a España en 2026 exige dominar logística, fiscalidad y normativa técnica. Y esto es especialmente relevante si resides en <strong>Cataluña</strong>, donde una mala interpretación administrativa puede transformar una compra inteligente en un error costoso. Por eso, antes de preguntarte cuánto cuesta importar un coche de Alemania, conviene entender dónde se gana —y dónde se pierde— el dinero de verdad.
               </p>
             </section>
 
-            {/* SECCIÓN 1: COSTES CUANTIFICABLES */}
+            {/* SECCIÓN 1: LOGÍSTICA */}
             <section className="mb-24">
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
-                <Scale size={14} /> 01. Costes Cuantificables e Impuestos
+                <Truck size={14} /> 01. Transporte de coches de Alemania a España
               </h2>
               <p className="text-lg mb-8">
-                Existen gastos puramente matemáticos. Aunque nuestra base operativa está en <strong>Cambrils</strong>, asesoramos siempre en función del domicilio fiscal del comprador.
+                El transporte de coches de Alemania a España se ha convertido en uno de los factores más determinantes en el coste final de una importación. No se trata únicamente de mover un vehículo, sino de coordinar una logística profesional que evite retrasos y sobrecostes.
               </p>
 
-              <h3 className="text-white font-bold text-xl mb-4">Impuesto de Matriculación (Estatal)</h3>
-              <p className="mb-6">
-                Basado en las emisiones oficiales de CO₂. Un error frecuente es interpretar incorrectamente la ficha técnica alemana (COC). Ese fallo puede hacer que un coche salte de un tramo del <strong>4,75% al 9,75%</strong> o superior.
-              </p>
+              <div className="grid md:grid-cols-3 gap-6 my-10">
+                <div className="bg-[#0a0a0a] p-6 border border-white/5">
+                  <ShieldCheck className="text-gold-400 mb-4" size={20} />
+                  <h4 className="text-white font-bold text-xs uppercase mb-2 tracking-widest">Seguro Total</h4>
+                  <p className="text-xs text-gray-500">Transporte profesional asegurado sin intermediarios informales.</p>
+                </div>
+                <div className="bg-[#0a0a0a] p-6 border border-white/5">
+                  <Search className="text-gold-400 mb-4" size={20} />
+                  <h4 className="text-white font-bold text-xs uppercase mb-2 tracking-widest">Trazabilidad</h4>
+                  <p className="text-xs text-gray-500">Seguimiento 24/7 desde la carga en origen hasta España.</p>
+                </div>
+                <div className="bg-[#0a0a0a] p-6 border border-white/5">
+                  <Scale className="text-gold-400 mb-4" size={20} />
+                  <h4 className="text-white font-bold text-xs uppercase mb-2 tracking-widest">Optimización</h4>
+                  <p className="text-xs text-gray-500">Rutas clave para mantener un precio de transporte competitivo.</p>
+                </div>
+              </div>
+            </section>
 
-              {/* EJEMPLO REALISTA BOX */}
-              <div className="bg-[#0a0a0a] p-8 border border-gold-400/20 my-10 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-2 bg-gold-400/10 text-gold-400 text-[9px] font-black uppercase tracking-widest">Caso Real 2026</div>
+            {/* SECCIÓN 2: FAMILIAR PREMIUM */}
+            <section className="mb-24">
+              <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
+                <Euro size={14} /> 02. La tendencia del Familiar Premium
+              </h2>
+              <p className="text-lg mb-6">
+                Observamos un cambio claro: el interés por el <strong>familiar premium</strong> crece por encima del SUV tradicional debido a su equilibrio entre espacio, dinamismo y eficiencia fiscal.
+              </p>
+              
+              <div className="bg-gold-400/5 border border-gold-400/20 p-8 my-10 relative">
                 <h4 className="text-white font-bold mb-4 flex items-center gap-2 italic">
-                  <Euro size={16} className="text-gold-400" /> Ejemplo: BMW 530d (2021)
+                  Caso de Éxito: BMW 318i Touring
                 </h4>
-                <p className="text-sm text-gray-400 mb-0">
-                  Un vehículo anunciado en Alemania por 38.900 € puede encarecerse en <strong>más de 6.000 €</strong> si se declara incorrectamente frente a una gestión técnica y fiscal optimizada por profesionales.
+                <p className="text-sm text-gray-400">
+                  Mientras muchos SUV son penalizados por emisiones de CO₂, un Touring permite optimizar el gasto total de importar un coche de Alemania, manteniendo el nivel de lujo y prestaciones de una marca premium.
                 </p>
               </div>
             </section>
 
-            {/* SECCIÓN 2: FACTOR AUTONÓMICO */}
+            {/* SECCIÓN 3: FACTOR CATALUÑA */}
             <section className="mb-24">
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
-                <AlertTriangle size={14} /> 02. El Factor Autonómico: ITP y Emisiones
+                <AlertTriangle size={14} /> 03. El Factor Cataluña: ITP y Gestión Fiscal
               </h2>
-              <p className="text-lg mb-8">
-                Este es el punto más crítico e ignorado. Además del impuesto estatal, comunidades como Cataluña aplican recargos específicos.
+              <p className="mb-6">
+                Para quienes buscan importar a Cataluña (Reus, Tarragona o Barcelona), la fiscalidad es crítica. El impuesto de matriculación basado en el CoC puede duplicarse ante una interpretación técnica incorrecta.
               </p>
-
-              <div className="bg-red-950/10 border-l-4 border-red-600 p-8 mb-10 font-bold">
-                <p className="text-white mb-4">Aviso para Residentes en Cataluña:</p>
-                <p className="text-gray-400 text-sm italic leading-relaxed">
-                  "Una mala declaración de emisiones o la falta de información técnica correcta puede llevar a aplicar tipos que alcanzan <strong>hasta el 16%</strong> en determinados supuestos."
+              <div className="bg-red-950/10 border-l-4 border-red-600 p-8 font-bold">
+                <p className="text-white text-sm italic leading-relaxed">
+                  "En Cataluña, el ITP para determinados vehículos de alta gama puede alcanzar el <strong>16%</strong> si existe una declaración incorrecta."
                 </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-8 my-12">
-                <div className="space-y-4">
-                  <h4 className="text-white font-bold flex items-center gap-2">
-                    <FileText size={16} className="text-gold-400" /> Trámites Obligatorios
-                  </h4>
-                  <ul className="text-sm text-gray-400 space-y-2">
-                    <li className="flex gap-2"><CheckCircle2 size={12} className="text-gold-400 mt-1" /> Obtención ficha técnica española.</li>
-                    <li className="flex gap-2"><CheckCircle2 size={12} className="text-gold-400 mt-1" /> ITV específica de importación.</li>
-                    <li className="flex gap-2"><CheckCircle2 size={12} className="text-gold-400 mt-1" /> Revisión documental completa.</li>
-                  </ul>
-                </div>
-                <div className="space-y-4">
-                  <h4 className="text-white font-bold flex items-center gap-2">
-                    <Truck size={16} className="text-gold-400" /> Logística Profesional
-                  </h4>
-                  <ul className="text-sm text-gray-400 space-y-2">
-                    <li className="flex gap-2"><CheckCircle2 size={12} className="text-gold-400 mt-1" /> Transporte asegurado a todo riesgo.</li>
-                    <li className="flex gap-2"><CheckCircle2 size={12} className="text-gold-400 mt-1" /> Trazabilidad del vehículo 24/7.</li>
-                    <li className="flex gap-2"><CheckCircle2 size={12} className="text-gold-400 mt-1" /> Entrega en domicilio o Cambrils.</li>
-                  </ul>
-                </div>
               </div>
             </section>
 
-            {/* SECCIÓN 3: GESTIÓN PGC */}
+            {/* SECCIÓN 4: DGT */}
             <section className="mb-24">
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
-                <ShieldCheck size={14} /> El Valor de Premium German Cars
+                <FileText size={14} /> 04. Pegatina DGT y Distintivo Ambiental
               </h2>
-              <div className="space-y-12 mt-10">
-                <div className="flex gap-6">
-                  <div className="shrink-0 w-12 h-12 rounded-full border border-gold-400/20 flex items-center justify-center text-gold-400">
-                    <Search size={20} />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold uppercase text-[10px] tracking-widest mb-2">Auditoría Técnica</h4>
-                    <p className="text-sm text-gray-400">Inspección mecánica, diagnóstico electrónico y revisión estructural. No compramos por fotos; verificamos activos mecánicos.</p>
-                  </div>
-                </div>
-                <div className="flex gap-6">
-                  <div className="shrink-0 w-12 h-12 rounded-full border border-gold-400/20 flex items-center justify-center text-gold-400">
-                    <Calculator size={20} />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold uppercase text-[10px] tracking-widest mb-2">Optimización Fiscal</h4>
-                    <p className="text-sm text-gray-400">Aseguramos que pagas lo justo, evitando tipos máximos por errores en la declaración de emisiones ante la Generalitat.</p>
-                  </div>
-                </div>
-              </div>
+              <p className="mb-6">
+                La <strong>pegatina DGT</strong> es ya un factor decisivo. En PGC seleccionamos unidades Euro 6, garantizando la obtención de la etiqueta C o ECO necesaria para circular por ZBE y proteger el valor futuro del coche.
+              </p>
+            </section>
+
+            {/* SECCIÓN 5: AUDITORÍA */}
+            <section className="mb-24">
+              <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
+                <ShieldCheck size={14} /> 05. Auditoría Técnica: Más allá de lo visual
+              </h2>
+              <ul className="space-y-6 text-sm text-gray-400">
+                <li className="flex gap-4"><CheckCircle2 size={18} className="text-gold-400 shrink-0" /> <strong>Diagnosis avanzada:</strong> Descarte de errores ocultos en sensores y sistemas de asistencia.</li>
+                <li className="flex gap-4"><CheckCircle2 size={18} className="text-gold-400 shrink-0" /> <strong>Historial oficial:</strong> Contraste del libro digital en concesionarios de la marca.</li>
+                <li className="flex gap-4"><CheckCircle2 size={18} className="text-gold-400 shrink-0" /> <strong>Certificación:</strong> Verificación mecánica y estructural completa.</li>
+              </ul>
             </section>
 
             {/* CONCLUSIÓN Y CTA */}
             <div className="bg-[#0a0a0a] border border-gold-400/20 p-12 text-center relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400/50 to-transparent"></div>
                 <h2 className="text-3xl font-bold mb-6 text-white leading-tight">
-                  Calcula el <span className="text-gold-400 italic">Coste Real</span> y evita sorpresas
+                  Importar con criterio <span className="text-gold-400 italic">marca la diferencia</span>
                 </h2>
                 <p className="text-gray-300 mb-10 text-base max-w-2xl mx-auto font-bold">
-                  El ahorro no está en el anuncio, sino en la interpretación normativa. Usa nuestra herramienta para obtener una estimación realista en función de tu comunidad.
+                  La optimización fiscal y el control del transporte de vehículos separan una buena compra de una mala experiencia.
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 justify-center">
                   <Link 
@@ -183,7 +174,7 @@ const CosteImportacionAlemania2026 = () => {
                     Probar Calculadora de Importación <Calculator size={16} />
                   </Link>
                   <a 
-                    href="https://wa.me/34603743608?text=Hola,%20necesito%20asesoramiento%20para%20importar%20un%20coche%20evitando%20errores%20fiscales." 
+                    href="https://wa.me/34603743608?text=Hola,%20necesito%20asesoramiento%20técnico%20y%20fiscal%20para%20importar." 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-3 border border-white/10 text-white px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500"
@@ -192,7 +183,7 @@ const CosteImportacionAlemania2026 = () => {
                   </a>
                 </div>
                 <p className="text-[9px] text-gray-600 mt-12 font-black tracking-[0.4em] uppercase">
-                  👉 Premium German Cars — Tu criterio experto en Cambrils
+                  👉 Premium German Cars — Cambrils | Gestión de Activos Premium
                 </p>
             </div>
           </div>

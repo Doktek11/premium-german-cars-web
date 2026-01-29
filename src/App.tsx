@@ -130,8 +130,6 @@ export default function App() {
         <Route path="/aviso-legal" element={<AvisoLegal />} />
         <Route path="/politica-privacidad" element={<PoliticaPrivacidad />} />
 
-        {/* REDIRECCIÓN POR DEFECTO A HOME */}
-        <Route path="*" element={<Home />} />
       </Routes>
 
       {/* 2. ANALYTICS PARA RASTREAR EL RENDIMIENTO */}

@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- BASE URL PARA SPA + GOOGLEBOT -->
+    <base href="/" />
+
     <title>
       Importación de Coches Premium desde Alemania | Premium German Cars
     </title>
@@ -12,6 +15,10 @@
       name="description"
       content="Importamos coches premium desde Alemania con historial certificado, garantía y entrega llave en mano en España. Solicita tu vehículo hoy."
     />
+
+    <!-- EXPLÍCITO PARA INDEXACIÓN -->
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
 
     <!-- CSS CRÍTICO (INLINE, NO BLOQUEA RENDER) -->
     <style>
@@ -55,6 +62,7 @@
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <!-- GOOGLE FONTS OPTIMIZADO -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -62,6 +70,7 @@
       rel="stylesheet"
     />
 
+    <!-- SCHEMA -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -90,6 +99,7 @@
       }
     </script>
 
+    <!-- ANALYTICS -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44"

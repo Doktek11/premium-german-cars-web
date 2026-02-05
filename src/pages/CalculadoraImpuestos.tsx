@@ -107,6 +107,7 @@ export const CalculadoraImpuestos = () => {
       <SEO 
         title="Impuesto de Matriculación Diésel o Gasolina 2026 | Calculadora PGC"
         description="Calcula gratis el impuesto de matriculación para coches diésel o gasolina con datos oficiales BOE 2026. Incluye asistente de IA para valor venal."
+        canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
       />
       
       <Navbar />
@@ -326,7 +327,7 @@ export const CalculadoraImpuestos = () => {
               <div className="text-left">
                 <h2 className="text-3xl font-serif font-bold flex items-center gap-3 text-left">
                   <CheckCircle2 className="text-gold-400" size={28} />
-                  Referencias Reales <span className="text-gold-400 italic font-normal text-xl ml-2">(Coches 3 años)</span>
+                  Referencia Reales <span className="text-gold-400 italic font-normal text-xl ml-2">(Coches 3 años)</span>
                 </h2>
                 <p className="text-gray-500 mt-2 text-sm text-left">Ejemplos basados en las tablas oficiales del BOE y nuestra experiencia en importación.</p>
               </div>

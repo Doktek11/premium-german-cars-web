@@ -5,6 +5,7 @@ const distDir = join(process.cwd(), "dist");
 const assetsDir = join(distDir, "assets");
 const manifestPath = join(distDir, ".vite", "manifest.json");
 const maxInitialKb = Number(process.env.MAX_INITIAL_JS_KB || 280);
+const isStrict = process.env.BUNDLE_CHECK_STRICT === "1";
 
 function toKb(bytes) {
   return bytes / 1024;
@@ -19,7 +20,6 @@ function loadManifest() {
 }
 
 function collectInitialFilesFromManifest(manifest) {
-  // Busca entradas reales del build (isEntry=true) y sigue imports de forma recursiva.
   const entries = Object.values(manifest).filter((item) => item && item.isEntry);
   const initialJs = new Set();
 
@@ -44,11 +44,14 @@ function collectInitialFilesFromManifest(manifest) {
   return [...initialJs];
 }
 
-
 function collectInitialFilesFromHtml() {
   try {
     const html = readFileSync(join(distDir, "index.html"), "utf-8");
-    const matches = [...html.matchAll(/<script[^>]+src=["'](?:\/?assets\/)([^"']+\.js)["'][^>]*>/g)];
+    const matches = [
+      ...html.matchAll(
+        /<script[^>]+src=["'](?:\/?assets\/)([^"']+\.js)["'][^>]*>/g
+      ),
+    ];
     return matches.map((match) => match[1]);
   } catch {
     return [];
@@ -79,7 +82,6 @@ if (manifest) {
     mode = "fallback-index-html";
     initialChunks = measured.filter((item) => initialFromHtml.includes(item.file));
   } else {
-    // Último recurso conservador si no se puede inferir desde el HTML.
     mode = "fallback-all-js";
     initialChunks = measured;
   }
@@ -87,14 +89,17 @@ if (manifest) {
 
 const initialTotalKb = initialChunks.reduce((acc, item) => acc + item.sizeKb, 0);
 
+const measuredSorted = [...measured].sort((a, b) => b.sizeKb - a.sizeKb);
+const initialSorted = [...initialChunks].sort((a, b) => b.sizeKb - a.sizeKb);
+
 console.log("\nBundle report (JS):");
-for (const item of measured.sort((a, b) => b.sizeKb - a.sizeKb)) {
+for (const item of measuredSorted) {
   console.log(`- ${item.file}: ${item.sizeKb.toFixed(2)} KB`);
 }
 
 console.log(`\nInitial detection mode: ${mode}`);
 console.log("Initial chunks:");
-for (const chunk of initialChunks.sort((a, b) => b.sizeKb - a.sizeKb)) {
+for (const chunk of initialSorted) {
   console.log(`- ${chunk.file}: ${chunk.sizeKb.toFixed(2)} KB`);
 }
 
@@ -102,10 +107,19 @@ console.log(
   `\nInitial JS estimate: ${initialTotalKb.toFixed(2)} KB (threshold: ${maxInitialKb} KB)`
 );
 
+if (mode !== "manifest" && isStrict) {
+  console.error(
+    `❌ Strict mode enabled and manifest is unavailable (mode=${mode}). ` +
+      "Build should expose manifest for deterministic checks."
+  );
+  process.exit(1);
+}
+
 if (initialTotalKb > maxInitialKb) {
   console.error(
-    `❌ Initial JS exceeded threshold by ${(initialTotalKb - maxInitialKb).toFixed(2)} KB. ` +
-      "Review lazy loading / dependencies."
+    `❌ Initial JS exceeded threshold by ${(initialTotalKb - maxInitialKb).toFixed(
+      2
+    )} KB. Review lazy loading / dependencies.`
   );
   process.exit(1);
 }

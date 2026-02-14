@@ -9,6 +9,7 @@ const ArticuloModelos2026 = () => {
       <SEO
         title="Los 5 mejores coches para importar de Alemania en 2026 | Premium German Cars"
         description="Guía de compra inteligente: historial real, criterio profesional y valor de reventa en España."
+        canonical="https://www.premiumgermancars.com/blog/mejores-modelos-importar-alemania-2026"
       />
       <Navbar />
 

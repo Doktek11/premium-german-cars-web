@@ -201,4 +201,3 @@ const ImportacionAlemaniaMejorOpcion = () => {
 
 export default ImportacionAlemaniaMejorOpcion;
 
-export default ImportacionAlemaniaMejorOpcion;

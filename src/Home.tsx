@@ -1,15 +1,36 @@
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { cars } from "./data/cars";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
-import { SeoContent } from "./components/SeoContent";
 import { About } from "./components/About";
-import { Features, Guarantee } from "./components/Features";
-import { ImportForm } from "./components/ImportForm";
-import { Testimonials } from "./components/Testimonials";
-import { Footer } from "./components/Footer";
+import { Guarantee } from "./components/Features";
 import { WhatsAppButton } from "./components/WhatsAppButton";
+
+// Below-the-fold: diferidos
+const Features = lazy(() =>
+  import("./components/Features").then((m) => ({ default: m.Features }))
+);
+const ImportForm = lazy(() =>
+  import("./components/ImportForm").then((m) => ({ default: m.ImportForm }))
+);
+const Testimonials = lazy(() =>
+  import("./components/Testimonials").then((m) => ({ default: m.Testimonials }))
+);
+const Footer = lazy(() =>
+  import("./components/Footer").then((m) => ({ default: m.Footer }))
+);
+const SeoContent = lazy(() =>
+  import("./components/SeoContent").then((m) => ({ default: m.SeoContent }))
+);
+
+function SectionLoader() {
+  return (
+    <div className="py-12 text-center text-xs uppercase tracking-[0.2em] text-gray-500">
+      Cargando sección...
+    </div>
+  );
+}
 
 export function Home() {
   const location = useLocation();
@@ -39,9 +60,13 @@ export function Home() {
           <About />
         </section>
 
-        <Features />
+        <Suspense fallback={<SectionLoader />}>
+          <Features />
+        </Suspense>
 
-        <ImportForm />
+        <Suspense fallback={<SectionLoader />}>
+          <ImportForm />
+        </Suspense>
 
         {/* STOCK CON COLOR SUAVIZADO */}
         <section id="stock" className="py-32 bg-metallic-900">
@@ -62,9 +87,11 @@ export function Home() {
                   className="premium-card group bg-metallic-950 border border-white/5 overflow-hidden flex flex-col h-full hover:border-gold-400/30 transition-all duration-500"
                 >
                   <div className="h-64 overflow-hidden relative">
-                    <div className={`absolute top-0 right-0 z-10 px-4 py-2 text-[10px] font-bold uppercase tracking-widest ${
-                      car.status === "Disponible" ? "bg-white text-black" : "bg-black/80 text-gray-400"
-                    }`}>
+                    <div
+                      className={`absolute top-0 right-0 z-10 px-4 py-2 text-[10px] font-bold uppercase tracking-widest ${
+                        car.status === "Disponible" ? "bg-white text-black" : "bg-black/80 text-gray-400"
+                      }`}
+                    >
                       {car.status}
                     </div>
 
@@ -101,15 +128,21 @@ export function Home() {
         </section>
 
         <section id="testimonials">
-          <Testimonials />
+          <Suspense fallback={<SectionLoader />}>
+            <Testimonials />
+          </Suspense>
         </section>
 
         <section id="contact">
-          <Footer />
+          <Suspense fallback={<SectionLoader />}>
+            <Footer />
+          </Suspense>
         </section>
 
         <section className="sr-only">
-          <SeoContent />
+          <Suspense fallback={null}>
+            <SeoContent />
+          </Suspense>
         </section>
       </main>
 

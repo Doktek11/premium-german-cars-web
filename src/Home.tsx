@@ -4,7 +4,7 @@ import { cars } from "./data/cars";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { About } from "./components/About";
-import { Guarantee } from "./components/Features";
+import { Guarantee } from "./components/Guarantee";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 
 // Below-the-fold: diferidos

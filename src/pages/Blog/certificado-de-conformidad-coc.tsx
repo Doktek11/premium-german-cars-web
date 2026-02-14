@@ -25,7 +25,7 @@ const CertificadoConformidadCOC = () => {
         description="Evita la homologación individual. Guía completa sobre el Certificado de Conformidad (COC) para matricular coches de Alemania en España sin errores."
         article={true}
         image="/logoPGC.svg"
-        canonical="https://premiumgermancars.com/blog/certificado-conformidad-coc-itv-matriculacion"
+        canonical="https://www.premiumgermancars.com/blog/certificado-conformidad-coc-itv-matriculacion"
       />
       
       <Navbar />

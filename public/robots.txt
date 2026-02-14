@@ -3,4 +3,4 @@ Allow: /
 Disallow: /aviso-legal
 Disallow: /politica-privacidad
 
-Sitemap: https://premiumgermancars.com/sitemap.xml
+Sitemap: https://www.premiumgermancars.com/sitemap.xml

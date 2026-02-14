@@ -2,14 +2,12 @@ import { Link } from 'react-router-dom';
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
 import { SEO } from "../../components/SEO";
-import { 
-  ChevronLeft, 
-  CheckCircle2, 
-  Mail, 
-  ArrowRight, 
-  Zap, 
-  Fuel, 
-  Leaf, 
+import {
+  ChevronLeft,
+  Mail,
+  Zap,
+  Fuel,
+  Leaf,
   Gauge,
   Calculator
 } from 'lucide-react';
@@ -17,19 +15,19 @@ import {
 const EleccionMotor2026 = () => {
   return (
     <>
-      <SEO 
+      <SEO
         title="¿Diésel, Gasolina o Híbrido? Guía de Motores 2026 | PGC"
         description="Qué motor elegir al importar de Alemania en 2026: Etiquetas ZBE, fiscalidad y ahorro. Analizamos PHEV, MHEV y motores térmicos de reestreno."
         article={true}
         image="/logoPGC.svg"
         canonical="https://premiumgermancars.com/blog/que-motor-elegir-importar-alemania-2026"
       />
-      
+
       <Navbar />
-      
+
       <main className="bg-black text-white pt-40 pb-20 font-sans">
         <div className="container mx-auto px-6 max-w-4xl">
-          
+
           {/* CABECERA */}
           <header className="mb-16">
             <Link to="/blog" className="text-gray-500 hover:text-gold-400 mb-10 inline-flex items-center gap-2 transition-all group tracking-[0.2em] text-[10px] uppercase font-bold">
@@ -52,15 +50,15 @@ const EleccionMotor2026 = () => {
 
           {/* HERO VISUAL */}
           <div className="aspect-[21/9] w-full bg-[#0a0a0a] border border-white/5 flex flex-col items-center justify-center mb-20 relative overflow-hidden group">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold-600/5 via-transparent to-transparent opacity-50"></div>
-              <img src="/logoPGC.svg" className="w-64 opacity-20 brightness-0 invert transition-transform duration-700 group-hover:scale-110" alt="PGC Logo" />
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gold-400/40 font-serif italic text-xs tracking-[0.5em] uppercase">
-                Análisis Técnico y Fiscal
-              </div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold-600/5 via-transparent to-transparent opacity-50"></div>
+            <img src="/logoPGC.svg" className="w-64 opacity-20 brightness-0 invert transition-transform duration-700 group-hover:scale-110" alt="PGC Logo" />
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gold-400/40 font-serif italic text-xs tracking-[0.5em] uppercase">
+              Análisis Técnico y Fiscal
+            </div>
           </div>
 
           <div className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed">
-            
+
             {/* INTRODUCCIÓN */}
             <section className="mb-20">
               <p className="text-xl md:text-2xl font-bold text-white mb-8 leading-snug">
@@ -120,7 +118,7 @@ const EleccionMotor2026 = () => {
               <div className="flex flex-col md:flex-row gap-12 items-start">
                 <div className="flex-1">
                   <p className="text-lg leading-relaxed mb-6">
-                    Si puedes cargar a diario, el PHEV es el vencedor absoluto. La mayoría emiten menos de $45\text{ g/km de } CO_2$, lo que exime del impuesto de matriculación.
+                    Si puedes cargar a diario, el PHEV es el vencedor absoluto. La mayoría emiten menos de 45 g/km de CO₂, lo que exime del impuesto de matriculación.
                   </p>
                 </div>
                 <div className="w-full md:w-72 bg-white/5 p-6 border border-white/10">
@@ -137,35 +135,35 @@ const EleccionMotor2026 = () => {
                 <Gauge size={14} /> 4. Gasolina Moderno: Pureza y Rendimiento
               </h2>
               <p className="text-lg mb-10 text-justify">
-                Alemania es el paraíso para encontrar motores de 6 y 8 cilindros. Aunque la fiscalidad puede situarse en tramos del $9,75\%$ o $14,75\%$, para el entusiasta es una inversión en exclusividad y sensaciones.
+                Alemania es el paraíso para encontrar motores de 6 y 8 cilindros. Aunque la fiscalidad puede situarse en tramos del 9,75% o 14,75%, para el entusiasta es una inversión en exclusividad y sensaciones.
               </p>
             </section>
 
             {/* CONCLUSIÓN Y CTA */}
             <div className="bg-[#0a0a0a] border border-gold-400/20 p-12 text-center relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400/50 to-transparent"></div>
-                <h2 className="text-3xl font-bold mb-6 text-white leading-tight">
-                  Importar bien empieza por <span className="text-gold-400 italic">elegir el motor correcto</span>
-                </h2>
-                <p className="text-gray-300 mb-10 text-base max-w-2xl mx-auto font-bold">
-                  ¿Dudas con la etiqueta de un modelo concreto? Pásanos el enlace de Mobile.de y te confirmamos su fiscalidad en 10 minutos.
-                </p>
-                <div className="flex flex-col md:flex-row gap-6 justify-center">
-                  <a 
-                    href="https://wa.me/34603743608?text=Hola,%20tengo%20dudas%20sobre%20qué%20motor%20elegir%20para%20mi%20coche%20de%20importación." 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white transition-all duration-500"
-                  >
-                    Consultar a un Experto <Mail size={16} />
-                  </a>
-                  <Link to="/calculadora-impuesto-matriculacion" className="inline-flex items-center justify-center gap-3 border border-white/10 text-white px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500">
-                    <Calculator size={16} /> Ir a la Calculadora
-                  </Link>
-                </div>
-                <p className="text-[9px] text-gray-600 mt-12 font-black tracking-[0.4em] uppercase">
-                  👉 Premium German Cars — Cambrils | Tarragona
-                </p>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400/50 to-transparent"></div>
+              <h2 className="text-3xl font-bold mb-6 text-white leading-tight">
+                Importar bien empieza por <span className="text-gold-400 italic">elegir el motor correcto</span>
+              </h2>
+              <p className="text-gray-300 mb-10 text-base max-w-2xl mx-auto font-bold">
+                ¿Dudas con la etiqueta de un modelo concreto? Pásanos el enlace de Mobile.de y te confirmamos su fiscalidad en 10 minutos.
+              </p>
+              <div className="flex flex-col md:flex-row gap-6 justify-center">
+                <a
+                  href="https://wa.me/34603743608?text=Hola,%20tengo%20dudas%20sobre%20qué%20motor%20elegir%20para%20mi%20coche%20de%20importación."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white transition-all duration-500"
+                >
+                  Consultar a un Experto <Mail size={16} />
+                </a>
+                <Link to="/calculadora-impuesto-matriculacion" className="inline-flex items-center justify-center gap-3 border border-white/10 text-white px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500">
+                  <Calculator size={16} /> Ir a la Calculadora
+                </Link>
+              </div>
+              <p className="text-[9px] text-gray-600 mt-12 font-black tracking-[0.4em] uppercase">
+                👉 Premium German Cars — Cambrils | Tarragona
+              </p>
             </div>
           </div>
         </div>

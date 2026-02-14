@@ -23,7 +23,7 @@ const BMWAlpinaNuevaEra = () => {
         description="Análisis de la integración de Alpina en BMW Group. Qué significa para el mercado de importación y por qué las unidades pre-2026 son una inversión clave."
         article={true}
         image="/logoPGC.svg"
-        canonical="https://premiumgermancars.com/blog/bmw-alpina-nueva-era-lujo-aleman"
+        canonical="https://www.premiumgermancars.com/blog/bmw-alpina-nueva-era-lujo-aleman"
       />
       
       <Navbar />

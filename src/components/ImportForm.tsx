@@ -1,8 +1,11 @@
+// src/components/ImportForm.tsx
 import React, { useState } from 'react';
 import { Send, CheckCircle, MessageCircle } from 'lucide-react';
 
 export const ImportForm: React.FC = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState('');
     const [formData, setFormData] = useState({
         brand: '',
         model: '',
@@ -31,14 +34,39 @@ Detalles específicos:
 ${formData.details || 'Sin detalles adicionales'}`;
     };
 
-    const handleEmailSubmit = (e: React.FormEvent) => {
+    const handleEmailSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const subject = `Nueva Solicitud: ${formData.brand} ${formData.model}`;
-        const mailtoLink = `mailto:info@premiumgermancars.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(generateMessageBody())}`;
-        
-        window.location.href = mailtoLink;
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 5000);
+        setSubmitError('');
+        setIsSubmitting(true);
+
+        try {
+            const response = await fetch('/api/import-request', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error('No se pudo enviar tu solicitud. Inténtalo de nuevo.');
+            }
+
+            setIsSubmitted(true);
+            setFormData({
+                brand: '',
+                model: '',
+                budget: '',
+                email: '',
+                phone: '',
+                details: ''
+            });
+            setTimeout(() => setIsSubmitted(false), 5000);
+        } catch (error) {
+            setSubmitError('No pudimos enviar el formulario ahora mismo. Escríbenos por WhatsApp y te atendemos al instante.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleWhatsAppSubmit = () => {
@@ -126,10 +154,11 @@ ${formData.details || 'Sin detalles adicionales'}`;
 
                                     <div className="pt-4 flex flex-col sm:flex-row gap-4">
                                         <button 
-                                            type="submit" 
-                                            className="flex-1 px-8 py-4 bg-white text-black font-bold uppercase text-[10px] tracking-widest hover:bg-gold-400 transition-all flex items-center justify-center gap-2"
+                                            type="submit"
+                                            disabled={isSubmitting}
+                                            className="flex-1 px-8 py-4 bg-white text-black font-bold uppercase text-[10px] tracking-widest hover:bg-gold-400 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
-                                            Enviar por Email <Send size={14} />
+                                            {isSubmitting ? 'Enviando...' : 'Enviar Solicitud'} <Send size={14} />
                                         </button>
                                         
                                         <button 
@@ -140,6 +169,9 @@ ${formData.details || 'Sin detalles adicionales'}`;
                                             Contactar WhatsApp <MessageCircle size={14} />
                                         </button>
                                     </div>
+                                    {submitError && (
+                                        <p className="text-xs text-red-400 text-center">{submitError}</p>
+                                    )}
                                     <p className="text-[10px] text-gray-500 text-center uppercase tracking-widest opacity-50">
                                         Premium German Cars - Gestión Directa
                                     </p>

@@ -8,10 +8,8 @@ import {
   Mail, 
   ArrowRight, 
   Gem,
-  History,
   Trophy,
   ShieldCheck,
-  Zap,
   Star
 } from 'lucide-react';
 

@@ -1,6 +1,16 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Car } from '../../types';
-import { X, Calendar, Gauge, Fuel, Check, ChevronLeft, ChevronRight, Phone, Mail } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from "react";
+import { Car } from "../../types";
+import {
+  X,
+  Calendar,
+  Gauge,
+  Fuel,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Phone,
+  Mail,
+} from "lucide-react";
 
 interface CarDetailProps {
   car: Car;
@@ -20,7 +30,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
   // Bloquear scroll del body al abrir el detalle para evitar saltos visuales
   useEffect(() => {
     const originalStyle = window.getComputedStyle(document.body).overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     window.scrollTo(0, 0);
     return () => {
       document.body.style.overflow = originalStyle;
@@ -32,7 +42,9 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? allImages.length - 1 : prev - 1
+    );
   };
 
   return (
@@ -48,7 +60,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
           onClick={onClose}
           className="flex items-center gap-2 text-sm uppercase tracking-widest text-gray-400 hover:text-white transition-colors group"
         >
-          Cerrar{' '}
+          Cerrar{" "}
           <span className="bg-white/10 p-2 rounded-full group-hover:bg-gold-500 group-hover:text-black transition-all">
             <X size={20} />
           </span>
@@ -74,9 +86,11 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
             </div>
             <div className="text-left md:text-right w-full md:w-auto">
               <p className="text-3xl md:text-5xl font-serif text-gold-400 mb-1">
-                {car.price.toLocaleString('de-DE')} €
+                {car.price.toLocaleString("de-DE")} €
               </p>
-              <p className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">Precio final matriculado</p>
+              <p className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">
+                Precio final matriculado
+              </p>
             </div>
           </div>
         </div>
@@ -89,9 +103,12 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
               key={allImages[currentImageIndex]}
               src={allImages[currentImageIndex]}
               alt={`${car.make} ${car.model}`}
-              fetchPriority={currentImageIndex === 0 ? 'high' : 'low'}
+              fetchPriority={currentImageIndex === 0 ? "high" : "low"}
               loading="eager"
-              decoding={currentImageIndex === 0 ? 'sync' : 'async'}
+              decoding={currentImageIndex === 0 ? "sync" : "async"}
+              width="1920"
+              height="1080"
+              sizes="100vw"
               className="w-full h-full object-cover md:object-contain bg-black transition-opacity duration-300"
             />
 
@@ -137,7 +154,8 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
               </h3>
 
               <div className="prose prose-invert prose-lg text-gray-300 leading-relaxed whitespace-pre-line mb-10 font-light text-justify">
-                {car.description || 'Descripción detallada no disponible para este vehículo. Contacta con nosotros para más información.'}
+                {car.description ||
+                  "Descripción detallada no disponible para este vehículo. Contacta con nosotros para más información."}
               </div>
 
               <h3 className="text-xl font-bold text-white mb-6 border-l-4 border-gold-400 pl-4">
@@ -145,12 +163,12 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  'Garantía Oficial 12 Meses',
-                  'Certificado de Kilometraje',
-                  'Libro de Mantenimiento al día',
-                  'Vehículo No Fumador',
-                  'Revisión 200 puntos check',
-                  'Entrega en domicilio disponible',
+                  "Garantía Oficial 12 Meses",
+                  "Certificado de Kilometraje",
+                  "Libro de Mantenimiento al día",
+                  "Vehículo No Fumador",
+                  "Revisión 200 puntos check",
+                  "Entrega en domicilio disponible",
                 ].map((item, i) => (
                   <div
                     key={i}
@@ -167,7 +185,9 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
           {/* Sidebar / CTA */}
           <div className="lg:col-span-1 order-1 lg:order-2">
             <div className="bg-[#0a0a0a] border border-white/10 p-6 md:p-8 rounded-lg sticky top-32 shadow-2xl">
-              <h3 className="text-xl font-bold text-white mb-6 uppercase tracking-wider">Resumen</h3>
+              <h3 className="text-xl font-bold text-white mb-6 uppercase tracking-wider">
+                Resumen
+              </h3>
 
               <div className="space-y-5 mb-8">
                 <div className="flex items-center justify-between pb-4 border-b border-white/5">
@@ -182,7 +202,9 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                     <Gauge className="text-gold-400 w-5 h-5" />
                     <span className="text-gray-300">Kilometraje</span>
                   </div>
-                  <span className="font-bold text-white text-lg">{car.km.toLocaleString('de-DE')} km</span>
+                  <span className="font-bold text-white text-lg">
+                    {car.km.toLocaleString("de-DE")} km
+                  </span>
                 </div>
                 <div className="flex items-center justify-between pb-4 border-b border-white/5">
                   <div className="flex items-center gap-3">

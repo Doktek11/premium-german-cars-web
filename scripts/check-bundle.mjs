@@ -44,6 +44,17 @@ function collectInitialFilesFromManifest(manifest) {
   return [...initialJs];
 }
 
+
+function collectInitialFilesFromHtml() {
+  try {
+    const html = readFileSync(join(distDir, "index.html"), "utf-8");
+    const matches = [...html.matchAll(/<script[^>]+src=["'](?:\/?assets\/)([^"']+\.js)["'][^>]*>/g)];
+    return matches.map((match) => match[1]);
+  } catch {
+    return [];
+  }
+}
+
 function measureAllJsFiles() {
   const jsFiles = readdirSync(assetsDir).filter((file) => file.endsWith(".js"));
   return jsFiles.map((file) => {
@@ -62,9 +73,16 @@ if (manifest) {
   const initialFromManifest = collectInitialFilesFromManifest(manifest);
   initialChunks = measured.filter((item) => initialFromManifest.includes(item.file));
 } else {
-  // Fallback conservador si no existe manifest (mantener compatibilidad).
-  mode = "fallback-regex";
-  initialChunks = measured.filter((item) => /index|react|ui/.test(item.file));
+  const initialFromHtml = collectInitialFilesFromHtml();
+
+  if (initialFromHtml.length > 0) {
+    mode = "fallback-index-html";
+    initialChunks = measured.filter((item) => initialFromHtml.includes(item.file));
+  } else {
+    // Último recurso conservador si no se puede inferir desde el HTML.
+    mode = "fallback-all-js";
+    initialChunks = measured;
+  }
 }
 
 const initialTotalKb = initialChunks.reduce((acc, item) => acc + item.sizeKb, 0);

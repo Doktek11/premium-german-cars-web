@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { cars } from "./data/cars";
 import { Navbar } from "./components/Navbar";

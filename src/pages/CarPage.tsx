@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { cars } from "../data/cars";
 
 import { Navbar } from "../components/Navbar";
@@ -8,7 +8,7 @@ import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
 
 export const CarPage = () => {
-  const { slug } = useParams();
+  const { slug = "" } = useParams<{ slug: string }>();
 
   const car = cars.find((c) => c.slug === slug);
 
@@ -16,10 +16,43 @@ export const CarPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (!car) return null;
+  // Evita pantalla en blanco si el slug no existe
+  if (!car) {
+    return (
+      <>
+        <SEO
+          title="Vehículo no encontrado | Premium German Cars"
+          description="El vehículo que buscas no está disponible o no existe."
+          noIndex={true}
+        />
+        <Navbar />
+        <main className="bg-black text-white pt-32 pb-32 min-h-[60vh]">
+          <div className="container mx-auto px-6 max-w-4xl text-center">
+            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
+              Vehículo no encontrado
+            </h1>
+            <p className="text-gray-400 mb-10">
+              El enlace puede estar desactualizado o el coche ya no está disponible.
+            </p>
+            <Link
+              to="/"
+              className="inline-block px-8 py-4 bg-gold-400 text-black font-bold uppercase tracking-widest text-xs hover:bg-white transition-all duration-300"
+            >
+              Volver al inicio
+            </Link>
+          </div>
+        </main>
+        <Footer />
+        <WhatsAppButton />
+      </>
+    );
+  }
 
   const title = `${car.make} ${car.model} en venta | Importado desde Alemania`;
   const description = `Compra ${car.make} ${car.model} importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.`;
+
+  // Si no hay galería, usa al menos la imagen principal
+  const gallery = car.gallery?.length ? car.gallery : [car.image];
 
   // FUNCIÓN DE CONTACTO DIRECTO POR WHATSAPP
   const handleWhatsAppContact = (tipo: "pedido" | "dossier") => {
@@ -73,7 +106,7 @@ export const CarPage = () => {
 
           {/* GALERÍA OPTIMIZADA WEBP */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-            {car.gallery?.map((img: string, index: number) => (
+            {gallery.map((img: string, index: number) => (
               <div
                 key={index}
                 className="overflow-hidden rounded-lg bg-metallic-900 border border-white/5"

@@ -1,33 +1,95 @@
-import { readdirSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 
-const assetsDir = join(process.cwd(), 'dist', 'assets');
+const distDir = join(process.cwd(), "dist");
+const assetsDir = join(distDir, "assets");
+const manifestPath = join(distDir, ".vite", "manifest.json");
 const maxInitialKb = Number(process.env.MAX_INITIAL_JS_KB || 280);
 
-const jsFiles = readdirSync(assetsDir).filter((file) => file.endsWith('.js'));
+function toKb(bytes) {
+  return bytes / 1024;
+}
 
-const measured = jsFiles.map((file) => {
-  const fullPath = join(assetsDir, file);
-  const sizeKb = statSync(fullPath).size / 1024;
-  return { file, sizeKb };
-});
+function loadManifest() {
+  try {
+    return JSON.parse(readFileSync(manifestPath, "utf-8"));
+  } catch {
+    return null;
+  }
+}
 
-const initialChunks = measured.filter((item) => /index|react|ui/.test(item.file));
+function collectInitialFilesFromManifest(manifest) {
+  // Busca entradas reales del build (isEntry=true) y sigue imports de forma recursiva.
+  const entries = Object.values(manifest).filter((item) => item && item.isEntry);
+  const initialJs = new Set();
+
+  const visit = (item) => {
+    if (!item) return;
+
+    if (item.file && item.file.endsWith(".js")) {
+      initialJs.add(item.file);
+    }
+
+    if (Array.isArray(item.imports)) {
+      for (const importedKey of item.imports) {
+        visit(manifest[importedKey]);
+      }
+    }
+  };
+
+  for (const entry of entries) {
+    visit(entry);
+  }
+
+  return [...initialJs];
+}
+
+function measureAllJsFiles() {
+  const jsFiles = readdirSync(assetsDir).filter((file) => file.endsWith(".js"));
+  return jsFiles.map((file) => {
+    const fullPath = join(assetsDir, file);
+    return { file, sizeKb: toKb(statSync(fullPath).size) };
+  });
+}
+
+const measured = measureAllJsFiles();
+const manifest = loadManifest();
+
+let initialChunks = [];
+let mode = "manifest";
+
+if (manifest) {
+  const initialFromManifest = collectInitialFilesFromManifest(manifest);
+  initialChunks = measured.filter((item) => initialFromManifest.includes(item.file));
+} else {
+  // Fallback conservador si no existe manifest (mantener compatibilidad).
+  mode = "fallback-regex";
+  initialChunks = measured.filter((item) => /index|react|ui/.test(item.file));
+}
+
 const initialTotalKb = initialChunks.reduce((acc, item) => acc + item.sizeKb, 0);
 
-console.log('\nBundle report (JS):');
+console.log("\nBundle report (JS):");
 for (const item of measured.sort((a, b) => b.sizeKb - a.sizeKb)) {
   console.log(`- ${item.file}: ${item.sizeKb.toFixed(2)} KB`);
 }
 
-console.log(`\nInitial JS estimate: ${initialTotalKb.toFixed(2)} KB (threshold: ${maxInitialKb} KB)`);
+console.log(`\nInitial detection mode: ${mode}`);
+console.log("Initial chunks:");
+for (const chunk of initialChunks.sort((a, b) => b.sizeKb - a.sizeKb)) {
+  console.log(`- ${chunk.file}: ${chunk.sizeKb.toFixed(2)} KB`);
+}
+
+console.log(
+  `\nInitial JS estimate: ${initialTotalKb.toFixed(2)} KB (threshold: ${maxInitialKb} KB)`
+);
 
 if (initialTotalKb > maxInitialKb) {
   console.error(
     `❌ Initial JS exceeded threshold by ${(initialTotalKb - maxInitialKb).toFixed(2)} KB. ` +
-      'Review lazy loading / dependencies.'
+      "Review lazy loading / dependencies."
   );
   process.exit(1);
 }
 
-console.log('✅ Initial JS is within threshold.');
+console.log("✅ Initial JS is within threshold.");

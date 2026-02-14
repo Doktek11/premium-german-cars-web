@@ -1,8 +1,7 @@
-import React from "react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
-import { Info, Cpu, TrendingUp, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
+import { Cpu, TrendingUp, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 
 const MotoresBmwMercedes2027 = () => {
   return (

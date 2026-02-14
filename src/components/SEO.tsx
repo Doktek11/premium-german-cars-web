@@ -1,127 +1,51 @@
-<!doctype html>
-<html lang="es">
-  <head>
-    <!-- =========================
-         GLOBAL / BASE (NO DINÁMICO)
-         ========================= -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/" />
+import { Helmet } from "react-helmet-async";
 
-    <!-- Fallback base (SEO.tsx lo sobreescribe por página) -->
-    <title>Premium German Cars</title>
-    <meta
-      name="description"
-      content="Importación de coches premium desde Alemania."
-    />
+interface SEOProps {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;      // Nueva prop para imagen personalizada
+  article?: boolean;   // Nueva prop para indicar si es un artículo de blog
+  noIndex?: boolean;   // Permite noindex en páginas legales
+}
 
-    <!-- Solo metas verdaderamente globales -->
-    <meta name="theme-color" content="#050505" />
-    <meta name="color-scheme" content="dark" />
+export const SEO: React.FC<SEOProps> = ({
+  title,
+  description,
+  canonical,
+  image = "/og-image-default.jpg", // Imagen por defecto de tu marca
+  article = false,
+  noIndex = false,
+}) => {
+  const siteName = "Premium German Cars";
+  const fullUrl = canonical || window.location.href;
 
-    <!-- Favicon / App icons -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  return (
+    <Helmet>
+      {/* Etiquetas Estándar */}
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      {canonical && <link rel="canonical" href={canonical} />}
+      <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
 
-    <!-- Performance -->
-    <link rel="preload" as="image" href="/amggtr-mobile.webp" fetchpriority="high" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
-      rel="stylesheet"
-    />
+      {/* Open Graph (Facebook, WhatsApp, LinkedIn) */}
+      <meta property="og:site_name" content={siteName} />
+      <meta property="og:type" content={article ? "article" : "website"} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={fullUrl} />
+      <meta property="og:image" content={image} />
+      <meta property="og:image:alt" content={title} />
 
-    <!-- CSS crítico base -->
-    <style>
-      body {
-        margin: 0;
-        background-color: #050505;
-        color: #e5e5e5;
-        font-weight: 300;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
+      {/* Twitter (X) */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@premiumgermancars" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image} />
 
-      #root {
-        min-height: 100vh;
-      }
-    </style>
-
-    <!-- =========================
-         ESTRUCTURADOS GLOBALES
-         ========================= -->
-    <script type="application/ld+json">
-      [
-        {
-          "@context": "https://schema.org",
-          "@type": "AutoDealer",
-          "name": "Premium German Cars",
-          "url": "https://www.premiumgermancars.com",
-          "logo": "https://www.premiumgermancars.com/favicon.svg",
-          "description": "Importación de coches premium desde Alemania con garantía, historial certificado y entrega llave en mano en España.",
-          "image": "https://www.premiumgermancars.com/amggtr-mobile.webp",
-          "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "ES"
-          },
-          "areaServed": {
-            "@type": "Country",
-            "name": "Spain"
-          },
-          "knowsAbout": [
-            "Importación de coches desde Alemania",
-            "Coches premium alemanes",
-            "BMW importación",
-            "Audi importación",
-            "Mercedes importación",
-            "Cálculo de impuestos de matriculación España"
-          ],
-          "inLanguage": "es-ES"
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          "name": "Calculadora Impuesto de Matriculación 2026 PGC",
-          "operatingSystem": "All",
-          "applicationCategory": "FinanceApplication",
-          "url": "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
-          "description": "Calculadora técnica para el Impuesto de Matriculación (Modelo 576) en España. Basada en tablas oficiales BOE 2026, emisiones WLTP y coeficientes de depreciación por antigüedad.",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "EUR"
-          },
-          "author": {
-            "@type": "Organization",
-            "name": "Premium German Cars",
-            "url": "https://www.premiumgermancars.com"
-          },
-          "featureList": [
-            "Cálculo basado en emisiones CO2 2026",
-            "Tablas de depreciación BOE por meses",
-            "Asistente IA para valor venal integrado",
-            "Soporte para tipos incrementados por CCAA"
-          ],
-          "inLanguage": "es-ES"
-        }
-      ]
-    </script>
-
-    <!-- Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-8KVXL3SX44");
-    </script>
-  </head>
-
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/index.tsx"></script>
-  </body>
-</html>
+      {/* Meta para móviles y tema */}
+      <meta name="theme-color" content="#000000" />
+    </Helmet>
+  );
+};

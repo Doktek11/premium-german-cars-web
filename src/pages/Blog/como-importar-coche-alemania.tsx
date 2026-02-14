@@ -18,7 +18,7 @@ const ComoImportarCocheAlemania = () => {
         description="Protocolo experto 2026 para la importación de vehículos premium. Aprenda a gestionar fiscalidad, emisiones de CO2 y logística profesional con Premium German Cars."
         article={true}
         image="/logoPGC.svg"
-        canonical="https://premiumgermancars.com/blog/como-importar-coche-alemania"
+        canonical="https://www.premiumgermancars.com/blog/como-importar-coche-alemania"
       />
       
       <Navbar />

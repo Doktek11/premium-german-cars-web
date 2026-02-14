@@ -1,10 +1,5 @@
 import { useEffect } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 // ANALYTICS VERCEL
 import { Analytics } from "@vercel/analytics/react";
@@ -31,6 +26,7 @@ import GuiaCalculadora2026 from "./pages/Blog/GuiaCalculadora2026";
 import CosteImportacionAlemania from "./pages/Blog/CosteImportacionAlemania";
 import ProtocoloAuditoria2026 from "./pages/Blog/ProtocoloAuditoria2026";
 import CertificadoConformidadCOC from "./pages/Blog/certificado-de-conformidad-coc";
+import EleccionMotor2026 from "./pages/Blog/EleccionMotor2026";
 
 // LEGALES
 import AvisoLegal from "./pages/Legal/AvisoLegal";
@@ -115,6 +111,12 @@ export default function App() {
         <Route
           path="/blog/mejores-modelos-importar-alemania-2026"
           element={<ArticuloModelos2026 />}
+        />
+
+        {/* NUEVO: artículo huérfano con URL SEO-friendly */}
+        <Route
+          path="/blog/que-motor-elegir-importar-alemania-2026"
+          element={<EleccionMotor2026 />}
         />
 
         <Route

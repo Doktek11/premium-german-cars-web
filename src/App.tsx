@@ -1,11 +1,12 @@
-import { Suspense, lazy, useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // ANALYTICS VERCEL
 import { Analytics } from "@vercel/analytics/react";
 
 // COMPONENTES PRINCIPALES
 import { Home } from "./Home";
+import ScrollToTop from "./components/ScrollToTop";
 
 const CarPage = lazy(() => import("./pages/CarPage").then((m) => ({ default: m.CarPage })));
 const ImportacionAlemania = lazy(() =>
@@ -52,17 +53,6 @@ function NotFound() {
       <p>La URL solicitada no existe.</p>
     </main>
   );
-}
-
-// SCROLL TO TOP
-function ScrollToTop() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
 }
 
 export default function App() {

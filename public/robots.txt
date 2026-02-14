@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /aviso-legal
-Disallow: /politica-privacidad
 
 Sitemap: https://www.premiumgermancars.com/sitemap.xml

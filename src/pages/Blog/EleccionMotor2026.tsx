@@ -20,7 +20,7 @@ const EleccionMotor2026 = () => {
         description="Qué motor elegir al importar de Alemania en 2026: Etiquetas ZBE, fiscalidad y ahorro. Analizamos PHEV, MHEV y motores térmicos de reestreno."
         article={true}
         image="/logoPGC.svg"
-        canonical="https://premiumgermancars.com/blog/que-motor-elegir-importar-alemania-2026"
+        canonical="https://www.premiumgermancars.com/blog/que-motor-elegir-importar-alemania-2026"
       />
 
       <Navbar />

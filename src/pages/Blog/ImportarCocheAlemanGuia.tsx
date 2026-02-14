@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
 import { SEO } from "../../components/SEO";
-import { 
-  ChevronLeft, 
-  CheckCircle2, 
-  ArrowRight, 
+import {
+  ChevronLeft,
+  CheckCircle2,
+  ArrowRight,
   Star,
   ShieldCheck,
   TrendingUp,
@@ -16,19 +16,19 @@ import {
 const ImportacionAlemaniaMejorOpcion = () => {
   return (
     <>
-      <SEO 
+      <SEO
         title="¿Por qué Importar de Alemania es la Mejor Opción en 2026? | PGC"
         description="Descubre por qué la importación de coches desde Alemania es la decisión más inteligente en 2026. Calidad, ahorro real y garantía oficial con el método PGC."
         article={true}
         image="/logoPGC.svg"
-        canonical="https://premiumgermancars.com/blog/importacion-alemania-mejor-opcion-2026"
+        canonical="https://premiumgermancars.com/blog/importar-coche-aleman-guia-importacion-alemania"
       />
-      
+
       <Navbar />
-      
+
       <main className="bg-black text-white pt-40 pb-20 font-sans">
         <div className="container mx-auto px-6 max-w-4xl">
-          
+
           {/* CABECERA */}
           <header className="mb-16">
             <Link to="/blog" className="text-gray-500 hover:text-gold-400 mb-10 inline-flex items-center gap-2 transition-all group tracking-[0.2em] text-[10px] uppercase font-bold">
@@ -51,15 +51,15 @@ const ImportacionAlemaniaMejorOpcion = () => {
 
           {/* HERO VISUAL */}
           <div className="aspect-[21/9] w-full bg-[#0a0a0a] border border-white/5 flex flex-col items-center justify-center mb-20 relative overflow-hidden group">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold-400/5 via-transparent to-transparent opacity-50"></div>
-              <img src="/logoPGC.svg" className="w-64 opacity-20 brightness-0 invert transition-transform duration-700 group-hover:scale-110" alt="PGC Logo" />
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gold-400/40 font-serif italic text-xs tracking-[0.5em] uppercase">
-                Estándar de Calidad Superior
-              </div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold-400/5 via-transparent to-transparent opacity-50"></div>
+            <img src="/logoPGC.svg" className="w-64 opacity-20 brightness-0 invert transition-transform duration-700 group-hover:scale-110" alt="PGC Logo" />
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gold-400/40 font-serif italic text-xs tracking-[0.5em] uppercase">
+              Estándar de Calidad Superior
+            </div>
           </div>
 
           <div className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed">
-            
+
             {/* INTRODUCCIÓN */}
             <section className="mb-20">
               <p className="text-xl md:text-2xl font-bold text-white mb-8 leading-snug">
@@ -125,8 +125,8 @@ const ImportacionAlemaniaMejorOpcion = () => {
                 <div className="w-full md:w-72 bg-white/5 p-6 border border-white/10">
                   <span className="text-[10px] font-black text-gold-400 uppercase tracking-[0.2em] block mb-4">Pilares de Valor</span>
                   <p className="text-xs font-bold leading-loose text-gray-300">
-                    • EQUIPAMIENTO PREMIUM <br/>
-                    • HISTORIAL OFICIAL <br/>
+                    • EQUIPAMIENTO PREMIUM <br />
+                    • HISTORIAL OFICIAL <br />
                     • VALOR RESIDUAL ALTO
                   </p>
                 </div>
@@ -168,27 +168,27 @@ const ImportacionAlemaniaMejorOpcion = () => {
 
             {/* CONCLUSIÓN Y CTA */}
             <div className="bg-[#0a0a0a] border border-gold-400/20 p-12 text-center relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400/50 to-transparent"></div>
-                <h2 className="text-3xl font-bold mb-6 text-white leading-tight">
-                  Invierta en Calidad, <span className="text-gold-400 italic">No en Marketing</span>
-                </h2>
-                <p className="text-gray-300 mb-10 text-base max-w-2xl mx-auto font-bold">
-                  ¿Prefieres estrenar pantallas o invertir en ingeniería y durabilidad real? Descubre nuestras unidades seleccionadas con garantía total.
-                </p>
-                <div className="flex flex-col md:flex-row gap-6 justify-center">
-                  <Link 
-                    to="/car/bmw-serie-1-116i" 
-                    className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white transition-all duration-500"
-                  >
-                    Ver Stock Disponible <CheckCircle2 size={16} />
-                  </Link>
-                  <Link to="/calculadora-impuesto-matriculacion" className="inline-flex items-center justify-center gap-3 border border-white/10 text-white px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500">
-                    Calculadora de Ahorro <ArrowRight size={16} />
-                  </Link>
-                </div>
-                <p className="text-[9px] text-gray-600 mt-12 font-black tracking-[0.4em] uppercase">
-                  👉 Calidad Alemana — Gestión Premium German Cars
-                </p>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400/50 to-transparent"></div>
+              <h2 className="text-3xl font-bold mb-6 text-white leading-tight">
+                Invierta en Calidad, <span className="text-gold-400 italic">No en Marketing</span>
+              </h2>
+              <p className="text-gray-300 mb-10 text-base max-w-2xl mx-auto font-bold">
+                ¿Prefieres estrenar pantallas o invertir en ingeniería y durabilidad real? Descubre nuestras unidades seleccionadas con garantía total.
+              </p>
+              <div className="flex flex-col md:flex-row gap-6 justify-center">
+                <Link
+                  to="/car/bmw-serie-1-116i"
+                  className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white transition-all duration-500"
+                >
+                  Ver Stock Disponible <CheckCircle2 size={16} />
+                </Link>
+                <Link to="/calculadora-impuesto-matriculacion" className="inline-flex items-center justify-center gap-3 border border-white/10 text-white px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500">
+                  Calculadora de Ahorro <ArrowRight size={16} />
+                </Link>
+              </div>
+              <p className="text-[9px] text-gray-600 mt-12 font-black tracking-[0.4em] uppercase">
+                👉 Calidad Alemana — Gestión Premium German Cars
+              </p>
             </div>
           </div>
         </div>
@@ -198,5 +198,7 @@ const ImportacionAlemaniaMejorOpcion = () => {
     </>
   );
 };
+
+export default ImportacionAlemaniaMejorOpcion;
 
 export default ImportacionAlemaniaMejorOpcion;

@@ -4,16 +4,17 @@ interface SEOProps {
   title: string;
   description: string;
   canonical?: string;
-  image?: string;      // Nueva prop para imagen personalizada
-  article?: boolean;   // Nueva prop para indicar si es un artículo de blog
-  noIndex?: boolean;   // Permite noindex en páginas legales
+  image?: string;
+  article?: boolean;
+  noIndex?: boolean;
 }
 
 export const SEO: React.FC<SEOProps> = ({
   title,
   description,
   canonical,
-  image = "/og-image-default.jpg", // Imagen por defecto de tu marca
+  // Activo OG/Twitter único y canónico (mismo que index.html)
+  image = "https://www.premiumgermancars.com/og.jpg",
   article = false,
   noIndex = false,
 }) => {
@@ -26,9 +27,16 @@ export const SEO: React.FC<SEOProps> = ({
       <title>{title}</title>
       <meta name="description" content={description} />
       {canonical && <link rel="canonical" href={canonical} />}
-      <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
+      <meta
+        name="robots"
+        content={noIndex ? "noindex, nofollow" : "index, follow"}
+      />
+      <meta
+        name="googlebot"
+        content={noIndex ? "noindex, nofollow" : "index, follow"}
+      />
 
-      {/* Open Graph (Facebook, WhatsApp, LinkedIn) */}
+      {/* Open Graph */}
       <meta property="og:site_name" content={siteName} />
       <meta property="og:type" content={article ? "article" : "website"} />
       <meta property="og:title" content={title} />
@@ -36,6 +44,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="og:url" content={fullUrl} />
       <meta property="og:image" content={image} />
       <meta property="og:image:alt" content={title} />
+      <meta property="og:locale" content="es_ES" />
 
       {/* Twitter (X) */}
       <meta name="twitter:card" content="summary_large_image" />
@@ -44,8 +53,8 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
 
-      {/* Meta para móviles y tema */}
-      <meta name="theme-color" content="#000000" />
+      {/* Global */}
+      <meta name="theme-color" content="#050505" />
     </Helmet>
   );
 };

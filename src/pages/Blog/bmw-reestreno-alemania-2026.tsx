@@ -1,8 +1,7 @@
-import React from "react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
-import { ShieldCheck, Zap, Search, ArrowRight, Cpu, Star } from "lucide-react";
+import { ShieldCheck, Search, ArrowRight, Cpu, Star } from "lucide-react";
 
 const BmwReestreno2026 = () => {
   return (

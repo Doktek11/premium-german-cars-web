@@ -271,3 +271,4 @@ ${formData.details || "Sin detalles adicionales"}`;
     </section>
   );
 };
+

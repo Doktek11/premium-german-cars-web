@@ -1,5 +1,5 @@
 // src/data/cars.ts
-import { Car } from "../types";
+import { Car } from "../../types";
 
 const slugify = (make: string, model: string) =>
   `${make}-${model}`

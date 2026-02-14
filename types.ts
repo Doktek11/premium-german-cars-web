@@ -7,7 +7,8 @@ export interface Car {
   km: number;
   image: string;
   engine: string;
-  status: 'Disponible' | 'Reservado' | 'Vendido';
+  status: "Disponible" | "Reservado" | "Vendido";
+  slug: string;
   description?: string;
   gallery?: string[];
 }

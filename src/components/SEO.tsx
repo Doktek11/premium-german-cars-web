@@ -5,7 +5,8 @@ interface SEOProps {
   description: string;
   canonical?: string;
   image?: string;      // Nueva prop para imagen personalizada
-  article?: boolean;    // Nueva prop para indicar si es un artículo de blog
+  article?: boolean;   // Nueva prop para indicar si es un artículo de blog
+  noIndex?: boolean;   // Permite noindex en páginas legales
 }
 
 export const SEO: React.FC<SEOProps> = ({
@@ -14,6 +15,7 @@ export const SEO: React.FC<SEOProps> = ({
   canonical,
   image = "/og-image-default.jpg", // Imagen por defecto de tu marca
   article = false,
+  noIndex = false,
 }) => {
   const siteName = "Premium German Cars";
   const fullUrl = canonical || window.location.href;
@@ -24,7 +26,7 @@ export const SEO: React.FC<SEOProps> = ({
       <title>{title}</title>
       <meta name="description" content={description} />
       {canonical && <link rel="canonical" href={canonical} />}
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
 
       {/* Open Graph (Facebook, WhatsApp, LinkedIn) */}
       <meta property="og:site_name" content={siteName} />

@@ -18,12 +18,7 @@ export const SEO: React.FC<SEOProps> = ({
   noIndex = false,
 }) => {
   const siteName = "Premium German Cars";
-
-  // Evita depender de `window` durante render en entornos no browser (SSR/SSG/prerender)
-  const browserUrl =
-    typeof window !== "undefined" ? window.location.href : undefined;
-
-  const fullUrl = canonical || browserUrl || "https://www.premiumgermancars.com";
+  const fullUrl = canonical || "https://www.premiumgermancars.com";
 
   return (
     <Helmet>

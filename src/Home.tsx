@@ -4,13 +4,11 @@ import { cars } from "./data/cars";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { About } from "./components/About";
+import { Features } from "./components/Features";
 import { Guarantee } from "./components/Guarantee";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 
 // Below-the-fold: diferidos
-const Features = lazy(() =>
-  import("./components/Features").then((m) => ({ default: m.Features }))
-);
 const ImportForm = lazy(() =>
   import("./components/ImportForm").then((m) => ({ default: m.ImportForm }))
 );
@@ -60,9 +58,7 @@ export function Home() {
           <About />
         </section>
 
-        <Suspense fallback={<SectionLoader />}>
-          <Features />
-        </Suspense>
+        <Features />
 
         <Suspense fallback={<SectionLoader />}>
           <ImportForm />

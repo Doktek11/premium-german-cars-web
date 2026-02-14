@@ -7,8 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --host",
+
     "build:check": "npm run build && node ./scripts/check-bundle.mjs",
-    "release:check": "MAX_INITIAL_JS_KB=280 npm run build:check"
+
+    "perf:baseline": "MAX_INITIAL_JS_KB=280 npm run build:check",
+    "perf:target": "MAX_INITIAL_JS_KB=240 npm run build:check",
+    "perf:strict": "MAX_INITIAL_JS_KB=220 npm run build:check",
+
+    "release:check": "npm run perf:target"
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",

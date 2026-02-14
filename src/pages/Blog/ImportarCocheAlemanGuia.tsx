@@ -21,7 +21,7 @@ const ImportacionAlemaniaMejorOpcion = () => {
         description="Descubre por qué la importación de coches desde Alemania es la decisión más inteligente en 2026. Calidad, ahorro real y garantía oficial con el método PGC."
         article={true}
         image="/logoPGC.svg"
-        canonical="https://premiumgermancars.com/blog/importar-coche-aleman-guia-importacion-alemania"
+        canonical="https://www.premiumgermancars.com/blog/importar-coche-aleman-guia-importacion-alemania"
       />
 
       <Navbar />

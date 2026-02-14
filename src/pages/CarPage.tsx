@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { cars } from "../data/cars";
 
@@ -7,7 +7,7 @@ import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
 
-export const CarPage: React.FC = () => {
+export const CarPage = () => {
   const { slug } = useParams();
 
   const car = cars.find((c) => c.slug === slug);

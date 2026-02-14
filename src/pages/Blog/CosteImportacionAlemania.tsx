@@ -24,7 +24,7 @@ const CosteImportacionAlemania2026 = () => {
         description="Domina la logística y fiscalidad para importar tu coche de Alemania. Expertos en transporte de coches, ITP en Cataluña y etiquetas DGT."
         article={true}
         image="/logoPGC.svg"
-        canonical="https://premiumgermancars.com/blog/cuanto-costa-importar-coche-alemania-2026"
+        canonical="https://www.premiumgermancars.com/blog/cuanto-cuesta-importar-coche-alemania-2026"
       />
       
       <Navbar />

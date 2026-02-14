@@ -22,7 +22,7 @@ const RiesgosImportarCocheAlemania = () => {
         description="Evite estafas, problemas de IVA y vicios ocultos. Conozca el método de verificación de Premium German Cars para una importación segura y rentable."
         article={true}
         image="/logoPGC.svg"
-        canonical="https://premiumgermancars.com/blog/5-riesgos-importar-coche-alemania"
+        canonical="https://www.premiumgermancars.com/blog/5-riesgos-importar-coche-alemania"
       />
       
       <Navbar />

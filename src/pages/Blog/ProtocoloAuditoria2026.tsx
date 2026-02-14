@@ -1,14 +1,11 @@
-import React from 'react';
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
-import { 
-  ShieldCheck, 
+import {  
   Search, 
   Gauge, 
   Truck, 
-  Database, 
-  FileCheck, 
+  Database,  
   AlertOctagon, 
   MessageCircle,
   ArrowRight,

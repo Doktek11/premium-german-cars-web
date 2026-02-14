@@ -1,9 +1,8 @@
-import React from 'react';
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
 // AÑADIDO: AlertTriangle en los imports
-import { CheckCircle, Calculator, Cpu, BadgeEuro, Mail, ArrowRight, AlertTriangle } from 'lucide-react';
+import { Calculator, Cpu, BadgeEuro, Mail, ArrowRight, AlertTriangle } from 'lucide-react';
 
 const GuiaCalculadora2026 = () => {
   return (

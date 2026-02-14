@@ -1,107 +1,132 @@
-import { Link } from 'react-router-dom';
-import { Navbar } from '../../components/Navbar';
-import { Footer } from '../../components/Footer';
-import { WhatsAppButton } from '../../components/WhatsAppButton';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { Navbar } from "../../components/Navbar";
+import { Footer } from "../../components/Footer";
+import { WhatsAppButton } from "../../components/WhatsAppButton";
+import { Calendar, ArrowRight } from "lucide-react";
 
 const blogPosts = [
+  // ✅ NUEVO ARTÍCULO AÑADIDO (coincide con la ruta SEO-friendly en App.tsx)
+  {
+    id: 13,
+    title: "¿Qué motor elegir al importar de Alemania en 2026?",
+    excerpt:
+      "Guía práctica para decidir entre diésel, gasolina e híbrido según uso real, fiscalidad, etiqueta ambiental y coste total de propiedad.",
+    date: "31 Ene, 2026",
+    slug: "que-motor-elegir-importar-alemania-2026",
+    category: "Guía de Compra",
+  },
   {
     id: 12,
-    title: "Certificado de Conformidad (COC): Guía para una matriculación sin errores",
-    excerpt: "Evite la homologación individual y retrasos en la ITV. Todo lo que necesita saber sobre el COC al importar su vehículo desde Alemania.",
+    title:
+      "Certificado de Conformidad (COC): Guía para una matriculación sin errores",
+    excerpt:
+      "Evite la homologación individual y retrasos en la ITV. Todo lo que necesita saber sobre el COC al importar su vehículo desde Alemania.",
     date: "29 Ene, 2026",
     slug: "certificado-conformidad-coc-itv-matriculacion",
-    category: "Normativa"
+    category: "Normativa",
   },
   {
     id: 11,
-    title: "Importación de Alemania: ¿Por qué es la mejor forma de comprar tu coche premium en 2026?",
-    excerpt: "Analizamos el mercado actual: por qué la demanda de importación desde Alemania ha crecido un 900% y cómo acceder a unidades de reestreno con garantía oficial en España.",
+    title:
+      "Importación de Alemania: ¿Por qué es la mejor forma de comprar tu coche premium en 2026?",
+    excerpt:
+      "Analizamos el mercado actual: por qué la demanda de importación desde Alemania ha crecido un 900% y cómo acceder a unidades de reestreno con garantía oficial en España.",
     date: "27 Ene, 2026",
     slug: "importar-coche-aleman-guia-importacion-alemania",
-    category: "Estrategia"
+    category: "Estrategia",
   },
   {
     id: 10,
     title: "Protocolo de Auditoría 2026: Transparencia Total en cada Importación",
-    excerpt: "Conozca nuestro riguroso proceso de verificación técnica. Desde la revisión de historial en BMW hasta el control de calidad en destino. Seguridad absoluta para su inversión.",
+    excerpt:
+      "Conozca nuestro riguroso proceso de verificación técnica. Desde la revisión de historial en BMW hasta el control de calidad en destino. Seguridad absoluta para su inversión.",
     date: "21 Ene, 2026",
-    // 🔧 SLUG CORREGIDO (COINCIDE CON App.tsx)
     slug: "revision-coche-alemania-protocolo-auditoria",
-    category: "Seguridad"
+    category: "Seguridad",
   },
   {
     id: 9,
     title: "¿Cuánto cuesta realmente importar un coche de Alemania en 2026?",
-    excerpt: "Descubre los costes reales, impuestos y el impacto del ITP del 16% en Cataluña. Evite errores administrativos y optimice su inversión.",
+    excerpt:
+      "Descubre los costes reales, impuestos y el impacto del ITP del 16% en Cataluña. Evite errores administrativos y optimice su inversión.",
     date: "19 Ene, 2026",
     slug: "cuanto-cuesta-importar-coche-alemania-2026",
-    category: "Guía Fiscal"
+    category: "Guía Fiscal",
   },
   {
     id: 8,
     title: "Guía definitiva: Cómo calcular el impuesto de matriculación BOE 2025",
-    excerpt: "Utilice nuestra calculadora con IA para obtener valores BOE exactos y calcular la depreciación real mes a mes. Sin errores, sin sorpresas fiscales.",
+    excerpt:
+      "Utilice nuestra calculadora con IA para obtener valores BOE exactos y calcular la depreciación real mes a mes. Sin errores, sin sorpresas fiscales.",
     date: "13 Ene, 2026",
     slug: "guia-calculo-impuesto-matriculacion-boe-2025",
-    category: "Herramientas"
+    category: "Herramientas",
   },
   {
     id: 7,
-    title: "BMW y Alpina: El nacimiento de una nueva era en el lujo automotriz alemán",
-    excerpt: "Analizamos la integración de Alpina en BMW Group. ¿Qué significa para los coleccionistas y por qué las unidades artesanalas son la inversión clave de 2026?",
+    title:
+      "BMW y Alpina: El nacimiento de una nueva era en el lujo automotriz alemán",
+    excerpt:
+      "Analizamos la integración de Alpina en BMW Group. ¿Qué significa para los coleccionistas y por qué las unidades artesanalas son la inversión clave de 2026?",
     date: "09 Ene, 2026",
     slug: "bmw-alpina-nueva-era-lujo-aleman",
-    category: "Actualidad"
+    category: "Actualidad",
   },
   {
     id: 6,
-    title: "Los 5 Riesgos Más Comunes al Importar un Coche de Alemania (y Cómo Evitarlos)",
-    excerpt: "Evite estafas, problemas de IVA y vicios ocultos. Conozca nuestro protocolo de verificación de tolerancia cero para una importación segura en 2026.",
+    title:
+      "Los 5 Riesgos Más Comunes al Importar un Coche de Alemania (y Cómo Evitarlos)",
+    excerpt:
+      "Evite estafas, problemas de IVA y vicios ocultos. Conozca nuestro protocolo de verificación de tolerancia cero para una importación segura en 2026.",
     date: "07 Ene, 2026",
     slug: "5-riesgos-importar-coche-alemania",
-    category: "Seguridad"
+    category: "Seguridad",
   },
   {
     id: 5,
     title: "Guía 2026: Importar un Coche de Alemania sin Sorpresas Fiscales",
-    excerpt: "Protocolo completo 2026. Entienda la fiscalidad de las emisiones de CO2, la documentación necesaria y cómo evitar los errores más comunes en la logística profesional.",
+    excerpt:
+      "Protocolo completo 2026. Entienda la fiscalidad de las emisiones de CO2, la documentación necesaria y cómo evitar los errores más comunes en la logística profesional.",
     date: "05 Ene, 2026",
     slug: "como-importar-coche-alemania",
-    category: "Protocolo PGC"
+    category: "Protocolo PGC",
   },
   {
     id: 4,
     title: "Los 5 modelos más inteligentes para importar de Alemania en 2026",
-    excerpt: "Calidad real, historial transparente y valor de reventa. Descubre por qué la trazabilidad certificada es la clave para una importación segura.",
+    excerpt:
+      "Calidad real, historial transparente y valor de reventa. Descubre por qué la trazabilidad certificada es la clave para una importación segura.",
     date: "02 Ene, 2026",
     slug: "mejores-modelos-importar-alemania-2026",
-    category: "Guías"
+    category: "Guías",
   },
   {
     id: 1,
     title: "¿Corazón BMW en un Mercedes? El posible pacto de motores para 2027",
-    excerpt: "Analizamos los rumores sobre la colaboración entre Mercedes-Benz y BMW para el uso de motores de 4 cilindros.",
+    excerpt:
+      "Analizamos los rumores sobre la colaboración entre Mercedes-Benz y BMW para el uso de motores de 4 cilindros.",
     date: "17 Dic, 2025",
     slug: "motores-bmw-en-mercedes-2027",
-    category: "Actualidad"
+    category: "Actualidad",
   },
   {
     id: 2,
     title: "BMW de Reestreno: La guía definitiva para 2026",
-    excerpt: "Todo lo que necesitas saber para importar tu próximo BMW desde Alemania con las mejores garantías.",
+    excerpt:
+      "Todo lo que necesitas saber para importar tu próximo BMW desde Alemania con las mejores garantías.",
     date: "15 Dic, 2025",
     slug: "bmw-reestreno-alemania-2026",
-    category: "Guías"
+    category: "Guías",
   },
   {
     id: 3,
     title: "Coches de segunda mano en Reus y Tarragona",
-    excerpt: "¿Vale la pena comprar local o importar? Comparamos el mercado de ocasión frente a la importación directa.",
+    excerpt:
+      "¿Vale la pena comprar local o importar? Comparamos el mercado de ocasión frente a la importación directa.",
     date: "10 Dic, 2025",
     slug: "coche-segunda-mano-reus-tarragona",
-    category: "Mercado"
-  }
+    category: "Mercado",
+  },
 ];
 
 export default function BlogIndex() {
@@ -116,8 +141,12 @@ export default function BlogIndex() {
               Blog <span className="text-gold-400">Premium</span>
             </h1>
             <p className="text-gray-400 text-lg italic leading-relaxed">
-              Actualidad, protocolos de importación y análisis estratégico del mercado automotriz alemán para clientes de{" "}
-              <span className="text-white font-semibold italic">Premium German Cars</span>.
+              Actualidad, protocolos de importación y análisis estratégico del
+              mercado automotriz alemán para clientes de{" "}
+              <span className="text-white font-semibold italic">
+                Premium German Cars
+              </span>
+              .
             </p>
           </header>
 
@@ -163,7 +192,10 @@ export default function BlogIndex() {
                     className="text-white font-bold uppercase text-[10px] tracking-[0.3em] flex items-center gap-3 group/link mt-auto border-t border-white/5 pt-6 group-hover:text-gold-400 transition-colors"
                   >
                     Leer artículo completo
-                    <ArrowRight size={14} className="group-hover/link:translate-x-2 transition-transform duration-300 text-gold-400" />
+                    <ArrowRight
+                      size={14}
+                      className="group-hover/link:translate-x-2 transition-transform duration-300 text-gold-400"
+                    />
                   </Link>
                 </div>
               </article>

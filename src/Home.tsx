@@ -41,9 +41,7 @@ export function Home() {
 
         <Features />
 
-        <section id="import">
-          <ImportForm />
-        </section>
+        <ImportForm />
 
         {/* STOCK CON COLOR SUAVIZADO */}
         <section id="stock" className="py-32 bg-metallic-900">

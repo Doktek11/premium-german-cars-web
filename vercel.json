@@ -1,15 +1,47 @@
 {
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
   "redirects": [
     {
       "source": "/calculadora",
       "destination": "/calculadora-impuesto-matriculacion",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/importacion-coches-alemania",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/calculadora-impuesto-matriculacion",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/preguntas-frecuentes",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/blog/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/car/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/aviso-legal",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/politica-privacidad",
+      "destination": "/index.html"
     }
   ]
 }

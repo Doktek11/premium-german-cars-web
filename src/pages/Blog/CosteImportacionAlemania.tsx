@@ -168,7 +168,7 @@ const CosteImportacionAlemania2026 = () => {
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 justify-center">
                   <Link 
-                    to="/calculadora" 
+                    to="/calculadora-impuesto-matriculacion" 
                     className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white transition-all duration-500 shadow-xl shadow-gold-400/5"
                   >
                     Probar Calculadora de Importación <Calculator size={16} />

@@ -2,14 +2,22 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}"  // <- ESTA ES LA IMPORTANTE
+    "./src/**/*.{js,ts,jsx,tsx}"
+    // si usas otros directorios (e.g. ./app, ./pages), añádelos aquí
   ],
   theme: {
     extend: {
+      // Font families: `font-sans` -> Montserrat, `font-serif` -> Playfair Display
       fontFamily: {
+        // nombres canónicos que Tailwind usa en las clases (font-sans / font-serif)
         sans: ['Montserrat', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        serif: ['Playfair Display', 'Georgia', 'Times New Roman', 'serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'Times New Roman', 'serif'],
+
+        // alias opcionales por si prefieres clases tipo `font-montserrat` / `font-playfair`
+        montserrat: ['Montserrat', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        playfair: ['"Playfair Display"', 'Georgia', 'Times New Roman', 'serif'],
       },
+
       colors: {
         gold: {
           300: '#E5C558',
@@ -23,18 +31,22 @@ export default {
           950: '#050505',
         }
       },
+
       letterSpacing: {
         widest: '.15em',
         ultra: '.25em',
       },
+
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
+
       animation: {
         'pulse-slow': 'pulse 20s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'fade-in': 'fadeIn 0.5s ease-out forwards',
         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
       },
+
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },

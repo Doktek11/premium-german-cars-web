@@ -27,9 +27,7 @@ Web corporativa de **Premium German Cars** desarrollada con **React + Vite + Typ
 
 ---
 
-## Scripts disponibles
+## Instalación
 
 ```bash
-npm run dev
-npm run build
-npm run preview
+npm install

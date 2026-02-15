@@ -12,9 +12,9 @@
 
     "perf:baseline": "MAX_INITIAL_JS_KB=280 npm run build:check",
     "perf:target": "MAX_INITIAL_JS_KB=240 npm run build:check",
-    "perf:strict": "MAX_INITIAL_JS_KB=220 npm run build:check",
+    "perf:strict": "BUNDLE_CHECK_STRICT=1 MAX_INITIAL_JS_KB=220 npm run build:check",
 
-    "release:check": "npm run perf:target"
+    "release:check": "npm run perf:strict"
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",

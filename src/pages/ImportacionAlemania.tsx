@@ -4,7 +4,7 @@ import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
 import { X, CheckCircle2, ShieldCheck, Gem, Clock, ArrowRight, Calculator } from "lucide-react";
-import { Link } from "react-router-dom"; // Asumiendo que usas react-router para navegar internamente
+import { Link } from "react-router-dom";
 
 export const ImportacionAlemania: React.FC = () => {
   useEffect(() => {
@@ -41,9 +41,25 @@ export const ImportacionAlemania: React.FC = () => {
             <span className="text-gold-400 italic font-light">desde Alemania</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
-            Accede al mercado premium más exigente de Europa con total tranquilidad. 
+            Accede al mercado premium más exigente de Europa con total tranquilidad.
             Historial certificado, selección profesional y <span className="text-white font-medium">cero improvisaciones</span>.
           </p>
+
+          <div className="mt-10 mx-auto max-w-3xl border border-gold-400/20 bg-gold-400/5 rounded-2xl p-6 text-left">
+            <p className="text-[10px] tracking-[0.25em] uppercase font-bold text-gold-400 mb-3">
+              Coste orientativo en 30 segundos
+            </p>
+            <p className="text-gray-300 text-sm md:text-base mb-5 leading-relaxed">
+              Si ya tienes un coche fichado, calcula primero el coste fiscal estimado (matriculación + depreciación + tramo CO2)
+              y evita tomar decisiones a ciegas.
+            </p>
+            <Link
+              to="/calculadora-impuesto-matriculacion"
+              className="inline-flex items-center gap-2 bg-gold-400 text-black px-5 py-3 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors"
+            >
+              Probar calculadora ahora <ArrowRight size={16} />
+            </Link>
+          </div>
         </section>
 
         {/* SECTION: LOS "NO" - FILTRADO DE CLIENTE */}
@@ -156,7 +172,7 @@ export const ImportacionAlemania: React.FC = () => {
             <div className="max-w-3xl mx-auto relative z-10">
               <h2 className="text-3xl md:text-5xl font-serif font-bold mb-8">¿Buscas un modelo o configuración concreta?</h2>
               <p className="text-gray-400 text-lg mb-12 leading-relaxed">
-                No te limites al stock reducido de tu zona. El mercado alemán ofrece miles de unidades... pero solo unas pocas merecen realmente la pena. 
+                No te limites al stock reducido de tu zona. El mercado alemán ofrece miles de unidades... pero solo unas pocas merecen realmente la pena.
                 Clientes de toda <strong>Cataluña</strong> confían en nuestro criterio.
               </p>
 
@@ -165,8 +181,8 @@ export const ImportacionAlemania: React.FC = () => {
                 <p className="text-white text-xl font-light mb-6">
                   ¿Tienes ya una unidad vista y quieres saber el coste real?
                 </p>
-                <Link 
-                  to="/calculadora" 
+                <Link
+                  to="/calculadora-impuesto-matriculacion"
                   className="inline-flex items-center gap-2 text-gold-400 font-bold uppercase tracking-[0.2em] hover:text-white transition-colors group"
                 >
                   <Calculator size={20} className="group-hover:rotate-12 transition-transform" />

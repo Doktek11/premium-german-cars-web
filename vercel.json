@@ -4,5 +4,12 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/calculadora",
+      "destination": "/calculadora-impuesto-matriculacion",
+      "permanent": true
+    }
   ]
 }

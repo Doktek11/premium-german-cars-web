@@ -1,9 +1,10 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { join, basename } from "node:path";
 
 const distDir = join(process.cwd(), "dist");
 const assetsDir = join(distDir, "assets");
 const manifestPath = join(distDir, ".vite", "manifest.json");
+
 const maxInitialKb = Number(process.env.MAX_INITIAL_JS_KB || 280);
 const isStrict = process.env.BUNDLE_CHECK_STRICT === "1";
 
@@ -27,9 +28,13 @@ function collectInitialFilesFromManifest(manifest) {
     if (!item) return;
 
     if (item.file && item.file.endsWith(".js")) {
+      // Vite devuelve "assets/xxx.js"
       initialJs.add(item.file);
+      // defensivo: también guardamos basename
+      initialJs.add(basename(item.file));
     }
 
+    // imports síncronos del entry = parte del initial graph
     if (Array.isArray(item.imports)) {
       for (const importedKey of item.imports) {
         visit(manifest[importedKey]);
@@ -48,9 +53,7 @@ function collectInitialFilesFromHtml() {
   try {
     const html = readFileSync(join(distDir, "index.html"), "utf-8");
     const matches = [
-      ...html.matchAll(
-        /<script[^>]+src=["'](?:\/?assets\/)([^"']+\.js)["'][^>]*>/g
-      ),
+      ...html.matchAll(/<script[^>]+src=["'](?:\/?assets\/)([^"']+\.js)["'][^>]*>/g),
     ];
     return matches.map((match) => match[1]);
   } catch {
@@ -62,7 +65,11 @@ function measureAllJsFiles() {
   const jsFiles = readdirSync(assetsDir).filter((file) => file.endsWith(".js"));
   return jsFiles.map((file) => {
     const fullPath = join(assetsDir, file);
-    return { file, sizeKb: toKb(statSync(fullPath).size) };
+    return {
+      file,               // e.g. index-abc.js
+      assetPath: `assets/${file}`, // e.g. assets/index-abc.js
+      sizeKb: toKb(statSync(fullPath).size),
+    };
   });
 }
 
@@ -74,7 +81,9 @@ let mode = "manifest";
 
 if (manifest) {
   const initialFromManifest = collectInitialFilesFromManifest(manifest);
-  initialChunks = measured.filter((item) => initialFromManifest.includes(item.file));
+  initialChunks = measured.filter(
+    (item) => initialFromManifest.includes(item.file) || initialFromManifest.includes(item.assetPath)
+  );
 } else {
   const initialFromHtml = collectInitialFilesFromHtml();
 
@@ -106,6 +115,12 @@ for (const chunk of initialSorted) {
 console.log(
   `\nInitial JS estimate: ${initialTotalKb.toFixed(2)} KB (threshold: ${maxInitialKb} KB)`
 );
+
+// Guardrail extra: si por manifest no detecta nada, no debería “pasar” silenciosamente
+if (mode === "manifest" && initialChunks.length === 0) {
+  console.error("❌ Manifest mode detected 0 initial chunks. Check manifest parsing logic.");
+  process.exit(1);
+}
 
 if (mode !== "manifest" && isStrict) {
   console.error(

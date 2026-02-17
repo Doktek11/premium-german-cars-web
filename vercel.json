@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "premiumgermancars.com"
+        }
+      ],
+      "destination": "https://www.premiumgermancars.com/$1",
+      "permanent": true
+    },
+    {
       "source": "/calculadora",
       "destination": "/calculadora-impuesto-matriculacion",
       "permanent": true

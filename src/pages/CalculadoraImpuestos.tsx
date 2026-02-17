@@ -105,7 +105,7 @@ export const CalculadoraImpuestos = () => {
   return (
     <div className="min-h-screen bg-black text-white">
       <SEO 
-        title="Calculadora Impuesto Matriculación 2026 | Modelo 576 Gratis"
+        title="Calculadora Impuesto Matriculación Diésel o Gasolina 2026 | Gratis"
         description="Calcula al instante el impuesto de matriculación diésel o gasolina para tu coche importado de Alemania con datos BOE 2026. Resultado en 30 segundos."
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
       />

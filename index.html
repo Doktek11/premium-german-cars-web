@@ -7,22 +7,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <base href="/" />
-    
+
     <!-- iOS Safari -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Premium German Cars" />
-    
+
     <!-- Android -->
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="format-detection" content="telephone=yes" />
 
     <!-- Fallback base (SEO.tsx lo sobreescribe por página) -->
     <title>Premium German Cars</title>
-    <meta
-      name="description"
-      content="Importación de coches premium desde Alemania."
-    />
+    <meta name="description" content="Importación de coches premium desde Alemania." />
 
     <!-- Solo metas verdaderamente globales -->
     <meta name="theme-color" content="#050505" />
@@ -32,10 +29,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Premium German Cars" />
     <meta property="og:title" content="Premium German Cars" />
-    <meta
-      property="og:description"
-      content="Importación de coches premium desde Alemania."
-    />
+    <meta property="og:description" content="Importación de coches premium desde Alemania." />
     <meta property="og:url" content="https://www.premiumgermancars.com/" />
     <meta property="og:image" content="https://www.premiumgermancars.com/og.jpg" />
     <meta property="og:image:alt" content="Premium German Cars" />
@@ -43,17 +37,16 @@
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Premium German Cars" />
-    <meta
-      name="twitter:description"
-      content="Importación de coches premium desde Alemania."
-    />
+    <meta name="twitter:description" content="Importación de coches premium desde Alemania." />
     <meta name="twitter:image" content="https://www.premiumgermancars.com/og.jpg" />
 
     <!-- Favicon / App icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Performance -->
-    <link rel="preload" as="image" href="/amggtr-mobile.webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="/amggtr-mobile.webp" imagesizes="100vw" fetchpriority="high" />
+    <link rel="preload" href="/static-fonts/montserrat-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/static-fonts/playfair-700.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- CSS crítico base -->
     <style>
@@ -72,75 +65,85 @@
       }
     </style>
 
-    <!-- =========================
-         ESTRUCTURADOS GLOBALES
-         ========================= -->
+    <!-- ESTRUCTURADO CRÍTICO -->
     <script type="application/ld+json">
-      [
-        {
-          "@context": "https://schema.org",
-          "@type": "AutoDealer",
-          "name": "Premium German Cars",
-          "url": "https://www.premiumgermancars.com",
-          "logo": "https://www.premiumgermancars.com/favicon.svg",
-          "description": "Importación de coches premium desde Alemania con garantía, historial certificado y entrega llave en mano en España.",
-          "image": "https://www.premiumgermancars.com/amggtr-mobile.webp",
-          "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "ES"
-          },
-          "areaServed": {
-            "@type": "Country",
-            "name": "Spain"
-          },
-          "knowsAbout": [
-            "Importación de coches desde Alemania",
-            "Coches premium alemanes",
-            "BMW importación",
-            "Audi importación",
-            "Mercedes importación",
-            "Cálculo de impuestos de matriculación España"
-          ],
-          "inLanguage": "es-ES"
+      {
+        "@context": "https://schema.org",
+        "@type": "AutoDealer",
+        "name": "Premium German Cars",
+        "url": "https://www.premiumgermancars.com",
+        "logo": "https://www.premiumgermancars.com/favicon.svg",
+        "description": "Importación de coches premium desde Alemania con garantía, historial certificado y entrega llave en mano en España.",
+        "image": "https://www.premiumgermancars.com/amggtr-mobile.webp",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "ES"
         },
-        {
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          "name": "Calculadora Impuesto de Matriculación 2026 PGC",
-          "operatingSystem": "All",
-          "applicationCategory": "FinanceApplication",
-          "url": "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
-          "description": "Calculadora técnica para el Impuesto de Matriculación (Modelo 576) en España. Basada en tablas oficiales BOE 2026, emisiones WLTP y coeficientes de depreciación por antigüedad.",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "EUR"
-          },
-          "author": {
-            "@type": "Organization",
-            "name": "Premium German Cars",
-            "url": "https://www.premiumgermancars.com"
-          },
-          "featureList": [
-            "Cálculo basado en emisiones CO2 2026",
-            "Tablas de depreciación BOE por meses",
-            "Asistente IA para valor venal integrado",
-            "Soporte para tipos incrementados por CCAA"
-          ],
-          "inLanguage": "es-ES"
-        }
-      ]
+        "areaServed": {
+          "@type": "Country",
+          "name": "Spain"
+        },
+        "inLanguage": "es-ES"
+      }
     </script>
 
-    <!-- Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44"></script>
+    <!-- Structured data no crítica (diferida para priorizar LCP) -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
+      const injectAppSchema = () => {
+        const schema = {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: "Calculadora Impuesto de Matriculación 2026 PGC",
+          operatingSystem: "All",
+          applicationCategory: "FinanceApplication",
+          url: "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
+          description:
+            "Calculadora técnica para el Impuesto de Matriculación (Modelo 576) en España. Basada en tablas oficiales BOE 2026, emisiones WLTP y coeficientes de depreciación por antigüedad.",
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "EUR"
+          },
+          author: {
+            "@type": "Organization",
+            name: "Premium German Cars",
+            url: "https://www.premiumgermancars.com"
+          },
+          inLanguage: "es-ES"
+        };
+
+        const script = document.createElement("script");
+        script.type = "application/ld+json";
+        script.text = JSON.stringify(schema);
+        document.head.appendChild(script);
+      };
+
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(injectAppSchema, { timeout: 2500 });
+      } else {
+        window.addEventListener("load", injectAppSchema, { once: true });
       }
-      gtag("js", new Date());
-      gtag("config", "G-8KVXL3SX44");
+    </script>
+
+    <!-- Analytics diferido para no competir con LCP -->
+    <script>
+      window.addEventListener(
+        "load",
+        () => {
+          const script = document.createElement("script");
+          script.src = "https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44";
+          script.async = true;
+          document.head.appendChild(script);
+
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag("js", new Date());
+          gtag("config", "G-8KVXL3SX44");
+        },
+        { once: true }
+      );
     </script>
   </head>
 

@@ -1,24 +1,13 @@
 /* =========================
    SELF-HOSTED FONTS (LOCAL)
    Sube los archivos .woff2 a /public/static-fonts con estos nombres:
-   - /public/fonts/montserrat-300.woff2
    - /public/fonts/montserrat-400.woff2
    - /public/fonts/montserrat-500.woff2
    - /public/fonts/montserrat-600.woff2
    - /public/fonts/playfair-400.woff2
    - /public/fonts/playfair-600.woff2
    - /public/fonts/playfair-700.woff2
-   - /public/fonts/playfair-400-italic.woff2
    ========================= */
-
-@font-face {
-  font-family: "Montserrat";
-  src: url("/static-fonts/montserrat-300.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0100-017F;
-}
 
 @font-face {
   font-family: "Montserrat";
@@ -74,15 +63,6 @@
   unicode-range: U+0000-00FF, U+0100-017F;
 }
 
-@font-face {
-  font-family: "Playfair Display";
-  src: url("/static-fonts/playfair-400-italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0100-017F;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -91,7 +71,7 @@
   body {
     background-color: #050505;
     color: #e5e5e5;
-    font-weight: 300;
+    font-weight: 400; /* antes 300: evita forzar montserrat-300 en ruta crítica */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

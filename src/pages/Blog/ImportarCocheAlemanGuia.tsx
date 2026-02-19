@@ -26,8 +26,8 @@ const ImportacionAlemaniaMejorOpcion = () => {
 
       <Navbar />
 
-      <main className="bg-black text-white pt-40 pb-20 font-sans">
-        <div className="container mx-auto px-6 max-w-4xl">
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20 font-sans">
+        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
 
           {/* CABECERA */}
           <header className="mb-16">
@@ -38,7 +38,7 @@ const ImportacionAlemaniaMejorOpcion = () => {
               <span className="inline-block bg-gold-950/30 text-gold-400 px-4 py-1 rounded-full text-[10px] uppercase tracking-widest font-black border border-gold-400/20">
                 Guía de Mercado 2026
               </span>
-              <h1 className="text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">
                 Importación de Alemania: <span className="text-gold-400 block md:inline italic">¿La mejor forma de comprar tu premium?</span>
               </h1>
             </div>

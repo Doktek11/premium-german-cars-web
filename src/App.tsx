@@ -39,7 +39,7 @@ const PoliticaPrivacidad = lazy(() => import("./pages/Legal/PoliticaPrivacidad")
 
 function RouteLoader() {
   return (
-    <main className="min-h-[40vh] bg-black text-white grid place-items-center px-6">
+    <main className="min-h-[40vh] bg-black text-white grid place-items-center px-4 sm:px-6">
       <p className="text-xs uppercase tracking-[0.3em] text-gray-400">Cargando contenido...</p>
     </main>
   );

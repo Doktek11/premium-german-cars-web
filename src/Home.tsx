@@ -71,17 +71,17 @@ export function Home() {
         </Suspense>
 
         {/* STOCK CON COLOR SUAVIZADO */}
-        <section id="stock" className="py-32 bg-metallic-900">
-          <div className="container mx-auto px-6">
+        <section id="stock" className="py-16 sm:py-24 md:py-32 bg-metallic-900">
+          <div className="container mx-auto px-4 sm:px-6">
             <span className="text-gold-400 text-xs font-bold tracking-widest uppercase mb-4 block">
               Showroom
             </span>
 
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-20">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white mb-12 sm:mb-16 md:mb-20">
               Stock Seleccionado
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
               {cars.map((car) => (
                 <Link
                   key={car.id}
@@ -109,7 +109,7 @@ export function Home() {
                     />
                   </div>
 
-                  <div className="p-8 flex flex-col flex-grow">
+                  <div className="p-6 sm:p-8 flex flex-col flex-grow">
                     <h3 className="text-xl font-serif font-bold text-white mb-2">
                       {car.make} <br />
                       <span className="text-gray-400 font-sans font-light">{car.model}</span>

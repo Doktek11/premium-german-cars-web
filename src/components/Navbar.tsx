@@ -56,7 +56,7 @@ export const Navbar: React.FC = () => {
           : "bg-transparent py-8 border-transparent"
       }`}
     >
-      <div className="container mx-auto px-6 flex justify-between items-center">
+        <div className="container mx-auto px-4 sm:px-6 flex justify-between items-center">
         
         <button
           onClick={() => navigate("/")}
@@ -127,7 +127,7 @@ export const Navbar: React.FC = () => {
         {/* MOBILE TOGGLE - Target táctil optimizado */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden text-white z-50 p-3 hover:bg-white/5 rounded-full transition-colors"
+          className="lg:hidden text-white z-50 p-3 hover:bg-white/5 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation active:scale-95"
           aria-expanded={isOpen}
           aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
         >
@@ -145,28 +145,28 @@ export const Navbar: React.FC = () => {
         style={{ willChange: 'transform' }}
       >
         <div className="flex flex-col space-y-8 items-center">
-            <button onClick={() => { navigate("/"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors">
+            <button onClick={() => { navigate("/"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors min-h-[48px] px-4 touch-manipulation active:scale-95">
               Inicio
             </button>
-            <button onClick={() => { navigate("/importacion-coches-alemania"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors">
+            <button onClick={() => { navigate("/importacion-coches-alemania"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors min-h-[48px] px-4 touch-manipulation active:scale-95">
               Importación Alemania
             </button>
-            <button onClick={() => { navigate("/calculadora-impuesto-matriculacion"); setIsOpen(false); }} className="text-2xl font-serif text-gold-400 flex items-center gap-3">
+            <button onClick={() => { navigate("/calculadora-impuesto-matriculacion"); setIsOpen(false); }} className="text-2xl font-serif text-gold-400 flex items-center gap-3 min-h-[48px] px-4 touch-manipulation active:scale-95">
               <Calculator size={24} /> Calculadora
             </button>
-            <button onClick={() => { navigate("/blog"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors">
+            <button onClick={() => { navigate("/blog"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors min-h-[48px] px-4 touch-manipulation active:scale-95">
               Blog Premium
             </button>
-            <button onClick={() => { goToSection("#stock"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors">
+            <button onClick={() => { goToSection("#stock"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors min-h-[48px] px-4 touch-manipulation active:scale-95">
               Stock
             </button>
-            <button onClick={() => { goToSection("#contact"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors">
+            <button onClick={() => { goToSection("#contact"); setIsOpen(false); }} className="text-2xl font-serif text-white hover:text-gold-400 transition-colors min-h-[48px] px-4 touch-manipulation active:scale-95">
               Contacto
             </button>
             
             <button
               onClick={() => { goToSection("#import"); setIsOpen(false); }}
-              className="mt-4 px-10 py-4 bg-gold-500 text-black font-bold uppercase tracking-widest text-sm rounded-sm active:scale-95 transition-transform shadow-xl shadow-gold-500/20"
+              className="mt-4 px-10 py-4 bg-gold-500 text-black font-bold uppercase tracking-widest text-sm rounded-sm active:scale-95 transition-transform shadow-xl shadow-gold-500/20 min-h-[48px] touch-manipulation"
             >
               Pedir Coche
             </button>

@@ -24,9 +24,9 @@ export const WhatsAppButton = () => {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contactar por WhatsApp"
-      className="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 flex items-center justify-center group"
+      className="fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-50 bg-[#25D366] text-white p-4 sm:p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-transform duration-300 flex items-center justify-center group touch-manipulation min-w-[56px] min-h-[56px]"
     >
-      <MessageCircle size={28} className="group-hover:rotate-12 transition-transform" />
+      <MessageCircle size={24} className="sm:w-7 sm:h-7 group-hover:rotate-12 transition-transform" />
       
       {/* Tooltip opcional que aparece al pasar el ratón */}
       <span className="absolute right-16 bg-white text-black text-xs font-bold px-3 py-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">

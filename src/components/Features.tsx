@@ -26,8 +26,8 @@ export const Features: React.FC = () => {
   ];
 
   return (
-    <section id="process" className="py-20 md:py-32 bg-[#050505] relative overflow-hidden">
-      <div className="container mx-auto px-6">
+    <section id="process" className="py-16 sm:py-20 md:py-32 bg-[#050505] relative overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-20 gap-8">
           <div className="max-w-2xl">
             <span className="text-gold-400 text-xs font-bold tracking-widest uppercase mb-4 block">El Proceso</span>
@@ -40,7 +40,7 @@ export const Features: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {steps.map((step, index) => (
             <div
               key={index}

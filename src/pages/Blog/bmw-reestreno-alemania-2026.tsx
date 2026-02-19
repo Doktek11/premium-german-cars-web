@@ -12,12 +12,12 @@ const BmwReestreno2026 = () => {
       />
       <Navbar />
       
-      <main className="bg-black text-white pt-40 pb-20">
-        <div className="container mx-auto px-6 max-w-4xl">
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20">
+        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
           {/* Cabecera del Artículo */}
           <div className="mb-12">
             <span className="text-gold-400 font-bold tracking-widest text-xs uppercase italic">Guía de Importación 2026</span>
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mt-4 mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold mt-4 mb-6 leading-tight">
               Guía para comprar un BMW de reestreno en 2026: claves al importar desde Alemania
             </h1>
             <div className="flex items-center gap-4 text-gray-500 text-sm italic">

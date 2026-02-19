@@ -2,12 +2,12 @@ import React from 'react';
 
 export const About: React.FC = () => {
   return (
-    <section id="about" className="py-24 bg-metallic-900">
-      <div className="container mx-auto px-6">
+    <section id="about" className="py-16 sm:py-20 md:py-24 bg-metallic-900">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="flex flex-col lg:flex-row items-center gap-16">
            <div className="lg:w-1/2">
               <span className="text-gold-400 text-sm tracking-widest uppercase font-bold">Nuestra Esencia</span>
-              <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mt-2 mb-8">Experiencias únicas sobre ruedas</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif font-bold text-white mt-2 mb-8">Experiencias únicas sobre ruedas</h2>
               <div className="space-y-6 text-gray-300 leading-relaxed text-justify font-light">
                 <p>
                   En <strong className="text-white">Premium German Cars</strong> ofrecemos algo más que coches alemanes: ofrecemos experiencias únicas sobre ruedas. Cada vehículo que seleccionamos es cuidadosamente inspeccionado para garantizar que cumple con los más altos estándares de rendimiento, confort y fiabilidad. Nuestro compromiso es que cada cliente disfrute de un coche que refleja su estilo de vida y exigencias.

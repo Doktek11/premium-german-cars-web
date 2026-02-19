@@ -28,16 +28,16 @@ const testimonials: Testimonial[] = [
 
 export const Testimonials: React.FC = () => {
   return (
-    <section className="py-24 bg-metallic-900 border-t border-white/5">
-      <div className="container mx-auto px-6">
+    <section className="py-16 sm:py-20 md:py-24 bg-metallic-900 border-t border-white/5">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <span className="text-gold-400 text-sm tracking-widest uppercase font-bold">Confianza</span>
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mt-2">Testimonios Reales</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {testimonials.map((t) => (
-            <div key={t.id} className="p-8 bg-metallic-950 border border-white/5 relative">
+            <div key={t.id} className="p-6 sm:p-8 bg-metallic-950 border border-white/5 relative">
               <Quote className="absolute top-8 left-8 text-gold-500/20 w-16 h-16 -z-0" />
               <div className="relative z-10">
                 <p className="text-gray-300 italic mb-8 leading-relaxed">"{t.text}"</p>

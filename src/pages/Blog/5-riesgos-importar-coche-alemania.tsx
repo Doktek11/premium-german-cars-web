@@ -27,8 +27,8 @@ const RiesgosImportarCocheAlemania = () => {
       
       <Navbar />
       
-      <main className="bg-black text-white pt-40 pb-20 font-sans">
-        <div className="container mx-auto px-6 max-w-4xl">
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20 font-sans">
+        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
           
           {/* CABECERA */}
           <header className="mb-16">
@@ -39,7 +39,7 @@ const RiesgosImportarCocheAlemania = () => {
               <span className="inline-block bg-red-950/30 text-red-500 px-4 py-1 rounded-full text-[10px] uppercase tracking-widest font-black border border-red-500/20">
                 Seguridad y Control de Riesgos
               </span>
-              <h1 className="text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">
                 Los 5 Riesgos al Importar de Alemania <span className="text-gold-400 block md:inline italic">que Arruinan tu Inversión</span>
               </h1>
             </div>

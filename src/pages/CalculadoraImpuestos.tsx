@@ -112,13 +112,13 @@ export const CalculadoraImpuestos = () => {
       
       <Navbar />
       
-      <main className="pt-32 pb-20 px-6">
+      <main className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6">
         <div className="container mx-auto max-w-5xl">
           <header className="mb-12 flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-center md:text-left">
-              <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter text-left">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter text-left">
                 Impuesto <span className="text-gold-400 italic">Diésel o Gasolina:</span> <br/>
-                <span className="text-2xl md:text-4xl">¿Cuánto cuesta matricularlo?</span>
+                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">¿Cuánto cuesta matricularlo?</span>
               </h1>
               <p className="text-gray-400 text-lg max-w-2xl text-left">
                 Herramienta de precisión basada en los tramos de CO2 2026 y las tablas de depreciación del BOE para vehículos de importación.
@@ -126,13 +126,13 @@ export const CalculadoraImpuestos = () => {
             </div>
             <button 
               onClick={resetCalculadora}
-              className="flex items-center gap-2 px-6 py-3 border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all"
+              className="flex items-center gap-2 px-6 py-3 border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all min-h-[48px] touch-manipulation"
             >
               <RotateCcw size={14} /> Limpiar Datos
             </button>
           </header>
 
-          <div className="mb-10 bg-gradient-to-r from-gold-900/10 to-transparent border border-gold-500/20 p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-sm text-left">
+          <div className="mb-8 sm:mb-10 bg-gradient-to-r from-gold-900/10 to-transparent border border-gold-500/20 p-4 sm:p-6 md:p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-sm text-left">
             <div className="flex gap-5 items-start">
               <div className="bg-gold-500/20 p-3 rounded-2xl">
                 <Bot className="text-gold-400" size={32} />
@@ -148,14 +148,14 @@ export const CalculadoraImpuestos = () => {
             </div>
             <button 
               onClick={abrirAsistenteIA}
-              className="whitespace-nowrap px-8 py-4 bg-gold-500 text-black font-black rounded-xl hover:bg-white transition-all uppercase text-[10px] tracking-widest flex items-center gap-3 shadow-xl shadow-gold-500/10"
+              className="whitespace-nowrap px-8 py-4 bg-gold-500 text-black font-black rounded-xl hover:bg-white transition-all uppercase text-[10px] tracking-widest flex items-center gap-3 shadow-xl shadow-gold-500/10 min-h-[48px] touch-manipulation"
             >
               Conocer Valor BOE <ArrowRight size={16}/>
             </button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
-            <div className="lg:col-span-7 space-y-12 bg-white/[0.03] p-8 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 mb-16 sm:mb-20 md:mb-24">
+            <div className="lg:col-span-7 space-y-10 sm:space-y-12 bg-white/[0.03] p-4 sm:p-6 md:p-8 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-sm">
               <div className="text-left">
                 <h3 className="text-[10px] font-black uppercase text-gray-500 tracking-[0.3em] mb-8 border-b border-white/5 pb-4">
                   Paso 2: Introduce los valores obtenidos
@@ -194,7 +194,7 @@ export const CalculadoraImpuestos = () => {
                       type="number"
                       value={precio}
                       onChange={(e) => setPrecio(Number(e.target.value))}
-                      className="bg-transparent text-2xl text-white font-mono font-bold text-right outline-none w-32"
+                      className="bg-transparent text-2xl text-white font-mono font-bold text-right outline-none w-32 min-h-[44px] text-base touch-manipulation"
                     />
                     <span className="text-2xl font-bold ml-1 text-white">€</span>
                   </div>
@@ -241,9 +241,9 @@ export const CalculadoraImpuestos = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-5 space-y-6">
+            <div className="lg:col-span-5 space-y-4 sm:space-y-6">
               <div className="bg-gold-500 p-[1px] rounded-3xl shadow-2xl shadow-gold-500/10 text-left">
-                <div className="bg-black rounded-[calc(1.5rem-1px)] p-8">
+                <div className="bg-black rounded-[calc(1.5rem-1px)] p-6 sm:p-8">
                   <span className="text-xs text-gray-500 uppercase block mb-2 tracking-[0.2em] text-center">Impuesto Estimado</span>
                   <div className="text-6xl font-serif font-bold text-white mb-8 text-center tracking-tighter">
                     {Math.round(resultado.matriculacion).toLocaleString()}€
@@ -262,7 +262,7 @@ export const CalculadoraImpuestos = () => {
 
                   <button 
                     onClick={() => window.open(`https://wa.me/34603743608?text=Hola! He usado la calculadora para un coche con ${emisiones}g/km y valor de ${precio}€. ¿Me confirmáis el valor BOE exacto?`, '_blank')}
-                    className="mt-10 flex items-center justify-center gap-3 w-full py-4 bg-white text-black font-extrabold rounded-xl hover:bg-gold-400 transition-all uppercase text-[11px] tracking-[0.15em]"
+                    className="mt-10 flex items-center justify-center gap-3 w-full py-4 bg-white text-black font-extrabold rounded-xl hover:bg-gold-400 transition-all uppercase text-[11px] tracking-[0.15em] min-h-[48px] touch-manipulation"
                   >
                     Verificar con un experto <ArrowRight size={16}/>
                   </button>
@@ -281,7 +281,7 @@ export const CalculadoraImpuestos = () => {
           </div>
 
           {/* SECCIÓN INFORMATIVA DETALLADA (SOLUCIÓN SEMRUSH LONG-FORM) */}
-          <section className="mb-24 p-8 md:p-12 bg-white/[0.02] border border-white/5 rounded-3xl text-left">
+          <section className="mb-16 sm:mb-20 md:mb-24 p-4 sm:p-6 md:p-8 lg:p-12 bg-white/[0.02] border border-white/5 rounded-3xl text-left">
             <h2 className="text-3xl font-serif font-bold mb-6 italic text-gold-400">
               Impuesto de matriculación: ¿Diésel o Gasolina?
             </h2>
@@ -336,9 +336,9 @@ export const CalculadoraImpuestos = () => {
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] mb-16">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+            <div className="overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] mb-12 sm:mb-16">
+              <div className="overflow-x-auto -mx-4 sm:mx-0">
+                <table className="w-full text-left border-collapse min-w-[600px]">
                   <thead>
                     <tr className="bg-white/5">
                       <th className="p-5 text-[10px] uppercase tracking-[0.2em] text-gold-400 font-black">Modelo</th>

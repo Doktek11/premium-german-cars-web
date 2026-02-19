@@ -4,8 +4,8 @@ import { ArrowUpRight } from "lucide-react";
 
 export const Stock = () => {
   return (
-    <section id="stock" className="py-32 bg-metallic-950">
-      <div className="container mx-auto px-6">
+    <section id="stock" className="py-16 sm:py-24 md:py-32 bg-metallic-950">
+      <div className="container mx-auto px-4 sm:px-6">
         {/* Título */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-20">
           <div>
@@ -26,7 +26,7 @@ export const Stock = () => {
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
           {cars.map((car) => (
             <Link
               key={car.id}
@@ -62,7 +62,7 @@ export const Stock = () => {
               </div>
 
               {/* Información */}
-              <div className="p-8 flex-grow flex flex-col">
+              <div className="p-6 sm:p-8 flex-grow flex flex-col">
                 <div className="mb-auto">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-xl font-serif font-bold text-white leading-tight">

@@ -13,14 +13,14 @@ const CochesReusTarragona = () => {
       />
       <Navbar />
 
-      <main className="bg-black text-white pt-40 pb-20">
-        <div className="container mx-auto px-6 max-w-4xl">
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20">
+        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
           {/* Cabecera */}
           <div className="mb-12">
             <span className="text-gold-400 font-bold tracking-widest text-xs uppercase">
               Especialistas en la Provincia de Tarragona
             </span>
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mt-4 mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold mt-4 mb-6 leading-tight">
               ¿Buscas un coche de segunda mano en Reus o Tarragona? Descubre por
               qué somos tu mejor opción
             </h1>

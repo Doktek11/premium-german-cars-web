@@ -26,8 +26,8 @@ export const CarPage = () => {
           noIndex={true}
         />
         <Navbar />
-        <main className="bg-black text-white pt-32 pb-32 min-h-[60vh]">
-          <div className="container mx-auto px-6 max-w-4xl text-center">
+        <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-24 md:pb-32 min-h-[60vh]">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl text-center">
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
               Vehículo no encontrado
             </h1>
@@ -36,7 +36,7 @@ export const CarPage = () => {
             </p>
             <Link
               to="/"
-              className="inline-block px-8 py-4 bg-gold-400 text-black font-bold uppercase tracking-widest text-xs hover:bg-white transition-all duration-300"
+              className="inline-block px-8 py-4 bg-gold-400 text-black font-bold uppercase tracking-widest text-xs hover:bg-white transition-all duration-300 min-h-[48px] touch-manipulation"
             >
               Volver al inicio
             </Link>
@@ -82,14 +82,14 @@ export const CarPage = () => {
 
       <Navbar />
 
-      <main className="bg-black text-white pt-32 pb-32">
-        <div className="container mx-auto px-6 max-w-6xl">
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-24 md:pb-32">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           {/* CABECERA */}
           <div className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-4">
               {car.make} <span className="text-gold-400">{car.model}</span>
             </h1>
-            <p className="text-gold-400 text-3xl font-serif">
+            <p className="text-gold-400 text-2xl sm:text-3xl font-serif">
               {car.price.toLocaleString("de-DE")} €
             </p>
           </div>
@@ -98,14 +98,14 @@ export const CarPage = () => {
           <div className="mb-12">
             <button
               onClick={() => handleWhatsAppContact("pedido")}
-              className="inline-block px-8 py-4 bg-gold-400 text-black font-bold uppercase tracking-widest text-xs hover:bg-white transition-all duration-300 shadow-lg shadow-gold-400/10"
+              className="inline-block px-8 py-4 bg-gold-400 text-black font-bold uppercase tracking-widest text-xs hover:bg-white transition-all duration-300 shadow-lg shadow-gold-400/10 min-h-[48px] touch-manipulation"
             >
               Comenzar pedido
             </button>
           </div>
 
           {/* GALERÍA OPTIMIZADA WEBP */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-16">
             {gallery.map((img: string, index: number) => (
               <div
                 key={index}
@@ -122,7 +122,7 @@ export const CarPage = () => {
           </div>
 
           {/* INFO TÉCNICA Y DESCRIPCIÓN */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12">
             <div className="lg:col-span-2">
               <h2 className="text-2xl font-serif font-bold mb-6 border-b border-gold-400/20 pb-4">
                 Descripción del vehículo
@@ -132,7 +132,7 @@ export const CarPage = () => {
               </p>
             </div>
 
-            <div className="bg-metallic-900 p-8 rounded-lg border border-white/10 h-fit">
+            <div className="bg-metallic-900 p-6 sm:p-8 rounded-lg border border-white/10 h-fit">
               <h3 className="text-gold-400 font-bold uppercase tracking-tighter mb-6">
                 Especificaciones
               </h3>
@@ -161,7 +161,7 @@ export const CarPage = () => {
 
               <button
                 onClick={() => handleWhatsAppContact("dossier")}
-                className="w-full mt-10 py-4 border border-gold-400 text-gold-400 font-bold uppercase tracking-widest text-xs hover:bg-gold-400 hover:text-black transition-all"
+                className="w-full mt-10 py-4 border border-gold-400 text-gold-400 font-bold uppercase tracking-widest text-xs hover:bg-gold-400 hover:text-black transition-all min-h-[48px] touch-manipulation"
               >
                 Solicitar Dossier
               </button>

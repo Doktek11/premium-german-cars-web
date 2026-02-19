@@ -26,8 +26,8 @@ const BMWAlpinaNuevaEra = () => {
       
       <Navbar />
       
-      <main className="bg-black text-white pt-40 pb-20 font-sans">
-        <div className="container mx-auto px-6 max-w-4xl">
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20 font-sans">
+        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
           
           {/* CABECERA */}
           <header className="mb-16">
@@ -38,7 +38,7 @@ const BMWAlpinaNuevaEra = () => {
               <span className="inline-block bg-gold-950/30 text-gold-400 px-4 py-1 rounded-full text-[10px] uppercase tracking-widest font-black border border-gold-400/20">
                 Análisis de Mercado & Exclusividad
               </span>
-              <h1 className="text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">
                 BMW y Alpina: el nacimiento de una <span className="text-gold-400 block md:inline italic">nueva era en el lujo alemán</span>
               </h1>
             </div>

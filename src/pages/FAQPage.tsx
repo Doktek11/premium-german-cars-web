@@ -11,13 +11,13 @@ export function FAQPage() {
   return (
     <div className="bg-black min-h-screen">
       <Navbar />
-      <main className="pt-32 pb-20">
-        <div className="container mx-auto px-6">
+      <main className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center mb-20">
             <span className="text-gold-400 text-xs font-bold tracking-widest uppercase mb-4 block">
               Centro de Ayuda
             </span>
-            <h1 className="text-4xl md:text-6xl font-serif text-white mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-white mb-6">
               Preguntas Frecuentes
             </h1>
             <p className="text-gray-400 text-lg">
@@ -30,7 +30,7 @@ export function FAQPage() {
               <div key={idx} className="bg-metallic-950/50 border border-white/5 rounded-xl overflow-hidden">
                 <button 
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full p-6 flex justify-between items-center text-left hover:bg-white/5 transition-all group"
+                  className="w-full p-4 sm:p-6 flex justify-between items-center text-left hover:bg-white/5 transition-all group min-h-[48px] touch-manipulation"
                 >
                   <span className="font-medium text-lg text-white group-hover:text-gold-400 transition-colors pr-4">
                     {faq.question}

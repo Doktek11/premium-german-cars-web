@@ -2,11 +2,11 @@ import React from "react";
 
 export const SeoContent: React.FC = () => {
   return (
-    <section className="bg-metallic-950 py-24">
-      <div className="container mx-auto px-6 max-w-4xl text-gray-300 leading-relaxed space-y-10">
+    <section className="bg-metallic-950 py-16 sm:py-20 md:py-24">
+      <div className="container mx-auto px-4 sm:px-6 max-w-4xl text-gray-300 leading-relaxed space-y-10">
 
         {/* H2 SEO */}
-        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-white">
           Importación de coches premium desde Alemania con total garantía
         </h2>
 
@@ -26,7 +26,7 @@ export const SeoContent: React.FC = () => {
         </p>
 
         {/* H2 */}
-        <h2 className="text-2xl md:text-3xl font-serif font-bold text-white">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-white">
           ¿Por qué importar tu coche desde Alemania?
         </h2>
 
@@ -39,7 +39,7 @@ export const SeoContent: React.FC = () => {
         </p>
 
         {/* H2 */}
-        <h2 className="text-2xl md:text-3xl font-serif font-bold text-white">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-white">
           Nuestro proceso de importación paso a paso
         </h2>
 
@@ -51,7 +51,7 @@ export const SeoContent: React.FC = () => {
         </p>
 
         {/* H2 */}
-        <h2 className="text-2xl md:text-3xl font-serif font-bold text-white">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-white">
           Coches alemanes certificados y entrega llave en mano
         </h2>
 

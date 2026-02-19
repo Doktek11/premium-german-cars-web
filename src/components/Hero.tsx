@@ -38,7 +38,7 @@ export const Hero: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-6 relative z-10 text-center md:text-left h-full flex flex-col justify-center">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center md:text-left h-full flex flex-col justify-center">
         <div className="max-w-4xl mt-20 will-change-transform">
           <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
             <div className="h-[1px] w-12 bg-gold-400" />
@@ -64,7 +64,7 @@ export const Hero: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-start">
             <a
               href="#import"
-              className="px-8 py-5 bg-gold-400 hover:bg-gold-500 text-black font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-xl flex items-center justify-center gap-3"
+              className="px-8 py-5 bg-gold-400 hover:bg-gold-500 text-black font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-xl flex items-center justify-center gap-3 min-h-[48px] touch-manipulation"
             >
               Comenzar Pedido
               <ArrowRight size={18} />
@@ -72,7 +72,7 @@ export const Hero: React.FC = () => {
 
             <a
               href="#stock"
-              className="px-8 py-5 border border-white/20 hover:border-white text-white font-semibold text-sm uppercase tracking-widest hover:bg-white/5 transition-all duration-300 flex items-center justify-center"
+              className="px-8 py-5 border border-white/20 hover:border-white text-white font-semibold text-sm uppercase tracking-widest hover:bg-white/5 transition-all duration-300 flex items-center justify-center min-h-[48px] touch-manipulation"
             >
               Explorar Stock
             </a>

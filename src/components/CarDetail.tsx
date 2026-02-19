@@ -50,7 +50,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
   return (
     <div className="fixed inset-0 z-[60] bg-[#050505] overflow-y-auto min-h-screen animate-fade-in">
       {/* Sticky Header - Optimizado con color sólido inicial */}
-      <div className="sticky top-0 z-[70] bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/10 px-6 py-4 flex justify-between items-center shadow-2xl">
+      <div className="sticky top-0 z-[70] bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-6 py-4 flex justify-between items-center shadow-2xl">
         <div className="flex items-center gap-2">
           <span className="text-lg md:text-xl font-serif font-bold text-white">
             PREMIUM<span className="text-gold-400"> GERMAN CARS</span>
@@ -58,7 +58,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
         </div>
         <button
           onClick={onClose}
-          className="flex items-center gap-2 text-sm uppercase tracking-widest text-gray-400 hover:text-white transition-colors group"
+          className="flex items-center gap-2 text-sm uppercase tracking-widest text-gray-400 hover:text-white transition-colors group min-h-[44px] touch-manipulation py-2"
         >
           Cerrar{" "}
           <span className="bg-white/10 p-2 rounded-full group-hover:bg-gold-500 group-hover:text-black transition-all">
@@ -67,7 +67,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
         </button>
       </div>
 
-      <div className="container mx-auto px-6 py-8 md:py-12">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
         {/* Header Info */}
         <div className="mb-8 md:mb-10 border-b border-white/10 pb-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -120,7 +120,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                     e.stopPropagation();
                     prevImage();
                   }}
-                  className="absolute top-1/2 left-4 transform -translate-y-1/2 p-3 rounded-full bg-black/60 text-white backdrop-blur-sm hover:bg-gold-500 hover:text-black transition-all duration-300 border border-white/10 z-10"
+                  className="absolute top-1/2 left-2 sm:left-4 transform -translate-y-1/2 p-3 rounded-full bg-black/60 text-white backdrop-blur-sm hover:bg-gold-500 hover:text-black transition-all duration-300 border border-white/10 z-10 min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation"
                   aria-label="Anterior"
                 >
                   <ChevronLeft size={32} />
@@ -131,7 +131,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
                     e.stopPropagation();
                     nextImage();
                   }}
-                  className="absolute top-1/2 right-4 transform -translate-y-1/2 p-3 rounded-full bg-black/60 text-white backdrop-blur-sm hover:bg-gold-500 hover:text-black transition-all duration-300 border border-white/10 z-10"
+                  className="absolute top-1/2 right-2 sm:right-4 transform -translate-y-1/2 p-3 rounded-full bg-black/60 text-white backdrop-blur-sm hover:bg-gold-500 hover:text-black transition-all duration-300 border border-white/10 z-10 min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation"
                   aria-label="Siguiente"
                 >
                   <ChevronRight size={32} />
@@ -145,10 +145,10 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12 lg:gap-16">
           {/* Main Content */}
           <div className="lg:col-span-2 order-2 lg:order-1">
-            <div className="bg-[#0a0a0a]/50 p-6 md:p-8 rounded-lg border border-white/5">
+            <div className="bg-[#0a0a0a]/50 p-4 sm:p-6 md:p-8 rounded-lg border border-white/5">
               <h3 className="text-2xl font-bold text-white mb-6 border-l-4 border-gold-400 pl-4">
                 Descripción del Vehículo
               </h3>
@@ -184,7 +184,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
 
           {/* Sidebar / CTA */}
           <div className="lg:col-span-1 order-1 lg:order-2">
-            <div className="bg-[#0a0a0a] border border-white/10 p-6 md:p-8 rounded-lg sticky top-32 shadow-2xl">
+            <div className="bg-[#0a0a0a] border border-white/10 p-4 sm:p-6 md:p-8 rounded-lg sticky top-32 shadow-2xl">
               <h3 className="text-xl font-bold text-white mb-6 uppercase tracking-wider">
                 Resumen
               </h3>
@@ -218,13 +218,13 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
               <div className="space-y-3">
                 <a
                   href={`mailto:info@premiumgermancars.com?subject=Interés en ${car.make} ${car.model}`}
-                  className="w-full py-4 bg-gold-400 hover:bg-gold-500 text-black font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 rounded shadow-lg shadow-gold-400/20"
+                  className="w-full py-4 bg-gold-400 hover:bg-gold-500 text-black font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 rounded shadow-lg shadow-gold-400/20 min-h-[48px] touch-manipulation"
                 >
                   <Mail size={18} /> Solicitar Info
                 </a>
                 <a
                   href="tel:+34603743608"
-                  className="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 rounded"
+                  className="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 rounded min-h-[48px] touch-manipulation"
                 >
                   <Phone size={18} /> Llamar
                 </a>

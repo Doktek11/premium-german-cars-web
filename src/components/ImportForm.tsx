@@ -100,16 +100,16 @@ ${formData.details || "Sin detalles adicionales"}`;
   return (
     <section
       id="import"
-      className="py-32 bg-metallic-950 relative border-t border-white/5"
+      className="py-20 sm:py-24 md:py-32 bg-metallic-950 relative border-t border-white/5"
     >
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="flex flex-col lg:flex-row gap-16">
           {/* Sección de Texto */}
           <div className="lg:w-1/3">
             <span className="text-gold-400 text-xs tracking-widest uppercase font-bold mb-4 block">
               Búsqueda a la carta
             </span>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-6 leading-tight">
               ¿No encuentras lo que buscas?
             </h2>
             <p className="text-gray-400 font-light text-lg leading-relaxed mb-8">
@@ -125,7 +125,7 @@ ${formData.details || "Sin detalles adicionales"}`;
 
           {/* Sección del Formulario */}
           <div className="lg:w-2/3">
-            <div className="bg-metallic-900 border border-white/10 p-8 md:p-12 shadow-2xl relative overflow-hidden">
+            <div className="bg-metallic-900 border border-white/10 p-6 sm:p-8 md:p-12 shadow-2xl relative overflow-hidden">
               {isSubmitted ? (
                 <div className="py-20 text-center animate-fade-in">
                   <CheckCircle className="text-gold-400 mx-auto mb-6" size={64} />
@@ -146,7 +146,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                 </div>
               ) : (
                 <form onSubmit={handleEmailSubmit} className="space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     <div className="group">
                       <label className="block text-xs uppercase tracking-widest text-gray-500 mb-3 group-focus-within:text-gold-400">
                         Marca
@@ -156,7 +156,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                         name="brand"
                         type="text"
                         placeholder="Ej. Audi"
-                        className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors text-base min-h-[44px] touch-manipulation"
                         onChange={handleChange}
                         value={formData.brand}
                       />
@@ -170,14 +170,14 @@ ${formData.details || "Sin detalles adicionales"}`;
                         name="model"
                         type="text"
                         placeholder="Ej. RS3 Sportback"
-                        className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors text-base min-h-[44px] touch-manipulation"
                         onChange={handleChange}
                         value={formData.model}
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                     <div className="group">
                       <label className="block text-xs uppercase tracking-widest text-gray-500 mb-3 group-focus-within:text-gold-400">
                         Presupuesto (€)
@@ -187,7 +187,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                         name="budget"
                         type="number"
                         placeholder="Ej. 65000"
-                        className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors text-base min-h-[44px] touch-manipulation"
                         onChange={handleChange}
                         value={formData.budget}
                       />
@@ -201,7 +201,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                         name="email"
                         type="email"
                         placeholder="tu@email.com"
-                        className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors text-base min-h-[44px] touch-manipulation"
                         onChange={handleChange}
                         value={formData.email}
                       />
@@ -215,7 +215,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                         name="phone"
                         type="tel"
                         placeholder="+34 603 743 608"
-                        className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors text-base min-h-[44px] touch-manipulation"
                         onChange={handleChange}
                         value={formData.phone}
                       />
@@ -230,7 +230,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                       name="details"
                       rows={2}
                       placeholder="Techo panorámico, acabado mate, menos de 50.000km..."
-                      className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors resize-none"
+                      className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors resize-none text-base min-h-[44px] touch-manipulation"
                       onChange={handleChange}
                       value={formData.details}
                     />
@@ -240,7 +240,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="flex-1 px-8 py-4 bg-white text-black font-bold uppercase text-[10px] tracking-widest hover:bg-gold-400 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 px-8 py-4 bg-white text-black font-bold uppercase text-[10px] tracking-widest hover:bg-gold-400 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] touch-manipulation active:scale-95"
                     >
                       {isSubmitting ? "Enviando..." : "Enviar Solicitud"}{" "}
                       <Send size={14} />
@@ -249,7 +249,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                     <button
                       type="button"
                       onClick={handleWhatsAppSubmit}
-                      className="flex-1 px-8 py-4 bg-[#25D366] text-white font-bold uppercase text-[10px] tracking-widest hover:bg-[#128C7E] transition-all flex items-center justify-center gap-2 shadow-xl shadow-green-900/10"
+                      className="flex-1 px-8 py-4 bg-[#25D366] text-white font-bold uppercase text-[10px] tracking-widest hover:bg-[#128C7E] transition-all flex items-center justify-center gap-2 shadow-xl shadow-green-900/10 min-h-[48px] touch-manipulation active:scale-95"
                     >
                       Contactar WhatsApp <MessageCircle size={14} />
                     </button>

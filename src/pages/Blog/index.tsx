@@ -134,10 +134,10 @@ export default function BlogIndex() {
     <div className="min-h-screen bg-black">
       <Navbar />
 
-      <main className="pt-40 pb-20">
-        <div className="container mx-auto px-6">
+      <main className="pt-24 sm:pt-32 md:pt-40 pb-12 sm:pb-16 md:pb-20">
+        <div className="container mx-auto px-4 sm:px-6">
           <header className="max-w-3xl mb-16">
-            <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif font-bold text-white mb-6">
               Blog <span className="text-gold-400">Premium</span>
             </h1>
             <p className="text-gray-400 text-lg italic leading-relaxed">
@@ -150,7 +150,7 @@ export default function BlogIndex() {
             </p>
           </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
             {blogPosts.map((post) => (
               <article
                 key={post.id}
@@ -173,7 +173,7 @@ export default function BlogIndex() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                 </div>
 
-                <div className="p-8 flex flex-col flex-grow text-white">
+                <div className="p-6 sm:p-8 flex flex-col flex-grow text-white">
                   <div className="flex items-center gap-2 text-gray-500 text-[10px] mb-6 uppercase tracking-[0.2em] font-bold">
                     <Calendar size={12} className="text-gold-400" />
                     {post.date}

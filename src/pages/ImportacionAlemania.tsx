@@ -30,22 +30,22 @@ export const ImportacionAlemania: React.FC = () => {
 
       <Navbar />
 
-      <main className="bg-black text-white pt-32 pb-20">
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
         {/* HERO SECTION */}
-        <section className="container mx-auto px-6 max-w-5xl text-center mb-24">
+        <section className="container mx-auto px-4 sm:px-6 max-w-5xl text-center mb-16 sm:mb-20 md:mb-24">
           <span className="text-gold-400 text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
             Especialistas en Cambrils (Tarragona)
           </span>
-          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-8 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif font-bold mb-6 sm:mb-8 leading-tight">
             Importación de coches <br />
             <span className="text-gold-400 italic font-light">desde Alemania</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
             Accede al mercado premium más exigente de Europa con total tranquilidad.
             Historial certificado, selección profesional y <span className="text-white font-medium">cero improvisaciones</span>.
           </p>
 
-          <div className="mt-10 mx-auto max-w-3xl border border-gold-400/20 bg-gold-400/5 rounded-2xl p-6 text-left">
+          <div className="mt-8 sm:mt-10 mx-auto max-w-3xl border border-gold-400/20 bg-gold-400/5 rounded-2xl p-4 sm:p-6 text-left">
             <p className="text-[10px] tracking-[0.25em] uppercase font-bold text-gold-400 mb-3">
               Coste orientativo en 30 segundos
             </p>
@@ -55,7 +55,7 @@ export const ImportacionAlemania: React.FC = () => {
             </p>
             <Link
               to="/calculadora-impuesto-matriculacion"
-              className="inline-flex items-center gap-2 bg-gold-400 text-black px-5 py-3 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors"
+              className="inline-flex items-center gap-2 bg-gold-400 text-black px-5 py-3 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px] touch-manipulation"
             >
               Probar calculadora ahora <ArrowRight size={16} />
             </Link>
@@ -63,8 +63,8 @@ export const ImportacionAlemania: React.FC = () => {
         </section>
 
         {/* SECTION: LOS "NO" - FILTRADO DE CLIENTE */}
-        <section className="container mx-auto px-6 mb-32">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-12 border-y border-white/10">
+        <section className="container mx-auto px-4 sm:px-6 mb-20 sm:mb-24 md:mb-32">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 py-8 sm:py-12 border-y border-white/10">
             {[
               "No trabajamos con stock genérico.",
               "No perseguimos «gangas».",
@@ -72,7 +72,7 @@ export const ImportacionAlemania: React.FC = () => {
             ].map((text, i) => (
               <div key={i} className="flex items-center justify-center gap-4 group">
                 <X className="text-red-600 group-hover:scale-125 transition-transform" size={28} />
-                <span className="text-xl font-bold tracking-tight uppercase">{text}</span>
+                <span className="text-base sm:text-lg md:text-xl font-bold tracking-tight uppercase">{text}</span>
               </div>
             ))}
           </div>
@@ -87,9 +87,9 @@ export const ImportacionAlemania: React.FC = () => {
         </section>
 
         {/* SECTION: POR QUÉ ALEMANIA */}
-        <section className="bg-metallic-900 py-24 mb-32">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-12 text-center">
+        <section className="bg-metallic-900 py-16 sm:py-20 md:py-24 mb-20 sm:mb-24 md:mb-32">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-8 sm:mb-12 text-center">
               ¿Por qué Alemania sigue siendo la mejor opción en 2026?
             </h2>
             <div className="space-y-6 text-gray-300 text-lg">
@@ -115,9 +115,9 @@ export const ImportacionAlemania: React.FC = () => {
         </section>
 
         {/* SECTION: POR QUÉ ELEGIR PGC (BENEFICIOS) */}
-        <section className="container mx-auto px-6 max-w-6xl mb-32">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-16 text-center">¿Por qué elegir Premium German Cars?</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <section className="container mx-auto px-4 sm:px-6 max-w-6xl mb-20 sm:mb-24 md:mb-32">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-12 sm:mb-16 text-center">¿Por qué elegir Premium German Cars?</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12">
             <div className="space-y-4">
               <ShieldCheck className="text-gold-400" size={40} />
               <h3 className="text-xl font-bold uppercase tracking-wider">Garantía y trazabilidad certificada</h3>
@@ -143,9 +143,9 @@ export const ImportacionAlemania: React.FC = () => {
         </section>
 
         {/* SECTION: TIMELINE PROCESO */}
-        <section className="bg-metallic-950 py-24 border-y border-white/5">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 text-center">Nuestro proceso "Llave en Mano"</h2>
+        <section className="bg-metallic-950 py-16 sm:py-20 md:py-24 border-y border-white/5">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-4 text-center">Nuestro proceso "Llave en Mano"</h2>
             <p className="text-gray-400 text-center mb-16 italic">Cero preocupaciones. Control total.</p>
             <div className="space-y-12">
               {steps.map((step, i) => (
@@ -167,17 +167,17 @@ export const ImportacionAlemania: React.FC = () => {
         </section>
 
         {/* SECTION: CTA FINAL */}
-        <section className="container mx-auto px-6 py-24">
-          <div className="bg-gradient-to-br from-metallic-900 to-black p-12 md:p-20 rounded-3xl border border-gold-400/20 text-center relative overflow-hidden">
+        <section className="container mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24">
+          <div className="bg-gradient-to-br from-metallic-900 to-black p-6 sm:p-10 md:p-12 lg:p-20 rounded-3xl border border-gold-400/20 text-center relative overflow-hidden">
             <div className="max-w-3xl mx-auto relative z-10">
-              <h2 className="text-3xl md:text-5xl font-serif font-bold mb-8">¿Buscas un modelo o configuración concreta?</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-6 sm:mb-8">¿Buscas un modelo o configuración concreta?</h2>
               <p className="text-gray-400 text-lg mb-12 leading-relaxed">
                 No te limites al stock reducido de tu zona. El mercado alemán ofrece miles de unidades... pero solo unas pocas merecen realmente la pena.
                 Clientes de toda <strong>Cataluña</strong> confían en nuestro criterio.
               </p>
 
               {/* COLETILLA CALCULADORA */}
-              <div className="mb-14 p-8 bg-black/40 rounded-2xl border border-gold-400/10 backdrop-blur-sm">
+              <div className="mb-10 sm:mb-14 p-4 sm:p-6 md:p-8 bg-black/40 rounded-2xl border border-gold-400/10 backdrop-blur-sm">
                 <p className="text-white text-xl font-light mb-6">
                   ¿Tienes ya una unidad vista y quieres saber el coste real?
                 </p>
@@ -195,7 +195,7 @@ export const ImportacionAlemania: React.FC = () => {
                 href="https://wa.me/34603743608?text=Hola!%20Me%20gustaría%20solicitar%20un%20presupuesto%20personalizado%20para%20importar%20un%20coche."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-4 px-12 py-6 bg-gold-400 text-black font-bold uppercase tracking-widest hover:bg-white transition-all duration-500 rounded-full shadow-2xl shadow-gold-400/10"
+                className="inline-flex items-center gap-4 px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 bg-gold-400 text-black font-bold uppercase tracking-widest hover:bg-white transition-all duration-500 rounded-full shadow-2xl shadow-gold-400/10 min-h-[48px] touch-manipulation"
               >
                 Solicitar presupuesto personalizado <ArrowRight size={20} />
               </a>

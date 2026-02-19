@@ -4,8 +4,8 @@ import { Instagram, Facebook, Phone, Mail, MapPin, ShieldCheck, HelpCircle } fro
 
 export const Footer: React.FC = () => {
     return (
-        <footer className="bg-metallic-950 text-white pt-20 pb-10 border-t border-white/10">
-            <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12" id="contact">
+        <footer className="bg-metallic-950 text-white pt-12 sm:pt-16 md:pt-20 pb-6 sm:pb-8 md:pb-10 border-t border-white/10">
+            <div className="container mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 mb-12" id="contact">
                 {/* Columna 1: Logo y RRSS */}
                 <div>
                     <Link to="/" className="inline-block mb-6 transition-transform hover:scale-105" aria-label="Ir al inicio">
@@ -82,7 +82,7 @@ export const Footer: React.FC = () => {
                 {/* Columna 3: Enlaces con FAQ */}
                 <div>
                     <h4 className="text-lg font-bold mb-6 uppercase tracking-wider text-gold-400">Enlaces</h4>
-                    <ul className="space-y-2 text-gray-400 text-sm">
+                    <ul className="space-y-2 sm:space-y-4 text-gray-400 text-sm">
                         <li><Link to="/" className="hover:text-gold-400 transition-colors">Inicio</Link></li>
                         <li><Link to="/importacion-coches-alemania" className="hover:text-gold-400 transition-colors">Importación</Link></li>
                         <li>
@@ -100,7 +100,7 @@ export const Footer: React.FC = () => {
                 {/* Columna 4: Horario */}
                 <div>
                      <h4 className="text-lg font-bold mb-6 uppercase tracking-wider text-gold-400">Horario</h4>
-                     <ul className="space-y-2 text-gray-400 text-sm">
+                     <ul className="space-y-2 sm:space-y-4 text-gray-400 text-sm">
                         <li className="flex justify-between">
                             <span>Lunes - Viernes</span>
                             <span className="text-white">10:00 - 20:00</span>
@@ -118,7 +118,7 @@ export const Footer: React.FC = () => {
             </div>
 
             {/* Créditos y Enlaces Legales */}
-            <div className="border-t border-white/5 py-8 text-center">
+            <div className="border-t border-white/5 py-6 sm:py-8 text-center">
                 <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 text-[10px] text-gray-400 uppercase tracking-widest transition-opacity duration-500">
                     <p>© {new Date().getFullYear()} Premium German Cars</p>
                     <span className="hidden md:inline text-gray-600">|</span>

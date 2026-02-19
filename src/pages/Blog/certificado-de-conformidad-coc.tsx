@@ -30,8 +30,8 @@ const CertificadoConformidadCOC = () => {
       
       <Navbar />
       
-      <main className="bg-black text-white pt-40 pb-20 font-sans">
-        <div className="container mx-auto px-6 max-w-4xl">
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20 font-sans">
+        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
           
           {/* CABECERA */}
           <header className="mb-16">
@@ -43,7 +43,7 @@ const CertificadoConformidadCOC = () => {
                 Documentación & Normativa Técnica
               </span>
               {/* AJUSTE 1: Título ligeramente más pequeño */}
-              <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight">
                 Certificado de Conformidad (COC): <span className="text-gold-400 block md:inline italic">qué es, por qué lo necesitas y cómo evitar problemas en la ITV</span>
               </h1>
             </div>

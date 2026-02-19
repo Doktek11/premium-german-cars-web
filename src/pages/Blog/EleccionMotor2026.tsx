@@ -25,8 +25,8 @@ const EleccionMotor2026 = () => {
 
       <Navbar />
 
-      <main className="bg-black text-white pt-40 pb-20 font-sans">
-        <div className="container mx-auto px-6 max-w-4xl">
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20 font-sans">
+        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
 
           {/* CABECERA */}
           <header className="mb-16">
@@ -37,7 +37,7 @@ const EleccionMotor2026 = () => {
               <span className="inline-block bg-blue-950/30 text-blue-400 px-4 py-1 rounded-full text-[10px] uppercase tracking-widest font-black border border-blue-500/20">
                 Guía de Compra Inteligente
               </span>
-              <h1 className="text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">
                 ¿Diésel, Gasolina o Híbrido? <span className="text-gold-400 block md:inline italic">Qué motor elegir en 2026</span>
               </h1>
             </div>

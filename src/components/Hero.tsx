@@ -6,40 +6,41 @@ export const Hero: React.FC = () => {
     <section
       id="home"
       className="relative h-screen flex items-center justify-center overflow-hidden bg-[#0f0f0f]"
-      style={{ backgroundColor: "#0f0f0f", contain: "layout" }}
+      style={{ backgroundColor: "#0f0f0f" }}
     >
-      {/* Background Image - Optimizada para LCP y CLS */}
       <div className="absolute inset-0 z-0">
         <picture>
-          {/* Desktop */}
-          <source media="(min-width: 1024px)" srcSet="/amggtr-mobile.webp" type="image/webp" />
-          {/* Mobile / fallback */}
+          <source
+            media="(min-width: 1024px)"
+            srcSet="/amggtr-mobile.webp"
+            sizes="100vw"
+            type="image/webp"
+          />
           <img
             src="/amggtr-mobile.webp"
             alt="Importación de coches premium desde Alemania - Premium German Cars"
             width="800"
             height="1200"
             sizes="100vw"
-            className="w-full h-full object-cover grayscale-[0.2]"
+            className="w-full h-full object-cover"
             fetchPriority="high"
             loading="eager"
-            decoding="sync"
+            decoding="async"
           />
         </picture>
 
-        {/* Overlays */}
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(to top, #0f0f0f 0%, rgba(15,15,15,0.7) 50%, rgba(0,0,0,0.4) 100%)",
+            background:
+              "linear-gradient(to top, #0f0f0f 0%, rgba(15,15,15,0.7) 50%, rgba(0,0,0,0.4) 100%)",
           }}
         />
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-black/25" />
       </div>
 
-      {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center md:text-left h-full flex flex-col justify-center">
-        <div className="max-w-4xl mt-20 will-change-transform">
+        <div className="max-w-4xl mt-20">
           <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
             <div className="h-[1px] w-12 bg-gold-400" />
             <span className="text-gold-400 text-xs md:text-sm font-bold tracking-[0.3em] uppercase">

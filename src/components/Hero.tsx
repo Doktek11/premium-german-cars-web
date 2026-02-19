@@ -52,13 +52,15 @@ export const Hero: React.FC = () => {
             Importación de Coches Premium desde Alemania
           </h1>
 
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif font-medium mb-7 sm:mb-8 leading-[1.12] text-white">
+          {/* font-semibold para usar Playfair 600 y evitar depender de 400 en el above-the-fold */}
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif font-semibold mb-7 sm:mb-8 leading-[1.12] text-white">
             Tú lo sueñas.
             <br />
             <span className="text-gray-300">Nosotros lo traemos.</span>
           </h2>
 
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-10 sm:mb-12 max-w-2xl font-light leading-relaxed tracking-normal mx-auto md:mx-0">
+          {/* font-normal para no forzar Montserrat 300 en el primer render */}
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-10 sm:mb-12 max-w-2xl font-normal leading-relaxed tracking-normal mx-auto md:mx-0">
             Acceso directo al mercado alemán. Vehículos certificados, gestión integral y entrega llave en mano en España.
           </p>
 

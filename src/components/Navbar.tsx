@@ -64,15 +64,15 @@ export const Navbar: React.FC = () => {
           aria-label="Ir al inicio de Premium German Cars"
         >
           <img 
-            src="/logoPGC.svg" 
+            src="/logoPGC2.svg" 
             alt="Logo Premium German Cars" 
-            width="180"
-            height="48"
+            width="225"
+            height="60"
             fetchPriority="high"
             loading="eager"
             decoding="sync"
-            className="h-8 md:h-12 w-auto brightness-0 invert" 
-            style={{ minHeight: '32px' }} // Evita CLS en carga inicial
+            className="h-10 md:h-14 w-auto brightness-0 invert" 
+            style={{ minHeight: '40px' }} // Evita CLS en carga inicial
           />
         </button>
 

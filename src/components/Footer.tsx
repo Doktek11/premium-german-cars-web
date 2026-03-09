@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
                 <div>
                     <Link to="/" className="inline-block mb-6 transition-transform hover:scale-105" aria-label="Ir al inicio">
                         <img 
-                            src="/logoPGC.svg" 
+                            src="/logoPGC2.svg" 
                             alt="Premium German Cars - Importación de coches en Cambrils" 
                             className="h-10 w-auto brightness-0 invert" 
                         />

@@ -7,6 +7,7 @@ interface SEOProps {
   image?: string;
   article?: boolean;
   noIndex?: boolean;
+  jsonLd?: Record<string, unknown>;
 }
 
 export const SEO: React.FC<SEOProps> = ({
@@ -16,6 +17,7 @@ export const SEO: React.FC<SEOProps> = ({
   image = "https://www.premiumgermancars.com/og.jpg",
   article = false,
   noIndex = false,
+  jsonLd,
 }) => {
   const siteName = "Premium German Cars";
   const fullUrl = canonical || "https://www.premiumgermancars.com";
@@ -54,6 +56,13 @@ export const SEO: React.FC<SEOProps> = ({
 
       {/* Global */}
       <meta name="theme-color" content="#050505" />
+
+      {/* JSON-LD */}
+      {jsonLd && (
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd)}
+        </script>
+      )}
     </Helmet>
   );
 };

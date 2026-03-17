@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+﻿import React, { useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
-import { X, CheckCircle2, ShieldCheck, Gem, Clock, ArrowRight, Calculator } from "lucide-react";
+import { ArrowRight, CheckCircle2, Calculator, Search, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const ImportacionAlemania: React.FC = () => {
@@ -11,199 +11,321 @@ export const ImportacionAlemania: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const steps = [
-    { title: "Consultoría y búsqueda", desc: "Analizamos contigo modelo, presupuesto, uso y equipamiento. No proponemos coches al azar." },
-    { title: "Verificación en origen", desc: "Auditamos la unidad antes de comprarla: mecánica, electrónica, estructura y situación legal." },
-    { title: "Negociación profesional", desc: "Hablamos el idioma del vendedor y defendemos tus intereses para las mejores condiciones." },
-    { title: "Logística asegurada", desc: "Transporte profesional en camión porta-coches con seguro a todo riesgo hasta Cambrils." },
-    { title: "Gestión de trámites", desc: "ITV de importación, ficha técnica, impuestos y matriculación. Sin gestiones para ti." },
-    { title: "Entrega final", desc: "Te entregamos el coche listo para rodar, en tu domicilio o en nuestras instalaciones." }
-  ];
-
   return (
     <>
       <SEO
-        title="Importación de coches desde Alemania en Cambrils | Premium German Cars"
-        description="Especialistas en selección de activos mecánicos en Alemania. Historial certificado, gestión integral y entrega llave en mano en Tarragona y Cataluña."
+        title="Importación de coches desde Alemania en Cambrils (Tarragona) | Premium German Cars"
+        description="Especialistas en importación de coches premium desde Alemania para clientes en Cambrils, Tarragona y toda Cataluña. Proceso verificado, gestión integral y entrega final."
         canonical="https://www.premiumgermancars.com/importacion-coches-alemania"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name:
+            "Importación de coches desde Alemania en Cambrils (Tarragona) | Premium German Cars",
+          url: "https://www.premiumgermancars.com/importacion-coches-alemania",
+          description:
+            "Especialistas en importación de coches premium desde Alemania para clientes en Cambrils, Tarragona y toda Cataluña.",
+          inLanguage: "es-ES",
+          publisher: {
+            "@type": "Organization",
+            name: "Premium German Cars",
+            logo: {
+              "@type": "ImageObject",
+              url: "https://www.premiumgermancars.com/logoPGC.svg",
+            },
+          },
+          mainEntity: {
+            "@type": "Service",
+            name: "Importación de coches premium desde Alemania",
+            areaServed: [
+              { "@type": "City", name: "Cambrils" },
+              { "@type": "City", name: "Tarragona" },
+              { "@type": "City", name: "Reus" },
+              { "@type": "City", name: "Barcelona" },
+              { "@type": "AdministrativeArea", name: "Cataluña" },
+            ],
+            provider: {
+              "@type": "Organization",
+              name: "Premium German Cars",
+            },
+            serviceType: "Importación de coches desde Alemania",
+          },
+        }}
       />
 
       <Navbar />
 
       <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
-        {/* HERO SECTION */}
         <section className="container mx-auto px-4 sm:px-6 max-w-5xl text-center mb-16 sm:mb-20 md:mb-24">
           <span className="text-gold-400 text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
-            Especialistas en Cambrils (Tarragona)
+            Cambrils (Tarragona) · Cataluña
           </span>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif font-bold mb-6 sm:mb-8 leading-tight">
-            Importación de coches <br />
-            <span className="text-gold-400 italic font-light">desde Alemania</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 sm:mb-8 leading-tight">
+            Importación de coches desde Alemania en Cambrils (Tarragona) | Premium German Cars
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
-            Accede al mercado premium más exigente de Europa con total tranquilidad.
-            Historial certificado, selección profesional y <span className="text-white font-medium">cero improvisaciones</span>.
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-light max-w-4xl mx-auto leading-relaxed">
+            Especialistas en importación de coches premium desde Alemania para clientes en Cambrils, Tarragona y toda Cataluña.
           </p>
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              to="/calculadora-impuesto-matriculacion"
+              className="inline-flex items-center gap-2 bg-gold-400 text-black px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
+            >
+              Calcular coste de importación <Calculator size={16} />
+            </Link>
+            <a
+              href="https://wa.me/34603743608?text=Hola,%20quiero%20solicitar%20una%20b%C3%BAsqueda%20personalizada%20de%20coche%20en%20Alemania."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 border border-white/15 text-white px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-black transition-colors min-h-[48px]"
+            >
+              Solicitar búsqueda personalizada <Search size={16} />
+            </a>
+          </div>
+        </section>
 
-          <div className="mt-8 sm:mt-10 mx-auto max-w-3xl border border-gold-400/20 bg-gold-400/5 rounded-2xl p-4 sm:p-6 text-left">
-            <p className="text-[10px] tracking-[0.25em] uppercase font-bold text-gold-400 mb-3">
-              Coste orientativo en 30 segundos
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">
+            Importación de coches desde Alemania con proceso verificado
+          </h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Accede al mercado alemán con un proceso profesional que elimina riesgos fiscales, técnicos y legales antes de tomar cualquier decisión.
+          </p>
+          <p className="text-gray-300 text-lg leading-relaxed mb-8">
+            Trabajamos con clientes que buscan algo más que un coche: buscan seguridad, criterio y una compra bien hecha.
+          </p>
+          <ul className="space-y-3 text-sm">
+            {[
+              "Historial verificado",
+              "Selección profesional de unidades",
+              "Gestión integral hasta entrega final",
+            ].map((item) => (
+              <li key={item} className="flex items-center gap-3">
+                <CheckCircle2 className="text-gold-400" size={18} />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="bg-metallic-900 py-14 sm:py-18 md:py-22 mb-16 sm:mb-20 md:mb-24">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">
+              Calcula el coste real antes de decidir
+            </h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+              Calcula el coste real de importar un coche desde Alemania en menos de 30 segundos:
             </p>
-            <p className="text-gray-300 text-sm md:text-base mb-5 leading-relaxed">
-              Si ya tienes un coche fichado, calcula primero el coste fiscal estimado (matriculación + depreciación + tramo CO2)
-              y evita tomar decisiones a ciegas.
+            <ul className="space-y-2 text-sm mb-8">
+              <li>Impuestos de matriculación</li>
+              <li>Transporte</li>
+              <li>Costes administrativos</li>
+              <li>Impacto por emisiones (CO₂)</li>
+            </ul>
+            <p className="text-gray-300 text-lg leading-relaxed mb-8">
+              Evita decisiones a ciegas y entiende el precio final antes de comprar.
             </p>
             <Link
               to="/calculadora-impuesto-matriculacion"
-              className="inline-flex items-center gap-2 bg-gold-400 text-black px-5 py-3 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px] touch-manipulation"
+              className="inline-flex items-center gap-2 bg-gold-400 text-black px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
             >
-              Probar calculadora ahora <ArrowRight size={16} />
+              Calcular coste de importación <ArrowRight size={16} />
             </Link>
           </div>
         </section>
 
-        {/* SECTION: LOS "NO" - FILTRADO DE CLIENTE */}
-        <section className="container mx-auto px-4 sm:px-6 mb-20 sm:mb-24 md:mb-32">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 py-8 sm:py-12 border-y border-white/10">
-            {[
-              "No trabajamos con stock genérico.",
-              "No perseguimos «gangas».",
-              "No improvisamos."
-            ].map((text, i) => (
-              <div key={i} className="flex items-center justify-center gap-4 group">
-                <X className="text-red-600 group-hover:scale-125 transition-transform" size={28} />
-                <span className="text-base sm:text-lg md:text-xl font-bold tracking-tight uppercase">{text}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-12 text-center max-w-3xl mx-auto">
-            <p className="text-lg text-gray-400 leading-relaxed">
-              Nuestro enfoque es claro: no solo traemos coches, seleccionamos <strong>activos mecánicos</strong> para clientes que valoran la transparencia, la seguridad y el valor a largo plazo.
-            </p>
-            <p className="text-gold-400 font-serif text-2xl mt-6 italic">
-              "Importar bien no es cuestión de suerte, sino de criterio."
-            </p>
-          </div>
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">¿Buscas un coche concreto?</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-8">
+            Si ya tienes una unidad vista o quieres acceder a opciones que no existen en España:
+          </p>
+          <a
+            href="https://wa.me/34603743608?text=Hola,%20quiero%20solicitar%20una%20b%C3%BAsqueda%20personalizada%20de%20coche%20en%20Alemania."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 border border-white/15 text-white px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-black transition-colors min-h-[48px]"
+          >
+            Solicitar búsqueda personalizada <Search size={16} />
+          </a>
         </section>
 
-        {/* SECTION: POR QUÉ ALEMANIA */}
-        <section className="bg-metallic-900 py-16 sm:py-20 md:py-24 mb-20 sm:mb-24 md:mb-32">
+        <section className="container mx-auto px-4 sm:px-6 mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Nuestro enfoque: lo que NO hacemos</h2>
+          <ul className="space-y-2 text-sm mb-8">
+            <li>No trabajamos con stock genérico.</li>
+            <li>No perseguimos «gangas».</li>
+            <li>No improvisamos.</li>
+          </ul>
+          <h3 className="text-xl font-bold mb-4">Seleccionamos activos mecánicos, no coches</h3>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Nuestro enfoque es claro: no se trata solo de traer vehículos desde Alemania, sino de seleccionar activos mecánicos con valor real a medio y largo plazo.
+          </p>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Trabajamos para clientes que:</p>
+          <ul className="space-y-2 text-sm mb-8">
+            <li>Quieren evitar errores costosos</li>
+            <li>Valoran la trazabilidad</li>
+            <li>Buscan unidades bien mantenidas y configuradas</li>
+            <li>Entienden que una buena compra empieza antes de pagar</li>
+          </ul>
+          <p className="text-gold-400 font-serif text-2xl italic">
+            “Importar bien no es cuestión de suerte, sino de criterio.”
+          </p>
+        </section>
+
+        <section className="bg-metallic-950 py-14 sm:py-18 md:py-22 mb-16 sm:mb-20 md:mb-24">
           <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-8 sm:mb-12 text-center">
-              ¿Por qué Alemania sigue siendo la mejor opción en 2026?
-            </h2>
-            <div className="space-y-6 text-gray-300 text-lg">
-              <p>Alemania no es solo el mayor mercado de automóviles de Europa; es también el más riguroso, documentado y profesional.</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                {[
-                  "Mantenimientos estrictos en entornos oficiales",
-                  "Registros completos y verificables",
-                  "Configuraciones premium poco habituales en España",
-                  "Base sólida para mantener alto valor de reventa"
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 bg-black/40 p-4 rounded-lg border border-white/5">
-                    <CheckCircle2 className="text-gold-400 shrink-0" size={20} />
-                    <span className="text-sm">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <p className="pt-8 border-t border-white/10 mt-8 italic text-center">
-                👉 Aquí es donde se nota la diferencia entre importar... y elegir bien.
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">¿Por qué Alemania en 2026?</h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+              Alemania sigue siendo el mercado más sólido de Europa para vehículos premium.
+            </p>
+            <ul className="space-y-2 text-sm mb-8">
+              <li>Vehículos con mantenimientos más estrictos</li>
+              <li>Registros completos y verificables</li>
+              <li>Mayor variedad de configuraciones</li>
+              <li>Rotación alta de unidades</li>
+              <li>Mejor base para mantener valor de reventa</li>
+            </ul>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              Pero hay una diferencia clave: no es lo mismo importar que saber elegir. El mercado es bueno, el problema aparece cuando se compra sin verificar.
+            </p>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-5xl mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-8">Qué nos diferencia</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3">
+              <h3 className="text-lg font-bold">Verificación y trazabilidad total</h3>
+              <p className="text-gray-300 text-base">
+                Analizamos historial, kilometraje y documentación antes de validar cualquier unidad. Si no es transparente, no se trabaja.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h3 className="text-lg font-bold">Selección real de mercado</h3>
+              <p className="text-gray-300 text-base">
+                Accedemos a miles de vehículos, pero solo proponemos aquellos que cumplen criterios técnicos y de valor.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h3 className="text-lg font-bold">Reducción de riesgos</h3>
+              <p className="text-gray-300 text-base">
+                Eliminamos problemas fiscales, errores documentales y riesgos técnicos antes de la compra.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h3 className="text-lg font-bold">Enfoque profesional</h3>
+              <p className="text-gray-300 text-base">
+                No intermediamos operaciones: las filtramos y validamos.
               </p>
             </div>
           </div>
         </section>
 
-        {/* SECTION: POR QUÉ ELEGIR PGC (BENEFICIOS) */}
-        <section className="container mx-auto px-4 sm:px-6 max-w-6xl mb-20 sm:mb-24 md:mb-32">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-12 sm:mb-16 text-center">¿Por qué elegir Premium German Cars?</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12">
-            <div className="space-y-4">
-              <ShieldCheck className="text-gold-400" size={40} />
-              <h3 className="text-xl font-bold uppercase tracking-wider">Garantía y trazabilidad certificada</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                No negociamos con la seguridad. Cada vehículo cuenta con historial 100% documentado y kilometraje coherente. Si no es transparente, no lo trabajamos.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <Gem className="text-gold-400" size={40} />
-              <h3 className="text-xl font-bold uppercase tracking-wider">Exclusividad seleccionada</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Accede a niveles de equipamiento y motorizaciones superiores poco comunes en el mercado nacional. Tú pones los requisitos, nosotros filtramos el mercado.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <Clock className="text-gold-400" size={40} />
-              <h3 className="text-xl font-bold uppercase tracking-wider">Reducción real de riesgos</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Nos contratas para evitar errores costosos y eliminar incertidumbre legal. Tomamos decisiones basadas en datos técnicos, no en suposiciones.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION: TIMELINE PROCESO */}
-        <section className="bg-metallic-950 py-16 sm:py-20 md:py-24 border-y border-white/5">
+        <section className="bg-metallic-900 py-14 sm:py-18 md:py-22 mb-16 sm:mb-20 md:mb-24">
           <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-4 text-center">Nuestro proceso "Llave en Mano"</h2>
-            <p className="text-gray-400 text-center mb-16 italic">Cero preocupaciones. Control total.</p>
-            <div className="space-y-12">
-              {steps.map((step, i) => (
-                <div key={i} className="flex gap-6 md:gap-10 relative">
-                  <div className="flex flex-col items-center">
-                    <div className="w-10 h-10 rounded-full border-2 border-gold-400 flex items-center justify-center text-gold-400 font-bold shrink-0 bg-black">
-                      {i + 1}
-                    </div>
-                    {i !== steps.length - 1 && <div className="w-px h-full bg-gold-400/30 mt-2"></div>}
-                  </div>
-                  <div className="pb-10">
-                    <h3 className="text-xl font-bold mb-2 uppercase tracking-wide text-white">{step.title}</h3>
-                    <p className="text-gray-400 leading-relaxed">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Cómo trabajamos (Proceso llave en mano)</h2>
+            <ol className="space-y-3 text-sm list-decimal list-inside">
+              <li>Consultoría inicial: definimos modelo, presupuesto y tipo de uso.</li>
+              <li>Búsqueda y selección: filtrado real de mercado según criterios técnicos y de valor.</li>
+              <li>Verificación en origen: auditoría mecánica, electrónica y legal del vehículo.</li>
+              <li>Negociación profesional: defensa de intereses y optimización de condiciones.</li>
+              <li>Transporte asegurado: logística profesional con seguro a todo riesgo hasta Cambrils o cualquier punto de Cataluña.</li>
+              <li>Gestión completa: ITV, ficha técnica, impuestos y matriculación.</li>
+              <li>Entrega final: vehículo listo para circular, sin gestiones pendientes.</li>
+            </ol>
           </div>
         </section>
 
-        {/* SECTION: CTA FINAL */}
-        <section className="container mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24">
-          <div className="bg-gradient-to-br from-metallic-900 to-black p-6 sm:p-10 md:p-12 lg:p-20 rounded-3xl border border-gold-400/20 text-center relative overflow-hidden">
-            <div className="max-w-3xl mx-auto relative z-10">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-6 sm:mb-8">¿Buscas un modelo o configuración concreta?</h2>
-              <p className="text-gray-400 text-lg mb-12 leading-relaxed">
-                No te limites al stock reducido de tu zona. El mercado alemán ofrece miles de unidades... pero solo unas pocas merecen realmente la pena.
-                Clientes de toda <strong>Cataluña</strong> confían en nuestro criterio.
-              </p>
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">¿Es buena idea importar un coche de Alemania?</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">En la mayoría de los casos, sí.</p>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Especialmente para quienes buscan:</p>
+          <ul className="space-y-2 text-sm mb-6">
+            <li>Configuraciones específicas</li>
+            <li>Vehículos mejor equipados</li>
+            <li>Unidades bien mantenidas</li>
+            <li>Acceso a mercado más amplio</li>
+          </ul>
+          <p className="text-gray-300 text-lg leading-relaxed">
+            Pero hay un factor clave: la diferencia está en lo que se verifica antes de pagar.
+          </p>
+        </section>
 
-              {/* COLETILLA CALCULADORA */}
-              <div className="mb-10 sm:mb-14 p-4 sm:p-6 md:p-8 bg-black/40 rounded-2xl border border-gold-400/10 backdrop-blur-sm">
-                <p className="text-white text-xl font-light mb-6">
-                  ¿Tienes ya una unidad vista y quieres saber el coste real?
-                </p>
-                <Link
-                  to="/calculadora-impuesto-matriculacion"
-                  className="inline-flex items-center gap-2 text-gold-400 font-bold uppercase tracking-[0.2em] hover:text-white transition-colors group"
-                >
-                  <Calculator size={20} className="group-hover:rotate-12 transition-transform" />
-                  Calcula ahora cuánto costaría traer el coche que quieres
-                  <ArrowRight size={18} />
-                </Link>
-              </div>
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">¿Cuánto cuesta importar un coche desde Alemania?</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Depende de varios factores:</p>
+          <ul className="space-y-2 text-sm mb-8">
+            <li>Precio del vehículo</li>
+            <li>Emisiones (CO₂)</li>
+            <li>Transporte</li>
+            <li>Impuestos</li>
+            <li>Costes administrativos</li>
+          </ul>
+          <p className="text-gray-300 text-lg leading-relaxed mb-8">
+            Por eso es fundamental calcular el coste completo antes de iniciar la operación.
+          </p>
+          <Link
+            to="/calculadora-impuesto-matriculacion"
+            className="inline-flex items-center gap-2 bg-gold-400 text-black px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
+          >
+            Calcular coste de importación ahora <ArrowRight size={16} />
+          </Link>
+        </section>
 
-              <a
-                href="https://wa.me/34603743608?text=Hola!%20Me%20gustaría%20solicitar%20un%20presupuesto%20personalizado%20para%20importar%20un%20coche."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-4 px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 bg-gold-400 text-black font-bold uppercase tracking-widest hover:bg-white transition-all duration-500 rounded-full shadow-2xl shadow-gold-400/10 min-h-[48px] touch-manipulation"
-              >
-                Solicitar presupuesto personalizado <ArrowRight size={20} />
-              </a>
-              <p className="mt-8 text-xs text-gray-500 uppercase tracking-widest font-bold">
-                Importar bien no es cuestión de suerte, sino de criterio
-              </p>
-            </div>
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">¿Trabajáis en Cambrils y Tarragona?</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Sí. Trabajamos con clientes en:</p>
+          <ul className="space-y-2 text-sm mb-6">
+            <li>Cambrils</li>
+            <li>Tarragona</li>
+            <li>Reus</li>
+            <li>Barcelona</li>
+            <li>Toda Cataluña</li>
+          </ul>
+          <p className="text-gray-300 text-lg leading-relaxed">
+            Gestionamos todo el proceso de importación y entregamos el vehículo listo para circular.
+          </p>
+        </section>
+
+        <section className="bg-metallic-950 py-14 sm:py-18 md:py-22 mb-16 sm:mb-20 md:mb-24">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Solicita tu presupuesto personalizado</h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+              No te limites al stock local. El mercado alemán ofrece miles de opciones, pero solo unas pocas merecen la pena.
+            </p>
+            <p className="text-gray-300 text-lg leading-relaxed mb-8">
+              Si quieres hacer una compra segura y bien analizada:
+            </p>
+            <a
+              href="https://wa.me/34603743608?text=Hola,%20quiero%20solicitar%20un%20presupuesto%20personalizado%20para%20importar%20un%20coche%20desde%20Alemania."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-gold-400 text-black px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
+            >
+              Solicitar presupuesto personalizado <ArrowRight size={16} />
+            </a>
           </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">O si ya tienes una unidad vista</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Antes de tomar una decisión:</p>
+          <Link
+            to="/calculadora-impuesto-matriculacion"
+            className="inline-flex items-center gap-2 border border-white/15 text-white px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-black transition-colors min-h-[48px]"
+          >
+            Calcula el coste real de importación <Calculator size={16} />
+          </Link>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Cierre</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Cuando se trata de una inversión importante, la diferencia no está en el coche. Está en cómo se elige.
+          </p>
+          <p className="text-gray-300 text-lg leading-relaxed">
+            Premium German Cars. Importación profesional desde Alemania con criterio, método y sin improvisaciones.
+          </p>
         </section>
       </main>
 

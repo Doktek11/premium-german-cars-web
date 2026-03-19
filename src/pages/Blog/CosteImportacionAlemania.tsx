@@ -16,7 +16,7 @@ export const CosteImportacionAlemania: React.FC = () => {
       <SEO
         title="Cuánto cuesta realmente importar un coche de Alemania en 2026 | PGC"
         description="Coste real de importar un coche de Alemania en 2026: transporte, impuestos, fiscalidad en Cataluña, pegatina ambiental y verificación técnica."
-        canonical="https://www.premiumgermancars.com/blog/coste-importacion-alemania"
+        canonical="https://www.premiumgermancars.com/blog/cuanto-cuesta-importar-coche-alemania-2026"
         article={true}
         image="/logoPGC.svg"
         jsonLd={{
@@ -43,7 +43,8 @@ export const CosteImportacionAlemania: React.FC = () => {
           },
           mainEntityOfPage: {
             "@type": "WebPage",
-            "@id": "https://www.premiumgermancars.com/blog/coste-importacion-alemania",
+            "@id":
+              "https://www.premiumgermancars.com/blog/cuanto-cuesta-importar-coche-alemania-2026",
           },
         }}
       />

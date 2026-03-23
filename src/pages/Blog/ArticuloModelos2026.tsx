@@ -1,334 +1,400 @@
+﻿import React, { useEffect } from "react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
+import { WhatsAppButton } from "../../components/WhatsAppButton";
 import { SEO } from "../../components/SEO";
-import { CheckCircle, Mail, Star } from "lucide-react";
+import { ArrowRight, Calculator, CheckCircle2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
-const ArticuloModelos2026 = () => {
+export const ArticuloModelos2026: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <SEO
-        title="Los 5 mejores coches para importar de Alemania en 2026 | Premium German Cars"
-        description="Guía de compra inteligente: historial real, criterio profesional y valor de reventa en España."
-        canonical="https://www.premiumgermancars.com/blog/mejores-modelos-importar-alemania-2026"
+        title="Mejores coches para importar de Alemania en 2026 | PGC"
+        description="Guía 2026 para elegir los mejores coches a importar desde Alemania: criterios reales, modelos rentables, errores a evitar y costes clave."
+        canonical="https://www.premiumgermancars.com/blog/mejores-coches-importar-alemania-2026"
+        article={true}
+        image="/logoPGC.svg"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline:
+            "Mejores Coches para Importar de Alemania en 2026 (Guía para Acertar y No Perder Dinero)",
+          description:
+            "Guía 2026 para elegir los mejores coches a importar desde Alemania: criterios reales, modelos rentables, errores a evitar y costes clave.",
+          image: ["https://www.premiumgermancars.com/logoPGC.svg"],
+          datePublished: "2026-03-23",
+          dateModified: "2026-03-23",
+          author: {
+            "@type": "Organization",
+            name: "Premium German Cars",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Premium German Cars",
+            logo: {
+              "@type": "ImageObject",
+              url: "https://www.premiumgermancars.com/logoPGC.svg",
+            },
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": "https://www.premiumgermancars.com/blog/mejores-coches-importar-alemania-2026",
+          },
+        }}
       />
+
       <Navbar />
 
-      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20">
-        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
-          {/* CABECERA */}
-          <header className="mb-12">
-            <span className="text-gold-400 font-bold tracking-widest text-xs uppercase italic">
-              Estrategia de Mercado 2026
-            </span>
-            <h1 className="text-2xl sm:text-3xl md:text-5xl font-serif font-bold mt-4 mb-6 leading-tight">
-              Los 5 mejores coches para importar de Alemania en 2026: guía de
-              compra inteligente
-            </h1>
-            <div className="flex items-center gap-4 text-gray-500 text-sm italic">
-              <span>Premium German Cars</span>
-              <span className="w-1 h-1 bg-gold-400 rounded-full"></span>
-              <span>2 Ene, 2026</span>
-            </div>
-          </header>
-
-          {/* Hero Visual PGC */}
-          <div className="h-64 md:h-80 w-full bg-gradient-to-br from-metallic-800 to-black border border-white/5 flex items-center justify-center mb-16 relative overflow-hidden">
-            <img
-              src="/logoPGC.svg"
-              className="w-48 opacity-10 brightness-0 invert"
-              alt="PGC Logo"
-            />
-            <div className="absolute bottom-4 right-6 text-gold-400/30 font-serif italic text-4xl md:text-6xl select-none">
-              Smart Choice
-            </div>
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl text-center mb-14 sm:mb-18 md:mb-22">
+          <span className="text-gold-400 text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
+            Guía 2026
+          </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 leading-tight">
+            Mejores Coches para Importar de Alemania en 2026 (Guía para Acertar y No Perder Dinero)
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-300">
+            Importar un coche de Alemania en 2026 sigue siendo una de las decisiones más inteligentes para quienes buscan calidad, equipamiento y mejor precio, pero solo si se hace con criterio profesional.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              to="/calculadora-impuesto-matriculacion"
+              className="inline-flex items-center gap-2 bg-gold-400 text-black px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
+            >
+              Calcular coste real <Calculator size={16} />
+            </Link>
+            <a
+              href="https://wa.me/34603743608?text=Hola,%20quiero%20una%20selecci%C3%B3n%20de%20coches%20rentables%20para%20importar%20desde%20Alemania."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 border border-white/15 text-white px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-black transition-colors min-h-[48px]"
+            >
+              Solicitar selección por WhatsApp <ArrowRight size={16} />
+            </a>
           </div>
+        </section>
 
-          {/* INTRODUCCIÓN */}
-          <div className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed">
-            <p className="text-lg md:text-xl text-gray-200 mb-8 font-light italic border-l-4 border-gold-400 pl-6 text-justify">
-              Importar un coche de Alemania en 2026 sigue siendo una de las
-              decisiones más inteligentes para quienes buscan calidad, pero solo
-              si se hace con criterio profesional. La importación de coches
-              desde Alemania continúa ofreciendo una ventaja competitiva frente
-              al mercado nacional: mantenimiento riguroso, configuraciones más
-              completas y un historial de conservación mucho más transparente.
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-12 sm:mb-16 md:mb-20">
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Elegir mal el coche puede convertir una buena oportunidad en una pérdida de miles de euros.
+          </p>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Cada año, muchos compradores se centran únicamente en el precio o el modelo, sin tener en cuenta factores clave como la depreciación real en España, la fiscalidad, el historial verificable y la demanda en el mercado nacional. Y ahí es donde se pierde dinero.
+          </p>
+          <p className="text-gray-300 text-lg leading-relaxed">
+            En Premium German Cars entendemos la importación no como una compra, sino como la selección de un activo que debe mantener su valor en el tiempo.
+          </p>
+        </section>
+
+        <section className="bg-metallic-900 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">
+              ¿Por qué importar un coche de Alemania sigue teniendo sentido en 2026?
+            </h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+              A pesar de los cambios normativos y fiscales, importar un coche de Alemania sigue ofreciendo ventajas claras frente al mercado español.
             </p>
-
-            <p className="mb-8 text-base md:text-lg text-justify font-light">
-              Sin embargo, en un entorno donde las normativas de emisiones son
-              cada vez más estrictas, ya no basta con “traer un coche”. La
-              diferencia real no está en el país de origen, sino en qué unidad
-              eliges, cómo se verifica y con qué garantías llega a España. En{" "}
-              <strong>Premium German Cars</strong> entendemos la compra de
-              coches importados de Alemania no solo como una transacción, sino
-              como la selección de un activo que conserve su valor en el tiempo.
+            <ul className="space-y-2 text-sm mb-6">
+              <li>Mayor nivel de equipamiento (M Sport, S-Line, AMG Line).</li>
+              <li>Historiales de mantenimiento más completos.</li>
+              <li>Configuraciones más difíciles de encontrar en España.</li>
+            </ul>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              No todos los coches importados son buenas oportunidades. Hemos visto diferencias de hasta 4.000€–6.000€ en valor real entre dos unidades del mismo modelo.
             </p>
+          </div>
+        </section>
 
-            {/* SECCIÓN 1: POR QUÉ ALEMANIA */}
-            <h2 className="text-2xl md:text-3xl font-serif font-bold text-gold-400 mt-12 mb-6 uppercase tracking-wider">
-              ¿Por qué importar de Alemania sigue teniendo sentido en 2026?
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-12 sm:mb-16 md:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">¿Qué coches merece la pena importar de Alemania en 2026?</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Antes de ver modelos concretos, este es el criterio real que utilizamos para seleccionar vehículos. No se trata de elegir el mejor coche, sino el que mejor se adapta al mercado español.
+          </p>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Analizamos más de 200–300 coches al año y descartamos más del 70% de las unidades por no cumplir estos estándares.
+          </p>
+          <ul className="space-y-2 text-sm mb-6">
+            <li>Emisiones y fiscalidad: impacto directo en el coste total.</li>
+            <li>Historial verificable: sin trazabilidad, no hay seguridad.</li>
+            <li>Demanda en España: clave para proteger el valor futuro.</li>
+            <li>Configuración: lo que realmente se paga en reventa.</li>
+          </ul>
+          <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
+            <p className="text-gray-300 text-lg leading-relaxed">
+              Antes de elegir modelo, es fundamental entender el coste real: impuestos, transporte y matriculación.
+            </p>
+          </div>
+          <div className="mt-6">
+            <Link
+              to="/calculadora-impuesto-matriculacion"
+              className="inline-flex items-center gap-2 text-gold-400 font-bold uppercase tracking-[0.2em] hover:text-white transition-colors"
+            >
+              Calculadora de importación de coches desde Alemania <ArrowRight size={16} />
+            </Link>
+          </div>
+        </section>
+
+        <section className="bg-metallic-950 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
+          <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-8">
+              Selección inteligente de coches para importar de Alemania en 2026
             </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 text-justify">
-              <div className="bg-white/5 p-6 border-t-2 border-gold-400">
-                <h3 className="text-white font-bold mb-2 uppercase text-sm tracking-widest">
-                  Equipamiento superior
-                </h3>
-                <p className="text-sm md:text-base text-gray-400">
-                  Es mucho más sencillo encontrar unidades con acabados
-                  deportivos (M Sport, S-Line, AMG Line) combinados con
-                  motorizaciones eficientes.
+            <div className="space-y-10">
+              <div>
+                <h3 className="text-xl font-bold mb-3">1. BMW Serie 1 (F40) — El compacto premium racional</h3>
+                <p className="text-gray-300 text-base mb-4">
+                  Es la puerta de entrada al universo BMW con tecnología moderna y costes contenidos.
+                </p>
+                <ul className="space-y-2 text-sm mb-4">
+                  <li>Versiones 118i o 120d.</li>
+                  <li>Mantenimiento en red oficial.</li>
+                  <li>Un solo propietario.</li>
+                </ul>
+                <p className="text-gray-300 text-base">
+                  Bajo consumo, alta demanda en España y buena retención de valor. Ideal si buscas equilibrio entre coste y posicionamiento premium.
                 </p>
               </div>
-              <div className="bg-white/5 p-6 border-t-2 border-gold-400">
-                <h3 className="text-white font-bold mb-2 uppercase text-sm tracking-widest">
-                  Movilidad garantizada
-                </h3>
-                <p className="text-sm md:text-base text-gray-400">
-                  Seleccionamos unidades que aseguran etiquetas ambientales C o
-                  ECO, imprescindibles para las Zonas de Bajas Emisiones (ZBE)
-                  en España.
+              <div>
+                <h3 className="text-xl font-bold mb-3">2. Volkswagen Golf — La referencia constante</h3>
+                <p className="text-gray-300 text-base mb-4">
+                  En Alemania es fácil encontrar unidades con equipamientos avanzados que en España son poco habituales.
+                </p>
+                <ul className="space-y-2 text-sm mb-4">
+                  <li>Historial digital completo.</li>
+                  <li>Estado mecánico certificado.</li>
+                </ul>
+                <p className="text-gray-300 text-base">
+                  Uno de los modelos con menor depreciación y altísima liquidez en reventa. No es el más llamativo, pero sí uno de los más inteligentes.
                 </p>
               </div>
-            </div>
-
-            <div className="bg-metallic-900/50 p-8 border border-white/10 rounded-sm mb-12">
-              <h3 className="text-xl font-bold mb-6 flex items-center text-white">
-                <CheckCircle className="text-gold-400 mr-3" size={20} />{" "}
-                Beneficios reales para ti:
-              </h3>
-              <ul className="space-y-4 text-base md:text-lg">
-                <li className="flex items-start">
-                  <span className="text-gold-400 mr-3">•</span> Historial de
-                  mantenimiento mucho más completo y documentado.
-                </li>
-                <li className="flex items-start">
-                  <span className="text-gold-400 mr-3">•</span> Unidades “Full
-                  Equip” con asistentes y acabados poco habituales en España.
-                </li>
-                <li className="flex items-start">
-                  <span className="text-gold-400 mr-3">•</span> Mayor valor de
-                  reventa gracias a la trazabilidad alemana oficial.
-                </li>
-                <li className="flex items-start">
-                  <span className="text-gold-400 mr-3">•</span> Transparencia
-                  absoluta: menor riesgo de sorpresas mecánicas.
-                </li>
-              </ul>
-            </div>
-
-            {/* SECCIÓN 2: TRAZABILIDAD */}
-            <h2 className="text-2xl font-serif font-bold text-gold-400 mt-12 mb-6 uppercase tracking-wider text-justify">
-              Trazabilidad real: el verdadero lujo
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
-              <div className="bg-white/5 border border-white/10 p-5 rounded-sm italic text-sm md:text-base text-gray-200">
-                "Procedencia clara (matriz de marca o concesionarios
-                oficiales)."
-              </div>
-              <div className="bg-white/5 border border-white/10 p-5 rounded-sm italic text-sm md:text-base text-gray-200">
-                "Mantenimientos sellados siempre en servicio oficial."
-              </div>
-              <div className="bg-white/5 border border-white/10 p-5 rounded-sm italic text-sm md:text-base text-gray-200">
-                "Kilometraje verificado y documentado mediante registros."
-              </div>
-              <div className="bg-white/5 border border-white/10 p-5 rounded-sm italic text-sm md:text-base text-gray-200">
-                "La transparencia no es un extra: es la base de la seguridad."
-              </div>
-            </div>
-
-            {/* SECCIÓN 3: LOS MODELOS */}
-            <h2 className="text-2xl md:text-3xl font-serif font-bold text-gold-400 mt-16 mb-8 uppercase tracking-wider text-center">
-              Selección inteligente 2026
-            </h2>
-
-            {/* MODELO 1 */}
-            <div className="mb-10 p-6 md:p-8 border border-white/10 bg-metallic-900/30 rounded-sm text-justify">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-4">
-                1. BMW Serie 1 (F40) — El compacto premium racional
-              </h3>
-              <p className="mb-2 text-sm md:text-base">
-                <strong>¿Por qué es una oportunidad?</strong> Puerta de entrada
-                equilibrada al ecosistema BMW con tecnología como Live Cockpit
-                Professional.
-              </p>
-              <p className="mb-4 text-sm md:text-base text-gray-400">
-                <strong>Qué buscamos para ti:</strong> Versiones 118i o 120d, un
-                solo propietario y mantenimiento completo en BMW.
-              </p>
-              <p className="text-gold-400 italic font-medium text-sm md:text-base flex items-center gap-2 italic">
-                <Star size={14} /> Valor para ti: Excelente equilibrio entre
-                consumo y alta demanda en España.
-              </p>
-            </div>
-
-            {/* MODELO 2 */}
-            <div className="mb-10 p-6 md:p-8 border border-white/10 bg-metallic-900/30 rounded-sm text-justify">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-4">
-                2. Volkswagen Golf — La referencia constante
-              </h3>
-              <p className="mb-2 text-sm md:text-base">
-                <strong>¿Por qué destaca?</strong> Unidades con IQ.Drive y
-                faros Matrix LED, combinaciones poco frecuentes en el mercado
-                nacional.
-              </p>
-              <p className="mb-4 text-sm md:text-base text-gray-400">
-                <strong>Qué buscamos para ti:</strong> Historial de servicio
-                digital completo y certificación de estado mecánico.
-              </p>
-              <p className="text-gold-400 italic font-medium text-sm md:text-base flex items-center gap-2 italic">
-                <Star size={14} /> Valor para ti: Un activo que retiene su valor
-                mejor que cualquier competidor.
-              </p>
-            </div>
-
-            {/* MODELO 3 */}
-            <div className="mb-10 p-6 md:p-8 border border-white/10 bg-metallic-900/30 rounded-sm text-justify">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-4">
-                3. Audi A3 Sportback — Tecnología y movilidad ZBE
-              </h3>
-              <p className="mb-2 text-sm md:text-base">
-                <strong>¿Por qué es interesante?</strong> Calidad de rodadura
-                superior y versiones con microhibridación para obtener la
-                etiqueta ECO.
-              </p>
-              <p className="mb-4 text-sm md:text-base text-gray-400">
-                <strong>Qué buscamos para ti:</strong> Equipamiento S-Line y
-                trazabilidad 100 % oficial.
-              </p>
-              <p className="text-gold-400 italic font-medium text-sm md:text-base flex items-center gap-2 italic">
-                <Star size={14} /> Valor para ti: Diseño moderno y movilidad sin
-                restricciones urbanas.
-              </p>
-            </div>
-
-            {/* MODELO 4 */}
-            <div className="mb-10 p-6 md:p-8 border border-white/10 bg-metallic-900/30 rounded-sm text-justify">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-4">
-                4. Mercedes-Benz Clase A — Confort y estatus
-              </h3>
-              <p className="mb-2 text-sm md:text-base">
-                <strong>¿Por qué es una oportunidad?</strong> Interfaz MBUX y
-                unidades de flotas premium con muy poco uso.
-              </p>
-              <p className="mb-4 text-sm md:text-base text-gray-400">
-                <strong>Qué buscamos para ti:</strong> Kilometraje real
-                verificable y ausencia total de daños estructurales.
-              </p>
-              <p className="text-gold-400 italic font-medium text-sm md:text-base flex items-center gap-2 italic">
-                <Star size={14} /> Valor para ti: Demanda constante que protege
-                tu inversión a futuro.
-              </p>
-            </div>
-
-            {/* MODELO 5 */}
-            <div className="mb-10 p-6 md:p-8 border border-white/10 bg-metallic-900/30 rounded-sm text-justify">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-4">
-                5. BMW X1 — El SUV versátil
-              </h3>
-              <p className="mb-2 text-sm md:text-base">
-                <strong>¿Por qué merece atención?</strong> Espacio y dinamismo.
-                Ideal para familias que buscan un SUV premium polivalente.
-              </p>
-              <p className="mb-4 text-sm md:text-base text-gray-400">
-                <strong>Qué buscamos para ti:</strong> Trazabilidad clara desde
-                origen y estado estético impecable.
-              </p>
-              <p className="text-gold-400 italic font-medium text-sm md:text-base flex items-center gap-2 italic">
-                <Star size={14} /> Valor para ti: El segmento SUV es el que
-                mejor mantiene el precio en España.
-              </p>
-            </div>
-
-            {/* METODOLOGÍA */}
-            <section className="mt-20">
-              <h2 className="text-2xl font-serif font-bold text-gold-400 mb-8 uppercase tracking-wider text-center">
-                Metodología Premium German Cars
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-6 border border-white/10 bg-white/5 rounded-sm">
-                  <h4 className="font-bold text-white text-base md:text-lg mb-2 uppercase tracking-tight text-gold-400">
-                    1. Inspección
-                  </h4>
-                  <p className="text-sm md:text-base text-gray-300">
-                    Revisión mecánica y estructural basada en datos contrastados
-                    y auditoría de historial.
-                  </p>
-                </div>
-                <div className="p-6 border border-white/10 bg-white/5 rounded-sm">
-                  <h4 className="font-bold text-white text-base md:text-lg mb-2 uppercase tracking-tight text-gold-400">
-                    2. Gestión
-                  </h4>
-                  <p className="text-sm md:text-base text-gray-300">
-                    Importación, ITV, matriculación y gestión integral de
-                    impuestos sin sorpresas.
-                  </p>
-                </div>
-                <div className="p-6 border border-white/10 bg-white/5 rounded-sm">
-                  <h4 className="font-bold text-white text-base md:text-lg mb-2 uppercase tracking-tight text-gold-400">
-                    3. Entrega
-                  </h4>
-                  <p className="text-sm md:text-base text-gray-300">
-                    Tú solo disfrutas del coche con la tranquilidad de haber
-                    realizado una compra inteligente.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {/* FAQ */}
-            <section className="mt-20 mb-12 bg-white/5 border border-white/10 p-6 md:p-10 rounded-sm">
-              <h2 className="text-2xl font-serif font-bold mb-8 text-white">
-                FAQ — Lo que debes saber
-              </h2>
-              <div className="space-y-6 text-base">
-                <div>
-                  <h4 className="font-bold text-gold-400 mb-1 uppercase text-xs tracking-widest">
-                    ¿Por qué no el más barato?
-                  </h4>
-                  <p className="text-gray-400 text-sm md:text-base font-light leading-relaxed">
-                    Porque suele esconder falta de historial oficial o
-                    mantenimientos incompletos. A largo plazo, las averías
-                    superan el ahorro inicial.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gold-400 mb-1 uppercase text-xs tracking-widest">
-                    ¿Compensa frente a España?
-                  </h4>
-                  <p className="text-gray-400 text-sm md:text-base font-light leading-relaxed">
-                    Sí, por el binomio estado + equipamiento. Obtienes un coche
-                    con mejores acabados y mejor vida por el mismo presupuesto.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {/* CONCLUSIÓN Y CTA CORREGIDO */}
-            <div className="mt-20 p-1 bg-gradient-to-r from-gold-600 to-gold-400">
-              <div className="bg-black p-8 md:p-12 text-center">
-                <h2 className="text-2xl md:text-3xl font-serif font-bold mb-4 text-white uppercase tracking-tighter italic">
-                  No se trata solo de importar... sino de elegir bien
-                </h2>
-                <p className="text-gray-400 mb-8 max-w-md mx-auto text-sm md:text-base font-light">
-                  En Premium German Cars analizamos cada vehículo como si fuera
-                  para nosotros mismos.
+              <div>
+                <h3 className="text-xl font-bold mb-3">3. Audi A3 Sportback — Tecnología y movilidad sin restricciones</h3>
+                <p className="text-gray-300 text-base mb-4">
+                  Versiones con microhibridación que permiten obtener etiqueta ECO.
                 </p>
-                <a
-                  href="https://wa.me/34603743608?text=Hola,%20he%20visto%20vuestro%20art%C3%ADculo%20sobre%20los%20mejores%20coches%20de%202026%20y%20me%20gustar%C3%ADa%20consultar%20por%20uno%20de%20vuestros%20modelos%20seleccionados."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 bg-gold-400 text-black px-10 py-4 font-bold uppercase tracking-tighter hover:bg-white transition-all duration-300"
-                >
-                  Contáctanos hoy mismo <Mail size={18} />
-                </a>
+                <ul className="space-y-2 text-sm mb-4">
+                  <li>Configuraciones S-Line.</li>
+                  <li>Trazabilidad 100% oficial.</li>
+                </ul>
+                <p className="text-gray-300 text-base">
+                  Acceso a ZBE y mayor valor en entorno urbano. Pensado para el presente y el futuro.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-3">4. Mercedes-Benz Clase A — Confort y demanda estable</h3>
+                <p className="text-gray-300 text-base mb-4">
+                  Gran presencia de unidades bien mantenidas y alto reconocimiento de marca.
+                </p>
+                <ul className="space-y-2 text-sm mb-4">
+                  <li>Kilometraje verificable.</li>
+                  <li>Ausencia de daños estructurales.</li>
+                </ul>
+                <p className="text-gray-300 text-base">
+                  Demanda constante y buena percepción en reventa. Protege mejor la inversión que muchos competidores directos.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-3">5. BMW X1 — El SUV equilibrado</h3>
+                <p className="text-gray-300 text-base mb-4">
+                  Combina espacio, imagen premium y facilidad de reventa.
+                </p>
+                <ul className="space-y-2 text-sm mb-4">
+                  <li>Historial claro.</li>
+                  <li>Configuración demandada en España.</li>
+                </ul>
+                <p className="text-gray-300 text-base">
+                  Segmento SUV con alta rotación y estabilidad de precios. Una opción versátil con salida rápida en el mercado.
+                </p>
               </div>
             </div>
           </div>
-        </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-5xl mb-12 sm:mb-16 md:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">
+            Comparativa rápida de coches para importar de Alemania
+          </h2>
+          <div className="overflow-x-auto border border-white/10">
+            <table className="min-w-full text-left text-sm">
+              <thead className="bg-white/5 text-gray-300">
+                <tr>
+                  <th className="py-3 px-4">Modelo</th>
+                  <th className="py-3 px-4">Tipo</th>
+                  <th className="py-3 px-4">Demanda en España</th>
+                  <th className="py-3 px-4">Depreciación</th>
+                  <th className="py-3 px-4">Recomendación</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["BMW Serie 1", "Compacto", "Alta", "Media-baja", "Muy equilibrado"],
+                  ["Volkswagen Golf", "Compacto", "Muy alta", "Baja", "Compra segura"],
+                  ["Audi A3", "Compacto", "Alta", "Baja", "Ideal ciudad"],
+                  ["Mercedes Clase A", "Compacto", "Muy alta", "Media", "Imagen fuerte"],
+                  ["BMW X1", "SUV", "Muy alta", "Media-baja", "Versátil"],
+                ].map((row) => (
+                  <tr key={row[0]} className="border-t border-white/10">
+                    {row.map((cell) => (
+                      <td key={cell} className="py-3 px-4 text-gray-300">
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-8 space-y-2 text-gray-300 text-base">
+            <p>Opción más segura: Volkswagen Golf.</p>
+            <p>Mejor equilibrio premium: BMW Serie 1.</p>
+            <p>Ideal para ciudad y ZBE: Audi A3.</p>
+          </div>
+        </section>
+
+        <section className="bg-metallic-900 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">
+              Top 3 coches más rentables para importar de Alemania en 2026
+            </h2>
+            <ol className="space-y-2 text-sm list-decimal list-inside mb-6">
+              <li>Volkswagen Golf</li>
+              <li>BMW Serie 1</li>
+              <li>Audi A3</li>
+            </ol>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              Son los modelos que mejor combinan demanda, liquidez y estabilidad de precio en España.
+            </p>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-12 sm:mb-16 md:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Qué coches NO merece la pena importar de Alemania</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Elegir bien también implica saber qué evitar. Recomendamos descartar:
+          </p>
+          <ul className="space-y-2 text-sm mb-6">
+            <li>Vehículos con altas emisiones (penalizados fiscalmente).</li>
+            <li>Configuraciones básicas (difíciles de revender).</li>
+            <li>Coches sin historial verificable.</li>
+            <li>Berlinas grandes diésel con baja demanda en España.</li>
+          </ul>
+          <p className="text-gray-300 text-lg leading-relaxed">
+            Muchos de estos coches parecen baratos porque el mercado ya está descontando sus problemas.
+          </p>
+        </section>
+
+        <section className="bg-metallic-950 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">
+              El error más común al importar un coche de Alemania
+            </h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+              Pensar que todos los coches del mismo modelo son iguales. Dos unidades del mismo coche pueden diferir miles de euros en valor real, y el historial, uso y mantenimiento cambian completamente la operación.
+            </p>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              Elegir sin verificar correctamente es el mayor riesgo económico.
+            </p>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-12 sm:mb-16 md:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Metodología Premium German Cars</h2>
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-bold mb-2">Inspección</h3>
+              <p className="text-gray-300 text-lg leading-relaxed">Revisión mecánica, estructural y análisis de historial.</p>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-2">Gestión</h3>
+              <p className="text-gray-300 text-lg leading-relaxed">Importación completa, ITV, matriculación y optimización fiscal.</p>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-2">Selección</h3>
+              <p className="text-gray-300 text-lg leading-relaxed">Solo vehículos con valor real y buena salida en el mercado.</p>
+            </div>
+          </div>
+          <p className="text-gray-300 text-lg leading-relaxed mt-6">
+            No eliges un coche al azar. Tomas una decisión informada.
+          </p>
+        </section>
+
+        <section className="bg-metallic-900 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">¿Vale la pena importar un coche de Alemania?</h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+              Sí, pero con una condición: hacer una selección inteligente.
+            </p>
+            <ul className="space-y-2 text-sm mb-6">
+              <li>Reduces riesgos.</li>
+              <li>Optimizas costes.</li>
+              <li>Proteges el valor del coche.</li>
+            </ul>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              Cuando se hace mal, el ahorro inicial desaparece rápidamente.
+            </p>
+            <p className="text-gray-300 text-lg leading-relaxed mt-6">
+              Antes de tomar una decisión, te recomendamos conocer también los riesgos más comunes al importar un coche de Alemania y cómo evitarlos.
+            </p>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-12 sm:mb-16 md:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Preguntas frecuentes sobre importar coche de Alemania</h2>
+          <h3 className="text-xl font-bold mb-3">¿Qué coche es más rentable importar desde Alemania?</h3>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Modelos como el Volkswagen Golf o el BMW Serie 1 (F40) suelen ofrecer la mejor combinación entre precio, demanda y depreciación.
+          </p>
+          <h3 className="text-xl font-bold mb-3">¿Qué coches tienen menos depreciación en España?</h3>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Compactos premium y SUV medios con buena configuración, bajo consumo y alta demanda en el mercado nacional.
+          </p>
+          <h3 className="text-xl font-bold mb-3">¿Compensa importar coche de Alemania frente a comprar en España?</h3>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Sí, especialmente en equipamiento y estado del vehículo, siempre que la operación esté bien verificada.
+          </p>
+          <h3 className="text-xl font-bold mb-3">¿Qué pasa si el coche no está bien revisado?</h3>
+          <p className="text-gray-300 text-lg leading-relaxed">
+            El riesgo de averías o problemas ocultos puede suponer miles de euros en reparaciones.
+          </p>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Conclusión: no se trata solo de importar, sino de elegir bien</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Importar un coche de Alemania sigue siendo una gran oportunidad en 2026. Pero la diferencia no está en el país, sino en la selección.
+          </p>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Elegir bien significa minimizar riesgos, optimizar costes y proteger el valor del vehículo.
+          </p>
+          <p className="text-gray-300 text-lg leading-relaxed mb-8">
+            Solicita una búsqueda personalizada y recibe una selección real de coches en Alemania que cumplen criterios de valor, historial y reventa. Sin riesgos. Sin improvisaciones.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              to="/calculadora-impuesto-matriculacion"
+              className="inline-flex items-center gap-2 bg-gold-400 text-black px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
+            >
+              Calcular coste real <Calculator size={16} />
+            </Link>
+            <a
+              href="https://wa.me/34603743608?text=Hola,%20quiero%20una%20b%C3%BAsqueda%20personalizada%20para%20importar%20un%20coche%20desde%20Alemania."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 border border-white/15 text-white px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-black transition-colors min-h-[48px]"
+            >
+              Solicitar búsqueda personalizada <ArrowRight size={16} />
+            </a>
+          </div>
+        </section>
       </main>
 
       <Footer />
+      <WhatsAppButton />
     </>
   );
 };

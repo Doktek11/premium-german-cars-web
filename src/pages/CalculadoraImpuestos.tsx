@@ -104,10 +104,32 @@ export const CalculadoraImpuestos = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <SEO 
-        title="Calcula el impuesto de matriculaciÃ³n de tu coche importado | IA gratis"
-        description="Calcula en segundos el impuesto de matriculaciÃ³n y el coste real de importar tu coche desde Alemania. Calculadora con asistente de IA gratis."
+      <SEO
+        title="Impuesto de matriculación diésel o gasolina | Calculadora IA"
+        description="Calcula en segundos qué paga más: diésel o gasolina. Impuesto de matriculación según CO₂ y coste real de importar tu coche."
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
+              jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "¿Diésel o gasolina paga más impuesto de matriculación?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Depende del CO₂ homologado. El impuesto no discrimina por combustible; paga más el coche que emite más."
+              }
+            },
+            {
+              "@type": "Question",
+              name: "?C?mo calcular el impuesto según CO₂?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Se aplica el tramo de emisiones CO₂ y la depreciaci?n BOE sobre el valor venal del veh?culo."
+              }
+            }
+          ]
+        }}
       />
       
       <Navbar />
@@ -131,6 +153,12 @@ export const CalculadoraImpuestos = () => {
               <RotateCcw size={14} /> Limpiar Datos
             </button>
           </header>
+
+          <div className="mb-8 sm:mb-10 bg-white/5 border border-white/10 p-4 sm:p-6 rounded-2xl text-left">
+            <p className="text-sm text-gray-300">
+              Resumen rápido: el impuesto no depende del combustible, sino del CO₂. En igualdad de precio, paga más el coche con más emisiones.
+            </p>
+          </div>
 
           <div className="mb-8 sm:mb-10 bg-gradient-to-r from-gold-900/10 to-transparent border border-gold-500/20 p-4 sm:p-6 md:p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-sm text-left">
             <div className="flex gap-5 items-start">
@@ -405,6 +433,10 @@ export const CalculadoraImpuestos = () => {
     </div>
   );
 };
+
+
+
+
 
 
 

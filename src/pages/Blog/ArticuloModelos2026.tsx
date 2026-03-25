@@ -14,8 +14,8 @@ export const ArticuloModelos2026: React.FC = () => {
   return (
     <>
       <SEO
-        title="Mejores coches para importar de Alemania en 2026 | PGC"
-        description="Guía 2026 para elegir los mejores coches a importar desde Alemania: criterios reales, modelos rentables, errores a evitar y costes clave."
+        title="Mejores coches para importar de Alemania en 2026 | Guía PGC"
+        description="Modelos con alta demanda en España, baja depreciación y buena reventa. Criterio real para elegir sin perder dinero."
         canonical="https://www.premiumgermancars.com/blog/mejores-coches-importar-alemania-2026"
         article={true}
         image="/logoPGC.svg"
@@ -400,3 +400,4 @@ export const ArticuloModelos2026: React.FC = () => {
 };
 
 export default ArticuloModelos2026;
+

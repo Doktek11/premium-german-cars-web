@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
@@ -29,16 +29,16 @@ export const CalculadoraImpuestos = () => {
   const [resultado, setResultado] = useState({ matriculacion: 0, tramo: 0 });
 
   const ejemplosImportacion = [
-    { modelo: "Audi A3 Sportback 35 TFSI", valor: "21.105€", co2: "128g", impuesto: "1.002€" },
-    { modelo: "VW Golf GTI (Mk8)", valor: "28.140€", co2: "163g", impuesto: "2.743€" },
-    { modelo: "BMW 320d (G20)", valor: "30.820€", co2: "127g", impuesto: "1.464€" },
-    { modelo: "Mercedes-Benz A 200", valor: "22.780€", co2: "134g", impuesto: "1.082€" },
-    { modelo: "Audi Q5 40 TDI Quattro", valor: "37.520€", co2: "166g", impuesto: "3.658€" },
-    { modelo: "VW Tiguan 2.0 TDI", valor: "25.460€", co2: "142g", impuesto: "1.209€" },
-    { modelo: "BMW M4 Competition", valor: "77.050€", co2: "228g", impuesto: "11.365€" },
-    { modelo: "Mercedes CLA 220d", valor: "28.810€", co2: "131g", impuesto: "1.368€" },
-    { modelo: "Cupra Formentor VZ", valor: "30.820€", co2: "175g", impuesto: "3.005€" },
-    { modelo: "Audi A4 Avant 40 TFSI", valor: "32.160€", co2: "148g", impuesto: "1.527€" },
+    { modelo: "Audi A3 Sportback 35 TFSI", valor: "21.105â‚¬", co2: "128g", impuesto: "1.002â‚¬" },
+    { modelo: "VW Golf GTI (Mk8)", valor: "28.140â‚¬", co2: "163g", impuesto: "2.743â‚¬" },
+    { modelo: "BMW 320d (G20)", valor: "30.820â‚¬", co2: "127g", impuesto: "1.464â‚¬" },
+    { modelo: "Mercedes-Benz A 200", valor: "22.780â‚¬", co2: "134g", impuesto: "1.082â‚¬" },
+    { modelo: "Audi Q5 40 TDI Quattro", valor: "37.520â‚¬", co2: "166g", impuesto: "3.658â‚¬" },
+    { modelo: "VW Tiguan 2.0 TDI", valor: "25.460â‚¬", co2: "142g", impuesto: "1.209â‚¬" },
+    { modelo: "BMW M4 Competition", valor: "77.050â‚¬", co2: "228g", impuesto: "11.365â‚¬" },
+    { modelo: "Mercedes CLA 220d", valor: "28.810â‚¬", co2: "131g", impuesto: "1.368â‚¬" },
+    { modelo: "Cupra Formentor VZ", valor: "30.820â‚¬", co2: "175g", impuesto: "3.005â‚¬" },
+    { modelo: "Audi A4 Avant 40 TFSI", valor: "32.160â‚¬", co2: "148g", impuesto: "1.527â‚¬" },
   ];
 
   const abrirAsistenteIA = () => {
@@ -105,8 +105,8 @@ export const CalculadoraImpuestos = () => {
   return (
     <div className="min-h-screen bg-black text-white">
       <SEO 
-        title="Calculadora Impuesto Matriculación Diésel o Gasolina 2026 | Gratis"
-        description="Calcula al instante el impuesto de matriculación diésel o gasolina para tu coche importado de Alemania con datos BOE 2026. Resultado en 30 segundos."
+        title="Calcula el impuesto de matriculaciÃ³n de tu coche importado | IA gratis"
+        description="Calcula en segundos el impuesto de matriculaciÃ³n y el coste real de importar tu coche desde Alemania. Calculadora con asistente de IA gratis."
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
       />
       
@@ -117,11 +117,11 @@ export const CalculadoraImpuestos = () => {
           <header className="mb-12 flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-center md:text-left">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter text-left">
-                Impuesto <span className="text-gold-400 italic">Diésel o Gasolina:</span> <br/>
-                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">¿Cuánto cuesta matricularlo?</span>
+                Impuesto <span className="text-gold-400 italic">DiÃ©sel o Gasolina:</span> <br/>
+                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">Â¿CuÃ¡nto cuesta matricularlo?</span>
               </h1>
               <p className="text-gray-400 text-lg max-w-2xl text-left">
-                Herramienta de precisión basada en los tramos de CO2 2026 y las tablas de depreciación del BOE para vehículos de importación.
+                Herramienta de precisiÃ³n basada en los tramos de CO2 2026 y las tablas de depreciaciÃ³n del BOE para vehÃ­culos de importaciÃ³n.
               </p>
             </div>
             <button 
@@ -142,7 +142,7 @@ export const CalculadoraImpuestos = () => {
                   <Search size={14}/> Paso 1: Averigua los datos del coche
                 </h2>
                 <p className="text-gray-300 text-sm leading-relaxed max-w-xl text-left">
-                  ¿No conoces el valor inicial o el CO2 exacto? Consulta a nuestro <strong>Asistente IA</strong> especializado en el BOE para obtener los valores antes de calcular.
+                  Â¿No conoces el valor inicial o el CO2 exacto? Consulta a nuestro <strong>Asistente IA</strong> especializado en el BOE para obtener los valores antes de calcular.
                 </p>
               </div>
             </div>
@@ -171,10 +171,10 @@ export const CalculadoraImpuestos = () => {
                     </div>
                     <div className="flex flex-col">
                       <span className="text-[11px] font-black uppercase tracking-widest text-white mb-1">
-                        ¿Coche antiguo o sin emisiones acreditadas?
+                        Â¿Coche antiguo o sin emisiones acreditadas?
                       </span>
                       <p className="text-[10px] text-gray-400 leading-tight uppercase font-medium">
-                        Selecciona esta casilla si el vehículo <strong className="text-gold-400">no declara emisiones de CO2</strong>, no cumple normativas Euronorma o resides en CCAA con tipo incrementado al <strong className="text-white">16%</strong> (Cataluña, Andalucía, Asturias, Cantabria o Baleares).
+                        Selecciona esta casilla si el vehÃ­culo <strong className="text-gold-400">no declara emisiones de CO2</strong>, no cumple normativas Euronorma o resides en CCAA con tipo incrementado al <strong className="text-white">16%</strong> (CataluÃ±a, AndalucÃ­a, Asturias, Cantabria o Baleares).
                       </p>
                     </div>
                   </div>
@@ -183,7 +183,7 @@ export const CalculadoraImpuestos = () => {
                 <div className="flex justify-between items-end mb-4">
                   <div className="flex flex-col">
                     <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 mb-1 tracking-widest">
-                      <Euro size={14}/> Valor del Vehículo
+                      <Euro size={14}/> Valor del VehÃ­culo
                     </label>
                     <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">
                       (Valor Venal BOE exacto)
@@ -196,7 +196,7 @@ export const CalculadoraImpuestos = () => {
                       onChange={(e) => setPrecio(Number(e.target.value))}
                       className="bg-transparent text-2xl text-white font-mono font-bold text-right outline-none w-32 min-h-[44px] text-base touch-manipulation"
                     />
-                    <span className="text-2xl font-bold ml-1 text-white">€</span>
+                    <span className="text-2xl font-bold ml-1 text-white">â‚¬</span>
                   </div>
                 </div>
                 
@@ -209,7 +209,7 @@ export const CalculadoraImpuestos = () => {
                 <div className="mt-4 p-4 bg-gold-400/5 border border-gold-400/10 rounded-xl flex gap-3 items-center text-left">
                   <Info size={18} className="text-gold-400 shrink-0" />
                   <p className="text-[11px] text-gray-400 leading-snug italic">
-                    <strong className="text-white not-italic">Uso profesional:</strong> Si el coche no figura con CO2 en ficha técnica, el impuesto se calcula obligatoriamente sobre el tramo máximo.
+                    <strong className="text-white not-italic">Uso profesional:</strong> Si el coche no figura con CO2 en ficha tÃ©cnica, el impuesto se calcula obligatoriamente sobre el tramo mÃ¡ximo.
                   </p>
                 </div>
               </div>
@@ -230,7 +230,7 @@ export const CalculadoraImpuestos = () => {
               <div className="text-left">
                 <div className="flex justify-between mb-4">
                   <label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 tracking-widest">
-                    <Calendar size={14}/> Antigüedad: {meses} meses
+                    <Calendar size={14}/> AntigÃ¼edad: {meses} meses
                   </label>
                 </div>
                 <input 
@@ -246,7 +246,7 @@ export const CalculadoraImpuestos = () => {
                 <div className="bg-black rounded-[calc(1.5rem-1px)] p-6 sm:p-8">
                   <span className="text-xs text-gray-500 uppercase block mb-2 tracking-[0.2em] text-center">Impuesto Estimado</span>
                   <div className="text-6xl font-serif font-bold text-white mb-8 text-center tracking-tighter">
-                    {Math.round(resultado.matriculacion).toLocaleString()}€
+                    {Math.round(resultado.matriculacion).toLocaleString()}â‚¬
                   </div>
 
                   <div className="space-y-4 pt-6 border-t border-white/10 text-sm">
@@ -255,13 +255,13 @@ export const CalculadoraImpuestos = () => {
                       <span className="text-gold-400 font-mono font-bold text-lg">{resultado.tramo}%</span>
                     </div>
                     <div className="flex justify-between items-center text-left">
-                      <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">Reducción Aplicada:</span>
+                      <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">ReducciÃ³n Aplicada:</span>
                       <span className="text-white font-mono">{getReduccionText()}</span>
                     </div>
                   </div>
 
                   <button 
-                    onClick={() => window.open(`https://wa.me/34603743608?text=Hola! He usado la calculadora para un coche con ${emisiones}g/km y valor de ${precio}€. ¿Me confirmáis el valor BOE exacto?`, '_blank')}
+                    onClick={() => window.open(`https://wa.me/34603743608?text=Hola! He usado la calculadora para un coche con ${emisiones}g/km y valor de ${precio}â‚¬. Â¿Me confirmÃ¡is el valor BOE exacto?`, '_blank')}
                     className="mt-10 flex items-center justify-center gap-3 w-full py-4 bg-white text-black font-extrabold rounded-xl hover:bg-gold-400 transition-all uppercase text-[11px] tracking-[0.15em] min-h-[48px] touch-manipulation"
                   >
                     Verificar con un experto <ArrowRight size={16}/>
@@ -273,51 +273,51 @@ export const CalculadoraImpuestos = () => {
                 <AlertTriangle className="text-red-700 shrink-0" size={20} />
                 <p className="text-[10px] text-gray-500 leading-relaxed uppercase tracking-wider font-medium">
                   {esComunidadIncrementada 
-                    ? "ATENCIÓN: Se está aplicando el tipo del 16% (Tramo 4) por falta de acreditación de emisiones o normativa autonómica incrementada."
-                    : "Este cálculo es orientativo. Los residentes en Cataluña podrían estar sujetos al impuesto anual de CO2 adicional o al tipo del 16% si no acreditan emisiones."}
+                    ? "ATENCIÃ“N: Se estÃ¡ aplicando el tipo del 16% (Tramo 4) por falta de acreditaciÃ³n de emisiones o normativa autonÃ³mica incrementada."
+                    : "Este cÃ¡lculo es orientativo. Los residentes en CataluÃ±a podrÃ­an estar sujetos al impuesto anual de CO2 adicional o al tipo del 16% si no acreditan emisiones."}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* SECCIÓN INFORMATIVA DETALLADA (SOLUCIÓN SEMRUSH LONG-FORM) */}
+          {/* SECCIÃ“N INFORMATIVA DETALLADA (SOLUCIÃ“N SEMRUSH LONG-FORM) */}
           <section className="mb-16 sm:mb-20 md:mb-24 p-4 sm:p-6 md:p-8 lg:p-12 bg-white/[0.02] border border-white/5 rounded-3xl text-left">
             <h2 className="text-3xl font-serif font-bold mb-6 italic text-gold-400">
-              Impuesto de matriculación: ¿Diésel o Gasolina?
+              Impuesto de matriculaciÃ³n: Â¿DiÃ©sel o Gasolina?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-gray-400 leading-relaxed">
               <div className="space-y-4">
                 <p>
-                  A la hora de importar un coche de Alemania, la duda entre <strong>diésel o gasolina</strong> es crucial para el presupuesto final. El impuesto de matriculación en España no discrimina por el tipo de combustible de forma directa, sino por las <strong>emisiones de CO2 homologadas (WLTP)</strong>.
+                  A la hora de importar un coche de Alemania, la duda entre <strong>diÃ©sel o gasolina</strong> es crucial para el presupuesto final. El impuesto de matriculaciÃ³n en EspaÃ±a no discrimina por el tipo de combustible de forma directa, sino por las <strong>emisiones de CO2 homologadas (WLTP)</strong>.
                 </p>
                 <p>
-                  Los motores <strong>diésel modernos</strong> suelen ofrecer cifras de CO2 más ajustadas que sus homólogos de gasolina de igual potencia. Esto puede significar que un vehículo diésel se mantenga en el tramo del <strong>4,75%</strong>, mientras que la versión de gasolina salte al <strong>9,75%</strong>, duplicando el coste del impuesto.
+                  Los motores <strong>diÃ©sel modernos</strong> suelen ofrecer cifras de CO2 mÃ¡s ajustadas que sus homÃ³logos de gasolina de igual potencia. Esto puede significar que un vehÃ­culo diÃ©sel se mantenga en el tramo del <strong>4,75%</strong>, mientras que la versiÃ³n de gasolina salte al <strong>9,75%</strong>, duplicando el coste del impuesto.
                 </p>
               </div>
               <div className="space-y-4">
                 <p>
-                  Por otro lado, los vehículos de <strong>gasolina</strong> suelen tener un mantenimiento menos complejo a largo plazo y etiquetas ambientales que pueden ser más favorables en ciertas zonas de bajas emisiones, compensando el posible pago extra inicial. 
+                  Por otro lado, los vehÃ­culos de <strong>gasolina</strong> suelen tener un mantenimiento menos complejo a largo plazo y etiquetas ambientales que pueden ser mÃ¡s favorables en ciertas zonas de bajas emisiones, compensando el posible pago extra inicial. 
                 </p>
                 <p>
-                  En <strong>Premium German Cars</strong> recomendamos siempre verificar la cifra exacta de CO2 en el Certificado de Conformidad (COC). Si el coche emite menos de 120g/km, el impuesto será de <strong>0€</strong>, independientemente de si es diésel o gasolina.
+                  En <strong>Premium German Cars</strong> recomendamos siempre verificar la cifra exacta de CO2 en el Certificado de Conformidad (COC). Si el coche emite menos de 120g/km, el impuesto serÃ¡ de <strong>0â‚¬</strong>, independientemente de si es diÃ©sel o gasolina.
                 </p>
               </div>
             </div>
           </section>
 
-          {/* FAQ SECCIÓN PARA SEO */}
+          {/* FAQ SECCIÃ“N PARA SEO */}
           <section className="mb-24 pt-20 border-t border-white/10 text-left">
             <h2 className="text-3xl font-serif font-bold mb-10 flex items-center gap-3 italic">
-              <HelpCircle className="text-gold-400" size={28} /> Preguntas frecuentes sobre Importación
+              <HelpCircle className="text-gold-400" size={28} /> Preguntas frecuentes sobre ImportaciÃ³n
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               <div className="space-y-4">
-                <h3 className="text-white font-bold uppercase text-sm tracking-widest">¿Cuánto cuesta matricular un coche de Alemania?</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">El coste depende del <strong>valor venal BOE</strong> y las emisiones de CO2. Para un coche premium de 3 años, el impuesto suele rondar el 4.75% o 9.75% de su valor tablas, más unos 600€ de gestión e ITV.</p>
+                <h3 className="text-white font-bold uppercase text-sm tracking-widest">Â¿CuÃ¡nto cuesta matricular un coche de Alemania?</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">El coste depende del <strong>valor venal BOE</strong> y las emisiones de CO2. Para un coche premium de 3 aÃ±os, el impuesto suele rondar el 4.75% o 9.75% de su valor tablas, mÃ¡s unos 600â‚¬ de gestiÃ³n e ITV.</p>
               </div>
               <div className="space-y-4">
-                <h3 className="text-white font-bold uppercase text-sm tracking-widest">¿Qué documentos necesito para el Modelo 576?</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">Necesitarás la ficha técnica alemana (Teil I y Teil II), la factura de compra o contrato traducido y el <strong>Certificado de Conformidad (COC)</strong> para acreditar las emisiones exactas.</p>
+                <h3 className="text-white font-bold uppercase text-sm tracking-widest">Â¿QuÃ© documentos necesito para el Modelo 576?</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">NecesitarÃ¡s la ficha tÃ©cnica alemana (Teil I y Teil II), la factura de compra o contrato traducido y el <strong>Certificado de Conformidad (COC)</strong> para acreditar las emisiones exactas.</p>
               </div>
             </div>
           </section>
@@ -327,9 +327,9 @@ export const CalculadoraImpuestos = () => {
               <div className="text-left">
                 <h2 className="text-3xl font-serif font-bold flex items-center gap-3 text-left">
                   <CheckCircle2 className="text-gold-400" size={28} />
-                  Referencia Reales <span className="text-gold-400 italic font-normal text-xl ml-2">(Coches 3 años)</span>
+                  Referencia Reales <span className="text-gold-400 italic font-normal text-xl ml-2">(Coches 3 aÃ±os)</span>
                 </h2>
-                <p className="text-gray-500 mt-2 text-sm text-left">Ejemplos basados en las tablas oficiales del BOE y nuestra experiencia en importación.</p>
+                <p className="text-gray-500 mt-2 text-sm text-left">Ejemplos basados en las tablas oficiales del BOE y nuestra experiencia en importaciÃ³n.</p>
               </div>
               <div className="hidden md:block">
                 <Car className="text-white/10" size={80} />
@@ -365,36 +365,36 @@ export const CalculadoraImpuestos = () => {
               <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <FileText className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">Matriculación con Asistente de IA</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">MatriculaciÃ³n con Asistente de IA</h3>
                 </div>
                 <p className="text-sm leading-relaxed text-left">
-                  Muchos usuarios buscan <strong>cómo calcular el impuesto de matriculación</strong> sin errores. Nuestra herramienta pionera incluye un <strong>asistente de IA</strong> que consulta las tablas del <strong>BOE 2026</strong> por ti, ahorrándote trámites tediosos.
+                  Muchos usuarios buscan <strong>cÃ³mo calcular el impuesto de matriculaciÃ³n</strong> sin errores. Nuestra herramienta pionera incluye un <strong>asistente de IA</strong> que consulta las tablas del <strong>BOE 2026</strong> por ti, ahorrÃ¡ndote trÃ¡mites tediosos.
                 </p>
               </div>
 
               <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <Globe className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">Importar de Alemania ahora es más fácil</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">Importar de Alemania ahora es mÃ¡s fÃ¡cil</h3>
                 </div>
                 <p className="text-sm leading-relaxed text-left">
-                  Calcular <strong>cuánto cuesta matricular un coche alemán en España</strong> ya no es un misterio. Con la tecnología de <strong>Premium German Cars</strong>, obtienes el desglose exacto del Modelo 576 y gastos de gestión en segundos.
+                  Calcular <strong>cuÃ¡nto cuesta matricular un coche alemÃ¡n en EspaÃ±a</strong> ya no es un misterio. Con la tecnologÃ­a de <strong>Premium German Cars</strong>, obtienes el desglose exacto del Modelo 576 y gastos de gestiÃ³n en segundos.
                 </p>
               </div>
 
               <div className="space-y-4 text-left">
                 <div className="flex items-center gap-3 text-white mb-2">
                   <ShieldCheck className="text-gold-400" size={20} />
-                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">Seguridad en tu inversión Premium</h3>
+                  <h3 className="font-bold uppercase text-xs tracking-widest text-left">Seguridad en tu inversiÃ³n Premium</h3>
                 </div>
                 <p className="text-sm leading-relaxed text-left">
-                  No te la juegues con los <strong>costes de importar un coche</strong>. Nuestra calculadora puntera analiza emisiones y antigüedad para que tu presupuesto sea 100% real. Confía en la asesoría líder de <strong>premiumgermancars.com</strong>.
+                  No te la juegues con los <strong>costes de importar un coche</strong>. Nuestra calculadora puntera analiza emisiones y antigÃ¼edad para que tu presupuesto sea 100% real. ConfÃ­a en la asesorÃ­a lÃ­der de <strong>premiumgermancars.com</strong>.
                 </p>
               </div>
             </div>
 
             <p className="mt-20 text-[10px] text-gray-500 text-center uppercase tracking-widest font-bold">
-              Premium German Cars — Gestión Integral de Impuestos y Tasas
+              Premium German Cars â€” GestiÃ³n Integral de Impuestos y Tasas
             </p>
           </section>
         </div>
@@ -405,3 +405,6 @@ export const CalculadoraImpuestos = () => {
     </div>
   );
 };
+
+
+

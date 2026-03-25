@@ -1,15 +1,34 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { Plus, Minus } from 'lucide-react';
 import { faqs } from '../data/faqs';
 import { WhatsAppButton } from '../components/WhatsAppButton';
+import { SEO } from '../components/SEO';
 
 export function FAQPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
 
   return (
     <div className="bg-black min-h-screen">
+      <SEO
+        title="Preguntas frecuentes sobre importar coche de Alemania | PGC"
+        description="Respuestas claras sobre importación de coches desde Alemania: impuestos, documentación, transporte, plazos y riesgos."
+        canonical="https://www.premiumgermancars.com/preguntas-frecuentes"
+        jsonLd={faqSchema}
+      />
       <Navbar />
       <main className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
         <div className="container mx-auto px-4 sm:px-6">
@@ -18,10 +37,10 @@ export function FAQPage() {
               Centro de Ayuda
             </span>
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-white mb-6">
-              Preguntas Frecuentes
+              Preguntas frecuentes sobre importar coche de Alemania
             </h1>
             <p className="text-gray-400 text-lg">
-              Todo lo que necesitas saber sobre la importación de coches desde Alemania en 2026.
+              Resolvemos dudas reales sobre impuestos, documentación, transporte, plazos y riesgos.
             </p>
           </div>
 

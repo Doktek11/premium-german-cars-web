@@ -1,175 +1,288 @@
-import { Link } from 'react-router-dom';
-import { Navbar } from '../../components/Navbar';
-import { Footer } from '../../components/Footer';
+﻿import React, { useEffect } from "react";
+import { Navbar } from "../../components/Navbar";
+import { Footer } from "../../components/Footer";
+import { WhatsAppButton } from "../../components/WhatsAppButton";
 import { SEO } from "../../components/SEO";
-import {
-  ChevronLeft,
-  Mail,
-  Zap,
-  Fuel,
-  Leaf,
-  Gauge,
-  Calculator
-} from 'lucide-react';
+import { ArrowRight, Calculator } from "lucide-react";
+import { Link } from "react-router-dom";
 
-const EleccionMotor2026 = () => {
+export const EleccionMotor2026: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <SEO
-        title="¿Diésel, Gasolina o Híbrido? Guía de Motores 2026 | PGC"
-        description="Qué motor elegir al importar de Alemania en 2026: Etiquetas ZBE, fiscalidad y ahorro. Analizamos PHEV, MHEV y motores térmicos de reestreno."
+        title="Qué motor elegir en 2026: diésel, gasolina o híbrido | PGC"
+        description="Guía 2026 para elegir motor: diésel, gasolina, MHEV o PHEV según uso real, fiscalidad, etiqueta y coste total."
+        canonical="https://www.premiumgermancars.com/blog/que-motor-elegir-importar-alemania-2026"
         article={true}
         image="/logoPGC.svg"
-        canonical="https://www.premiumgermancars.com/blog/que-motor-elegir-importar-alemania-2026"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline:
+            "¿Diésel, Gasolina o Híbrido? Qué Motor Elegir en 2026 (y Evitar Errores Caros)",
+          description:
+            "Guía 2026 para elegir motor: diésel, gasolina, MHEV o PHEV según uso real, fiscalidad, etiqueta y coste total.",
+          image: ["https://www.premiumgermancars.com/logoPGC.svg"],
+          datePublished: "2026-03-27",
+          dateModified: "2026-03-27",
+          author: {
+            "@type": "Organization",
+            name: "Premium German Cars",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Premium German Cars",
+            logo: {
+              "@type": "ImageObject",
+              url: "https://www.premiumgermancars.com/logoPGC.svg",
+            },
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": "https://www.premiumgermancars.com/blog/que-motor-elegir-importar-alemania-2026",
+          },
+        }}
       />
 
       <Navbar />
 
-      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20 font-sans">
-        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl text-center mb-14 sm:mb-18 md:mb-22">
+          <span className="text-gold-400 text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
+            Guía 2026
+          </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 leading-tight">
+            ¿Diésel, Gasolina o Híbrido? Qué Motor Elegir en 2026 (y Evitar Errores Caros)
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-300">
+            En 2026, la pregunta ya no es cuánto corre un coche, sino qué motor elegir en 2026 y cómo afecta a tu movilidad, tus impuestos y el valor futuro del vehículo.
+          </p>
+        </section>
 
-          {/* CABECERA */}
-          <header className="mb-16">
-            <Link to="/blog" className="text-gray-500 hover:text-gold-400 mb-10 inline-flex items-center gap-2 transition-all group tracking-[0.2em] text-[10px] uppercase font-bold">
-              <ChevronLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" /> Volver al Blog
-            </Link>
-            <div className="space-y-4">
-              <span className="inline-block bg-blue-950/30 text-blue-400 px-4 py-1 rounded-full text-[10px] uppercase tracking-widest font-black border border-blue-500/20">
-                Guía de Compra Inteligente
-              </span>
-              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">
-                ¿Diésel, Gasolina o Híbrido? <span className="text-gold-400 block md:inline italic">Qué motor elegir en 2026</span>
-              </h1>
-            </div>
-            <div className="flex items-center gap-6 mt-10 text-gray-500 text-[10px] uppercase tracking-[0.3em] font-bold">
-              <span>Premium German Cars</span>
-              <span className="w-8 h-[1px] bg-gold-400/30"></span>
-              <span>12 Enero, 2026</span>
-            </div>
-          </header>
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-12 sm:mb-16 md:mb-20">
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            Con las Zonas de Bajas Emisiones (ZBE) activas en la mayoría de ciudades, elegir mal el motor puede significar restricciones de circulación, pérdida de valor del coche y pagar más impuestos de los necesarios.
+          </p>
+          <p className="text-gray-300 text-lg leading-relaxed">
+            Elegir mal el motor no es solo una cuestión técnica, es una decisión económica.
+          </p>
+        </section>
 
-          {/* HERO VISUAL */}
-          <div className="aspect-[21/9] w-full bg-[#0a0a0a] border border-white/5 flex flex-col items-center justify-center mb-20 relative overflow-hidden group">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold-600/5 via-transparent to-transparent opacity-50"></div>
-            <img src="/logoPGC.svg" className="w-64 opacity-20 brightness-0 invert transition-transform duration-700 group-hover:scale-110" alt="PGC Logo" />
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gold-400/40 font-serif italic text-xs tracking-[0.5em] uppercase">
-              Análisis Técnico y Fiscal
+        <section className="bg-metallic-900 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">¿Qué motor es mejor en 2026: diésel, gasolina o híbrido?</h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">La respuesta correcta depende de una sola cosa: tu uso real del coche.</p>
+            <p className="text-gray-300 text-lg leading-relaxed">El mejor motor no es el más potente ni el más moderno, es el que mejor encaja con tu uso diario.</p>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-12 sm:mb-16 md:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">¿Qué motor elegir en 2026 según tu uso?</h2>
+          <ul className="space-y-2 text-sm mb-6">
+            <li>Uso urbano diario → híbrido o MHEV (Etiqueta ECO o 0).</li>
+            <li>Uso mixto (ciudad + carretera) → MHEV (mejor equilibrio).</li>
+            <li>Más de 20.000 km/año → diésel moderno.</li>
+            <li>Uso diario con posibilidad de carga → híbrido enchufable (PHEV).</li>
+          </ul>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Elegir correctamente el motor según tu uso puede ahorrarte miles de euros a medio plazo.</p>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Antes de decidir qué motor elegir en 2026, es clave entender el impacto real en impuestos, consumo y coste de importación.</p>
+          <Link
+            to="/calculadora-impuesto-matriculacion"
+            className="inline-flex items-center gap-2 text-gold-400 font-bold uppercase tracking-[0.2em] hover:text-white transition-colors"
+          >
+            Calculadora de importación de coches desde Alemania <ArrowRight size={16} />
+          </Link>
+        </section>
+
+        <section className="bg-metallic-950 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
+          <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-8">Comparativa de motores en 2026: diésel vs gasolina vs híbrido</h2>
+            <div className="overflow-x-auto border border-white/10">
+              <table className="min-w-full text-left text-sm">
+                <thead className="bg-white/5 text-gray-300">
+                  <tr>
+                    <th className="py-3 px-4">Motor</th>
+                    <th className="py-3 px-4">Mejor uso</th>
+                    <th className="py-3 px-4">Etiqueta</th>
+                    <th className="py-3 px-4">Coste fiscal</th>
+                    <th className="py-3 px-4">Recomendación</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    ["Diésel", "Autopista / muchos km", "C", "Bajo-medio", "Ideal para largos recorridos"],
+                    ["MHEV", "Uso mixto", "ECO", "Medio", "Mejor equilibrio general"],
+                    ["PHEV", "Ciudad + carga", "0", "Muy bajo", "Máximo ahorro si se usa bien"],
+                    ["Gasolina", "Uso ocasional", "C", "Alto", "Opción emocional"],
+                  ].map((row) => (
+                    <tr key={row[0]} className="border-t border-white/10">
+                      {row.map((cell) => (
+                        <td key={cell} className="py-3 px-4 text-gray-300">
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
+        </section>
 
-          <div className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed">
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-12 sm:mb-16 md:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-8">Tipos de motor en 2026: cuál elegir según tu caso</h2>
+          <div className="space-y-10">
+            <div>
+              <h3 className="text-xl font-bold mb-3">1. Diésel moderno: el rey de la autopista</h3>
+              <p className="text-gray-300 text-base mb-4">El mercado alemán sigue siendo el mejor lugar para encontrar diésel Euro 6d en excelente estado.</p>
+              <h4 className="text-base font-bold mb-2">Cuándo elegir diésel en 2026</h4>
+              <ul className="space-y-2 text-sm mb-4">
+                <li>Viajes largos frecuentes.</li>
+                <li>Más de 20.000 km al año.</li>
+                <li>Uso principalmente en carretera.</li>
+              </ul>
+              <h4 className="text-base font-bold mb-2">Características</h4>
+              <ul className="space-y-2 text-sm mb-4">
+                <li>Etiqueta DGT: C.</li>
+                <li>Impuesto de matriculación: ~4,75%.</li>
+              </ul>
+              <p className="text-gray-300 text-base">Es la opción más eficiente para hacer kilómetros, pero no para ciudad.</p>
+            </div>
 
-            {/* INTRODUCCIÓN */}
-            <section className="mb-20">
-              <p className="text-xl md:text-2xl font-bold text-white mb-8 leading-snug">
-                En 2026, la pregunta clave no es cuánto corre el coche, sino qué etiqueta obtendrá y cómo afectará a tu movilidad diaria.
-              </p>
-              <p className="mb-6 text-justify text-lg text-gray-400">
-                Con las Zonas de Bajas Emisiones (ZBE) plenamente activas, elegir el motor equivocado puede significar limitaciones de movilidad o una fiscalidad innecesariamente alta. En <strong>Premium German Cars</strong> analizamos cada unidad desde un punto de vista técnico, fiscal y de uso real.
-              </p>
-            </section>
+            <div>
+              <h3 className="text-xl font-bold mb-3">2. Mild Hybrid (MHEV): el equilibrio más inteligente</h3>
+              <p className="text-gray-300 text-base mb-4">Es, en la práctica, la mejor opción para la mayoría de conductores.</p>
+              <h4 className="text-base font-bold mb-2">Ventajas</h4>
+              <ul className="space-y-2 text-sm mb-4">
+                <li>Etiqueta ECO.</li>
+                <li>Acceso a ZBE.</li>
+                <li>Menor consumo en uso real.</li>
+              </ul>
+              <p className="text-gray-300 text-base">Es el punto medio ideal entre coste, uso diario y valor futuro.</p>
+            </div>
 
-            {/* 1. DIESEL */}
-            <section className="mb-24">
-              <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
-                <Fuel size={14} /> 1. Diésel de Reestreno: El "Rey" de la Autopista
-              </h2>
-              <p className="text-lg mb-8">
-                El mercado alemán sigue siendo el mejor lugar para encontrar unidades diésel modernas (Euro 6d-ISC-FCM) en estado impecable.
-              </p>
-              <div className="grid md:grid-cols-2 gap-8 bg-[#0a0a0a] p-8 border border-white/5">
-                <div>
-                  <h4 className="text-gold-400 font-bold uppercase text-xs tracking-widest mb-4">Análisis PGC</h4>
-                  <ul className="space-y-3 text-sm italic">
-                    <li>• Etiqueta C (Verde) en España.</li>
-                    <li>• Impuesto matriculación: Tramo del 4,75%.</li>
-                    <li>• Ideal para recorrer más de 20.000 km/año.</li>
-                  </ul>
-                </div>
-                <div className="border-l border-white/10 pl-8">
-                  <p className="text-xs text-gray-500 leading-relaxed">
-                    Es el motor ideal para devorar kilómetros por la AP-7 con una sola carga de depósito. No lo recomendamos si tu uso es 100% urbano.
-                  </p>
-                </div>
-              </div>
-            </section>
+            <div>
+              <h3 className="text-xl font-bold mb-3">3. Híbrido enchufable (PHEV): el mayor ahorro fiscal</h3>
+              <p className="text-gray-300 text-base mb-4">Si puedes cargarlo con frecuencia, es el motor más eficiente económicamente.</p>
+              <h4 className="text-base font-bold mb-2">Ventajas</h4>
+              <ul className="space-y-2 text-sm mb-4">
+                <li>Impuesto de matriculación: 0%.</li>
+                <li>Etiqueta 0 emisiones.</li>
+                <li>Acceso total a ciudades.</li>
+              </ul>
+              <p className="text-gray-300 text-base mb-4">Solo tiene sentido si se carga regularmente.</p>
+              <p className="text-gray-300 text-base">Bien utilizado, es el motor con mayor ahorro total.</p>
+            </div>
 
-            {/* 2. MILD HYBRID */}
-            <section className="mb-24">
-              <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
-                <Zap size={14} /> 2. Mild Hybrid (MHEV): El Equilibrio Perfecto
-              </h2>
-              <p className="text-lg mb-8 text-justify">
-                La opción más inteligente para la mayoría. Gran parte del stock alemán de BMW, Mercedes y Audi desde 2021 incorpora este sistema de 48V.
-              </p>
-              <div className="bg-gradient-to-r from-gold-400/5 to-transparent p-8 border-l-2 border-gold-400">
-                <h4 className="text-white font-black text-sm uppercase mb-4">La Ventaja ECO:</h4>
-                <p className="text-base text-gray-400 italic">
-                  Independientemente de que el motor sea gasolina o diésel, en España reciben <strong>Etiqueta ECO</strong>. Acceso sin restricciones a ZBE y ventajas en aparcamiento.
-                </p>
-              </div>
-            </section>
-
-            {/* 3. PHEV */}
-            <section className="mb-24">
-              <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
-                <Leaf size={14} /> 3. Híbridos Enchufables (PHEV): El Ganador Fiscal
-              </h2>
-              <div className="flex flex-col md:flex-row gap-12 items-start">
-                <div className="flex-1">
-                  <p className="text-lg leading-relaxed mb-6">
-                    Si puedes cargar a diario, el PHEV es el vencedor absoluto. La mayoría emiten menos de 45 g/km de CO₂, lo que exime del impuesto de matriculación.
-                  </p>
-                </div>
-                <div className="w-full md:w-72 bg-white/5 p-6 border border-white/10">
-                  <span className="text-[10px] font-black text-gold-400 uppercase tracking-[0.2em] block mb-4">Ahorro Directo</span>
-                  <p className="text-2xl font-bold text-white mb-2">0%</p>
-                  <p className="text-[10px] text-gray-500 uppercase tracking-tighter">Impuesto de Matriculación en España</p>
-                </div>
-              </div>
-            </section>
-
-            {/* 4. GASOLINA */}
-            <section className="mb-24">
-              <h2 className="text-[10px] uppercase tracking-[0.4em] font-black text-gold-400 mb-6 border-b border-gold-400/20 pb-4 flex items-center gap-3">
-                <Gauge size={14} /> 4. Gasolina Moderno: Pureza y Rendimiento
-              </h2>
-              <p className="text-lg mb-10 text-justify">
-                Alemania es el paraíso para encontrar motores de 6 y 8 cilindros. Aunque la fiscalidad puede situarse en tramos del 9,75% o 14,75%, para el entusiasta es una inversión en exclusividad y sensaciones.
-              </p>
-            </section>
-
-            {/* CONCLUSIÓN Y CTA */}
-            <div className="bg-[#0a0a0a] border border-gold-400/20 p-12 text-center relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400/50 to-transparent"></div>
-              <h2 className="text-3xl font-bold mb-6 text-white leading-tight">
-                Importar bien empieza por <span className="text-gold-400 italic">elegir el motor correcto</span>
-              </h2>
-              <p className="text-gray-300 mb-10 text-base max-w-2xl mx-auto font-bold">
-                ¿Dudas con la etiqueta de un modelo concreto? Pásanos el enlace de Mobile.de y te confirmamos su fiscalidad en 10 minutos.
-              </p>
-              <div className="flex flex-col md:flex-row gap-6 justify-center">
-                <a
-                  href="https://wa.me/34603743608?text=Hola,%20tengo%20dudas%20sobre%20qué%20motor%20elegir%20para%20mi%20coche%20de%20importación."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-3 bg-gold-400 text-black px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white transition-all duration-500"
-                >
-                  Consultar a un Experto <Mail size={16} />
-                </a>
-                <Link to="/calculadora-impuesto-matriculacion" className="inline-flex items-center justify-center gap-3 border border-white/10 text-white px-12 py-5 font-black uppercase text-[10px] tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500">
-                  <Calculator size={16} /> Ir a la Calculadora
-                </Link>
-              </div>
-              <p className="text-[9px] text-gray-600 mt-12 font-black tracking-[0.4em] uppercase">
-                👉 Premium German Cars — Cambrils | Tarragona
-              </p>
+            <div>
+              <h3 className="text-xl font-bold mb-3">4. Gasolina en 2026: sensaciones con mayor coste</h3>
+              <p className="text-gray-300 text-base mb-4">El motor gasolina sigue teniendo su espacio, especialmente en vehículos más exclusivos.</p>
+              <h4 className="text-base font-bold mb-2">Ventajas</h4>
+              <ul className="space-y-2 text-sm mb-4">
+                <li>Conducción más refinada.</li>
+                <li>Menor complejidad técnica.</li>
+              </ul>
+              <h4 className="text-base font-bold mb-2">Inconvenientes</h4>
+              <ul className="space-y-2 text-sm mb-4">
+                <li>Impuesto más alto (9,75% – 14,75%).</li>
+                <li>Mayor consumo.</li>
+              </ul>
+              <p className="text-gray-300 text-base">Es una elección más emocional, con impacto económico mayor.</p>
             </div>
           </div>
-        </div>
+        </section>
+
+        <section className="bg-metallic-900 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">El error más común al elegir motor en 2026</h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">Elegir sin tener en cuenta el uso real del coche.</p>
+            <ul className="space-y-2 text-sm mb-6">
+              <li>Comprar diésel para ciudad.</li>
+              <li>Elegir gasolina sin valorar impuestos.</li>
+              <li>Ignorar la etiqueta ambiental.</li>
+            </ul>
+            <p className="text-gray-300 text-lg leading-relaxed">Estos errores pueden suponer miles de euros en costes adicionales.</p>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-12 sm:mb-16 md:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Cuánto cuesta elegir mal el motor en 2026</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Una mala decisión puede provocar:</p>
+          <ul className="space-y-2 text-sm mb-6">
+            <li>Hasta un 10% más en impuestos.</li>
+            <li>Restricciones en ciudades con ZBE.</li>
+            <li>Menor valor de reventa.</li>
+          </ul>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Ejemplo real: un cliente que hacía unos 12.000 km anuales en ciudad eligió diésel por precio. En menos de 2 años tuvo problemas con el filtro de partículas y perdió valor en reventa.</p>
+          <p className="text-gray-300 text-lg leading-relaxed">Elegir mal el motor se paga durante años.</p>
+        </section>
+
+        <section className="bg-metallic-950 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Qué motor mantiene mejor el valor en España</h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">Actualmente, los motores que mejor conservan su valor son:</p>
+            <ul className="space-y-2 text-sm mb-6">
+              <li>Híbridos (HEV y PHEV).</li>
+              <li>MHEV con etiqueta ECO.</li>
+            </ul>
+            <p className="text-gray-300 text-lg leading-relaxed">Porque combinan acceso a ciudad, menor presión fiscal y mayor demanda futura.</p>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-12 sm:mb-16 md:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Cómo elegimos el motor adecuado en Premium German Cars</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">En Premium German Cars analizamos cada operación teniendo en cuenta:</p>
+          <ul className="space-y-2 text-sm mb-6">
+            <li>Uso real del cliente.</li>
+            <li>Kilómetros anuales.</li>
+            <li>Fiscalidad en España.</li>
+            <li>Etiqueta ambiental.</li>
+            <li>Coste total de importación.</li>
+          </ul>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">No recomendamos coches. Recomendamos decisiones correctas.</p>
+          <p className="text-gray-300 text-lg leading-relaxed">
+            También puedes ver qué coches son mejores para importar de Alemania en 2026 según su motor y valor de reventa.
+          </p>
+        </section>
+
+        <section className="bg-metallic-900 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Preguntas frecuentes sobre qué motor elegir en 2026</h2>
+            <h3 className="text-xl font-bold mb-3">¿Qué motor elegir en 2026: diésel o híbrido?</h3>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">Depende del uso. Para ciudad, híbrido. Para carretera, diésel.</p>
+            <h3 className="text-xl font-bold mb-3">¿Qué motor es más rentable en 2026?</h3>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">En la mayoría de casos, MHEV o híbrido por su equilibrio entre coste, consumo y fiscalidad.</p>
+            <h3 className="text-xl font-bold mb-3">¿Compensa un híbrido enchufable?</h3>
+            <p className="text-gray-300 text-lg leading-relaxed mb-6">Sí, si puedes cargarlo a diario. Si no, pierde gran parte de su ventaja.</p>
+            <h3 className="text-xl font-bold mb-3">¿Los motores gasolina van a desaparecer?</h3>
+            <p className="text-gray-300 text-lg leading-relaxed">No a corto plazo, pero tienen mayor presión fiscal y menor eficiencia.</p>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Conclusión: elegir motor en 2026 es elegir coste futuro</h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Elegir qué motor comprar en 2026 no es una cuestión de gustos, sino de estrategia.</p>
+          <p className="text-gray-300 text-lg leading-relaxed mb-6">Una buena elección significa menos impuestos, mayor libertad de uso y mejor valor de reventa. Una mala elección se paga durante años.</p>
+          <p className="text-gray-300 text-lg leading-relaxed mb-8">
+            Analizamos tu caso (uso, kilómetros, ciudad) y te recomendamos el motor y el coche exactos que mejor encajan contigo. Solicita asesoramiento personalizado antes de comprar y evita errores caros desde el principio.
+          </p>
+          <a
+            href="https://wa.me/34603743608?text=Hola,%20quiero%20asesoramiento%20para%20elegir%20el%20motor%20adecuado%20en%202026."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-gold-400 text-black px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
+          >
+            Solicitar asesoramiento por WhatsApp <ArrowRight size={16} />
+          </a>
+        </section>
       </main>
 
       <Footer />
+      <WhatsAppButton />
     </>
   );
 };

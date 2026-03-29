@@ -60,25 +60,25 @@ export const CalculadoraImpuestos = () => {
 
   const ejemplosImportacion = [
 
-    { modelo: "Audi A3 Sportback 35 TFSI", valor: "21.105â‚¬", co2: "128g", impuesto: "1.002â‚¬" },
+    { modelo: "Audi A3 Sportback 35 TFSI", valor: "21.105€", co2: "128g", impuesto: "1.002€" },
 
-    { modelo: "VW Golf GTI (Mk8)", valor: "28.140â‚¬", co2: "163g", impuesto: "2.743â‚¬" },
+    { modelo: "VW Golf GTI (Mk8)", valor: "28.140€", co2: "163g", impuesto: "2.743€" },
 
-    { modelo: "BMW 320d (G20)", valor: "30.820â‚¬", co2: "127g", impuesto: "1.464â‚¬" },
+    { modelo: "BMW 320d (G20)", valor: "30.820€", co2: "127g", impuesto: "1.464€" },
 
-    { modelo: "Mercedes-Benz A 200", valor: "22.780â‚¬", co2: "134g", impuesto: "1.082â‚¬" },
+    { modelo: "Mercedes-Benz A 200", valor: "22.780€", co2: "134g", impuesto: "1.082€" },
 
-    { modelo: "Audi Q5 40 TDI Quattro", valor: "37.520â‚¬", co2: "166g", impuesto: "3.658â‚¬" },
+    { modelo: "Audi Q5 40 TDI Quattro", valor: "37.520€", co2: "166g", impuesto: "3.658€" },
 
-    { modelo: "VW Tiguan 2.0 TDI", valor: "25.460â‚¬", co2: "142g", impuesto: "1.209â‚¬" },
+    { modelo: "VW Tiguan 2.0 TDI", valor: "25.460€", co2: "142g", impuesto: "1.209€" },
 
-    { modelo: "BMW M4 Competition", valor: "77.050â‚¬", co2: "228g", impuesto: "11.365â‚¬" },
+    { modelo: "BMW M4 Competition", valor: "77.050€", co2: "228g", impuesto: "11.365€" },
 
-    { modelo: "Mercedes CLA 220d", valor: "28.810â‚¬", co2: "131g", impuesto: "1.368â‚¬" },
+    { modelo: "Mercedes CLA 220d", valor: "28.810€", co2: "131g", impuesto: "1.368€" },
 
-    { modelo: "Cupra Formentor VZ", valor: "30.820â‚¬", co2: "175g", impuesto: "3.005â‚¬" },
+    { modelo: "Cupra Formentor VZ", valor: "30.820€", co2: "175g", impuesto: "3.005€" },
 
-    { modelo: "Audi A4 Avant 40 TFSI", valor: "32.160â‚¬", co2: "148g", impuesto: "1.527â‚¬" },
+    { modelo: "Audi A4 Avant 40 TFSI", valor: "32.160€", co2: "148g", impuesto: "1.527€" },
 
   ];
 
@@ -219,49 +219,27 @@ export const CalculadoraImpuestos = () => {
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
 
               jsonLd={{
-
           "@context": "https://schema.org",
-
           "@type": "FAQPage",
-
           mainEntity: [
-
             {
-
               "@type": "Question",
-
-              name: "¿Diésel o gasolina paga más impuesto de matriculación?",
-
+              name: "?Di?sel o gasolina paga m?s impuesto de matriculaci?n?",
               acceptedAnswer: {
-
                 "@type": "Answer",
-
-                text: "Depende del CO₂ homologado. El impuesto no discrimina por combustible; paga más el coche que emite más."
-
+                text: "Depende del CO? homologado. El impuesto no discrimina por combustible; paga m?s el coche que emite m?s."
               }
-
             },
-
             {
-
               "@type": "Question",
-
-              name: "?C?mo calcular el impuesto según CO₂?",
-
+              name: "¿Cómo calcular el impuesto según CO₂?",
               acceptedAnswer: {
-
                 "@type": "Answer",
-
-                text: "Se aplica el tramo de emisiones CO₂ y la depreciaci?n BOE sobre el valor venal del veh?culo."
-
+                text: "Se aplica el tramo de emisiones CO₂ y la depreciación BOE sobre el valor venal del vehículo."
               }
-
             }
-
           ]
-
         }}
-
       />
 
       
@@ -288,7 +266,7 @@ export const CalculadoraImpuestos = () => {
 
               <p className="text-gray-400 text-lg max-w-2xl text-left">
 
-                Herramienta de precisión basada en los tramos de CO2 2026 y las tablas de depreciación del BOE para vehículos de importación.
+                text: "Se aplica el tramo de emisiones CO₂ y la depreciación BOE sobre el valor venal del vehículo."
 
               </p>
 
@@ -450,7 +428,7 @@ export const CalculadoraImpuestos = () => {
 
                     />
 
-                    <span className="text-2xl font-bold ml-1 text-white">â‚¬</span>
+                    <span className="text-2xl font-bold ml-1 text-white">€</span>
 
                   </div>
 
@@ -550,7 +528,7 @@ export const CalculadoraImpuestos = () => {
 
                   <div className="text-6xl font-serif font-bold text-white mb-8 text-center tracking-tighter">
 
-                    {Math.round(resultado.matriculacion).toLocaleString()}â‚¬
+                    {Math.round(resultado.matriculacion).toLocaleString()}€
 
                   </div>
 
@@ -580,7 +558,7 @@ export const CalculadoraImpuestos = () => {
 
                   <button 
 
-                    onClick={() => window.open(`https://wa.me/34603743608?text=Hola! He usado la calculadora para un coche con ${emisiones}g/km y valor de ${precio}â‚¬. ¿Me confirmáis el valor BOE exacto?`, '_blank')}
+                    onClick={() => window.open(`https://wa.me/34603743608?text=Hola! He usado la calculadora para un coche con ${emisiones}g/km y valor de ${precio}€. ¿Me confirmáis el valor BOE exacto?`, '_blank')}
 
                     className="mt-10 flex items-center justify-center gap-3 w-full py-4 bg-white text-black font-extrabold rounded-xl hover:bg-gold-400 transition-all uppercase text-[11px] tracking-[0.15em] min-h-[48px] touch-manipulation"
 
@@ -656,7 +634,7 @@ export const CalculadoraImpuestos = () => {
 
                 <p>
 
-                  En <strong>Premium German Cars</strong> recomendamos siempre verificar la cifra exacta de CO2 en el Certificado de Conformidad (COC). Si el coche emite menos de 120g/km, el impuesto será de <strong>0â‚¬</strong>, independientemente de si es diésel o gasolina.
+              Premium German Cars — Gestión Integral de Impuestos y Tasas
 
                 </p>
 
@@ -684,7 +662,7 @@ export const CalculadoraImpuestos = () => {
 
                 <h3 className="text-white font-bold uppercase text-sm tracking-widest">¿Cuánto cuesta matricular un coche de Alemania?</h3>
 
-                <p className="text-gray-400 text-sm leading-relaxed">El coste depende del <strong>valor venal BOE</strong> y las emisiones de CO2. Para un coche premium de 3 años, el impuesto suele rondar el 4.75% o 9.75% de su valor tablas, más unos 600â‚¬ de gestión e ITV.</p>
+                <p className="text-gray-400 text-sm leading-relaxed">El coste depende del <strong>valor venal BOE</strong> y las emisiones de CO2. Para un coche premium de 3 años, el impuesto suele rondar el 4.75% o 9.75% de su valor tablas, más unos 600€ de gestión e ITV.</p>
 
               </div>
 
@@ -846,7 +824,7 @@ export const CalculadoraImpuestos = () => {
 
             <p className="mt-20 text-[10px] text-gray-500 text-center uppercase tracking-widest font-bold">
 
-              Premium German Cars â€” Gestión Integral de Impuestos y Tasas
+              Premium German Cars ? Gestión Integral de Impuestos y Tasas
 
             </p>
 
@@ -867,6 +845,9 @@ export const CalculadoraImpuestos = () => {
   );
 
 };
+
+
+
 
 
 

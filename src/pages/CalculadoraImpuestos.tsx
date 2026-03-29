@@ -224,10 +224,10 @@ export const CalculadoraImpuestos = () => {
           mainEntity: [
             {
               "@type": "Question",
-              name: "?Di?sel o gasolina paga m?s impuesto de matriculaci?n?",
+              name: "¿Diésel o gasolina paga más impuesto de matriculación?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "Depende del CO? homologado. El impuesto no discrimina por combustible; paga m?s el coche que emite m?s."
+                text: "Depende del CO₂ homologado. El impuesto no discrimina por combustible; paga más el coche que emite más."
               }
             },
             {
@@ -824,7 +824,7 @@ export const CalculadoraImpuestos = () => {
 
             <p className="mt-20 text-[10px] text-gray-500 text-center uppercase tracking-widest font-bold">
 
-              Premium German Cars ? Gestión Integral de Impuestos y Tasas
+              Premium German Cars — Gestión Integral de Impuestos y Tasas
 
             </p>
 

@@ -187,7 +187,7 @@ const ImportacionAlemaniaMejorOpcion = () => {
                 </Link>
               </div>
               <p className="text-[9px] text-gray-600 mt-12 font-black tracking-[0.4em] uppercase">
-                👉 Calidad Alemana — Gestión Premium German Cars
+                Calidad Alemana — Gestión Premium German Cars
               </p>
             </div>
           </div>
@@ -200,4 +200,3 @@ const ImportacionAlemaniaMejorOpcion = () => {
 };
 
 export default ImportacionAlemaniaMejorOpcion;
-

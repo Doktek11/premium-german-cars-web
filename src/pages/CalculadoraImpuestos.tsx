@@ -82,6 +82,61 @@ export const CalculadoraImpuestos = () => {
 
   ];
 
+  const ultimaActualizacionBoe = '5 abril 2026';
+
+  const calculadoraJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        name: "Calculadora de impuesto de matriculación de coche importado",
+        url: "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
+        description: "Calcula en segundos el impuesto de matriculación de un coche importado desde Alemania según CO2, antigüedad y tablas BOE.",
+        applicationCategory: "FinanceApplication",
+        operatingSystem: "Web",
+        inLanguage: "es-ES",
+        isAccessibleForFree: true,
+        dateModified: "2026-04-05",
+        featureList: [
+          "Cálculo por tramos de emisiones CO2",
+          "Aplicación de depreciación BOE por meses",
+          "Estimación del impuesto de matriculación en España"
+        ],
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "EUR"
+        },
+        provider: {
+          "@type": "Organization",
+          name: "Premium German Cars",
+          url: "https://www.premiumgermancars.com"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "¿Diésel o gasolina paga más impuesto de matriculación?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Depende del CO2 homologado. El impuesto no discrimina por combustible; paga más el coche que emite más."
+            }
+          },
+          {
+            "@type": "Question",
+            name: "¿Cómo calcular el impuesto según CO2?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Se aplica el tramo de emisiones CO2 y la depreciación BOE sobre el valor venal del vehículo."
+            }
+          }
+        ]
+      }
+    ]
+  };
+
 
 
   const abrirAsistenteIA = () => {
@@ -217,29 +272,7 @@ export const CalculadoraImpuestos = () => {
         description="Calcula en segundos qué paga más: diésel o gasolina. Impuesto de matriculación según CO₂ y coste real de importar tu coche."
 
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
-
-              jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: [
-            {
-              "@type": "Question",
-              name: "¿Diésel o gasolina paga más impuesto de matriculación?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Depende del CO₂ homologado. El impuesto no discrimina por combustible; paga más el coche que emite más."
-              }
-            },
-            {
-              "@type": "Question",
-              name: "¿Cómo calcular el impuesto según CO₂?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Se aplica el tramo de emisiones CO₂ y la depreciación BOE sobre el valor venal del vehículo."
-              }
-            }
-          ]
-        }}
+        jsonLd={calculadoraJsonLd}
       />
 
       
@@ -265,9 +298,7 @@ export const CalculadoraImpuestos = () => {
               </h1>
 
               <p className="text-gray-400 text-lg max-w-2xl text-left">
-
-                text: "Se aplica el tramo de emisiones CO₂ y la depreciación BOE sobre el valor venal del vehículo."
-
+                Herramienta de precisión basada en los tramos de CO2 2026 y las tablas de depreciación del BOE para vehículos de importación.
               </p>
 
             </div>
@@ -297,6 +328,26 @@ export const CalculadoraImpuestos = () => {
             </p>
 
           </div>
+
+          <section className="mb-8 sm:mb-10 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl text-left">
+            <h2 className="text-sm sm:text-base font-bold text-white uppercase tracking-[0.15em] mb-4">
+              Cómo calcula esta herramienta
+            </h2>
+            <ol className="space-y-3 text-sm text-gray-300">
+              <li>1. Determina el tramo de impuesto por emisiones de CO2: 0%, 4,75%, 9,75% o 14,75% (16% en supuestos autonómicos o sin emisiones acreditadas).</li>
+              <li>2. Aplica el coeficiente de depreciación BOE según antigüedad en meses para obtener la base imponible.</li>
+              <li>3. Calcula el impuesto estimado: base imponible x tramo aplicable.</li>
+            </ol>
+          </section>
+
+          <section className="mb-8 sm:mb-10 bg-gold-500/5 border border-gold-500/20 p-4 sm:p-6 rounded-2xl text-left">
+            <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-gold-400 mb-2">
+              Última actualización BOE
+            </h3>
+            <p className="text-sm text-gray-300">
+              Revisado el {ultimaActualizacionBoe}. Cálculo alineado con tramos de CO2 y tablas de depreciación BOE vigentes para importación de vehículos.
+            </p>
+          </section>
 
 
 
@@ -634,7 +685,7 @@ export const CalculadoraImpuestos = () => {
 
                 <p>
 
-              Premium German Cars — Gestión Integral de Impuestos y Tasas
+                  En <strong>Premium German Cars</strong> recomendamos siempre verificar la cifra exacta de CO2 en el Certificado de Conformidad (COC). Si el coche emite menos de 120g/km, el impuesto será de <strong>0€</strong>, independientemente de si es diésel o gasolina.
 
                 </p>
 

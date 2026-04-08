@@ -72,14 +72,6 @@ export const CalculadoraImpuestos = () => {
 
     { modelo: "VW Tiguan 2.0 TDI", valor: "25.460€", co2: "142g", impuesto: "1.209€" },
 
-    { modelo: "BMW M4 Competition", valor: "77.050€", co2: "228g", impuesto: "11.365€" },
-
-    { modelo: "Mercedes CLA 220d", valor: "28.810€", co2: "131g", impuesto: "1.368€" },
-
-    { modelo: "Cupra Formentor VZ", valor: "30.820€", co2: "175g", impuesto: "3.005€" },
-
-    { modelo: "Audi A4 Avant 40 TFSI", valor: "32.160€", co2: "148g", impuesto: "1.527€" },
-
   ];
 
   const ultimaActualizacionBoe = '5 abril 2026';
@@ -89,9 +81,9 @@ export const CalculadoraImpuestos = () => {
     "@graph": [
       {
         "@type": "WebApplication",
-        name: "Calculadora de impuesto de matriculación de coche importado",
+        name: "Calculadora diésel o gasolina de impuesto de matriculación",
         url: "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
-        description: "Calcula en segundos el impuesto de matriculación de un coche importado desde Alemania según CO2, antigüedad y tablas BOE.",
+        description: "Calcula en segundos si paga más diésel o gasolina en el impuesto de matriculación según CO2, antigüedad y tablas BOE.",
         applicationCategory: "FinanceApplication",
         operatingSystem: "Web",
         inLanguage: "es-ES",
@@ -267,9 +259,9 @@ export const CalculadoraImpuestos = () => {
 
       <SEO
 
-        title="Impuesto de matriculación diésel o gasolina | Calculadora IA"
+        title="Calculadora Impuesto Matriculación Diésel o Gasolina (2026) | PGC"
 
-        description="Calcula en segundos qué paga más: diésel o gasolina. Impuesto de matriculación según CO₂ y coste real de importar tu coche."
+        description="Calcula en segundos si paga más diésel o gasolina en el impuesto de matriculación. Tramos CO2 2026 y depreciación BOE."
 
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
         jsonLd={calculadoraJsonLd}
@@ -291,9 +283,9 @@ export const CalculadoraImpuestos = () => {
 
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter text-left">
 
-                Impuesto <span className="text-gold-400 italic">Diésel o Gasolina:</span> <br/>
+                Calculadora <span className="text-gold-400 italic">Diésel o Gasolina:</span> <br/>
 
-                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">¿Cuánto cuesta matricularlo?</span>
+                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">¿Quién paga más impuesto?</span>
 
               </h1>
 
@@ -325,6 +317,12 @@ export const CalculadoraImpuestos = () => {
 
               Resumen rápido: el impuesto no depende del combustible, sino del CO₂. En igualdad de precio, paga más el coche con más emisiones.
 
+            </p>
+            <p className="text-xs text-gray-400 mt-3">
+              Si quieres la parte estratégica de elección de motor, consulta nuestra guía completa de{" "}
+              <a href="/blog/que-motor-elegir-importar-alemania-2026" className="text-gold-400 hover:text-white transition-colors">
+                diésel vs gasolina en 2026
+              </a>.
             </p>
 
           </div>
@@ -741,7 +739,7 @@ export const CalculadoraImpuestos = () => {
 
                   <CheckCircle2 className="text-gold-400" size={28} />
 
-                  Referencia Reales <span className="text-gold-400 italic font-normal text-xl ml-2">(Coches 3 años)</span>
+                  Ejemplos Orientativos <span className="text-gold-400 italic font-normal text-xl ml-2">(Coches 3 años)</span>
 
                 </h2>
 
@@ -806,6 +804,10 @@ export const CalculadoraImpuestos = () => {
               </div>
 
             </div>
+
+            <p className="text-xs text-gray-500 text-left">
+              Valores orientativos. El cálculo final puede variar según COC, tablas BOE vigentes y situación fiscal del vehículo.
+            </p>
 
 
 

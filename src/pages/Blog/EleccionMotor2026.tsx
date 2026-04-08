@@ -14,8 +14,8 @@ export const EleccionMotor2026: React.FC = () => {
   return (
     <>
       <SEO
-        title="Qué motor elegir en 2026: diésel, gasolina o híbrido | PGC"
-        description="Guía 2026 para elegir motor: diésel, gasolina, MHEV o PHEV según uso real, fiscalidad, etiqueta y coste total."
+        title="Diésel o Gasolina en 2026: Qué Motor Conviene Según Tu Uso | Guía PGC"
+        description="Guía comparativa 2026 de diésel vs gasolina: cuándo conviene cada motor, costes fiscales y cómo decidir según tu uso real."
         canonical="https://www.premiumgermancars.com/blog/que-motor-elegir-importar-alemania-2026"
         article={true}
         image="/logoPGC.svg"
@@ -23,12 +23,12 @@ export const EleccionMotor2026: React.FC = () => {
           "@context": "https://schema.org",
           "@type": "Article",
           headline:
-            "¿Diésel, Gasolina o Híbrido? Qué Motor Elegir en 2026 (y Evitar Errores Caros)",
+            "Diésel o Gasolina en 2026: Qué Motor Conviene Según Tu Uso",
           description:
-            "Guía 2026 para elegir motor: diésel, gasolina, MHEV o PHEV según uso real, fiscalidad, etiqueta y coste total.",
+            "Guía comparativa 2026 de diésel vs gasolina: cuándo conviene cada motor, costes fiscales y cómo decidir según tu uso real.",
           image: ["https://www.premiumgermancars.com/logoPGC.svg"],
           datePublished: "2026-03-27",
-          dateModified: "2026-03-27",
+          dateModified: "2026-04-08",
           author: {
             "@type": "Organization",
             name: "Premium German Cars",
@@ -56,10 +56,16 @@ export const EleccionMotor2026: React.FC = () => {
             Guía 2026
           </span>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 leading-tight">
-            ¿Diésel, Gasolina o Híbrido? Qué Motor Elegir en 2026 (y Evitar Errores Caros)
+            Diésel o Gasolina en 2026: qué motor conviene según tu uso
           </h1>
           <p className="text-lg sm:text-xl text-gray-300">
-            En 2026, la pregunta ya no es cuánto corre un coche, sino qué motor elegir en 2026 y cómo afecta a tu movilidad, tus impuestos y el valor futuro del vehículo.
+            Guía práctica para decidir entre diésel o gasolina en 2026 con foco en uso real, fiscalidad y valor futuro del vehículo.
+          </p>
+          <p className="text-sm text-gray-400 mt-5">
+            Si quieres el cálculo exacto, usa la{" "}
+            <Link to="/calculadora-impuesto-matriculacion" className="text-gold-400 hover:text-white transition-colors">
+              calculadora de impuesto diésel o gasolina
+            </Link>.
           </p>
         </section>
 
@@ -94,7 +100,7 @@ export const EleccionMotor2026: React.FC = () => {
             to="/calculadora-impuesto-matriculacion"
             className="inline-flex items-center gap-2 text-gold-400 font-bold uppercase tracking-[0.2em] hover:text-white transition-colors"
           >
-            Calculadora de importación de coches desde Alemania <ArrowRight size={16} />
+            Calcular impuesto diésel o gasolina <ArrowRight size={16} />
           </Link>
         </section>
 

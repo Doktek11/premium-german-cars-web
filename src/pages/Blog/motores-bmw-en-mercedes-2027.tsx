@@ -6,12 +6,13 @@ import { Cpu, TrendingUp, ArrowRight, ShieldCheck, AlertCircle } from "lucide-re
 const MotoresBmwMercedes2027 = () => {
   return (
     <>
-      <SEO 
+      <SEO
         title="¿Motores BMW en Mercedes-Benz? Análisis del Pacto Alemán | Premium German Cars"
         description="Analizamos el rumor del siglo: ¿Llevarán los futuros Mercedes motores BMW? Qué significa para el valor de reventa y la inversión en coches premium."
+        canonical="https://www.premiumgermancars.com/blog/motores-bmw-en-mercedes-2027"
       />
       <Navbar />
-      
+
       <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20">
         <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
           {/* Cabecera */}
@@ -29,15 +30,15 @@ const MotoresBmwMercedes2027 = () => {
 
           {/* Imagen Conceptual con Branding PGC */}
           <div className="h-80 w-full bg-gradient-to-br from-metallic-800 to-black border border-white/5 flex items-center justify-center mb-16 relative overflow-hidden">
-             <img src="/logoPGC.svg" className="w-40 opacity-10 brightness-0 invert" alt="PGC Blog" />
-             <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-white/10 font-serif text-3xl md:text-6xl font-bold tracking-tighter uppercase select-none text-center">
-                  BMW <span className="text-gold-400/20">×</span> MERCEDES
-                </div>
-             </div>
-             <div className="absolute bottom-4 left-6 flex items-center gap-2 text-gold-400/40 text-xs font-bold uppercase tracking-widest">
-                <AlertCircle size={14} /> Análisis de Mercado Técnico
-             </div>
+            <img src="/logoPGC.svg" className="w-40 opacity-10 brightness-0 invert" alt="PGC Blog" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-white/10 font-serif text-3xl md:text-6xl font-bold tracking-tighter uppercase select-none text-center">
+                BMW <span className="text-gold-400/20">×</span> MERCEDES
+              </div>
+            </div>
+            <div className="absolute bottom-4 left-6 flex items-center gap-2 text-gold-400/40 text-xs font-bold uppercase tracking-widest">
+              <AlertCircle size={14} /> Análisis de Mercado Técnico
+            </div>
           </div>
 
           {/* Cuerpo del Artículo */}
@@ -106,8 +107,8 @@ const MotoresBmwMercedes2027 = () => {
               Tanto si eres fiel a la propulsión de Múnich como si buscas el confort de Stuttgart, seleccionamos para ti las mejores unidades con historial 100% transparente.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <a 
-                href="https://wa.me/34603743608?text=Hola,%20me%20gustaría%20información%20sobre%20la%20importación%20de%20un%20BMW%20o%20Mercedes%20con%20ingeniería%20propia." 
+              <a
+                href="https://wa.me/34603743608?text=Hola,%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20la%20importaci%C3%B3n%20de%20un%20BMW%20o%20Mercedes%20con%20ingenier%C3%ADa%20propia."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gold-400 text-black px-10 py-4 font-bold uppercase tracking-widest hover:bg-gold-500 transition-all flex items-center justify-center gap-2"

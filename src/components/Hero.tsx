@@ -52,8 +52,8 @@ export const Hero: React.FC = () => {
             Importación de Coches Premium desde Alemania
           </h1>
 
-          {/* font-semibold para usar Playfair 600 y evitar depender de 400 en el above-the-fold */}
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif font-semibold mb-7 sm:mb-8 leading-[1.12] text-white">
+          {/* Usamos 700 arriba del pliegue para evitar cargar peso 600 en la ruta crítica */}
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif font-bold mb-7 sm:mb-8 leading-[1.12] text-white">
             Tú lo sueñas.
             <br />
             <span className="text-gray-300">Nosotros lo traemos.</span>

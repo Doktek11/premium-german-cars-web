@@ -3,10 +3,12 @@ import { useLocation, Link } from "react-router-dom";
 import { cars } from "./data/cars";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
-import { About } from "./components/About";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 
 // Below-the-fold: diferidos
+const About = lazy(() =>
+  import("./components/About").then((m) => ({ default: m.About }))
+);
 const Features = lazy(() =>
   import("./components/Features").then((m) => ({ default: m.Features }))
 );
@@ -58,26 +60,32 @@ export function Home() {
           <Hero />
         </section>
 
-        <section id="process">
-          <About />
+        <section id="process" className="content-auto">
+          <Suspense fallback={<SectionLoader />}>
+            <About />
+          </Suspense>
         </section>
 
-        <Suspense fallback={<SectionLoader />}>
-          <Features />
-        </Suspense>
+        <section className="content-auto">
+          <Suspense fallback={<SectionLoader />}>
+            <Features />
+          </Suspense>
+        </section>
 
-        <Suspense fallback={<SectionLoader />}>
-          <ImportForm />
-        </Suspense>
+        <section className="content-auto">
+          <Suspense fallback={<SectionLoader />}>
+            <ImportForm />
+          </Suspense>
+        </section>
 
         {/* STOCK CON COLOR SUAVIZADO */}
-        <section id="stock" className="py-16 sm:py-24 md:py-32 bg-metallic-900">
+        <section id="stock" className="py-16 sm:py-24 md:py-32 bg-metallic-900 content-auto">
           <div className="container mx-auto px-4 sm:px-6">
             <span className="text-gold-400 text-xs font-bold tracking-widest uppercase mb-4 block">
               Showroom
             </span>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white mb-12 sm:mb-16 md:mb-20">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-12 sm:mb-16 md:mb-20">
               Stock Seleccionado
             </h2>
 
@@ -129,19 +137,19 @@ export function Home() {
           </div>
         </section>
 
-        <section id="guarantee">
+        <section id="guarantee" className="content-auto">
           <Suspense fallback={<SectionLoader />}>
             <Guarantee />
           </Suspense>
         </section>
 
-        <section id="testimonials">
+        <section id="testimonials" className="content-auto">
           <Suspense fallback={<SectionLoader />}>
             <Testimonials />
           </Suspense>
         </section>
 
-        <section id="contact">
+        <section id="contact" className="content-auto">
           <Suspense fallback={<SectionLoader />}>
             <Footer />
           </Suspense>

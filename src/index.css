@@ -95,6 +95,11 @@
 }
 
 @layer components {
+  .content-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 1000px;
+  }
+
   .premium-card {
     background: rgba(20, 20, 20, 0.6);
     backdrop-filter: blur(12px);

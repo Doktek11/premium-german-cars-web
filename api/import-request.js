@@ -1,67 +1,222 @@
-const RECIPIENT_EMAIL = process.env.IMPORT_FORM_TO || 'info@premiumgermancars.com';
+const RECIPIENT_EMAIL = process.env.IMPORT_FORM_TO || "info@premiumgermancars.com";
+const CRM_WEBHOOK_URL =
+  process.env.LEAD_WEBHOOK_URL || process.env.CRM_WEBHOOK_URL || "";
+const CRM_WEBHOOK_TOKEN = process.env.CRM_WEBHOOK_TOKEN || "";
+const CRM_WEBHOOK_SECRET = process.env.CRM_WEBHOOK_SECRET || "";
 
-function escapeHtml(value = '') {
+function escapeHtml(value = "") {
   return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
-function buildHtml(payload) {
-  const safe = Object.fromEntries(
-    Object.entries(payload).map(([k, v]) => [k, escapeHtml(v)])
+function buildHtml(payload, attribution) {
+  const safePayload = Object.fromEntries(
+    Object.entries(payload).map(([key, value]) => [key, escapeHtml(value)])
   );
+  const safeAttribution = Object.fromEntries(
+    Object.entries(attribution).map(([key, value]) => [key, escapeHtml(value)])
+  );
+  const attributionRows = Object.entries(safeAttribution)
+    .filter(([, value]) => value)
+    .map(
+      ([key, value]) =>
+        `<tr><td style="padding:6px 12px 6px 0;"><strong>${key}</strong></td><td style="padding:6px 0;">${value}</td></tr>`
+    )
+    .join("");
 
   return `
-    <h2>Nueva solicitud de importación</h2>
-    <p><strong>Vehículo:</strong> ${safe.brand} ${safe.model}</p>
-    <p><strong>Presupuesto máximo:</strong> ${safe.budget} €</p>
+    <h2>Nueva solicitud de importacion</h2>
+    <p><strong>Tipo de lead:</strong> ${safePayload.leadType || "busqueda-personalizada"}</p>
+    <p><strong>Vehiculo:</strong> ${safePayload.brand} ${safePayload.model}</p>
+    <p><strong>Presupuesto maximo:</strong> ${safePayload.budget} EUR</p>
     <h3>Datos de contacto</h3>
-    <p><strong>Email:</strong> ${safe.email}</p>
-    <p><strong>Teléfono:</strong> ${safe.phone}</p>
-    <h3>Detalles específicos</h3>
-    <p>${safe.details || 'Sin detalles adicionales'}</p>
+    <p><strong>Email:</strong> ${safePayload.email}</p>
+    <p><strong>Telefono:</strong> ${safePayload.phone}</p>
+    <h3>Detalles especificos</h3>
+    <p>${safePayload.details || "Sin detalles adicionales"}</p>
+    <h3>Contexto del lead</h3>
+    <table>${attributionRows || "<tr><td>Sin datos adicionales</td></tr>"}</table>
   `;
 }
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+async function sendLeadToWebhook(leadRecord) {
+  if (!CRM_WEBHOOK_URL) {
+    return { skipped: true };
   }
 
-  const { brand, model, budget, email, phone, details = '' } = req.body || {};
+  const headers = {
+    "Content-Type": "application/json",
+  };
 
-  if (!brand || !model || !budget || !email || !phone) {
-    return res.status(400).json({ error: 'Missing required fields' });
+  if (CRM_WEBHOOK_TOKEN) {
+    headers.Authorization = `Bearer ${CRM_WEBHOOK_TOKEN}`;
   }
 
-  if (!process.env.RESEND_API_KEY) {
-    return res.status(500).json({ error: 'RESEND_API_KEY is not configured' });
+  if (CRM_WEBHOOK_SECRET) {
+    headers["x-pgc-webhook-secret"] = CRM_WEBHOOK_SECRET;
   }
 
-  const subject = `Nueva Solicitud: ${brand} ${model}`;
-
-  const emailResponse = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      from: process.env.IMPORT_FORM_FROM || 'Premium German Cars <onboarding@resend.dev>',
-      to: [RECIPIENT_EMAIL],
-      reply_to: email,
-      subject,
-      html: buildHtml({ brand, model, budget, email, phone, details })
-    })
+  const webhookResponse = await fetch(CRM_WEBHOOK_URL, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(leadRecord),
   });
 
-  if (!emailResponse.ok) {
-    const errorText = await emailResponse.text();
-    return res.status(502).json({ error: 'Email provider error', details: errorText });
+  if (!webhookResponse.ok) {
+    const errorText = await webhookResponse.text();
+    throw new Error(`Webhook error: ${errorText}`);
   }
 
-  return res.status(200).json({ ok: true });
+  return { skipped: false };
+}
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  const {
+    brand,
+    model,
+    budget,
+    email,
+    phone,
+    details = "",
+    leadType = "busqueda-personalizada",
+    sourcePath = "",
+    sourceQuery = "",
+    sourceTitle = "",
+    entryPath = "",
+    entryQuery = "",
+    firstReferrer = "",
+    firstSeenAt = "",
+    lastPath = "",
+    lastQuery = "",
+    lastSeenAt = "",
+    utmSource = "",
+    utmMedium = "",
+    utmCampaign = "",
+    utmTerm = "",
+    utmContent = "",
+    sessionId = "",
+  } = req.body || {};
+
+  if (!brand || !model || !budget || !email || !phone) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const attribution = {
+    sourcePath,
+    sourceQuery,
+    sourceTitle,
+    entryPath,
+    entryQuery,
+    firstReferrer,
+    firstSeenAt,
+    lastPath,
+    lastQuery,
+    lastSeenAt,
+    utmSource,
+    utmMedium,
+    utmCampaign,
+    utmTerm,
+    utmContent,
+    sessionId,
+  };
+
+  const leadRecord = {
+    submittedAt: new Date().toISOString(),
+    leadType,
+    contact: {
+      brand,
+      model,
+      budget,
+      email,
+      phone,
+      details,
+    },
+    attribution,
+  };
+
+  let emailSent = false;
+  let webhookSent = false;
+  const warnings = [];
+
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const subject = `Nueva Solicitud: ${brand} ${model}`;
+      const emailResponse = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from:
+            process.env.IMPORT_FORM_FROM ||
+            "Premium German Cars <onboarding@resend.dev>",
+          to: [RECIPIENT_EMAIL],
+          reply_to: email,
+          subject,
+          html: buildHtml(
+            {
+              brand,
+              model,
+              budget,
+              email,
+              phone,
+              details,
+              leadType,
+            },
+            attribution
+          ),
+        }),
+      });
+
+      if (!emailResponse.ok) {
+        const errorText = await emailResponse.text();
+        throw new Error(`Email provider error: ${errorText}`);
+      }
+
+      emailSent = true;
+    } catch (error) {
+      warnings.push(
+        error instanceof Error ? error.message : "Unknown email error"
+      );
+    }
+  }
+
+  try {
+    const webhookResult = await sendLeadToWebhook(leadRecord);
+    webhookSent = !webhookResult.skipped;
+  } catch (error) {
+    warnings.push(
+      error instanceof Error ? error.message : "Unknown webhook error"
+    );
+  }
+
+  if (!emailSent && !webhookSent) {
+    if (!process.env.RESEND_API_KEY && !CRM_WEBHOOK_URL) {
+      return res.status(500).json({
+        error: "No lead destination configured",
+        details: "Configure RESEND_API_KEY or CRM_WEBHOOK_URL",
+      });
+    }
+
+    return res.status(502).json({
+      error: "Lead delivery failed",
+      details: warnings,
+    });
+  }
+
+  return res.status(200).json({
+    ok: true,
+    emailSent,
+    webhookSent,
+    warnings,
+  });
 }

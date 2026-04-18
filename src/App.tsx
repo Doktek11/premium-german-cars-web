@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 // COMPONENTES PRINCIPALES
 import { Home } from "./Home";
 import ScrollToTop from "./components/ScrollToTop";
+import { LeadAttributionTracker } from "./components/LeadAttributionTracker";
 
 const CarPage = lazy(() => import("./pages/CarPage").then((m) => ({ default: m.CarPage })));
 const ImportacionAlemania = lazy(() =>
@@ -36,6 +37,7 @@ const EleccionMotor2026 = lazy(() => import("./pages/Blog/EleccionMotor2026"));
 // LEGALES
 const AvisoLegal = lazy(() => import("./pages/Legal/AvisoLegal"));
 const PoliticaPrivacidad = lazy(() => import("./pages/Legal/PoliticaPrivacidad"));
+const ThankYouPage = lazy(() => import("./pages/ThankYouPage").then((m) => ({ default: m.ThankYouPage })));
 
 function RouteLoader() {
   return (
@@ -59,6 +61,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <LeadAttributionTracker />
 
       <Suspense fallback={<RouteLoader />}>
         <Routes>
@@ -82,6 +85,9 @@ export default function App() {
 
           {/* FAQ */}
           <Route path="/preguntas-frecuentes" element={<FAQPage />} />
+
+          {/* THANK YOU */}
+          <Route path="/gracias" element={<ThankYouPage />} />
 
           {/* BLOG */}
           <Route path="/blog" element={<BlogIndex />} />

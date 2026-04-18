@@ -27,6 +27,21 @@ function buildHtml(payload, attribution) {
         `<tr><td style="padding:6px 12px 6px 0;"><strong>${key}</strong></td><td style="padding:6px 0;">${value}</td></tr>`
     )
     .join("");
+  const calculationRows = [
+    ["name", safePayload.name],
+    ["calculatorPrice", safePayload.calculatorPrice],
+    ["calculatorEmissions", safePayload.calculatorEmissions],
+    ["calculatorMonths", safePayload.calculatorMonths],
+    ["calculatorRate", safePayload.calculatorRate],
+    ["calculatorTax", safePayload.calculatorTax],
+    ["calculatorReduction", safePayload.calculatorReduction],
+  ]
+    .filter(([, value]) => value || value === 0)
+    .map(
+      ([key, value]) =>
+        `<tr><td style="padding:6px 12px 6px 0;"><strong>${key}</strong></td><td style="padding:6px 0;">${value}</td></tr>`
+    )
+    .join("");
 
   return `
     <h2>Nueva solicitud de importacion</h2>
@@ -38,6 +53,7 @@ function buildHtml(payload, attribution) {
     <p><strong>Telefono:</strong> ${safePayload.phone}</p>
     <h3>Detalles especificos</h3>
     <p>${safePayload.details || "Sin detalles adicionales"}</p>
+    ${calculationRows ? `<h3>Datos de calculadora</h3><table>${calculationRows}</table>` : ""}
     <h3>Contexto del lead</h3>
     <table>${attributionRows || "<tr><td>Sin datos adicionales</td></tr>"}</table>
   `;
@@ -87,6 +103,13 @@ export default async function handler(req, res) {
     phone,
     details = "",
     leadType = "busqueda-personalizada",
+    name = "",
+    calculatorPrice = "",
+    calculatorEmissions = "",
+    calculatorMonths = "",
+    calculatorRate = "",
+    calculatorTax = "",
+    calculatorReduction = "",
     sourcePath = "",
     sourceQuery = "",
     sourceTitle = "",
@@ -105,8 +128,27 @@ export default async function handler(req, res) {
     sessionId = "",
   } = req.body || {};
 
-  if (!brand || !model || !budget || !email || !phone) {
-    return res.status(400).json({ error: "Missing required fields" });
+  const trimmedEmail = String(email || "").trim();
+  const trimmedPhone = String(phone || "").trim();
+  const isCalculatorLead = leadType === "calculadora-impuestos";
+  const isCustomSearchLead = leadType === "busqueda-personalizada";
+
+  if (isCustomSearchLead && (!brand || !model || !budget || !trimmedEmail || !trimmedPhone)) {
+    return res.status(400).json({
+      error: "Missing required fields for busqueda-personalizada",
+    });
+  }
+
+  if (isCalculatorLead && (!budget || (!trimmedEmail && !trimmedPhone))) {
+    return res.status(400).json({
+      error: "Missing required fields for calculadora-impuestos",
+    });
+  }
+
+  if (!isCustomSearchLead && !isCalculatorLead && !budget) {
+    return res.status(400).json({
+      error: "Missing required budget",
+    });
   }
 
   const attribution = {
@@ -132,12 +174,19 @@ export default async function handler(req, res) {
     submittedAt: new Date().toISOString(),
     leadType,
     contact: {
+      name,
       brand,
       model,
       budget,
-      email,
-      phone,
+      email: trimmedEmail,
+      phone: trimmedPhone,
       details,
+      calculatorPrice,
+      calculatorEmissions,
+      calculatorMonths,
+      calculatorRate,
+      calculatorTax,
+      calculatorReduction,
     },
     attribution,
   };
@@ -148,33 +197,45 @@ export default async function handler(req, res) {
 
   if (process.env.RESEND_API_KEY) {
     try {
-      const subject = `Nueva Solicitud: ${brand} ${model}`;
+      const subject = isCalculatorLead
+        ? `Nuevo Lead Calculadora: ${budget} EUR / ${calculatorEmissions || "N/A"} g/km`
+        : `Nueva Solicitud: ${brand} ${model}`;
+      const emailPayload = {
+        name,
+        brand,
+        model,
+        budget,
+        email: trimmedEmail,
+        phone: trimmedPhone,
+        details,
+        leadType,
+        calculatorPrice,
+        calculatorEmissions,
+        calculatorMonths,
+        calculatorRate,
+        calculatorTax,
+        calculatorReduction,
+      };
+      const resendBody = {
+        from:
+          process.env.IMPORT_FORM_FROM ||
+          "Premium German Cars <onboarding@resend.dev>",
+        to: [RECIPIENT_EMAIL],
+        subject,
+        html: buildHtml(emailPayload, attribution),
+      };
+
+      if (trimmedEmail) {
+        resendBody.reply_to = trimmedEmail;
+      }
+
       const emailResponse = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          from:
-            process.env.IMPORT_FORM_FROM ||
-            "Premium German Cars <onboarding@resend.dev>",
-          to: [RECIPIENT_EMAIL],
-          reply_to: email,
-          subject,
-          html: buildHtml(
-            {
-              brand,
-              model,
-              budget,
-              email,
-              phone,
-              details,
-              leadType,
-            },
-            attribution
-          ),
-        }),
+        body: JSON.stringify(resendBody),
       });
 
       if (!emailResponse.ok) {

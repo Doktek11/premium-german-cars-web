@@ -1,18 +1,28 @@
+import { useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, CheckCircle2, MessageCircle, Phone } from "lucide-react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { SEO } from "../components/SEO";
 import { WhatsAppButton } from "../components/WhatsAppButton";
+import { getLeadContext } from "../lib/leadAttribution";
+import { trackLeadEvent } from "../lib/analytics";
 
 type ThankYouState = {
   leadType?: string;
+  name?: string;
   brand?: string;
   model?: string;
   budget?: string;
+  estimatedTax?: string;
+  calculationSummary?: string;
 };
 
 function buildWhatsAppMessage(state: ThankYouState) {
+  if (state.leadType === "calculadora-impuestos") {
+    return "Hola, acabo de enviar mi resultado de la calculadora y quiero validar si esta importacion compensa.";
+  }
+
   const vehicleLabel = [state.brand, state.model].filter(Boolean).join(" ").trim();
 
   if (vehicleLabel) {
@@ -25,11 +35,41 @@ function buildWhatsAppMessage(state: ThankYouState) {
 export const ThankYouPage = () => {
   const location = useLocation();
   const state = (location.state ?? {}) as ThankYouState;
+  const leadContext = useMemo(
+    () =>
+      getLeadContext(
+        location.pathname,
+        location.search,
+        typeof document !== "undefined" ? document.title : ""
+      ),
+    [location.pathname, location.search]
+  );
   const phoneNumber = "34603743608";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
     buildWhatsAppMessage(state)
   )}`;
   const vehicleLabel = [state.brand, state.model].filter(Boolean).join(" ").trim();
+  const isCalculatorLead = state.leadType === "calculadora-impuestos";
+  const headingText = isCalculatorLead
+    ? "Gracias. Ya tenemos tu solicitud de calculo."
+    : "Gracias. Ya tenemos tu solicitud.";
+  const introText = isCalculatorLead
+    ? "Hemos registrado tu resultado para revisarlo con enfoque estrategico y ayudarte a decidir si esta unidad compensa."
+    : "Hemos registrado tu interes y revisaremos el caso para responderte con criterio, no con una respuesta generica.";
+  const stepText = isCalculatorLead
+    ? "Enviarnos por WhatsApp el enlace del anuncio o la ficha del coche para darte una validacion completa sobre coste total y riesgo de compra."
+    : "Enviarnos por WhatsApp una o varias referencias concretas, el uso que le vas a dar al coche y cualquier condicion que no quieras negociar.";
+
+  useEffect(() => {
+    trackLeadEvent("thank_you_view", {
+      leadType: state.leadType || "desconocido",
+      channel: "landing",
+      pagePath: location.pathname,
+      hasVehicleContext: Boolean(vehicleLabel),
+      isCalculatorLead,
+      context: leadContext,
+    });
+  }, [isCalculatorLead, leadContext, location.pathname, state.leadType, vehicleLabel]);
 
   return (
     <>
@@ -53,11 +93,11 @@ export const ThankYouPage = () => {
               <CheckCircle2 className="text-gold-400 mb-6" size={56} />
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-6 leading-tight">
-                Gracias. Ya tenemos tu solicitud.
+                {headingText}
               </h1>
 
               <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                Hemos registrado tu interes y revisaremos el caso para responderte con criterio, no con una respuesta generica.
+                {introText}
               </p>
 
               <p className="text-gray-400 text-base leading-relaxed mb-10">
@@ -69,6 +109,15 @@ export const ThankYouPage = () => {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    trackLeadEvent("lead_followup_click", {
+                      leadType: state.leadType || "desconocido",
+                      channel: "whatsapp",
+                      pagePath: location.pathname,
+                      cta: "thank_you_whatsapp",
+                      context: leadContext,
+                    })
+                  }
                   className="inline-flex items-center justify-center gap-3 px-6 py-4 bg-[#25D366] text-white font-bold uppercase text-[11px] tracking-[0.15em] hover:bg-[#128C7E] transition-colors min-h-[48px]"
                 >
                   Seguir por WhatsApp <MessageCircle size={16} />
@@ -76,6 +125,15 @@ export const ThankYouPage = () => {
 
                 <a
                   href={`tel:+${phoneNumber}`}
+                  onClick={() =>
+                    trackLeadEvent("lead_followup_click", {
+                      leadType: state.leadType || "desconocido",
+                      channel: "phone",
+                      pagePath: location.pathname,
+                      cta: "thank_you_phone",
+                      context: leadContext,
+                    })
+                  }
                   className="inline-flex items-center justify-center gap-3 px-6 py-4 border border-white/15 text-white font-bold uppercase text-[11px] tracking-[0.15em] hover:bg-white hover:text-black transition-colors min-h-[48px]"
                 >
                   Llamar ahora <Phone size={16} />
@@ -85,12 +143,18 @@ export const ThankYouPage = () => {
               <div className="border border-white/10 bg-black/40 p-6 mb-10">
                 <h2 className="text-lg font-bold text-white mb-4">Siguiente paso recomendado</h2>
                 <p className="text-gray-300 leading-relaxed mb-4">
-                  Enviarnos por WhatsApp una o varias referencias concretas, el uso que le vas a dar al coche y cualquier condicion que no quieras negociar.
+                  {stepText}
                 </p>
                 {vehicleLabel && (
                   <p className="text-sm text-gold-400">
                     Solicitud enviada para: {vehicleLabel}
                     {state.budget ? ` - presupuesto maximo ${state.budget} EUR` : ""}
+                  </p>
+                )}
+                {isCalculatorLead && (
+                  <p className="text-sm text-gold-400">
+                    Calculo enviado: valor ${state.budget || "N/A"} EUR - impuesto estimado ${state.estimatedTax || "N/A"} EUR
+                    {state.calculationSummary ? ` - ${state.calculationSummary}` : ""}
                   </p>
                 )}
               </div>

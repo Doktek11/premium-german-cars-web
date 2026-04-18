@@ -1,16 +1,28 @@
-import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { cars } from "../data/cars";
 
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
+import { getLeadContext } from "../lib/leadAttribution";
+import { trackLeadEvent } from "../lib/analytics";
 
 export const CarPage = () => {
   const { slug = "" } = useParams<{ slug: string }>();
+  const location = useLocation();
 
   const car = cars.find((c) => c.slug === slug);
+  const leadContext = useMemo(
+    () =>
+      getLeadContext(
+        location.pathname,
+        location.search,
+        typeof document !== "undefined" ? document.title : ""
+      ),
+    [location.pathname, location.search]
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,6 +77,18 @@ export const CarPage = () => {
         : `Hola! Me gustaría recibir el dossier completo del ${car.make} ${car.model} de ${car.price.toLocaleString(
             "de-DE"
           )}€ que tenéis disponible.`;
+
+    trackLeadEvent("lead_followup_click", {
+      leadType: "vehiculo-stock",
+      channel: "whatsapp",
+      pagePath: location.pathname,
+      cta: tipo === "pedido" ? "car_page_pedido" : "car_page_dossier",
+      carSlug: car.slug,
+      carMake: car.make,
+      carModel: car.model,
+      carPrice: car.price,
+      context: leadContext,
+    });
 
     window.open(
       `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`,

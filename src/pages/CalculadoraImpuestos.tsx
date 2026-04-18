@@ -1,5 +1,9 @@
 ﻿import { useState, useEffect } from 'react';
 
+import { useLocation } from "react-router-dom";
+import { useMemo } from "react";
+import { getLeadContext } from "../lib/leadAttribution";
+import { trackLeadEvent } from "../lib/analytics";
 import { Navbar } from '../components/Navbar';
 
 import { Footer } from '../components/Footer';
@@ -7,6 +11,7 @@ import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
 
 import { WhatsAppButton } from '../components/WhatsAppButton';
+import { CalculatorLeadCapture } from "../components/CalculatorLeadCapture";
 
 import { 
 
@@ -45,6 +50,7 @@ import {
 
 
 export const CalculadoraImpuestos = () => {
+  const location = useLocation();
 
   const [precio, setPrecio] = useState<number>(45000);
 
@@ -55,6 +61,16 @@ export const CalculadoraImpuestos = () => {
   const [esComunidadIncrementada, setEsComunidadIncrementada] = useState<boolean>(false);
 
   const [resultado, setResultado] = useState({ matriculacion: 0, tramo: 0 });
+
+  const leadContext = useMemo(
+    () =>
+      getLeadContext(
+        location.pathname,
+        location.search,
+        typeof document !== "undefined" ? document.title : ""
+      ),
+    [location.pathname, location.search]
+  );
 
 
 
@@ -132,6 +148,13 @@ export const CalculadoraImpuestos = () => {
 
 
   const abrirAsistenteIA = () => {
+    trackLeadEvent("lead_followup_click", {
+      leadType: "calculadora-impuestos",
+      channel: "assistant",
+      pagePath: location.pathname,
+      cta: "calculator_ai_assistant",
+      context: leadContext,
+    });
 
     const url = "https://chatgpt.com/g/g-69622c5453908191bd59a9c9a7586e21-pgc-asistente-de-valoracion-oficial";
 
@@ -249,6 +272,23 @@ export const CalculadoraImpuestos = () => {
 
     return `-${red}%`;
 
+  };
+
+  const handleWhatsAppVerification = () => {
+    trackLeadEvent("lead_followup_click", {
+      leadType: "calculadora-impuestos",
+      channel: "whatsapp",
+      pagePath: location.pathname,
+      cta: "calculator_verify_whatsapp",
+      calculatorRate: resultado.tramo,
+      calculatorTax: Math.round(resultado.matriculacion),
+      context: leadContext,
+    });
+
+    window.open(
+      `https://wa.me/34603743608?text=Hola! He usado la calculadora para un coche con ${emisiones}g/km y valor de ${precio}€. ¿Me confirmáis el valor BOE exacto?`,
+      "_blank"
+    );
   };
 
 
@@ -605,16 +645,20 @@ export const CalculadoraImpuestos = () => {
 
 
 
-                  <button 
+                  <CalculatorLeadCapture
+                    precio={precio}
+                    emisiones={emisiones}
+                    meses={meses}
+                    tramo={resultado.tramo}
+                    impuesto={resultado.matriculacion}
+                    reduccion={getReduccionText()}
+                  />
 
-                    onClick={() => window.open(`https://wa.me/34603743608?text=Hola! He usado la calculadora para un coche con ${emisiones}g/km y valor de ${precio}€. ¿Me confirmáis el valor BOE exacto?`, '_blank')}
-
-                    className="mt-10 flex items-center justify-center gap-3 w-full py-4 bg-white text-black font-extrabold rounded-xl hover:bg-gold-400 transition-all uppercase text-[11px] tracking-[0.15em] min-h-[48px] touch-manipulation"
-
+                  <button
+                    onClick={handleWhatsAppVerification}
+                    className="mt-4 flex items-center justify-center gap-3 w-full py-4 border border-white/20 text-white font-extrabold rounded-xl hover:bg-white hover:text-black transition-all uppercase text-[11px] tracking-[0.15em] min-h-[48px] touch-manipulation"
                   >
-
-                    Verificar con un experto <ArrowRight size={16}/>
-
+                    Verificar por WhatsApp <ArrowRight size={16} />
                   </button>
 
                 </div>

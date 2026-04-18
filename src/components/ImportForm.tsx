@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Send, MessageCircle } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getLeadContext } from "../lib/leadAttribution";
+import { trackLeadEvent } from "../lib/analytics";
 
 export const ImportForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -97,10 +98,33 @@ ${formData.details || "Sin detalles adicionales"}`;
     });
   };
 
+  const getBudgetTier = () => {
+    const numericBudget = Number(formData.budget);
+
+    if (!Number.isFinite(numericBudget) || numericBudget <= 0) {
+      return "unknown";
+    }
+
+    if (numericBudget < 30000) {
+      return "sub_30k";
+    }
+
+    if (numericBudget < 60000) {
+      return "30k_60k";
+    }
+
+    if (numericBudget < 90000) {
+      return "60k_90k";
+    }
+
+    return "90k_plus";
+  };
+
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError("");
     setIsSubmitting(true);
+    let responseStatus = 0;
 
     try {
       const response = await fetch("/api/import-request", {
@@ -110,14 +134,31 @@ ${formData.details || "Sin detalles adicionales"}`;
         },
         body: JSON.stringify(buildPayload()),
       });
+      responseStatus = response.status;
 
       if (!response.ok) {
         throw new Error("No se pudo enviar tu solicitud. Intentalo de nuevo.");
       }
 
+      trackLeadEvent("lead_submit_success", {
+        leadType: "busqueda-personalizada",
+        channel: "form",
+        pagePath: location.pathname,
+        budgetTier: getBudgetTier(),
+        hasDetails: Boolean(formData.details.trim()),
+        context: leadContext,
+      });
       resetForm();
       goToThankYouPage();
     } catch {
+      trackLeadEvent("lead_submit_error", {
+        leadType: "busqueda-personalizada",
+        channel: "form",
+        pagePath: location.pathname,
+        errorType: responseStatus ? "http_error" : "network_error",
+        responseStatus: responseStatus || undefined,
+        context: leadContext,
+      });
       setSubmitError(
         "No pudimos enviar el formulario ahora mismo. Escribenos por WhatsApp y te atendemos al instante."
       );
@@ -130,6 +171,13 @@ ${formData.details || "Sin detalles adicionales"}`;
     setSubmitError("");
 
     if (!formData.brand || !formData.model || !formData.phone) {
+      trackLeadEvent("lead_form_validation_error", {
+        leadType: "busqueda-personalizada",
+        channel: "whatsapp",
+        pagePath: location.pathname,
+        reason: "missing_brand_model_phone",
+        context: leadContext,
+      });
       setSubmitError(
         "Para WhatsApp, rellena al menos Marca, Modelo y Telefono."
       );
@@ -141,6 +189,14 @@ ${formData.details || "Sin detalles adicionales"}`;
       generateMessageBody()
     )}`;
 
+    trackLeadEvent("lead_followup_click", {
+      leadType: "busqueda-personalizada",
+      channel: "whatsapp",
+      pagePath: location.pathname,
+      cta: "import_form_whatsapp",
+      budgetTier: getBudgetTier(),
+      context: leadContext,
+    });
     window.open(whatsappLink, "_blank");
     goToThankYouPage();
   };

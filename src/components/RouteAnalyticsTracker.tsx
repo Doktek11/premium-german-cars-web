@@ -1,40 +1,25 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const GA_MEASUREMENT_ID = "G-8KVXL3SX44";
-
 declare global {
   interface Window {
-    dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
   }
 }
 
 export const RouteAnalyticsTracker = () => {
-  const location = useLocation();
+  const { pathname, search } = useLocation();
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    window.dataLayer = window.dataLayer ?? [];
-    window.gtag =
-      window.gtag ??
-      ((...args: unknown[]) => {
-        window.dataLayer?.push(args);
-      });
-
     const handle = window.setTimeout(() => {
-      window.gtag?.("config", GA_MEASUREMENT_ID, {
-        page_path: `${location.pathname}${location.search}`,
-        page_location: window.location.href,
+      window.gtag?.("config", "G-8KVXL3SX44", {
+        page_path: pathname + search,
         page_title: document.title,
       });
-    }, 0);
+    });
 
     return () => window.clearTimeout(handle);
-  }, [location.pathname, location.search]);
+  }, [pathname, search]);
 
   return null;
 };

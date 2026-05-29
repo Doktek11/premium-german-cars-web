@@ -1,6 +1,5 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Analytics } from "@vercel/analytics/react";
 
 // COMPONENTES PRINCIPALES
 import { Home } from "./Home";
@@ -8,6 +7,10 @@ import ScrollToTop from "./components/ScrollToTop";
 import { LeadAttributionTracker } from "./components/LeadAttributionTracker";
 import { RouteAnalyticsTracker } from "./components/RouteAnalyticsTracker";
 import { SEO } from "./components/SEO";
+
+const Analytics = lazy(() =>
+  import("@vercel/analytics/react").then((m) => ({ default: m.Analytics }))
+);
 
 const CarPage = lazy(() => import("./pages/CarPage").then((m) => ({ default: m.CarPage })));
 const ImportacionAlemania = lazy(() =>
@@ -175,7 +178,9 @@ export default function App() {
         </Routes>
       </Suspense>
 
-      <Analytics />
+      <Suspense fallback={null}>
+        <Analytics />
+      </Suspense>
     </BrowserRouter>
   );
 }

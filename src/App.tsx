@@ -1,14 +1,14 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// ANALYTICS VERCEL
-import { Analytics } from "@vercel/analytics/react";
-
 // COMPONENTES PRINCIPALES
 import { Home } from "./Home";
 import ScrollToTop from "./components/ScrollToTop";
 import { LeadAttributionTracker } from "./components/LeadAttributionTracker";
 
+const Analytics = lazy(() =>
+  import("@vercel/analytics/react").then((m) => ({ default: m.Analytics }))
+);
 const CarPage = lazy(() => import("./pages/CarPage").then((m) => ({ default: m.CarPage })));
 const ImportacionAlemania = lazy(() =>
   import("./pages/ImportacionAlemania").then((m) => ({ default: m.ImportacionAlemania }))

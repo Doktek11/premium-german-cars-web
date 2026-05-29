@@ -4,8 +4,9 @@ import type { LeadContext } from "./leadAttribution";
 type AnalyticsPrimitive = string | number | boolean | null | undefined;
 type AnalyticsProperties = Record<string, AnalyticsPrimitive>;
 
-type LeadEventProperties = AnalyticsProperties & {
+type LeadEventProperties = {
   context?: Partial<LeadContext>;
+  [key: string]: AnalyticsPrimitive | Partial<LeadContext>;
 };
 
 function toOptionalString(value?: string) {
@@ -21,6 +22,25 @@ function cleanProperties(properties: AnalyticsProperties): AnalyticsProperties {
   return Object.fromEntries(
     Object.entries(properties).filter(([, value]) => value !== undefined)
   );
+}
+
+function cleanLeadProperties(
+  properties: Omit<LeadEventProperties, "context">
+): AnalyticsProperties {
+  const cleanedProperties: AnalyticsProperties = {};
+
+  Object.entries(properties).forEach(([key, value]) => {
+    if (
+      value === null ||
+      typeof value === "string" ||
+      typeof value === "number" ||
+      typeof value === "boolean"
+    ) {
+      cleanedProperties[key] = value;
+    }
+  });
+
+  return cleanedProperties;
 }
 
 function buildAttributionProperties(
@@ -68,6 +88,6 @@ export function trackLeadEvent(
 
   trackEvent(eventName, {
     ...buildAttributionProperties(context),
-    ...cleanProperties(restProperties),
+    ...cleanLeadProperties(restProperties),
   });
 }

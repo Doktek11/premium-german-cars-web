@@ -3,7 +3,7 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
-import { ArrowRight, CheckCircle2, Calculator, Search, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, Calculator, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const ImportacionAlemania: React.FC = () => {

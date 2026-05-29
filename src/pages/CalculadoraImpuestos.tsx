@@ -12,6 +12,7 @@ import { SEO } from '../components/SEO';
 
 import { WhatsAppButton } from '../components/WhatsAppButton';
 import { CalculatorLeadCapture } from "../components/CalculatorLeadCapture";
+import { LeadCapture } from "../components/LeadCapture";
 
 import { 
 
@@ -96,10 +97,10 @@ export const CalculadoraImpuestos = () => {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WebApplication",
-        name: "Calculadora diésel o gasolina de impuesto de matriculación",
+        "@type": "SoftwareApplication",
+        name: "Calculadora Impuesto de Matriculación",
         url: "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
-        description: "Calcula en segundos si paga más diésel o gasolina en el impuesto de matriculación según CO2, antigüedad y tablas BOE.",
+        description: "Calcula el impuesto de matriculación para coches importados de Alemania. Gratuito y actualizado 2025.",
         applicationCategory: "FinanceApplication",
         operatingSystem: "Web",
         inLanguage: "es-ES",
@@ -115,7 +116,7 @@ export const CalculadoraImpuestos = () => {
           price: "0",
           priceCurrency: "EUR"
         },
-        provider: {
+        author: {
           "@type": "Organization",
           name: "Premium German Cars",
           url: "https://www.premiumgermancars.com"
@@ -299,9 +300,9 @@ export const CalculadoraImpuestos = () => {
 
       <SEO
 
-        title="Calculadora Impuesto Matriculación Diésel o Gasolina (2026) | PGC"
+        title="Calculadora Impuesto de Matriculación 2025 | Premium German Cars"
 
-        description="Calcula en segundos si paga más diésel o gasolina en el impuesto de matriculación. Tramos CO2 2026 y depreciación BOE."
+        description="Calcula gratis el impuesto de matriculación para coches importados de Alemania. Actualizado 2025, preciso y con IA."
 
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
         jsonLd={calculadoraJsonLd}
@@ -642,6 +643,8 @@ export const CalculadoraImpuestos = () => {
                     </div>
 
                   </div>
+
+                  <LeadCapture />
 
 
 

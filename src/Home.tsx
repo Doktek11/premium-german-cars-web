@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { cars } from "./data/cars";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
+import { SEO } from "./components/SEO";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 
 // Below-the-fold: diferidos
@@ -53,6 +54,12 @@ export function Home() {
 
   return (
     <div className="bg-black">
+      <SEO
+        title="Premium German Cars | Importación de Coches Premium desde Alemania"
+        description="Importación de coches premium desde Alemania con vehículos certificados, gestión integral y entrega llave en mano en España."
+        canonical="https://www.premiumgermancars.com/"
+      />
+
       <Navbar />
 
       <main>

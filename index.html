@@ -19,26 +19,11 @@
 
     <!-- Fallback base (SEO.tsx lo sobreescribe por página) -->
     <title>Premium German Cars</title>
-    <meta name="description" content="Importación de coches premium desde Alemania." />
 
     <!-- Solo metas verdaderamente globales -->
     <meta name="theme-color" content="#050505" />
     <meta name="color-scheme" content="dark" />
 
-    <!-- OG/Twitter base con activo único canónico -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Premium German Cars" />
-    <meta property="og:title" content="Premium German Cars" />
-    <meta property="og:description" content="Importación de coches premium desde Alemania." />
-    <meta property="og:url" content="https://www.premiumgermancars.com/" />
-    <meta property="og:image" content="https://www.premiumgermancars.com/og.jpg" />
-    <meta property="og:image:alt" content="Premium German Cars" />
-    <meta property="og:locale" content="es_ES" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Premium German Cars" />
-    <meta name="twitter:description" content="Importación de coches premium desde Alemania." />
-    <meta name="twitter:image" content="https://www.premiumgermancars.com/og.jpg" />
 
     <!-- Favicon / App icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -87,63 +72,27 @@
       }
     </script>
 
-    <!-- Structured data no crítica (diferida para priorizar LCP) -->
-    <script>
-      const injectAppSchema = () => {
-        const schema = {
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          name: "Calculadora Impuesto de Matriculación 2026 PGC",
-          operatingSystem: "All",
-          applicationCategory: "FinanceApplication",
-          url: "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
-          description:
-            "Calculadora técnica para el Impuesto de Matriculación (Modelo 576) en España. Basada en tablas oficiales BOE 2026, emisiones WLTP y coeficientes de depreciación por antigüedad.",
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "EUR"
-          },
-          author: {
-            "@type": "Organization",
-            name: "Premium German Cars",
-            url: "https://www.premiumgermancars.com"
-          },
-          inLanguage: "es-ES"
-        };
-
-        const script = document.createElement("script");
-        script.type = "application/ld+json";
-        script.text = JSON.stringify(schema);
-        document.head.appendChild(script);
-      };
-
-      if ("requestIdleCallback" in window) {
-        requestIdleCallback(injectAppSchema, { timeout: 2500 });
-      } else {
-        window.addEventListener("load", injectAppSchema, { once: true });
-      }
-    </script>
-
     <!-- Analytics diferido para no competir con LCP -->
     <script>
-      window.addEventListener(
-        "load",
-        () => {
-          const script = document.createElement("script");
-          script.src = "https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44";
-          script.async = true;
-          document.head.appendChild(script);
+      if (navigator.userAgent !== "ReactSnap") {
+        window.addEventListener(
+          "load",
+          () => {
+            const script = document.createElement("script");
+            script.src = "https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44";
+            script.async = true;
+            document.head.appendChild(script);
 
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag("js", new Date());
-          gtag("config", "G-8KVXL3SX44");
-        },
-        { once: true }
-      );
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", "G-8KVXL3SX44");
+          },
+          { once: true }
+        );
+      }
     </script>
   </head>
 

@@ -11,7 +11,6 @@ import {
   Search,
   FileText,
   CreditCard,
-  CheckCircle2,
 } from "lucide-react";
 
 const RiesgosImportarCocheAlemania = () => {

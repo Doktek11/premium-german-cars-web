@@ -58,6 +58,9 @@ function NotFound() {
 }
 
 export default function App() {
+  const isPrerendering =
+    typeof navigator !== "undefined" && navigator.userAgent === "ReactSnap";
+
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -167,7 +170,7 @@ export default function App() {
         </Routes>
       </Suspense>
 
-      <Analytics />
+      {!isPrerendering && <Analytics />}
     </BrowserRouter>
   );
 }

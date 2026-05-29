@@ -9,6 +9,7 @@ const PoliticaPrivacidad = () => {
       <SEO 
         title="Política de Privacidad | Premium German Cars"
         description="Información sobre el tratamiento de datos personales."
+        canonical="https://www.premiumgermancars.com/politica-privacidad"
         noIndex={true} 
       />
       <Navbar />

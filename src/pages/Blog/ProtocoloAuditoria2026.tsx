@@ -18,6 +18,7 @@ const ProtocoloAuditoria2026 = () => {
       <SEO 
         title="Protocolo de Auditoría Técnica en Alemania | Premium German Cars" 
         description="Revisión de coches en Alemania: nuestro protocolo incluye historial digital oficial, medición de pintura y test en Autobahn para una importación 100% segura."
+        canonical="https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria"
       />
       <Navbar />
       

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { WhatsAppButton } from "../../components/WhatsAppButton";
+import { SEO } from "../../components/SEO";
 import { Calendar, ArrowRight } from "lucide-react";
 
 const blogPosts = [
@@ -132,6 +133,11 @@ const blogPosts = [
 export default function BlogIndex() {
   return (
     <div className="min-h-screen bg-black">
+      <SEO
+        title="Blog Premium German Cars | Importación de coches desde Alemania"
+        description="Actualidad, protocolos de importación y análisis estratégico del mercado automotriz alemán para clientes de Premium German Cars."
+        canonical="https://www.premiumgermancars.com/blog"
+      />
       <Navbar />
 
       <main className="pt-24 sm:pt-32 md:pt-40 pb-12 sm:pb-16 md:pb-20">

@@ -9,6 +9,7 @@ const AvisoLegal = () => {
       <SEO 
         title="Aviso Legal | Premium German Cars"
         description="Información legal y condiciones de uso de Premium German Cars."
+        canonical="https://www.premiumgermancars.com/aviso-legal"
         noIndex={true} 
       />
       <Navbar />

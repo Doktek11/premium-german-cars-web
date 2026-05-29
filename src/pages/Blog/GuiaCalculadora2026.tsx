@@ -10,6 +10,7 @@ const GuiaCalculadora2026 = () => {
       <SEO 
         title="Guía: Cómo calcular el impuesto de matriculación BOE 2025 | Premium German Cars" 
         description="Aprende a usar nuestra calculadora con IA para obtener valores BOE exactos y calcular la depreciación real mes a mes de tu coche de importación."
+        canonical="https://www.premiumgermancars.com/blog/guia-calculo-impuesto-matriculacion-boe-2025"
       />
       <Navbar />
       

@@ -74,6 +74,12 @@
 
     <!-- Analytics diferido para no competir con LCP -->
     <script>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function gtag() {
+        window.dataLayer.push(arguments);
+      };
+      window.gtag("js", new Date());
+
       if (navigator.userAgent !== "ReactSnap") {
         window.addEventListener(
           "load",
@@ -82,13 +88,6 @@
             script.src = "https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44";
             script.async = true;
             document.head.appendChild(script);
-
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-              dataLayer.push(arguments);
-            }
-            gtag("js", new Date());
-            gtag("config", "G-8KVXL3SX44");
           },
           { once: true }
         );

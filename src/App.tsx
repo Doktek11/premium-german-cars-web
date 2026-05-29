@@ -1,14 +1,14 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 
 // COMPONENTES PRINCIPALES
 import { Home } from "./Home";
 import ScrollToTop from "./components/ScrollToTop";
 import { LeadAttributionTracker } from "./components/LeadAttributionTracker";
+import { RouteAnalyticsTracker } from "./components/RouteAnalyticsTracker";
+import { SEO } from "./components/SEO";
 
-const Analytics = lazy(() =>
-  import("@vercel/analytics/react").then((m) => ({ default: m.Analytics }))
-);
 const CarPage = lazy(() => import("./pages/CarPage").then((m) => ({ default: m.CarPage })));
 const ImportacionAlemania = lazy(() =>
   import("./pages/ImportacionAlemania").then((m) => ({ default: m.ImportacionAlemania }))
@@ -50,21 +50,26 @@ function RouteLoader() {
 // 404 REAL (NUEVO)
 function NotFound() {
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1>404 – Página no encontrada</h1>
-      <p>La URL solicitada no existe.</p>
-    </main>
+    <>
+      <SEO
+        title="404 | Página no encontrada"
+        description="La URL solicitada no existe."
+        noIndex={true}
+      />
+      <main style={{ padding: "2rem" }}>
+        <h1>404 - Página no encontrada</h1>
+        <p>La URL solicitada no existe.</p>
+      </main>
+    </>
   );
 }
 
 export default function App() {
-  const isPrerendering =
-    typeof navigator !== "undefined" && navigator.userAgent === "ReactSnap";
-
   return (
     <BrowserRouter>
       <ScrollToTop />
       <LeadAttributionTracker />
+      <RouteAnalyticsTracker />
 
       <Suspense fallback={<RouteLoader />}>
         <Routes>
@@ -170,7 +175,7 @@ export default function App() {
         </Routes>
       </Suspense>
 
-      {!isPrerendering && <Analytics />}
+      <Analytics />
     </BrowserRouter>
   );
 }

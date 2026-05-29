@@ -20,7 +20,7 @@ export const SEO: React.FC<SEOProps> = ({
   jsonLd,
 }) => {
   const siteName = "Premium German Cars";
-  const fullUrl = canonical || "https://www.premiumgermancars.com";
+  const fullUrl = canonical;
 
   return (
     <Helmet>
@@ -43,7 +43,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="og:type" content={article ? "article" : "website"} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:url" content={fullUrl} />
+      {fullUrl && <meta property="og:url" content={fullUrl} />}
       <meta property="og:image" content={image} />
       <meta property="og:image:alt" content={title} />
       <meta property="og:locale" content="es_ES" />
@@ -54,9 +54,6 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-
-      {/* Global */}
-      <meta name="theme-color" content="#050505" />
 
       {/* JSON-LD */}
       {jsonLd && (

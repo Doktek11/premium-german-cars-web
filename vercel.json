@@ -15,6 +15,11 @@
       "source": "/calculadora",
       "destination": "/calculadora-impuesto-matriculacion",
       "permanent": true
+    },
+    {
+      "source": "/blog/mejores-coches-importar-alemania-2026",
+      "destination": "/blog/mejores-modelos-importar-alemania-2026",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -24,7 +29,7 @@
     },
     {
       "source": "/importacion-coches-alemania",
-      "destination": "/index.html"
+      "destination": "/importacion-coches-alemania/index.html"
     },
     {
       "source": "/calculadora-impuesto-matriculacion",
@@ -32,27 +37,91 @@
     },
     {
       "source": "/preguntas-frecuentes",
-      "destination": "/index.html"
+      "destination": "/preguntas-frecuentes/index.html"
     },
     {
       "source": "/blog",
-      "destination": "/index.html"
+      "destination": "/blog/index.html"
     },
     {
-      "source": "/blog/(.*)",
-      "destination": "/index.html"
+      "source": "/blog/certificado-conformidad-coc-itv-matriculacion",
+      "destination": "/blog/certificado-conformidad-coc-itv-matriculacion/index.html"
     },
     {
-      "source": "/car/(.*)",
-      "destination": "/index.html"
+      "source": "/blog/importar-coche-aleman-guia-importacion-alemania",
+      "destination": "/blog/importar-coche-aleman-guia-importacion-alemania/index.html"
+    },
+    {
+      "source": "/blog/revision-coche-alemania-protocolo-auditoria",
+      "destination": "/blog/revision-coche-alemania-protocolo-auditoria/index.html"
+    },
+    {
+      "source": "/blog/guia-calculo-impuesto-matriculacion-boe-2025",
+      "destination": "/blog/guia-calculo-impuesto-matriculacion-boe-2025/index.html"
+    },
+    {
+      "source": "/blog/cuanto-cuesta-importar-coche-alemania-2026",
+      "destination": "/blog/cuanto-cuesta-importar-coche-alemania-2026/index.html"
+    },
+    {
+      "source": "/blog/mejores-modelos-importar-alemania-2026",
+      "destination": "/blog/mejores-modelos-importar-alemania-2026/index.html"
+    },
+    {
+      "source": "/blog/que-motor-elegir-importar-alemania-2026",
+      "destination": "/blog/que-motor-elegir-importar-alemania-2026/index.html"
+    },
+    {
+      "source": "/blog/motores-bmw-en-mercedes-2027",
+      "destination": "/blog/motores-bmw-en-mercedes-2027/index.html"
+    },
+    {
+      "source": "/blog/bmw-reestreno-alemania-2026",
+      "destination": "/blog/bmw-reestreno-alemania-2026/index.html"
+    },
+    {
+      "source": "/blog/coche-segunda-mano-reus-tarragona",
+      "destination": "/blog/coche-segunda-mano-reus-tarragona/index.html"
+    },
+    {
+      "source": "/blog/como-importar-coche-alemania",
+      "destination": "/blog/como-importar-coche-alemania/index.html"
+    },
+    {
+      "source": "/blog/5-riesgos-importar-coche-alemania",
+      "destination": "/blog/5-riesgos-importar-coche-alemania/index.html"
+    },
+    {
+      "source": "/blog/bmw-alpina-nueva-era-lujo-aleman",
+      "destination": "/blog/bmw-alpina-nueva-era-lujo-aleman/index.html"
+    },
+    {
+      "source": "/car/bmw-serie-1-116i",
+      "destination": "/car/bmw-serie-1-116i/index.html"
+    },
+    {
+      "source": "/car/audi-rs6-avant",
+      "destination": "/car/audi-rs6-avant/index.html"
+    },
+    {
+      "source": "/car/mercedes-benz-c63-amg",
+      "destination": "/car/mercedes-benz-c63-amg/index.html"
+    },
+    {
+      "source": "/car/audi-a3-sportback-35-tfsi",
+      "destination": "/car/audi-a3-sportback-35-tfsi/index.html"
     },
     {
       "source": "/aviso-legal",
-      "destination": "/index.html"
+      "destination": "/aviso-legal/index.html"
     },
     {
       "source": "/politica-privacidad",
-      "destination": "/index.html"
+      "destination": "/politica-privacidad/index.html"
+    },
+    {
+      "source": "/gracias",
+      "destination": "/gracias/index.html"
     }
   ]
 }

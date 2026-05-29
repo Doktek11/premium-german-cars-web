@@ -9,6 +9,7 @@ const BmwReestreno2026 = () => {
       <SEO 
         title="BMW de Reestreno en Alemania 2026: Guía de Compra | Premium German Cars"
         description="Claves para importar un BMW de reestreno desde Alemania en 2026: garantía oficial, tecnología Live Cockpit y cómo evitar coches de flota."
+        canonical="https://www.premiumgermancars.com/blog/bmw-reestreno-alemania-2026"
       />
       <Navbar />
       

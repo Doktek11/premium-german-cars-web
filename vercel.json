@@ -28,7 +28,7 @@
     },
     {
       "source": "/calculadora-impuesto-matriculacion",
-      "destination": "/index.html"
+      "destination": "/calculadora-impuesto-matriculacion/index.html"
     },
     {
       "source": "/preguntas-frecuentes",

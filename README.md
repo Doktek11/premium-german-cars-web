@@ -50,5 +50,6 @@ CRM_WEBHOOK_SECRET=secret_opcional
 Notas:
 
 - Si `RESEND_API_KEY` esta configurada, el lead se envia por email.
+- Los leads de calculadora requieren `RESEND_API_KEY` y un `IMPORT_FORM_FROM` verificado para enviar el desglose al email del cliente.
 - Si `LEADS_WEBHOOK_URL`, `LEAD_WEBHOOK_URL` o `CRM_WEBHOOK_URL` esta configurada, el lead tambien se reenvia al CRM o webhook.
 - El formulario funciona si al menos uno de los dos destinos esta operativo.

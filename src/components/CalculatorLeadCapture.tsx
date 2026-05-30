@@ -42,15 +42,15 @@ export const CalculatorLeadCapture = ({
   );
 
   const validateContact = () => {
-    if (!email.trim() && !phone.trim()) {
+    if (!email.trim() || !email.includes("@")) {
       trackLeadEvent("lead_form_validation_error", {
         leadType: "calculadora-impuestos",
         channel: "form",
         pagePath: location.pathname,
-        reason: "missing_email_and_phone",
+        reason: "missing_valid_email",
         context: leadContext,
       });
-      setError("Necesitamos email o telefono para enviarte el desglose.");
+      setError("Necesitamos un email valido para enviarte el desglose.");
       return false;
     }
 
@@ -151,7 +151,7 @@ export const CalculatorLeadCapture = ({
         Recibe tu desglose
       </p>
       <p className="text-sm text-gray-300 leading-relaxed">
-        Te enviamos el calculo con recomendaciones para decidir si esta unidad compensa importar.
+        Te enviamos el calculo por email con recomendaciones para decidir si esta unidad compensa importar.
       </p>
 
       <input
@@ -167,6 +167,7 @@ export const CalculatorLeadCapture = ({
 
       <input
         type="email"
+        required
         value={email}
         onChange={(event) => {
           setError("");

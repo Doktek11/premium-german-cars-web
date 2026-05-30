@@ -1,6 +1,9 @@
 const RECIPIENT_EMAIL = process.env.IMPORT_FORM_TO || "info@premiumgermancars.com";
 const CRM_WEBHOOK_URL =
-  process.env.LEAD_WEBHOOK_URL || process.env.CRM_WEBHOOK_URL || "";
+  process.env.LEADS_WEBHOOK_URL ||
+  process.env.LEAD_WEBHOOK_URL ||
+  process.env.CRM_WEBHOOK_URL ||
+  "";
 const CRM_WEBHOOK_TOKEN = process.env.CRM_WEBHOOK_TOKEN || "";
 const CRM_WEBHOOK_SECRET = process.env.CRM_WEBHOOK_SECRET || "";
 
@@ -170,9 +173,27 @@ export default async function handler(req, res) {
     sessionId,
   };
 
+  const submittedAt = new Date().toISOString();
   const leadRecord = {
-    submittedAt: new Date().toISOString(),
+    submittedAt,
+    fecha: submittedAt,
     leadType,
+    source: leadType,
+    name,
+    brand,
+    model,
+    marca: brand,
+    modelo: model,
+    budget,
+    email: trimmedEmail,
+    phone: trimmedPhone,
+    details,
+    calculatorPrice,
+    calculatorEmissions,
+    calculatorMonths,
+    calculatorRate,
+    calculatorTax,
+    calculatorReduction,
     contact: {
       name,
       brand,

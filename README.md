@@ -50,5 +50,5 @@ CRM_WEBHOOK_SECRET=secret_opcional
 Notas:
 
 - Si `RESEND_API_KEY` esta configurada, el lead se envia por email.
-- Si `CRM_WEBHOOK_URL` esta configurada, el lead tambien se reenvia al CRM o webhook.
+- Si `LEADS_WEBHOOK_URL`, `LEAD_WEBHOOK_URL` o `CRM_WEBHOOK_URL` esta configurada, el lead tambien se reenvia al CRM o webhook.
 - El formulario funciona si al menos uno de los dos destinos esta operativo.

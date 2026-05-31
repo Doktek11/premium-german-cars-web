@@ -1,33 +1,20 @@
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { cars } from "./data/cars";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { SEO } from "./components/SEO";
 import { WhatsAppButton } from "./components/WhatsAppButton";
+import { lazyNamed } from "./lib/lazyNamed";
 
 // Below-the-fold: diferidos
-const About = lazy(() =>
-  import("./components/About").then((m) => ({ default: m.About }))
-);
-const Features = lazy(() =>
-  import("./components/Features").then((m) => ({ default: m.Features }))
-);
-const Guarantee = lazy(() =>
-  import("./components/Guarantee").then((m) => ({ default: m.Guarantee }))
-);
-const ImportForm = lazy(() =>
-  import("./components/ImportForm").then((m) => ({ default: m.ImportForm }))
-);
-const Testimonials = lazy(() =>
-  import("./components/Testimonials").then((m) => ({ default: m.Testimonials }))
-);
-const Footer = lazy(() =>
-  import("./components/Footer").then((m) => ({ default: m.Footer }))
-);
-const SeoContent = lazy(() =>
-  import("./components/SeoContent").then((m) => ({ default: m.SeoContent }))
-);
+const About = lazyNamed(() => import("./components/About"), "About");
+const Features = lazyNamed(() => import("./components/Features"), "Features");
+const Guarantee = lazyNamed(() => import("./components/Guarantee"), "Guarantee");
+const ImportForm = lazyNamed(() => import("./components/ImportForm"), "ImportForm");
+const Testimonials = lazyNamed(() => import("./components/Testimonials"), "Testimonials");
+const Footer = lazyNamed(() => import("./components/Footer"), "Footer");
+const SeoContent = lazyNamed(() => import("./components/SeoContent"), "SeoContent");
 
 function SectionLoader() {
   return (

@@ -1,27 +1,25 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// COMPONENTES PRINCIPALES
 import { Home } from "./Home";
 import ScrollToTop from "./components/ScrollToTop";
 import { LeadAttributionTracker } from "./components/LeadAttributionTracker";
 import { RouteAnalyticsTracker } from "./components/RouteAnalyticsTracker";
-import { SEO } from "./components/SEO";
+import { lazyNamed } from "./lib/lazyNamed";
 
-const Analytics = lazy(() =>
-  import("@vercel/analytics/react").then((m) => ({ default: m.Analytics }))
-);
+const Analytics = lazyNamed(() => import("@vercel/analytics/react"), "Analytics");
 
-const CarPage = lazy(() => import("./pages/CarPage").then((m) => ({ default: m.CarPage })));
-const ImportacionAlemania = lazy(() =>
-  import("./pages/ImportacionAlemania").then((m) => ({ default: m.ImportacionAlemania }))
+const CarPage = lazyNamed(() => import("./pages/CarPage"), "CarPage");
+const ImportacionAlemania = lazyNamed(
+  () => import("./pages/ImportacionAlemania"),
+  "ImportacionAlemania"
 );
-const CalculadoraImpuestos = lazy(() =>
-  import("./pages/CalculadoraImpuestos").then((m) => ({ default: m.CalculadoraImpuestos }))
+const CalculadoraImpuestos = lazyNamed(
+  () => import("./pages/CalculadoraImpuestos"),
+  "CalculadoraImpuestos"
 );
-const FAQPage = lazy(() => import("./pages/FAQPage").then((m) => ({ default: m.FAQPage })));
+const FAQPage = lazyNamed(() => import("./pages/FAQPage"), "FAQPage");
 
-// BLOG
 const BlogIndex = lazy(() => import("./pages/Blog/index"));
 const ArticuloModelos2026 = lazy(() => import("./pages/Blog/ArticuloModelos2026"));
 const MotoresBmwMercedes2027 = lazy(() => import("./pages/Blog/motores-bmw-en-mercedes-2027"));
@@ -37,35 +35,16 @@ const ProtocoloAuditoria2026 = lazy(() => import("./pages/Blog/ProtocoloAuditori
 const CertificadoConformidadCOC = lazy(() => import("./pages/Blog/certificado-de-conformidad-coc"));
 const EleccionMotor2026 = lazy(() => import("./pages/Blog/EleccionMotor2026"));
 
-// LEGALES
 const AvisoLegal = lazy(() => import("./pages/Legal/AvisoLegal"));
 const PoliticaPrivacidad = lazy(() => import("./pages/Legal/PoliticaPrivacidad"));
-const ThankYouPage = lazy(() => import("./pages/ThankYouPage").then((m) => ({ default: m.ThankYouPage })));
+const ThankYouPage = lazyNamed(() => import("./pages/ThankYouPage"), "ThankYouPage");
+const NotFound = lazy(() => import("./pages/NotFound"));
 
-function RouteLoader() {
-  return (
-    <main className="min-h-[40vh] bg-black text-white grid place-items-center px-4 sm:px-6">
-      <p className="text-xs uppercase tracking-[0.3em] text-gray-400">Cargando contenido...</p>
-    </main>
-  );
-}
-
-// 404 REAL (NUEVO)
-function NotFound() {
-  return (
-    <>
-      <SEO
-        title="404 | Página no encontrada"
-        description="La URL solicitada no existe."
-        noIndex={true}
-      />
-      <main style={{ padding: "2rem" }}>
-        <h1>404 - Página no encontrada</h1>
-        <p>La URL solicitada no existe.</p>
-      </main>
-    </>
-  );
-}
+const RouteLoader = () => (
+  <main className="min-h-[40vh] bg-black text-white grid place-items-center px-4 sm:px-6">
+    <p className="text-xs uppercase tracking-[0.3em] text-gray-400">Cargando contenido...</p>
+  </main>
+);
 
 export default function App() {
   return (
@@ -76,104 +55,64 @@ export default function App() {
 
       <Suspense fallback={<RouteLoader />}>
         <Routes>
-          {/* HOME */}
           <Route path="/" element={<Home />} />
-
-          {/* COCHES */}
           <Route path="/car/:slug" element={<CarPage />} />
-
-          {/* IMPORTACIÓN */}
-          <Route
-            path="/importacion-coches-alemania"
-            element={<ImportacionAlemania />}
-          />
-
-          {/* CALCULADORA */}
-          <Route
-            path="/calculadora-impuesto-matriculacion"
-            element={<CalculadoraImpuestos />}
-          />
-
-          {/* FAQ */}
+          <Route path="/importacion-coches-alemania" element={<ImportacionAlemania />} />
+          <Route path="/calculadora-impuesto-matriculacion" element={<CalculadoraImpuestos />} />
           <Route path="/preguntas-frecuentes" element={<FAQPage />} />
-
-          {/* THANK YOU */}
           <Route path="/gracias" element={<ThankYouPage />} />
-
-          {/* BLOG */}
           <Route path="/blog" element={<BlogIndex />} />
-
           <Route
             path="/blog/certificado-conformidad-coc-itv-matriculacion"
             element={<CertificadoConformidadCOC />}
           />
-
           <Route
             path="/blog/importar-coche-aleman-guia-importacion-alemania"
             element={<ImportacionAlemaniaMejorOpcion />}
           />
-
           <Route
             path="/blog/revision-coche-alemania-protocolo-auditoria"
             element={<ProtocoloAuditoria2026 />}
           />
-
           <Route
             path="/blog/guia-calculo-impuesto-matriculacion-boe-2025"
             element={<GuiaCalculadora2026 />}
           />
-
           <Route
             path="/blog/cuanto-cuesta-importar-coche-alemania-2026"
             element={<CosteImportacionAlemania />}
           />
-
           <Route
             path="/blog/mejores-modelos-importar-alemania-2026"
             element={<ArticuloModelos2026 />}
           />
-
-          {/* NUEVO: artículo huérfano con URL SEO-friendly */}
           <Route
             path="/blog/que-motor-elegir-importar-alemania-2026"
             element={<EleccionMotor2026 />}
           />
-
           <Route
             path="/blog/motores-bmw-en-mercedes-2027"
             element={<MotoresBmwMercedes2027 />}
           />
-
           <Route
             path="/blog/bmw-reestreno-alemania-2026"
             element={<BmwReestreno2026 />}
           />
-
           <Route
             path="/blog/coche-segunda-mano-reus-tarragona"
             element={<CochesReusTarragona />}
           />
-
-          <Route
-            path="/blog/como-importar-coche-alemania"
-            element={<ComoImportarCocheAlemania />}
-          />
-
+          <Route path="/blog/como-importar-coche-alemania" element={<ComoImportarCocheAlemania />} />
           <Route
             path="/blog/5-riesgos-importar-coche-alemania"
             element={<RiesgosImportarCocheAlemania />}
           />
-
           <Route
             path="/blog/bmw-alpina-nueva-era-lujo-aleman"
             element={<BMWAlpinaNuevaEra />}
           />
-
-          {/* LEGALES */}
           <Route path="/aviso-legal" element={<AvisoLegal />} />
           <Route path="/politica-privacidad" element={<PoliticaPrivacidad />} />
-
-          {/* 404 REAL (CORRECCIÓN SEO) */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

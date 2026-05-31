@@ -157,7 +157,7 @@ export const CalculadoraImpuestos = () => {
       context: leadContext,
     });
 
-    const url = "https://chatgpt.com/g/g-69622c5453908191bd59a9c9a7586e21-pgc-asistente-de-valoracion-oficial";
+    const url = "https://chatgpt.com/g/g-6a1be090eecc8191861cf1da04ae2a44-pgc-asistente-de-valoracion-oficial";
 
     const esMovil = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 

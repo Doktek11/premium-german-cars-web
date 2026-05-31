@@ -31,6 +31,57 @@ const autoDealerJsonLd = {
   inLanguage: "es-ES",
 };
 
+const homeJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "Premium German Cars",
+      url: siteUrl,
+      logo: `${siteUrl}/logoPGC.svg`,
+    },
+    {
+      "@type": "AutoDealer",
+      name: "Premium German Cars",
+      url: siteUrl,
+      logo: `${siteUrl}/logoPGC.svg`,
+      image: `${siteUrl}/amggtr-mobile.webp`,
+      description:
+        "Importacion de coches premium desde Alemania con busqueda, verificacion, transporte, ITV, matriculacion y entrega llave en mano en Espana.",
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "ES",
+      },
+      areaServed: ["Espana", "Cambrils", "Tarragona", "Cataluna"],
+      inLanguage: "es-ES",
+    },
+    {
+      "@type": "Service",
+      name: "Importacion de coches premium desde Alemania a Espana",
+      description:
+        "Servicio de busqueda, verificacion, transporte, ITV, matriculacion y entrega llave en mano de coches premium importados desde Alemania.",
+      provider: {
+        "@type": "Organization",
+        name: "Premium German Cars",
+        url: siteUrl,
+      },
+      areaServed: ["Espana", "Cambrils", "Tarragona", "Cataluna"],
+      serviceType: "Importacion de vehiculos",
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: `${siteUrl}/`,
+        },
+      ],
+    },
+  ],
+};
+
 const calculatorJsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -225,13 +276,13 @@ const articleRoutes = [
 const routes = [
   {
     path: "/",
-    title: "Premium German Cars | Importación de Coches Premium desde Alemania",
+    title: "Importacion de coches premium desde Alemania a Espana | Premium German Cars",
     description:
-      "Importación de coches premium desde Alemania con vehículos certificados, gestión integral y entrega llave en mano en España.",
-    h1: "Importación de coches premium desde Alemania",
+      "Importa tu coche premium desde Alemania con verificacion, transporte, ITV y matriculacion en Espana. Busqueda personalizada y entrega llave en mano.",
+    h1: "Importacion de coches premium desde Alemania a Espana",
     eyebrow: "Excelencia alemana",
     image: `${siteUrl}/amggtr-mobile.webp`,
-    jsonLd: autoDealerJsonLd,
+    jsonLd: homeJsonLd,
   },
   {
     path: "/importacion-coches-alemania",

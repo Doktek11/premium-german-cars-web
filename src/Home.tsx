@@ -6,15 +6,70 @@ import { Hero } from "./components/Hero";
 import { SEO } from "./components/SEO";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 import { lazyNamed } from "./lib/lazyNamed";
+import { homeFaqs } from "./data/homeSeo";
 
-// Below-the-fold: diferidos
-const About = lazyNamed(() => import("./components/About"), "About");
-const Features = lazyNamed(() => import("./components/Features"), "Features");
 const Guarantee = lazyNamed(() => import("./components/Guarantee"), "Guarantee");
 const ImportForm = lazyNamed(() => import("./components/ImportForm"), "ImportForm");
 const Testimonials = lazyNamed(() => import("./components/Testimonials"), "Testimonials");
 const Footer = lazyNamed(() => import("./components/Footer"), "Footer");
-const SeoContent = lazyNamed(() => import("./components/SeoContent"), "SeoContent");
+const HomeLandingSeo = lazyNamed(() => import("./components/HomeLandingSeo"), "HomeLandingSeo");
+
+const homeJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "Premium German Cars",
+      url: "https://www.premiumgermancars.com/",
+      logo: "https://www.premiumgermancars.com/logoPGC.svg",
+    },
+    {
+      "@type": "AutoDealer",
+      name: "Premium German Cars",
+      url: "https://www.premiumgermancars.com/",
+      image: "https://www.premiumgermancars.com/amggtr-mobile.webp",
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "ES",
+      },
+      areaServed: ["Espana", "Cambrils", "Tarragona", "Cataluna"],
+    },
+    {
+      "@type": "Service",
+      name: "Importacion de coches premium desde Alemania a Espana",
+      description:
+        "Servicio de busqueda, verificacion, transporte, ITV, matriculacion y entrega llave en mano de coches premium importados desde Alemania.",
+      provider: {
+        "@type": "Organization",
+        name: "Premium German Cars",
+      },
+      areaServed: ["Espana", "Cambrils", "Tarragona", "Cataluna"],
+      serviceType: "Importacion de vehiculos",
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: homeFaqs.map(([question, answer]) => ({
+        "@type": "Question",
+        name: question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: answer,
+        },
+      })),
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://www.premiumgermancars.com/",
+        },
+      ],
+    },
+  ],
+};
 
 function SectionLoader() {
   return (
@@ -42,9 +97,10 @@ export function Home() {
   return (
     <div className="bg-black">
       <SEO
-        title="Premium German Cars | Importación de Coches Premium desde Alemania"
-        description="Importación de coches premium desde Alemania con vehículos certificados, gestión integral y entrega llave en mano en España."
+        title="Importacion de coches premium desde Alemania a Espana | Premium German Cars"
+        description="Importa tu coche premium desde Alemania con verificacion, transporte, ITV y matriculacion en Espana. Busqueda personalizada y entrega llave en mano."
         canonical="https://www.premiumgermancars.com/"
+        jsonLd={homeJsonLd}
       />
 
       <Navbar />
@@ -54,17 +110,9 @@ export function Home() {
           <Hero />
         </section>
 
-        <section id="process" className="content-auto">
-          <Suspense fallback={<SectionLoader />}>
-            <About />
-          </Suspense>
-        </section>
-
-        <section className="content-auto">
-          <Suspense fallback={<SectionLoader />}>
-            <Features />
-          </Suspense>
-        </section>
+        <Suspense fallback={<SectionLoader />}>
+          <HomeLandingSeo />
+        </Suspense>
 
         <section className="content-auto">
           <Suspense fallback={<SectionLoader />}>
@@ -149,11 +197,6 @@ export function Home() {
           </Suspense>
         </section>
 
-        <section className="sr-only">
-          <Suspense fallback={null}>
-            <SeoContent />
-          </Suspense>
-        </section>
       </main>
 
       <WhatsAppButton />

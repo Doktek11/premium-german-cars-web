@@ -1,7 +1,6 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { Home } from "./Home";
 import ScrollToTop from "./components/ScrollToTop";
 import { LeadAttributionTracker } from "./components/LeadAttributionTracker";
 import { RouteAnalyticsTracker } from "./components/RouteAnalyticsTracker";
@@ -9,6 +8,7 @@ import { lazyNamed } from "./lib/lazyNamed";
 
 const Analytics = lazyNamed(() => import("@vercel/analytics/react"), "Analytics");
 
+const Home = lazyNamed(() => import("./Home"), "Home");
 const CarPage = lazyNamed(() => import("./pages/CarPage"), "CarPage");
 const ImportacionAlemania = lazyNamed(
   () => import("./pages/ImportacionAlemania"),

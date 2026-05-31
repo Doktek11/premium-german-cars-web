@@ -1,6 +1,9 @@
 import { lazy, type ComponentType } from "react";
 
-export const lazyNamed = <T extends ComponentType<unknown>>(
-  load: () => Promise<Record<string, T>>,
+export const lazyNamed = (
+  load: () => Promise<Record<string, unknown>>,
   name: string
-) => lazy(() => load().then((m) => ({ default: m[name] })));
+) =>
+  lazy(() =>
+    load().then((m) => ({ default: m[name] as ComponentType<any> }))
+  );

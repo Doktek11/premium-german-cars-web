@@ -2,6 +2,10 @@ import React from "react";
 import { ArrowRight } from "lucide-react";
 
 export const Hero: React.FC = () => {
+  const reviewMessage =
+    "Hola! He visto una unidad en Alemania y me gustaria que la revisarais antes de comprar.";
+  const reviewUrl = `https://wa.me/34603743608?text=${encodeURIComponent(reviewMessage)}`;
+
   return (
     <section
       id="home"
@@ -18,66 +22,74 @@ export const Hero: React.FC = () => {
           />
           <img
             src="/amggtr-mobile.webp"
-            alt="Importación de coches premium desde Alemania - Premium German Cars"
+            alt="Importacion de coches premium desde Alemania a Espana - Premium German Cars"
             width="800"
             height="1200"
             sizes="100vw"
             className="w-full h-full object-cover"
-            fetchPriority="high"
+            {...({ fetchpriority: "high" } as Record<string, string>)}
             loading="eager"
             decoding="async"
           />
         </picture>
 
-        {/* Una sola capa para reducir trabajo de composición/pintado */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to top, #0f0f0f 0%, rgba(15,15,15,0.65) 52%, rgba(0,0,0,0.32) 100%)",
+              "linear-gradient(to top, #0f0f0f 0%, rgba(15,15,15,0.72) 52%, rgba(0,0,0,0.34) 100%)",
           }}
         />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center md:text-left h-full flex flex-col justify-center">
-        <div className="max-w-4xl mt-16 sm:mt-20">
+        <div className="max-w-5xl mt-16 sm:mt-20">
           <div className="flex items-center justify-center md:justify-start gap-4 mb-5 sm:mb-6">
             <div className="h-[1px] w-12 bg-gold-400" />
             <span className="text-gold-400 text-[11px] sm:text-xs md:text-sm font-bold tracking-[0.28em] uppercase">
-              Excelencia Alemana
+              Excelencia alemana
             </span>
           </div>
 
-          <h1 className="text-[30px] sm:text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-5 sm:mb-6 leading-[1.08] tracking-[-0.01em]">
-            Importación de Coches Premium desde Alemania
+          <h1 className="text-[30px] sm:text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-5 sm:mb-6 leading-[1.08]">
+            Importacion de coches premium desde Alemania a Espana
           </h1>
 
-          {/* Usamos 700 arriba del pliegue para evitar cargar peso 600 en la ruta crítica */}
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif font-bold mb-7 sm:mb-8 leading-[1.12] text-white">
-            Tú lo sueñas.
-            <br />
-            <span className="text-gray-300">Nosotros lo traemos.</span>
-          </h2>
-
-          {/* font-normal para no forzar Montserrat 300 en el primer render */}
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-10 sm:mb-12 max-w-2xl font-normal leading-relaxed tracking-normal mx-auto md:mx-0">
-            Acceso directo al mercado alemán. Vehículos certificados, gestión integral y entrega llave en mano en España.
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 max-w-2xl font-normal leading-relaxed mx-auto md:mx-0">
+            Importamos coches premium desde Alemania con busqueda personalizada,
+            verificacion documental, transporte profesional, ITV, matriculacion
+            y entrega llave en mano en Espana.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center md:justify-start">
+          <p className="text-sm sm:text-base text-gray-300 mb-8 max-w-3xl leading-relaxed mx-auto md:mx-0">
+            Ayudamos a particulares y empresas a encontrar, verificar e importar
+            BMW, Audi, Mercedes-Benz, Porsche y Volkswagen con historial claro,
+            documentacion correcta y configuracion interesante para el mercado espanol.
+          </p>
+
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 justify-center md:justify-start">
             <a
               href="#import"
               className="px-8 py-4 sm:py-5 bg-gold-400 hover:bg-gold-500 text-black font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-xl flex items-center justify-center gap-3 min-h-[48px] touch-manipulation"
             >
-              Comenzar Pedido
+              Solicitar busqueda personalizada
               <ArrowRight size={18} />
             </a>
 
             <a
-              href="#stock"
+              href="/calculadora-impuesto-matriculacion"
               className="px-8 py-4 sm:py-5 border border-white/20 hover:border-white text-white font-semibold text-sm uppercase tracking-widest hover:bg-white/5 transition-all duration-300 flex items-center justify-center min-h-[48px] touch-manipulation"
             >
-              Explorar Stock
+              Calcular impuesto de matriculacion
+            </a>
+
+            <a
+              href={reviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 sm:py-5 border border-gold-400/40 text-gold-400 font-semibold text-sm uppercase tracking-widest hover:bg-gold-400 hover:text-black transition-all duration-300 flex items-center justify-center min-h-[48px] touch-manipulation"
+            >
+              Enviar una unidad para revisar
             </a>
           </div>
         </div>

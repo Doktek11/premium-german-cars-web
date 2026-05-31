@@ -103,7 +103,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
               key={allImages[currentImageIndex]}
               src={allImages[currentImageIndex]}
               alt={`${car.make} ${car.model}`}
-              fetchPriority={currentImageIndex === 0 ? "high" : "low"}
+              {...({ fetchpriority: currentImageIndex === 0 ? "high" : "low" } as Record<string, string>)}
               loading="eager"
               decoding={currentImageIndex === 0 ? "sync" : "async"}
               width="1920"

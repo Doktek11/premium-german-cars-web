@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect } from 'react';
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useMemo } from "react";
 import { getLeadContext } from "../lib/leadAttribution";
 import { trackLeadEvent } from "../lib/analytics";
@@ -50,14 +50,49 @@ import {
 
 
 
+const PRECIO_MIN = 0;
+const PRECIO_MAX = 150000;
+const PRECIO_DEFAULT = 45000;
+const EMISIONES_MIN = 0;
+const EMISIONES_MAX = 350;
+const EMISIONES_DEFAULT = 155;
+const MESES_MIN = 1;
+const MESES_MAX = 120;
+const MESES_DEFAULT = 36;
+
+const getInitialSliderValue = (
+  searchParams: URLSearchParams,
+  paramName: string,
+  defaultValue: number,
+  min: number,
+  max: number
+) => {
+  const paramValue = searchParams.get(paramName);
+
+  if (paramValue === null) return defaultValue;
+
+  const numericValue = Number(paramValue);
+
+  if (!Number.isFinite(numericValue)) return defaultValue;
+
+  return Math.min(max, Math.max(min, Math.trunc(numericValue)));
+};
+
 export const CalculadoraImpuestos = () => {
   const location = useLocation();
+  const [searchParams] = useSearchParams();
 
-  const [precio, setPrecio] = useState<number>(45000);
+  const [precio, setPrecio] = useState<number>(
+    getInitialSliderValue(searchParams, "valor", PRECIO_DEFAULT, PRECIO_MIN, PRECIO_MAX)
+  );
 
-  const [emisiones, setEmisiones] = useState<number>(155);
+  const [emisiones, setEmisiones] = useState<number>(
+    getInitialSliderValue(searchParams, "co2", EMISIONES_DEFAULT, EMISIONES_MIN, EMISIONES_MAX)
+  );
 
-  const [meses, setMeses] = useState<number>(36);
+  const [meses, setMeses] = useState<number>(
+    getInitialSliderValue(searchParams, "antiguedad", MESES_DEFAULT, MESES_MIN, MESES_MAX)
+  );
 
   const [esComunidadIncrementada, setEsComunidadIncrementada] = useState<boolean>(false);
 
@@ -528,7 +563,7 @@ export const CalculadoraImpuestos = () => {
 
                 <input 
 
-                  type="range" min="0" max="150000" step="100"
+                  type="range" min={PRECIO_MIN} max={PRECIO_MAX} step="100"
 
                   value={precio} onChange={(e) => setPrecio(Number(e.target.value))}
 
@@ -568,7 +603,7 @@ export const CalculadoraImpuestos = () => {
 
                 <input 
 
-                  type="range" min="0" max="350" step="1"
+                  type="range" min={EMISIONES_MIN} max={EMISIONES_MAX} step="1"
 
                   value={emisiones} onChange={(e) => setEmisiones(Number(e.target.value))}
 
@@ -594,7 +629,7 @@ export const CalculadoraImpuestos = () => {
 
                 <input 
 
-                  type="range" min="1" max="120" step="1"
+                  type="range" min={MESES_MIN} max={MESES_MAX} step="1"
 
                   value={meses} onChange={(e) => setMeses(Number(e.target.value))}
 

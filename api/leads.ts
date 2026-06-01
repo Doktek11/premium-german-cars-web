@@ -1,8 +1,8 @@
 type LeadPayload = {
   email: string;
-  marca?: string;
-  modelo?: string;
-  source?: string;
+  marca: string;
+  modelo: string;
+  source: string;
 };
 
 type LeadsRequest = {
@@ -55,13 +55,26 @@ function getLeadPayload(body: unknown): LeadPayload | null {
 
   return {
     email,
-    marca: readString(parsedBody.marca) || undefined,
-    modelo: readString(parsedBody.modelo) || undefined,
-    source: readString(parsedBody.source) || "calculadora",
+    marca: readString(parsedBody.marca),
+    modelo: readString(parsedBody.modelo),
+    source: readString(parsedBody.source),
   };
 }
 
 export default async function handler(req: LeadsRequest, res: LeadsResponse) {
+  console.log(
+    "[leads] received:",
+    req.body,
+    process.env.LEADS_WEBHOOK_URL ? process.env.LEADS_WEBHOOK_URL.substring(0, 30) : ""
+  );
+
+  if (!process.env.LEADS_WEBHOOK_URL) {
+    console.error("[leads] ERROR: LEADS_WEBHOOK_URL no está definida");
+    return res.status(500).json({ error: "Webhook URL not configured" });
+  }
+
+  const webhookUrl = process.env.LEADS_WEBHOOK_URL;
+
   if (req.method !== "POST") {
     return res.status(405).end();
   }
@@ -72,34 +85,28 @@ export default async function handler(req: LeadsRequest, res: LeadsResponse) {
     return res.status(400).json({ error: "Email invalido" });
   }
 
-  const webhookUrl =
-    process.env.LEADS_WEBHOOK_URL ||
-    process.env.LEAD_WEBHOOK_URL ||
-    process.env.CRM_WEBHOOK_URL;
-
-  if (!webhookUrl) {
-    return res.status(500).json({ error: "LEADS_WEBHOOK_URL no configurada" });
-  }
-
   try {
     const webhookResponse = await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: payload.email,
-        marca: payload.marca ?? "No especificada",
-        modelo: payload.modelo ?? "No especificado",
+        marca: payload.marca,
+        modelo: payload.modelo,
         source: payload.source,
         fecha: new Date().toISOString(),
       }),
     });
 
     if (!webhookResponse.ok) {
-      return res.status(502).json({ error: "Webhook no disponible" });
+      const webhookText = await webhookResponse.text();
+      console.error("[leads] webhook error:", webhookResponse.status, webhookText);
+      return res.status(500).json({ error: "Webhook no disponible" });
     }
 
     return res.status(200).json({ ok: true });
-  } catch {
-    return res.status(502).json({ error: "No se pudo enviar el lead" });
+  } catch (error) {
+    console.error("[leads] fetch failed:", error);
+    return res.status(500).json({ error: "No se pudo enviar el lead" });
   }
 }

@@ -24,23 +24,27 @@ export function LeadCapture({ marca, modelo }: LeadCaptureProps) {
     setStatus("loading");
 
     try {
+      const payload = {
+        email: normalizedEmail,
+        marca: marca ?? "",
+        modelo: modelo ?? "",
+        source: "calculadora",
+      };
+
       const response = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: normalizedEmail,
-          marca,
-          modelo,
-          source: "calculadora",
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error("Lead request failed");
+        const errorText = await response.text();
+        throw new Error(`Lead request failed: ${response.status} ${errorText}`);
       }
 
       setStatus("success");
-    } catch {
+    } catch (error) {
+      console.error("[LeadCapture] submit failed:", error);
       setStatus("error");
     }
   };

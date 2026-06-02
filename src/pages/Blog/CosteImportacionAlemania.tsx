@@ -5,6 +5,7 @@ import { WhatsAppButton } from "../../components/WhatsAppButton";
 import { SEO } from "../../components/SEO";
 import { ArrowRight, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
 
 export const CosteImportacionAlemania: React.FC = () => {
   useEffect(() => {
@@ -267,6 +268,12 @@ export const CosteImportacionAlemania: React.FC = () => {
             El coste de reparación puede ser elevado y difícil de reclamar si no se ha verificado correctamente en origen.
           </p>
         </section>
+
+        <SeoIntentLinks
+          title="Completa el presupuesto antes de comprar"
+          intro="El coste total se entiende mejor cuando se cruza con la calculadora, el proceso de importación y los riesgos previos al pago."
+          links={seoIntentLinks.cost}
+        />
 
         <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Conclusión: importar bien o pagar el error</h2>

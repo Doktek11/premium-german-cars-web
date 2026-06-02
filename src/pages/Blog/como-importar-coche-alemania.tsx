@@ -9,6 +9,7 @@ import {
   ArrowRight, 
   Info
 } from 'lucide-react';
+import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
 
 const ComoImportarCocheAlemania = () => {
   return (
@@ -203,6 +204,21 @@ const ComoImportarCocheAlemania = () => {
                 </div>
               ))}
             </div>
+
+            <section className="mb-20 border border-gold-400/20 bg-gold-400/5 p-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Acompañamiento antes de reservar
+              </h2>
+              <p className="text-gray-300 text-lg mb-0">
+                Podemos revisar una unidad concreta, calcular su coste total y confirmar si merece la pena antes de que pagues señal o transporte.
+              </p>
+            </section>
+
+            <SeoIntentLinks
+              title="Profundiza antes de importar"
+              intro="La guía es el mapa general. Estos enlaces completan coste, fiscalidad, riesgos y servicio local para cerrar la operación con criterio."
+              links={seoIntentLinks.guide}
+            />
 
             {/* CONCLUSIÓN Y CTA CORREGIDO */}
             <div className="bg-[#050505] border border-gold-400/20 p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">

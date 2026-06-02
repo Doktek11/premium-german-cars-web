@@ -5,6 +5,7 @@ import { Plus, Minus } from 'lucide-react';
 import { faqs } from '../data/faqs';
 import { WhatsAppButton } from '../components/WhatsAppButton';
 import { SEO } from '../components/SEO';
+import { SeoIntentLinks, seoIntentLinks } from "../components/SeoIntentLinks";
 
 export function FAQPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -70,6 +71,29 @@ export function FAQPage() {
               </div>
             ))}
           </div>
+
+          <div className="max-w-3xl mx-auto mt-12 border border-gold-400/20 bg-gold-400/5 p-6 sm:p-8 text-center">
+            <h2 className="text-2xl sm:text-3xl font-serif text-white mb-4">
+              ¿Tienes una unidad vista en Alemania?
+            </h2>
+            <p className="text-gray-300 mb-6">
+              Podemos revisar coste, documentación, vendedor y viabilidad antes de que pagues una señal.
+            </p>
+            <a
+              href="https://wa.me/34603743608?text=Hola,%20tengo%20dudas%20sobre%20importar%20un%20coche%20desde%20Alemania."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center bg-gold-400 text-black px-6 py-4 text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
+            >
+              Resolver dudas por WhatsApp
+            </a>
+          </div>
+
+          <SeoIntentLinks
+            title="Dudas frecuentes y pasos siguientes"
+            intro="Estas páginas amplían las preguntas más comunes sobre impuestos, costes, proceso y riesgos."
+            links={seoIntentLinks.faq}
+          />
         </div>
       </main>
       <Footer />

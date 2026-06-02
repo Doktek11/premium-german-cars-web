@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   Star
 } from 'lucide-react';
+import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
 
 const BMWAlpinaNuevaEra = () => {
   return (
@@ -158,6 +159,12 @@ const BMWAlpinaNuevaEra = () => {
                 </div>
               </div>
             </section>
+
+            <SeoIntentLinks
+              title="Importar un Alpina exige más verificación"
+              intro="En unidades exclusivas, el coste fiscal, la trazabilidad y el vendedor pesan tanto como la configuración del coche."
+              links={seoIntentLinks.alpina}
+            />
 
             {/* CONCLUSIÓN Y CTA */}
             <div className="bg-[#0a0a0a] border border-gold-400/20 p-12 text-center relative overflow-hidden">

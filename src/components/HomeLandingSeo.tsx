@@ -183,6 +183,12 @@ export const HomeLandingSeo = () => {
             <a href="/calculadora-impuesto-matriculacion" className="text-gold-400 underline underline-offset-4 hover:text-white">
               calcular el impuesto de matriculacion
             </a>
+            <p className="text-gray-300 leading-relaxed mt-4">
+              Para presupuestar la operacion completa, revisa tambien{" "}
+              <a href="/blog/cuanto-cuesta-importar-coche-alemania-2026" className="text-gold-400 underline underline-offset-4 hover:text-white">
+                cuanto cuesta importar un coche de Alemania
+              </a>.
+            </p>
           </div>
         </div>
       </section>

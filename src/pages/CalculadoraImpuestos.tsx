@@ -13,6 +13,7 @@ import { SEO } from '../components/SEO';
 import { WhatsAppButton } from '../components/WhatsAppButton';
 import { CalculatorLeadCapture } from "../components/CalculatorLeadCapture";
 import { LeadCapture } from "../components/LeadCapture";
+import { SeoIntentLinks, seoIntentLinks } from "../components/SeoIntentLinks";
 
 import { 
 
@@ -135,7 +136,7 @@ export const CalculadoraImpuestos = () => {
         "@type": "SoftwareApplication",
         name: "Calculadora Impuesto de Matriculación",
         url: "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
-        description: "Calcula el impuesto de matriculación para coches importados de Alemania. Gratuito y actualizado 2025.",
+        description: "Calcula el impuesto de matriculación para coches importados de Alemania. Estimación basada en referencias oficiales 2026 y tablas BOE.",
         applicationCategory: "FinanceApplication",
         operatingSystem: "Web",
         inLanguage: "es-ES",
@@ -335,9 +336,9 @@ export const CalculadoraImpuestos = () => {
 
       <SEO
 
-        title="Calculadora Impuesto de Matriculación 2025 | Premium German Cars"
+        title="Calculadora Impuesto de Matriculación 2026 | Premium German Cars"
 
-        description="Calcula gratis el impuesto de matriculación para coches importados de Alemania. Actualizado 2025, preciso y con IA."
+        description="Calcula el impuesto de matriculación 2026 para coches importados de Alemania con valor, CO2 y antigüedad. Estimación orientativa basada en tablas oficiales."
 
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
         jsonLd={calculadoraJsonLd}
@@ -359,14 +360,12 @@ export const CalculadoraImpuestos = () => {
 
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter text-left">
 
-                Calculadora <span className="text-gold-400 italic">Diésel o Gasolina:</span> <br/>
-
-                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">¿Quién paga más impuesto?</span>
+                Calculadora de impuesto de matriculación 2026
 
               </h1>
 
               <p className="text-gray-400 text-lg max-w-2xl text-left">
-                Herramienta de precisión basada en los tramos de CO2 2026 y las tablas de depreciación del BOE para vehículos de importación.
+                Estimación orientativa basada en referencias oficiales 2026, tramos de CO2 y tablas de depreciación del BOE para vehículos de importación.
               </p>
 
             </div>
@@ -422,6 +421,12 @@ export const CalculadoraImpuestos = () => {
               Revisado el {ultimaActualizacionBoe}. Cálculo alineado con tramos de CO2 y tablas de depreciación BOE vigentes para importación de vehículos.
             </p>
           </section>
+
+          <SeoIntentLinks
+            title="Antes de decidir una unidad"
+            intro="La cifra del impuesto es solo una parte del presupuesto. Estos enlaces completan el contexto fiscal, técnico y comercial antes de comprar en Alemania."
+            links={seoIntentLinks.calculator}
+          />
 
 
 
@@ -980,7 +985,6 @@ export const CalculadoraImpuestos = () => {
   );
 
 };
-
 
 
 

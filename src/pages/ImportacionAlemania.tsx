@@ -5,6 +5,7 @@ import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
 import { ArrowRight, CheckCircle2, Calculator, Search } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SeoIntentLinks, seoIntentLinks } from "../components/SeoIntentLinks";
 
 export const ImportacionAlemania: React.FC = () => {
   useEffect(() => {
@@ -286,6 +287,12 @@ export const ImportacionAlemania: React.FC = () => {
             Gestionamos todo el proceso de importación y entregamos el vehículo listo para circular.
           </p>
         </section>
+
+        <SeoIntentLinks
+          title="Importar desde Alemania en Tarragona y Cataluña"
+          intro="Si estás comparando una unidad alemana con el mercado local, estos contenidos ayudan a cerrar coste, riesgos y alternativa de reestreno cerca de Cambrils."
+          links={seoIntentLinks.importacion}
+        />
 
         <section className="bg-metallic-950 py-14 sm:py-18 md:py-22 mb-16 sm:mb-20 md:mb-24">
           <div className="container mx-auto px-4 sm:px-6 max-w-4xl">

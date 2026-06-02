@@ -2,6 +2,7 @@ import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
 import { CheckCircle, ShieldCheck, Euro, MapPin, ArrowRight } from "lucide-react";
+import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
 
 const CochesReusTarragona = () => {
   return (
@@ -163,6 +164,12 @@ const CochesReusTarragona = () => {
               Seleccionamos cada unidad como si fuera para nosotros mismos."
             </blockquote>
           </div>
+
+          <SeoIntentLinks
+            title="Alternativa local al coche usado tradicional"
+            intro="Si estás en Reus, Tarragona o Cambrils, compara el mercado local con una importación de reestreno bien calculada y verificada."
+            links={seoIntentLinks.local}
+          />
 
           {/* CTA Final */}
           <div className="mt-20 p-12 bg-gradient-to-r from-metallic-900 to-black border border-gold-400/30 text-center">

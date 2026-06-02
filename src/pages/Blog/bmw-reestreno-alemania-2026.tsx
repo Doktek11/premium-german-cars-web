@@ -2,6 +2,7 @@ import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
 import { ShieldCheck, Search, ArrowRight, Cpu, Star } from "lucide-react";
+import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
 
 const BmwReestreno2026 = () => {
   return (
@@ -105,6 +106,12 @@ const BmwReestreno2026 = () => {
               Importar un BMW no es solo comprarlo; es transportarlo con seguridad y cumplir con toda la burocracia en España. En <strong>Premium German Cars</strong>, nos encargamos de que tu única preocupación sea elegir el color de la tapicería.
             </p>
           </div>
+
+          <SeoIntentLinks
+            title="Busca un BMW con fiscalidad y origen revisados"
+            intro="Antes de elegir una unidad BMW, conviene cruzar coste fiscal, modelos equivalentes, riesgos de flota e historial verificable."
+            links={seoIntentLinks.bmw}
+          />
 
           {/* Banner de Contacto Final Corregido */}
           <div className="mt-20 p-1 bg-gradient-to-r from-gold-600 to-gold-400">

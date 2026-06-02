@@ -5,6 +5,7 @@ import { WhatsAppButton } from "../../components/WhatsAppButton";
 import { SEO } from "../../components/SEO";
 import { ArrowRight, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
 
 export const ArticuloModelos2026: React.FC = () => {
   useEffect(() => {
@@ -362,6 +363,12 @@ export const ArticuloModelos2026: React.FC = () => {
             El riesgo de averías o problemas ocultos puede suponer miles de euros en reparaciones.
           </p>
         </section>
+
+        <SeoIntentLinks
+          title="Elige modelo con coste, motor y riesgo controlados"
+          intro="Un buen modelo deja de ser rentable si el motor, el CO2 o el historial no encajan. Cruza estos criterios antes de buscar unidad."
+          links={seoIntentLinks.models}
+        />
 
         <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">Conclusión: no se trata solo de importar, sino de elegir bien</h2>

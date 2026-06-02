@@ -12,6 +12,7 @@ import {
   FileText,
   CreditCard,
 } from "lucide-react";
+import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
 
 const RiesgosImportarCocheAlemania = () => {
   return (
@@ -251,6 +252,15 @@ const RiesgosImportarCocheAlemania = () => {
               </p>
             </section>
 
+            <section className="mb-20 border border-red-500/20 bg-red-950/10 p-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Antes de pagar, verifica la unidad
+              </h2>
+              <p className="text-gray-300 text-lg mb-0">
+                Si ya tienes un coche localizado en Alemania, revisamos vendedor, historial, documentación, fiscalidad y coste total antes de cualquier transferencia.
+              </p>
+            </section>
+
             <section className="mb-24">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Preguntas Frecuentes sobre Importar un Coche de Alemania</h2>
               <h3 className="text-lg font-bold text-white mb-2">¿Cuánto cuesta importar un coche de Alemania?</h3>
@@ -273,6 +283,12 @@ const RiesgosImportarCocheAlemania = () => {
                 Normalmente se pagan: Impuesto de Matriculación, IVA (en algunos casos), tasas de Tráfico e ITV de homologación. El coste exacto depende del tipo de vehículo, emisiones y estructura fiscal de la compra.
               </p>
             </section>
+
+            <SeoIntentLinks
+              title="Siguiente paso si quieres comprar sin riesgo"
+              intro="Estos contenidos completan la revisión previa: coste, cálculo fiscal, proceso y dudas frecuentes antes de reservar una unidad."
+              links={seoIntentLinks.risks}
+            />
 
             <div className="bg-[#0a0a0a] border border-gold-400/20 p-12 text-center relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400/50 to-transparent"></div>

@@ -5,6 +5,7 @@ import { WhatsAppButton } from "../../components/WhatsAppButton";
 import { SEO } from "../../components/SEO";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
 
 export const EleccionMotor2026: React.FC = () => {
   useEffect(() => {
@@ -254,6 +255,12 @@ export const EleccionMotor2026: React.FC = () => {
             También puedes ver qué coches son mejores para importar de Alemania en 2026 según su motor y valor de reventa.
           </p>
         </section>
+
+        <SeoIntentLinks
+          title="Cruza motor, coste e importación"
+          intro="La elección de motor debe validarse con impuestos, modelos disponibles y riesgos documentales antes de comprar en Alemania."
+          links={seoIntentLinks.motor}
+        />
 
         <section className="bg-metallic-900 py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20">
           <div className="container mx-auto px-4 sm:px-6 max-w-4xl">

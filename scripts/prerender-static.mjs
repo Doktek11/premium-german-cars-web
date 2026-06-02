@@ -90,7 +90,7 @@ const calculatorJsonLd = {
       name: "Calculadora Impuesto de Matriculación",
       url: `${siteUrl}/calculadora-impuesto-matriculacion`,
       description:
-        "Calcula el impuesto de matriculación para coches importados de Alemania. Gratuito y actualizado 2025.",
+        "Calcula el impuesto de matriculación para coches importados de Alemania. Estimación basada en referencias oficiales 2026 y tablas BOE.",
       applicationCategory: "FinanceApplication",
       operatingSystem: "Web",
       inLanguage: "es-ES",
@@ -139,9 +139,9 @@ const calculatorJsonLd = {
 const carRoutes = [
   {
     path: "/car/bmw-serie-1-116i",
-    title: "BMW Serie 1 116i en venta | Importado desde Alemania",
+    title: "BMW Serie 1 116i importado de Alemania | Premium German Cars",
     description:
-      "Compra BMW Serie 1 116i importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.",
+      "BMW Serie 1 116i importado de Alemania con historial verificado, kilómetros certificados y opción de buscar unidades similares de reestreno.",
     h1: "BMW Serie 1 116i",
     eyebrow: "Vehículo disponible",
     image: `${siteUrl}/bmwconcesionario.webp`,
@@ -294,10 +294,10 @@ const routes = [
   },
   {
     path: "/calculadora-impuesto-matriculacion",
-    title: "Calculadora Impuesto de Matriculación 2025 | Premium German Cars",
+    title: "Calculadora Impuesto de Matriculación 2026 | Premium German Cars",
     description:
-      "Calcula gratis el impuesto de matriculación para coches importados de Alemania. Actualizado 2025, preciso y con IA.",
-    h1: "Calculadora Impuesto de Matriculación",
+      "Calcula el impuesto de matriculación 2026 para coches importados de Alemania con valor, CO2 y antigüedad. Estimación orientativa basada en tablas oficiales.",
+    h1: "Calculadora de impuesto de matriculación 2026",
     eyebrow: "Herramienta gratuita",
     image: `${siteUrl}/calculadora-impuesto-matriculacion-2026.webp`,
     jsonLd: calculatorJsonLd,

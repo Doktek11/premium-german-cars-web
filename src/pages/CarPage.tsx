@@ -6,6 +6,7 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { SEO } from "../components/SEO";
+import { SeoIntentLinks, seoIntentLinks } from "../components/SeoIntentLinks";
 import { getLeadContext } from "../lib/leadAttribution";
 import { trackLeadEvent } from "../lib/analytics";
 
@@ -60,8 +61,35 @@ export const CarPage = () => {
     );
   }
 
-  const title = `${car.make} ${car.model} en venta | Importado desde Alemania`;
-  const description = `Compra ${car.make} ${car.model} importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.`;
+  const isBmwSerie116i = car.slug === "bmw-serie-1-116i";
+  const title = isBmwSerie116i
+    ? "BMW Serie 1 116i importado de Alemania | Premium German Cars"
+    : `${car.make} ${car.model} en venta | Importado desde Alemania`;
+  const description = isBmwSerie116i
+    ? "BMW Serie 1 116i importado de Alemania con historial verificado, kilómetros certificados y opción de buscar unidades similares de reestreno."
+    : `Compra ${car.make} ${car.model} importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.`;
+  const carJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `${car.make} ${car.model}`,
+    image: car.image.startsWith("http")
+      ? car.image
+      : `https://www.premiumgermancars.com${car.image}`,
+    description,
+    brand: {
+      "@type": "Brand",
+      name: car.make,
+    },
+    offers: {
+      "@type": "Offer",
+      price: car.price,
+      priceCurrency: "EUR",
+      availability: car.status.toLowerCase().includes("vend")
+        ? "https://schema.org/SoldOut"
+        : "https://schema.org/InStock",
+      url: `https://www.premiumgermancars.com/car/${car.slug}`,
+    },
+  };
 
   // Si no hay galería, usa al menos la imagen principal
   const gallery = car.gallery?.length ? car.gallery : [car.image];
@@ -102,6 +130,7 @@ export const CarPage = () => {
         title={title}
         description={description}
         canonical={`https://www.premiumgermancars.com/car/${car.slug}`}
+        jsonLd={carJsonLd}
       />
 
       <Navbar />
@@ -191,6 +220,29 @@ export const CarPage = () => {
               </button>
             </div>
           </div>
+
+          {isBmwSerie116i ? (
+            <section className="mt-16 border border-gold-400/20 bg-gold-400/5 p-6 sm:p-8">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white mb-4">
+                ¿Buscas un BMW Serie 1 similar en Alemania?
+              </h2>
+              <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                Podemos localizar una unidad equivalente con historial oficial, kilometraje coherente, coste fiscal calculado y entrega llave en mano en España.
+              </p>
+              <button
+                onClick={() => handleWhatsAppContact("pedido")}
+                className="inline-flex items-center justify-center bg-gold-400 text-black px-6 py-4 text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
+              >
+                Buscar BMW Serie 1 similar
+              </button>
+            </section>
+          ) : null}
+
+          <SeoIntentLinks
+            title="Calcula y compara antes de reservar"
+            intro="Si esta unidad no encaja al cien por cien, revisa coste, fiscalidad y riesgos antes de buscar una alternativa en Alemania."
+            links={seoIntentLinks.car}
+          />
         </div>
       </main>
 

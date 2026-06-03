@@ -82,6 +82,83 @@ const homeJsonLd = {
   ],
 };
 
+const importacionJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: `${siteUrl}/`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Importar coche de Alemania a España",
+          item: `${siteUrl}/importacion-coches-alemania`,
+        },
+      ],
+    },
+    {
+      "@type": "Service",
+      name: "Importar coche de Alemania a España",
+      description:
+        "Servicio de búsqueda, verificación, compra, transporte, ITV y matriculación de coches premium importados desde Alemania a España.",
+      serviceType: "Importación de coches premium desde Alemania",
+      areaServed: ["España", "Cambrils", "Tarragona", "Cataluña"],
+      provider: {
+        "@type": "AutoDealer",
+        name: "Premium German Cars",
+        url: siteUrl,
+        logo: `${siteUrl}/logoPGC.svg`,
+        address: {
+          "@type": "PostalAddress",
+          addressCountry: "ES",
+        },
+      },
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        [
+          "¿Cuánto cuesta importar un coche de Alemania a España?",
+          "Depende del precio del vehículo, transporte, ITV, tasas, gestoría, emisiones de CO2, antigüedad y posible impuesto de matriculación. Por eso conviene calcular el coste total antes de reservar una unidad.",
+        ],
+        [
+          "¿Qué impuestos se pagan al matricular un coche alemán en España?",
+          "Puede aplicarse impuesto de matriculación según emisiones de CO2, además de tasas y otros costes administrativos. Cada caso debe revisarse con datos actualizados del vehículo.",
+        ],
+        [
+          "¿Merece la pena importar un BMW, Audi o Mercedes desde Alemania?",
+          "Puede merecer la pena si la unidad tiene buen historial, equipamiento interesante, precio coherente y costes de importación controlados. No todos los coches alemanes son una buena compra.",
+        ],
+        [
+          "¿Podéis revisar un coche que he encontrado en Mobile.de?",
+          "Sí. Podemos ayudarte a valorar una unidad concreta antes de pagar una señal, revisando anuncio, vendedor, documentación disponible, precio, kilometraje y viabilidad de importación.",
+        ],
+        [
+          "¿Cuánto tarda importar y matricular un coche de Alemania?",
+          "El plazo depende de la unidad, la documentación, el transporte, la ITV y la matriculación. Es mejor valorar cada operación individualmente para evitar expectativas poco realistas.",
+        ],
+        [
+          "¿Qué documentación necesita un coche alemán para matricularse en España?",
+          "Se necesita documentación alemana correcta, factura o contrato, datos técnicos y documentación necesaria para ITV y matriculación. Antes de comprar, conviene verificar que todo esté disponible.",
+        ],
+      ].map(([name, text]) => ({
+        "@type": "Question",
+        name,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text,
+        },
+      })),
+    },
+  ],
+};
+
 const calculatorJsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -286,11 +363,12 @@ const routes = [
   },
   {
     path: "/importacion-coches-alemania",
-    title: "Importación de coches desde Alemania en Cambrils (Tarragona) | Premium German Cars",
+    title: "Importar coche de Alemania a España | Premium German Cars",
     description:
-      "Especialistas en importación de coches premium desde Alemania para clientes en Cambrils, Tarragona y toda Cataluña. Proceso verificado, gestión integral y entrega final.",
-    h1: "Importación de coches desde Alemania en Cambrils (Tarragona)",
-    eyebrow: "Cambrils · Tarragona",
+      "Importa tu coche premium desde Alemania con búsqueda, verificación, transporte, ITV y matriculación. Servicio en España desde Cambrils.",
+    h1: "Importar coche de Alemania a España con gestión integral",
+    eyebrow: "Servicio de importación premium",
+    jsonLd: importacionJsonLd,
   },
   {
     path: "/calculadora-impuesto-matriculacion",

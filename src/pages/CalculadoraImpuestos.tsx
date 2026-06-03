@@ -134,9 +134,9 @@ export const CalculadoraImpuestos = () => {
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        name: "Calculadora Impuesto de Matriculación",
+        name: "Calculadora Diésel o Gasolina Impuesto de Matriculación",
         url: "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
-        description: "Calcula el impuesto de matriculación para coches importados de Alemania. Estimación basada en referencias oficiales 2026 y tablas BOE.",
+        description: "Calcula si paga más impuesto de matriculación un coche diésel o gasolina según CO2, valor, antigüedad y tablas BOE 2026.",
         applicationCategory: "FinanceApplication",
         operatingSystem: "Web",
         inLanguage: "es-ES",
@@ -336,9 +336,9 @@ export const CalculadoraImpuestos = () => {
 
       <SEO
 
-        title="Calculadora Impuesto de Matriculación 2026 | Premium German Cars"
+        title="Diésel o gasolina: impuesto de matriculación 2026 | PGC"
 
-        description="Calcula el impuesto de matriculación 2026 para coches importados de Alemania con valor, CO2 y antigüedad. Estimación orientativa basada en tablas oficiales."
+        description="Calcula si paga más impuesto de matriculación un coche diésel o gasolina según CO2, valor, antigüedad y tablas BOE 2026."
 
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
         jsonLd={calculadoraJsonLd}
@@ -360,12 +360,12 @@ export const CalculadoraImpuestos = () => {
 
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter text-left">
 
-                Calculadora de impuesto de matriculación 2026
+                Diésel o gasolina: calcula el impuesto de matriculación 2026
 
               </h1>
 
               <p className="text-gray-400 text-lg max-w-2xl text-left">
-                Estimación orientativa basada en referencias oficiales 2026, tramos de CO2 y tablas de depreciación del BOE para vehículos de importación.
+                Compara el impuesto de matriculación de un coche diésel o gasolina según emisiones de CO2, valor, antigüedad y tablas BOE.
               </p>
 
             </div>
@@ -985,7 +985,6 @@ export const CalculadoraImpuestos = () => {
   );
 
 };
-
 
 
 

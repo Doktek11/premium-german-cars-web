@@ -87,10 +87,10 @@ const calculatorJsonLd = {
   "@graph": [
     {
       "@type": "SoftwareApplication",
-      name: "Calculadora Impuesto de Matriculación",
+      name: "Calculadora Diésel o Gasolina Impuesto de Matriculación",
       url: `${siteUrl}/calculadora-impuesto-matriculacion`,
       description:
-        "Calcula el impuesto de matriculación para coches importados de Alemania. Estimación basada en referencias oficiales 2026 y tablas BOE.",
+        "Calcula si paga más impuesto de matriculación un coche diésel o gasolina según CO2, valor, antigüedad y tablas BOE 2026.",
       applicationCategory: "FinanceApplication",
       operatingSystem: "Web",
       inLanguage: "es-ES",
@@ -294,10 +294,10 @@ const routes = [
   },
   {
     path: "/calculadora-impuesto-matriculacion",
-    title: "Calculadora Impuesto de Matriculación 2026 | Premium German Cars",
+    title: "Diésel o gasolina: impuesto de matriculación 2026 | PGC",
     description:
-      "Calcula el impuesto de matriculación 2026 para coches importados de Alemania con valor, CO2 y antigüedad. Estimación orientativa basada en tablas oficiales.",
-    h1: "Calculadora de impuesto de matriculación 2026",
+      "Calcula si paga más impuesto de matriculación un coche diésel o gasolina según CO2, valor, antigüedad y tablas BOE 2026.",
+    h1: "Diésel o gasolina: calcula el impuesto de matriculación 2026",
     eyebrow: "Herramienta gratuita",
     image: `${siteUrl}/calculadora-impuesto-matriculacion-2026.webp`,
     jsonLd: calculatorJsonLd,

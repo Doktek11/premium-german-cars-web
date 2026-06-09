@@ -12,7 +12,6 @@ import { SEO } from '../components/SEO';
 
 import { WhatsAppButton } from '../components/WhatsAppButton';
 import { CalculatorLeadCapture } from "../components/CalculatorLeadCapture";
-import { LeadCapture } from "../components/LeadCapture";
 import { SeoIntentLinks, seoIntentLinks } from "../components/SeoIntentLinks";
 
 import { 
@@ -759,10 +758,6 @@ export const CalculadoraImpuestos = () => {
                     </div>
 
                   </div>
-
-                  <LeadCapture />
-
-
 
                   <CalculatorLeadCapture
                     precio={precio}

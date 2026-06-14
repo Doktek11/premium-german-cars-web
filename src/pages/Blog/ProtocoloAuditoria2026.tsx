@@ -17,7 +17,7 @@ const warningSignals = [
   "El historial de mantenimiento no está claro.",
   "El vehículo ha tenido varios propietarios.",
   "Faltan datos técnicos o documentación.",
-  "Las emisiones de CO2 no aparecen con claridad.",
+  "Las emisiones de CO₂ no aparecen con claridad.",
   "El coche procede de renting, flota o empresa.",
   "No sabes cuánto costará matricularlo en España.",
   "Quieres comprar sin viajar a Alemania.",
@@ -48,7 +48,7 @@ const documentChecks = [
   "Documentación alemana del vehículo.",
   "Factura o contrato de compra.",
   "Datos técnicos.",
-  "Emisiones de CO2.",
+  "Emisiones de CO₂.",
   "Certificado de conformidad COC si aplica.",
   "Viabilidad para pasar ITV en España.",
   "Posibles diferencias entre ficha, anuncio y documentación.",
@@ -75,7 +75,7 @@ const mobileChecks = [
   "Si el kilometraje encaja con el historial.",
   "Si el coche tiene documentación completa.",
   "Si se puede emitir factura correctamente.",
-  "Si hay información suficiente sobre CO2.",
+  "Si hay información suficiente sobre CO₂.",
   "Si el vendedor permite comprobaciones previas.",
   "Si la forma de pago es segura.",
 ];
@@ -131,7 +131,7 @@ const faqItems = [
   {
     question: "¿Puede Premium German Cars revisar un coche anunciado en Mobile.de?",
     answer:
-      "Sí. Podemos ayudarte a valorar una unidad concreta antes de pagar una señal, revisando anuncio, vendedor, historial disponible, documentación, precio, CO2 y viabilidad de importación a España.",
+      "Sí. Podemos ayudarte a valorar una unidad concreta antes de pagar una señal, revisando anuncio, vendedor, historial disponible, documentación, precio, CO₂ y viabilidad de importación a España.",
   },
   {
     question: "¿Qué datos necesito enviar para revisar una unidad?",
@@ -175,6 +175,8 @@ const articleJsonLd = {
   "@graph": [
     {
       "@type": "BreadcrumbList",
+      "@id":
+        "https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria#breadcrumb",
       itemListElement: [
         {
           "@type": "ListItem",
@@ -198,9 +200,11 @@ const articleJsonLd = {
     },
     {
       "@type": "Article",
-      headline: "Revisar coche en Alemania antes de comprar e importarlo a España",
+      "@id":
+        "https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria#article",
+      headline: "Revisar un coche en Alemania antes de comprarlo",
       description:
-        "Revisamos coches en Alemania antes de comprar: anuncio, vendedor, historial, pintura, CO2, documentos y coste real de importación.",
+        "Revisamos coches anunciados en Alemania antes de comprar: vendedor, historial, documentación, CO₂ y coste real de importación.",
       datePublished: "2026-01-19",
       dateModified: "2026-06-05",
       author: {
@@ -221,6 +225,8 @@ const articleJsonLd = {
     },
     {
       "@type": "FAQPage",
+      "@id":
+        "https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria#faq",
       mainEntity: faqItems.map((faq) => ({
         "@type": "Question",
         name: faq.question,
@@ -232,9 +238,11 @@ const articleJsonLd = {
     },
     {
       "@type": "Service",
+      "@id":
+        "https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria#service",
       name: "Revisión de coche en Alemania antes de comprar",
       description:
-        "Revisión previa de anuncio, vendedor, historial, documentación, CO2 y coste real antes de importar un coche premium desde Alemania.",
+        "Revisión previa de anuncio, vendedor, historial, documentación, CO₂ y coste real antes de importar un coche premium desde Alemania.",
       provider: {
         "@type": "AutoDealer",
         name: "Premium German Cars",
@@ -264,8 +272,8 @@ const ProtocoloAuditoria2026 = () => {
   return (
     <>
       <SEO
-        title="Revisar coche en Alemania antes de comprar | Premium German Cars"
-        description="Revisamos coches en Alemania antes de comprar: anuncio, vendedor, historial, pintura, CO2, documentos y coste real de importación."
+        title="Revisar coche en Alemania antes de comprar | Evita riesgos"
+        description="¿Has visto un coche en Mobile.de? Revisamos vendedor, historial, CO₂, documentos y coste real antes de pagar una señal."
         canonical="https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria"
         article={true}
         jsonLd={articleJsonLd}
@@ -279,12 +287,12 @@ const ProtocoloAuditoria2026 = () => {
               Revisión en origen
             </span>
             <h1 className="text-2xl sm:text-3xl md:text-5xl font-serif font-bold mt-4 mb-6 leading-tight">
-              Revisar coche en Alemania antes de comprar e importarlo a España
+              Revisar un coche en Alemania antes de comprarlo
             </h1>
             <div className="flex items-center gap-4 text-gray-500 text-sm italic">
               <span>Premium German Cars</span>
               <span className="w-1 h-1 bg-gold-400 rounded-full"></span>
-              <span>19 Ene, 2026</span>
+              <span>Actualizado: 5 Jun, 2026</span>
             </div>
           </header>
 
@@ -325,7 +333,7 @@ const ProtocoloAuditoria2026 = () => {
               Nuestro trabajo no consiste en decirte que todos los coches
               alemanes son buenos. Consiste en revisar cada operación con
               criterio: anuncio, vendedor, historial, kilometraje,
-              documentación, CO2, coste estimado de importación, ITV,
+              documentación, CO₂, coste estimado de importación, ITV,
               matriculación y posibles riesgos.
             </p>
 
@@ -340,6 +348,32 @@ const ProtocoloAuditoria2026 = () => {
                 cosas: si el coche es fiable, si el vendedor es serio y si el
                 coste total puesto en España tiene sentido.
               </p>
+            </div>
+
+            <div className="not-prose my-10 border border-white/10 bg-gray-900/50 p-6 md:p-8">
+              <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                <p className="m-0 text-base md:text-lg font-serif italic leading-snug text-white">
+                  ¿Tienes ya un coche visto en Alemania? Envíanos el enlace de
+                  Mobile.de o AutoScout24 y revisamos si merece la pena antes de
+                  que pagues una señal.
+                </p>
+                <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
+                  <a
+                    href={whatsappReviewUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-3 bg-gold-400 px-5 py-3 text-sm font-bold uppercase tracking-tighter text-black transition-all duration-300 hover:bg-white"
+                  >
+                    Revisar unidad por WhatsApp <MessageCircle size={18} />
+                  </a>
+                  <a
+                    href="/calculadora-impuesto-matriculacion"
+                    className="inline-flex items-center justify-center gap-3 border border-white/20 px-5 py-3 text-sm font-bold uppercase tracking-tighter text-white transition-all duration-300 hover:bg-white/10"
+                  >
+                    Calcular impuesto <ArrowRight size={18} />
+                  </a>
+                </div>
+              </div>
             </div>
 
             <h2>¿Cuándo conviene revisar un coche en Alemania antes de comprar?</h2>
@@ -369,7 +403,7 @@ const ProtocoloAuditoria2026 = () => {
               Empieza mucho antes: analizando si la operación tiene coherencia.
             </p>
             <p>
-              En Premium German Cars revisamos la unidad desde varios angulos.
+              En Premium German Cars revisamos la unidad desde varios ángulos.
               No buscamos justificar una compra. Buscamos detectar motivos para
               descartarla antes de que el cliente asuma un riesgo innecesario.
             </p>
@@ -383,7 +417,7 @@ const ProtocoloAuditoria2026 = () => {
             </p>
             <p>
               Un coche puede parecer una oportunidad, pero si el precio está muy
-              por debajo de mercado, hay que entender por que.
+              por debajo de mercado, hay que entender por qué.
             </p>
             <p>
               No todos los descuentos son una buena noticia. A veces responden a
@@ -403,7 +437,7 @@ const ProtocoloAuditoria2026 = () => {
               operación.
             </p>
             <p>
-              Antes de recomendar una unidad, revisamos quien vende el coche,
+              Antes de recomendar una unidad, revisamos quién vende el coche,
               cómo presenta la operación y qué nivel de confianza ofrece. También
               valoramos si el vendedor facilita información técnica, historial,
               documentación y respuestas claras.
@@ -482,7 +516,7 @@ const ProtocoloAuditoria2026 = () => {
               antes de recomendar avanzar.
             </p>
 
-            <h2>CO2, impuesto de matriculación y coste real de importación</h2>
+            <h2>CO₂, impuesto de matriculación y coste real de importación</h2>
             <p>
               Uno de los errores más habituales al comprar un coche en Alemania
               es calcular la operación solo con el precio del anuncio.
@@ -490,7 +524,7 @@ const ProtocoloAuditoria2026 = () => {
             <p>El coste real de importar un coche incluye más elementos.</p>
             <CheckList items={costItems} />
             <p>
-              El CO2 puede cambiar mucho el presupuesto final. Dos coches con
+              El CO₂ puede cambiar mucho el presupuesto final. Dos coches con
               precio parecido pueden tener costes de matriculación diferentes si
               sus emisiones no son iguales.
             </p>
@@ -506,12 +540,12 @@ const ProtocoloAuditoria2026 = () => {
             <p>
               No se trata de prometer que importar siempre sale más barato. Se
               trata de saber si esa unidad concreta, con ese precio, ese motor,
-              ese CO2 y esa documentación, realmente merece la pena.
+              ese CO₂ y esa documentación, realmente merece la pena.
             </p>
 
             <div className="my-10 border border-white/10 bg-gray-900/40 p-6 md:p-8 text-center">
               <p className="mb-6 text-lg font-serif italic text-white">
-                Antes de reservar, comprueba cómo puede afectar el CO2 al coste
+                Antes de reservar, comprueba cómo puede afectar el CO₂ al coste
                 fiscal de la operación.
               </p>
               <a
@@ -657,7 +691,7 @@ const ProtocoloAuditoria2026 = () => {
                 La diferencia entre una buena compra y una mala operación no
                 suele estar en encontrar el anuncio más barato. Está en saber
                 interpretar lo que no se ve a simple vista: historial, vendedor,
-                documentación, costes, CO2, ITV, estado real y valor futuro.
+                documentación, costes, CO₂, ITV, estado real y valor futuro.
               </p>
               <p>
                 En Premium German Cars revisamos cada unidad con una idea clara:
@@ -678,7 +712,7 @@ const ProtocoloAuditoria2026 = () => {
             <div className="not-prose mt-12 p-1 bg-gradient-to-r from-gold-600 to-gold-400">
               <div className="bg-black p-8 md:p-12 text-center">
                 <p className="text-white mb-8 max-w-2xl mx-auto text-lg md:text-xl font-serif italic leading-tight">
-                  Has visto una unidad en Alemania? Revisamos anuncio, vendedor,
+                  ¿Has visto una unidad en Alemania? Revisamos anuncio, vendedor,
                   historial, documentación y coste real antes de que pagues una
                   señal.
                 </p>

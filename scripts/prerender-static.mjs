@@ -164,19 +164,23 @@ const calculatorJsonLd = {
   "@graph": [
     {
       "@type": "SoftwareApplication",
-      name: "Calculadora Diésel o Gasolina Impuesto de Matriculación",
+      "@id": `${siteUrl}/calculadora-impuesto-matriculacion#calculator`,
+      name: "Calculadora de impuesto de matriculación para coches importados",
       url: `${siteUrl}/calculadora-impuesto-matriculacion`,
       description:
-        "Calcula si paga más impuesto de matriculación un coche diésel o gasolina según CO2, valor, antigüedad y tablas BOE 2026.",
+        "Herramienta para estimar el impuesto de matriculación de un coche importado según CO₂, valor fiscal y antigüedad.",
       applicationCategory: "FinanceApplication",
       operatingSystem: "Web",
       inLanguage: "es-ES",
       isAccessibleForFree: true,
-      dateModified: "2026-04-05",
+      dateModified: "2026-07-04",
       featureList: [
-        "Cálculo por tramos de emisiones CO2",
-        "Aplicación de depreciación BOE por meses",
+        "Cálculo por tramos de emisiones CO₂",
+        "Estimación por valor fiscal del vehículo",
+        "Aplicación de depreciación orientativa por antigüedad",
         "Estimación del impuesto de matriculación en España",
+        "Orientación para coches importados de Alemania",
+        "Prefill de valores mediante parámetros de URL",
       ],
       offers: {
         "@type": "Offer",
@@ -191,21 +195,54 @@ const calculatorJsonLd = {
     },
     {
       "@type": "FAQPage",
+      "@id": `${siteUrl}/calculadora-impuesto-matriculacion#faq`,
       mainEntity: [
         {
           "@type": "Question",
-          name: "¿Diésel o gasolina paga más impuesto de matriculación?",
+          name: "¿Cómo se calcula el impuesto de matriculación?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Depende del CO2 homologado. El impuesto no discrimina por combustible; paga más el coche que emite más.",
+            text: "La calculadora identifica el tramo según las emisiones oficiales de CO₂, aplica una depreciación orientativa por antigüedad al valor fiscal y estima la cuota sobre la base resultante.",
           },
         },
         {
           "@type": "Question",
-          name: "¿Cómo calcular el impuesto según CO2?",
+          name: "¿Qué datos necesito para usar la calculadora?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Se aplica el tramo de emisiones CO2 y la depreciación BOE sobre el valor venal del vehículo.",
+            text: "Necesitas el valor fiscal o valor BOE aproximado del vehículo, las emisiones oficiales de CO₂ y la antigüedad expresada en meses.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "¿El resultado es definitivo?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "No. Es una estimación orientativa que debe verificarse con el COC, la ficha técnica, la documentación del vehículo y la normativa fiscal vigente.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "¿Qué CO₂ debo introducir?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Debes introducir las emisiones oficiales acreditadas para la unidad concreta. Conviene comprobarlas en el COC, la ficha técnica o documentación oficial y no depender solo del anuncio.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "¿Sirve para coches importados de Alemania?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Sí. Está orientada a estimar el impuesto de matriculación de coches importados de Alemania antes de comprar y matricular en España.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "¿Paga más un diésel o un gasolina?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "No depende directamente del combustible. Depende principalmente de las emisiones oficiales de CO₂, el valor fiscal y la antigüedad.",
           },
         },
       ],
@@ -283,10 +320,54 @@ const articleRoutes = [
   },
   {
     path: "/blog/que-motor-elegir-importar-alemania-2026",
-    title: "Diésel o Gasolina en 2026: Qué Motor Conviene Según Tu Uso | Guía PGC",
+    title: "Diésel o Gasolina en 2026: Impuesto, CO₂ y Qué Motor Conviene | PGC",
     description:
-      "Guía comparativa 2026 de diésel vs gasolina: cuándo conviene cada motor, costes fiscales y cómo decidir según tu uso real.",
-    h1: "Qué motor elegir al importar de Alemania en 2026",
+      "Compara diésel, gasolina, MHEV y PHEV para importar de Alemania en 2026. Descubre cómo influyen el CO₂, el uso real y el impuesto de matriculación.",
+    h1: "Diésel o gasolina en 2026: qué motor conviene e impuesto de matriculación",
+    datePublished: "2026-03-27",
+    dateModified: "2026-07-04",
+    faqs: [
+      {
+        question: "¿Paga más impuesto un gasolina que un diésel?",
+        answer:
+          "No siempre. El impuesto de matriculación depende principalmente del CO₂ oficial y de la base imponible, no del combustible. Un gasolina potente puede pagar más que un diésel eficiente, pero una versión gasolina electrificada puede tener emisiones inferiores y quedar en otro tramo.",
+      },
+      {
+        question: "¿Un diésel moderno suele pagar menos impuesto?",
+        answer:
+          "Puede ocurrir en modelos donde el diésel homologa menos CO₂ que el gasolina equivalente, pero no es una regla absoluta. Hay que revisar las emisiones y calcular cada unidad.",
+      },
+      {
+        question: "¿Qué motor conviene más para importar de Alemania?",
+        answer:
+          "Depende del uso. Para muchos kilómetros y autopista puede encajar un diésel moderno. Para ciudad o uso mixto pueden interesar un híbrido, MHEV, PHEV bien utilizado o gasolina eficiente. La decisión debe incluir impuesto, historial y coste final.",
+      },
+      {
+        question: "¿El CO₂ del anuncio sirve para calcular el impuesto?",
+        answer:
+          "Puede servir como orientación, pero no debería ser la única referencia. Antes de comprar conviene verificar las emisiones con documentación técnica, ficha oficial o Certificado de Conformidad.",
+      },
+      {
+        question: "¿Qué pasa si el coche no acredita bien las emisiones?",
+        answer:
+          "Puede complicar el cálculo fiscal y la matriculación. Por eso conviene revisar la documentación y el dato homologado antes de reservar o pagar el coche.",
+      },
+      {
+        question: "¿Merece la pena importar un gasolina aunque pague más impuesto?",
+        answer:
+          "Puede merecer la pena si el precio en Alemania, el estado, el historial, el kilometraje, el equipamiento o la demanda futura compensan la diferencia fiscal.",
+      },
+      {
+        question: "¿Qué es mejor para ciudad, diésel o gasolina?",
+        answer:
+          "Para ciudad pura normalmente conviene valorar antes un híbrido, MHEV, PHEV con carga disponible o gasolina eficiente. Un diésel utilizado casi siempre en trayectos cortos puede no encajar por su sistema anticontaminación y patrón de uso.",
+      },
+      {
+        question: "¿Qué es mejor para autopista?",
+        answer:
+          "Para muchos kilómetros por autopista, un diésel moderno sigue siendo una opción lógica por consumo y autonomía, siempre que la unidad, el historial y la documentación estén bien revisados.",
+      },
+    ],
   },
   {
     path: "/blog/guia-calculo-impuesto-matriculacion-boe-2025",
@@ -372,10 +453,10 @@ const routes = [
   },
   {
     path: "/calculadora-impuesto-matriculacion",
-    title: "Diésel o gasolina: impuesto de matriculación 2026 | PGC",
+    title: "Calculadora Impuesto Matriculación 2026 | Coche Importado Alemania",
     description:
-      "Calcula si paga más impuesto de matriculación un coche diésel o gasolina según CO2, valor, antigüedad y tablas BOE 2026.",
-    h1: "Diésel o gasolina: calcula el impuesto de matriculación 2026",
+      "Calcula el impuesto de matriculación de un coche importado de Alemania según CO₂, valor fiscal y antigüedad. Estimación orientativa antes de comprar.",
+    h1: "Calculadora de impuesto de matriculación para coches importados",
     eyebrow: "Herramienta gratuita",
     image: `${siteUrl}/calculadora-impuesto-matriculacion-2026.webp`,
     jsonLd: calculatorJsonLd,
@@ -470,13 +551,16 @@ function safeJsonLd(value) {
 }
 
 function articleJsonLd(route) {
-  return {
+  const article = {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${route.canonical}#article`,
     headline: route.h1,
     description: route.description,
     image: [route.image],
     inLanguage: "es-ES",
+    ...(route.datePublished ? { datePublished: route.datePublished } : {}),
+    ...(route.dateModified ? { dateModified: route.dateModified } : {}),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": route.canonical,
@@ -493,6 +577,87 @@ function articleJsonLd(route) {
         url: `${siteUrl}/logoPGC.svg`,
       },
     },
+  };
+
+  if (!route.faqs?.length) {
+    return article;
+  }
+
+  const organizationId = `${siteUrl}/#organization`;
+  const webpageId = `${route.canonical}#webpage`;
+  const breadcrumbId = `${route.canonical}#breadcrumb`;
+  const faqId = `${route.canonical}#faq`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": organizationId,
+        name: "Premium German Cars",
+        url: `${siteUrl}/`,
+        logo: {
+          "@type": "ImageObject",
+          url: `${siteUrl}/logoPGC.svg`,
+        },
+      },
+      {
+        "@type": "WebPage",
+        "@id": webpageId,
+        url: route.canonical,
+        name: route.title,
+        description: route.description,
+        inLanguage: "es-ES",
+        datePublished: route.datePublished,
+        dateModified: route.dateModified,
+        breadcrumb: { "@id": breadcrumbId },
+        mainEntity: { "@id": `${route.canonical}#article` },
+        hasPart: { "@id": faqId },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": breadcrumbId,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Inicio",
+            item: `${siteUrl}/`,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog",
+            item: `${siteUrl}/blog`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: route.h1,
+            item: route.canonical,
+          },
+        ],
+      },
+      {
+        ...article,
+        "@context": undefined,
+        mainEntityOfPage: { "@id": webpageId },
+        author: { "@id": organizationId },
+        publisher: { "@id": organizationId },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": faqId,
+        mainEntity: route.faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.answer,
+          },
+        })),
+      },
+    ],
   };
 }
 

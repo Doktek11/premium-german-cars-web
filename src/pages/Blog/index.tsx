@@ -9,10 +9,10 @@ const blogPosts = [
   // ✅ NUEVO ARTÍCULO AÑADIDO (coincide con la ruta SEO-friendly en App.tsx)
   {
     id: 13,
-    title: "¿Qué motor elegir al importar de Alemania en 2026?",
+    title: "Diésel o gasolina en 2026: qué motor conviene e impuesto",
     excerpt:
-      "Guía práctica para decidir entre diésel, gasolina e híbrido según uso real, fiscalidad, etiqueta ambiental y coste total de propiedad.",
-    date: "31 Ene, 2026",
+      "Compara diésel, gasolina, MHEV y PHEV según uso real, CO₂, impuesto de matriculación y coste final al importar desde Alemania.",
+    date: "4 Jul, 2026",
     slug: "que-motor-elegir-importar-alemania-2026",
     category: "Guía de Compra",
   },

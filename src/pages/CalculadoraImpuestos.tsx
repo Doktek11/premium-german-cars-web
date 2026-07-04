@@ -4,6 +4,10 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import { useMemo } from "react";
 import { getLeadContext } from "../lib/leadAttribution";
 import { trackLeadEvent } from "../lib/analytics";
+import {
+  getInitialSliderValue,
+  getInitialSpecialCase,
+} from "../lib/calculatorUrlPrefill";
 import { Navbar } from '../components/Navbar';
 
 import { Footer } from '../components/Footer';
@@ -54,41 +58,50 @@ const MESES_MIN = 1;
 const MESES_MAX = 120;
 const MESES_DEFAULT = 36;
 
-const getInitialSliderValue = (
-  searchParams: URLSearchParams,
-  paramName: string,
-  defaultValue: number,
-  min: number,
-  max: number
-) => {
-  const paramValue = searchParams.get(paramName);
-
-  if (paramValue === null) return defaultValue;
-
-  const numericValue = Number(paramValue);
-
-  if (!Number.isFinite(numericValue)) return defaultValue;
-
-  return Math.min(max, Math.max(min, Math.trunc(numericValue)));
-};
-
 export const CalculadoraImpuestos = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
   const [precio, setPrecio] = useState<number>(
-    getInitialSliderValue(searchParams, "valor", PRECIO_DEFAULT, PRECIO_MIN, PRECIO_MAX)
+    getInitialSliderValue(
+      searchParams,
+      ["valor", "valor_boe", "valorBoe", "precio", "valor_fiscal", "valorFiscal"],
+      PRECIO_DEFAULT,
+      PRECIO_MIN,
+      PRECIO_MAX
+    )
   );
 
   const [emisiones, setEmisiones] = useState<number>(
-    getInitialSliderValue(searchParams, "co2", EMISIONES_DEFAULT, EMISIONES_MIN, EMISIONES_MAX)
+    getInitialSliderValue(
+      searchParams,
+      ["co2", "emisiones", "emisiones_co2", "emisionesCO2"],
+      EMISIONES_DEFAULT,
+      EMISIONES_MIN,
+      EMISIONES_MAX
+    )
   );
 
   const [meses, setMeses] = useState<number>(
-    getInitialSliderValue(searchParams, "antiguedad", MESES_DEFAULT, MESES_MIN, MESES_MAX)
+    getInitialSliderValue(
+      searchParams,
+      [
+        "antiguedad",
+        "antiguedad_meses",
+        "antiguedadMeses",
+        "meses",
+        "meses_antiguedad",
+        "mesesAntiguedad",
+      ],
+      MESES_DEFAULT,
+      MESES_MIN,
+      MESES_MAX
+    )
   );
 
-  const [esComunidadIncrementada, setEsComunidadIncrementada] = useState<boolean>(false);
+  const [esComunidadIncrementada, setEsComunidadIncrementada] = useState<boolean>(
+    getInitialSpecialCase(searchParams)
+  );
 
   const [resultado, setResultado] = useState({ matriculacion: 0, tramo: 0 });
 
@@ -122,49 +135,39 @@ export const CalculadoraImpuestos = () => {
 
   const ultimaActualizacionBoe = '5 abril 2026';
 
-  const comparisonWhatsAppUrl =
-    "https://wa.me/34603743608?text=Hola,%20tengo%20un%20di%C3%A9sel%20y%20un%20gasolina%20vistos%20en%20Alemania%20y%20quiero%20comparar%20impuesto,%20CO2,%20documentaci%C3%B3n%20y%20coste%20final%20puesto%20en%20Espa%C3%B1a.";
+  const verificationWhatsAppUrl =
+    "https://wa.me/34603743608?text=Hola,%20tengo%20un%20coche%20visto%20en%20Alemania%20y%20quiero%20verificar%20impuesto,%20CO2,%20documentaci%C3%B3n%20y%20coste%20final%20puesto%20en%20Espa%C3%B1a.";
 
   const calculatorFaqs = [
     {
-      question: "¿Paga más impuesto de matriculación un diésel o un gasolina?",
+      question: "¿Cómo se calcula el impuesto de matriculación?",
       answer:
-        "No depende directamente del combustible. El impuesto se calcula principalmente según las emisiones oficiales de CO₂, el valor del vehículo y su antigüedad. Por eso puede pagar más un gasolina, un diésel o incluso dos versiones distintas del mismo modelo según sus datos concretos.",
+        "La calculadora identifica el tramo según las emisiones oficiales de CO₂, aplica una depreciación orientativa por antigüedad al valor fiscal y estima la cuota sobre la base resultante.",
     },
     {
-      question: "¿Qué cuesta más importar de Alemania, un diésel o un gasolina?",
+      question: "¿Qué datos necesito para usar la calculadora?",
       answer:
-        "Depende de la unidad. Un diésel moderno puede pagar menos impuesto si emite menos CO₂, pero un gasolina puede compensar si tiene mejor precio de compra, menos kilómetros, mejor estado o más demanda futura.",
+        "Necesitas el valor fiscal o valor BOE aproximado del vehículo, las emisiones oficiales de CO₂ y la antigüedad expresada en meses.",
     },
     {
-      question: "¿Cómo comparo el impuesto entre dos versiones del mismo coche?",
+      question: "¿El resultado es definitivo?",
       answer:
-        "Introduce en la calculadora los datos de la versión diésel y anota el resultado. Después haz lo mismo con la versión gasolina. La diferencia entre ambos resultados te dará una referencia clara del impacto fiscal.",
+        "No. Es una estimación orientativa que debe verificarse con el COC, la ficha técnica, la documentación del vehículo y la normativa fiscal vigente.",
     },
     {
-      question: "¿El CO₂ que aparece en Mobile.de sirve para calcular el impuesto?",
+      question: "¿Qué CO₂ debo introducir?",
       answer:
-        "Puede servir como orientación, pero no debería ser la única referencia. Antes de comprar conviene comprobar el CO₂ con documentación técnica, ficha oficial o Certificado de Conformidad.",
+        "Debes introducir las emisiones oficiales acreditadas para la unidad concreta. Conviene comprobarlas en el COC, la ficha técnica o documentación oficial y no depender solo del anuncio.",
     },
     {
-      question: "¿Qué pasa si el coche no acredita emisiones de CO₂?",
+      question: "¿Sirve para coches importados de Alemania?",
       answer:
-        "Si las emisiones no se acreditan correctamente, el cálculo puede ser menos favorable. Por eso es importante revisar la documentación antes de pagar una reserva o cerrar la compra.",
+        "Sí. Está orientada a estimar el impuesto de matriculación de coches importados de Alemania antes de comprar y matricular en España.",
     },
     {
-      question: "¿Un diésel moderno suele pagar menos impuesto?",
+      question: "¿Paga más un diésel o un gasolina?",
       answer:
-        "Puede ocurrir, sobre todo en modelos premium donde la versión diésel tiene menos CO₂ que la gasolina equivalente. Pero no es una regla absoluta. Hay que calcular cada unidad.",
-    },
-    {
-      question: "¿Merece la pena importar un gasolina aunque pague más impuesto?",
-      answer:
-        "Sí, puede merecer la pena si el precio en Alemania, el estado del coche, el equipamiento, el kilometraje o la futura reventa compensan la diferencia fiscal.",
-    },
-    {
-      question: "¿Premium German Cars puede revisar una unidad antes de comprarla?",
-      answer:
-        "Sí. Podemos revisar anuncio, vendedor, documentación, CO₂, valor fiscal aproximado, impuesto, transporte, ITV y viabilidad de importación antes de que reserves el coche.",
+        "No depende directamente del combustible. Depende principalmente de las emisiones oficiales de CO₂, el valor fiscal y la antigüedad.",
     },
   ];
 
@@ -173,19 +176,22 @@ export const CalculadoraImpuestos = () => {
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        name: "Calculadora diésel vs gasolina: impuesto de matriculación",
+        "@id": "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion#calculator",
+        name: "Calculadora de impuesto de matriculación para coches importados",
         url: "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
-        description: "Herramienta para estimar si paga más impuesto un coche diésel o gasolina al importarlo de Alemania según CO₂, valor BOE y antigüedad.",
+        description: "Herramienta para estimar el impuesto de matriculación de un coche importado según CO₂, valor fiscal y antigüedad.",
         applicationCategory: "FinanceApplication",
         operatingSystem: "Web",
         inLanguage: "es-ES",
         isAccessibleForFree: true,
-        dateModified: "2026-04-05",
+        dateModified: "2026-07-04",
         featureList: [
-          "Comparación orientativa entre diésel y gasolina",
-          "Cálculo por tramos de emisiones CO2",
+          "Cálculo por tramos de emisiones CO₂",
+          "Estimación por valor fiscal del vehículo",
           "Aplicación de depreciación orientativa por antigüedad",
-          "Estimación del impuesto de matriculación en España"
+          "Estimación del impuesto de matriculación en España",
+          "Orientación para coches importados de Alemania",
+          "Prefill de valores mediante parámetros de URL"
         ],
         offers: {
           "@type": "Offer",
@@ -200,6 +206,7 @@ export const CalculadoraImpuestos = () => {
       },
       {
         "@type": "FAQPage",
+        "@id": "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion#faq",
         mainEntity: calculatorFaqs.map((faq) => ({
           "@type": "Question",
           name: faq.question,
@@ -352,7 +359,7 @@ export const CalculadoraImpuestos = () => {
       context: leadContext,
     });
 
-    const message = `Hola, estoy comparando un coche diésel y uno gasolina de Alemania. He usado la calculadora con un valor de ${precio}€, ${emisiones} g/km de CO₂ y ${meses} meses de antigüedad. ¿Me ayudáis a verificar el impuesto y el coste final puesto en España?`;
+    const message = `Hola, he usado la calculadora de impuesto de matriculación con un valor de ${precio}€, ${emisiones} g/km de CO₂ y ${meses} meses de antigüedad. El tramo estimado es ${resultado.tramo}% y el impuesto es de ${Math.round(resultado.matriculacion)}€. ¿Me ayudáis a verificar el impuesto y el coste final de importar este coche a España?`;
 
     window.open(
       `https://wa.me/34603743608?text=${encodeURIComponent(message)}`,
@@ -368,9 +375,9 @@ export const CalculadoraImpuestos = () => {
 
       <SEO
 
-        title="Diésel o gasolina: impuesto al importar un coche | PGC"
+        title="Calculadora Impuesto Matriculación 2026 | Coche Importado Alemania"
 
-        description="Calcula si paga más impuesto un coche diésel o gasolina al importarlo de Alemania. Usa CO₂, valor BOE y antigüedad para estimarlo."
+        description="Calcula el impuesto de matriculación de un coche importado de Alemania según CO₂, valor fiscal y antigüedad. Estimación orientativa antes de comprar."
 
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
         jsonLd={calculadoraJsonLd}
@@ -392,19 +399,16 @@ export const CalculadoraImpuestos = () => {
 
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter text-left">
 
-                Diésel o gasolina: calcula cuál paga más impuesto al importar
+                Calculadora de impuesto de matriculación para coches importados
 
               </h1>
 
               <div className="space-y-3 text-gray-400 text-base sm:text-lg max-w-2xl text-left">
                 <p>
-                  ¿Estás comparando un coche diésel y uno gasolina para importar de Alemania? Antes de decidir solo por consumo, etiqueta ambiental o precio de compra, conviene revisar un punto clave: el impuesto de matriculación.
+                  Introduce el valor fiscal del vehículo, sus emisiones oficiales de CO₂ y la antigüedad para estimar cuánto pagarías al matricular en España un coche importado de Alemania.
                 </p>
                 <p>
-                  En España, el impuesto de matriculación no se calcula por el tipo de combustible de forma directa. Un coche no paga más simplemente por ser diésel o gasolina. Lo que realmente determina el impuesto son tres datos: emisiones oficiales de CO₂, valor fiscal del vehículo y antigüedad.
-                </p>
-                <p>
-                  Por eso, dos versiones del mismo modelo pueden tener un coste final muy distinto al matricularlas en España. La clave no es elegir “diésel o gasolina” de forma genérica, sino calcular cada unidad concreta.
+                  El resultado es orientativo y debe verificarse siempre con documentación oficial, COC, ficha técnica y normativa fiscal vigente.
                 </p>
               </div>
 
@@ -425,26 +429,6 @@ export const CalculadoraImpuestos = () => {
           </header>
 
 
-
-          <div className="mb-8 sm:mb-10 bg-white/5 border border-white/10 p-4 sm:p-6 rounded-2xl text-left">
-
-            <p className="text-xs uppercase tracking-[0.2em] font-bold text-gold-400 mb-3">
-              Resumen rápido
-            </p>
-
-            <p className="text-sm text-gray-300">
-
-              El impuesto no depende directamente del combustible. Paga más el coche que emite más CO₂, teniendo en cuenta también el valor fiscal y la antigüedad. En muchos modelos premium, una versión diésel moderna puede quedar en un tramo inferior al gasolina equivalente, pero no siempre compensa. Hay que valorar el coste final puesto en España.
-
-            </p>
-            <p className="text-xs text-gray-400 mt-3">
-              Si además quieres valorar uso, mantenimiento, etiqueta y reventa, consulta nuestra{" "}
-              <a href="/blog/que-motor-elegir-importar-alemania-2026" className="text-gold-400 hover:text-white transition-colors">
-                guía completa de diésel vs gasolina en 2026
-              </a>.
-            </p>
-
-          </div>
 
           <section className="mb-8 sm:mb-10 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl text-left">
             <h2 className="text-sm sm:text-base font-bold text-white uppercase tracking-[0.15em] mb-4">
@@ -496,14 +480,6 @@ export const CalculadoraImpuestos = () => {
               </div>
             </div>
           </section>
-
-          <SeoIntentLinks
-            title="Antes de decidir una unidad"
-            intro="La cifra del impuesto es solo una parte del presupuesto. Estos enlaces completan el contexto fiscal, técnico y comercial antes de comprar en Alemania."
-            links={seoIntentLinks.calculator}
-          />
-
-
 
           <div className="mb-8 sm:mb-10 bg-gradient-to-r from-gold-900/10 to-transparent border border-gold-500/20 p-4 sm:p-6 md:p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-sm text-left">
 
@@ -772,7 +748,7 @@ export const CalculadoraImpuestos = () => {
                     onClick={handleWhatsAppVerification}
                     className="mt-4 flex items-center justify-center gap-3 w-full py-4 border border-white/20 text-white font-extrabold rounded-xl hover:bg-white hover:text-black transition-all uppercase text-[11px] tracking-[0.15em] min-h-[48px] touch-manipulation"
                   >
-                    Comparar por WhatsApp <ArrowRight size={16} />
+                    Verificar cálculo por WhatsApp <ArrowRight size={16} />
                   </button>
 
                 </div>
@@ -827,130 +803,6 @@ export const CalculadoraImpuestos = () => {
               Revisado el {ultimaActualizacionBoe}. Cálculo orientativo alineado con tramos de CO₂ y criterios fiscales usados habitualmente en importación de vehículos. Verificar siempre con normativa vigente antes de liquidar el impuesto.
             </p>
           </section>
-
-          <section className="mb-16 sm:mb-20 md:mb-24 p-4 sm:p-6 md:p-8 lg:p-12 bg-white/[0.02] border border-white/5 rounded-3xl text-left">
-            <h2 className="text-3xl font-serif font-bold mb-6 italic text-gold-400">
-              Ejemplo práctico: mismo coche, distinto motor
-            </h2>
-            <p className="text-gray-400 leading-relaxed mb-8">
-              Imagina dos versiones de un mismo modelo premium importado desde Alemania. Si ambas tienen un valor fiscal similar, la diferencia de CO₂ puede hacer que una caiga en un tramo inferior y pague menos impuesto.
-            </p>
-            <div className="overflow-hidden rounded-2xl border border-white/5 bg-black/30 mb-8">
-              <div className="overflow-x-auto -mx-4 sm:mx-0">
-                <table className="w-full text-left border-collapse min-w-[760px]">
-                  <thead>
-                    <tr className="bg-white/5">
-                      <th className="p-5 text-[10px] uppercase tracking-[0.2em] text-gold-400 font-black">Versión</th>
-                      <th className="p-5 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold text-center">Valor fiscal estimado</th>
-                      <th className="p-5 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold text-center">CO₂</th>
-                      <th className="p-5 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold text-center">Antigüedad</th>
-                      <th className="p-5 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold text-center">Tramo orientativo</th>
-                      <th className="p-5 text-[10px] uppercase tracking-[0.2em] text-gold-400 font-black text-right">Impuesto estimado</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5">
-                    <tr>
-                      <td className="p-5 font-bold text-white">Diésel moderno</td>
-                      <td className="p-5 text-center text-gray-400 font-mono text-xs">30.000€</td>
-                      <td className="p-5 text-center text-gray-500 font-mono text-xs italic">135 g/km</td>
-                      <td className="p-5 text-center text-gray-500 font-mono text-xs">36 meses</td>
-                      <td className="p-5 text-center text-gold-400 font-mono text-xs">4,75%</td>
-                      <td className="p-5 text-right font-mono font-bold text-white bg-white/[0.01]">955€ aprox.</td>
-                    </tr>
-                    <tr>
-                      <td className="p-5 font-bold text-white">Gasolina equivalente</td>
-                      <td className="p-5 text-center text-gray-400 font-mono text-xs">30.000€</td>
-                      <td className="p-5 text-center text-gray-500 font-mono text-xs italic">168 g/km</td>
-                      <td className="p-5 text-center text-gray-500 font-mono text-xs">36 meses</td>
-                      <td className="p-5 text-center text-gold-400 font-mono text-xs">9,75%</td>
-                      <td className="p-5 text-right font-mono font-bold text-white bg-white/[0.01]">1.960€ aprox.</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <p className="text-gray-400 leading-relaxed">
-              En este caso, el gasolina pagaría alrededor de 1.000€ más de impuesto de matriculación. Pero esto no significa que siempre convenga el diésel. Si la unidad gasolina está mucho mejor de precio, tiene mejor historial, menos kilómetros o mejor equipamiento, puede seguir siendo una compra más interesante.
-            </p>
-            <p className="text-gray-300 leading-relaxed mt-4 font-semibold">
-              La decisión correcta debe hacerse con el coste total puesto en España, no solo con el impuesto.
-            </p>
-          </section>
-
-
-          <section className="mb-16 sm:mb-20 md:mb-24 p-4 sm:p-6 md:p-8 lg:p-12 bg-white/[0.02] border border-white/5 rounded-3xl text-left">
-            <h2 className="text-3xl font-serif font-bold mb-6 italic text-gold-400">
-              Por qué el CO₂ pesa más que el combustible
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-gray-400 leading-relaxed">
-              <div className="space-y-4">
-                <p>
-                  El impuesto de matriculación se basa en las emisiones oficiales, no en si el coche es diésel o gasolina. Por eso, un diésel eficiente puede pagar menos que un gasolina potente, pero un gasolina híbrido o mild hybrid también puede resultar competitivo si sus emisiones homologadas son bajas.
-                </p>
-                <p>
-                  Esto es especialmente importante en coches premium, SUV grandes, versiones deportivas o unidades con configuraciones poco habituales. Un Audi Q5 TFSI, un BMW M Performance, un Mercedes AMG o un Porsche gasolina pueden tener un impuesto sensiblemente superior si entran en un tramo alto.
-                </p>
-              </div>
-              <div className="space-y-4">
-                <p>
-                  Antes de comprar, no basta con mirar el consumo anunciado. Para calcular el impuesto necesitas la cifra de CO₂ válida para matriculación en España, normalmente a través del COC o documentación técnica.
-                </p>
-                <p>
-                  Si además quieres completar el presupuesto, revisa <a href="/blog/cuanto-cuesta-importar-coche-alemania-2026" className="text-gold-400 hover:text-white transition-colors">cuánto cuesta importar un coche de Alemania</a> y los <a href="/blog/5-riesgos-importar-coche-alemania" className="text-gold-400 hover:text-white transition-colors">riesgos de comprar un coche en Alemania sin revisión previa</a>.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="mb-16 sm:mb-20 md:mb-24 p-4 sm:p-6 md:p-8 lg:p-12 bg-white/[0.02] border border-white/5 rounded-3xl text-left">
-            <h2 className="text-3xl font-serif font-bold mb-8 italic text-gold-400">
-              Qué datos necesitas antes de comprar en Alemania
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-400 leading-relaxed">
-              <div>
-                <h3 className="text-white font-bold uppercase text-xs tracking-widest mb-3">CO₂ homologado</h3>
-                <p className="text-sm">Es el dato más importante para comparar diésel y gasolina. No uses solo una ficha comercial genérica. Lo ideal es verificar las emisiones en documentación oficial o COC.</p>
-              </div>
-              <div>
-                <h3 className="text-white font-bold uppercase text-xs tracking-widest mb-3">Valor fiscal o valor BOE</h3>
-                <p className="text-sm">El impuesto no siempre se calcula sobre el precio exacto que pagas al vendedor alemán. En muchos casos se toma como referencia un valor fiscal, aplicando después la depreciación correspondiente.</p>
-              </div>
-              <div>
-                <h3 className="text-white font-bold uppercase text-xs tracking-widest mb-3">Fecha de primera matriculación</h3>
-                <p className="text-sm">La antigüedad cambia la base de cálculo. Dos coches con el mismo CO₂ pueden pagar distinto si uno tiene 18 meses y otro 48 meses.</p>
-              </div>
-              <div>
-                <h3 className="text-white font-bold uppercase text-xs tracking-widest mb-3">Documentación alemana</h3>
-                <p className="text-sm">Antes de comprar, conviene revisar Teil I, Teil II, factura o contrato, historial, número de bastidor y coherencia documental.</p>
-              </div>
-              <div className="md:col-span-2">
-                <h3 className="text-white font-bold uppercase text-xs tracking-widest mb-3">Certificado de Conformidad</h3>
-                <p className="text-sm">El COC es especialmente importante cuando hay dudas sobre emisiones, homologación o configuración técnica del vehículo. También puedes consultar <a href="/blog/guia-calculo-impuesto-matriculacion-boe-2025" className="text-gold-400 hover:text-white transition-colors">cómo calcular el impuesto de matriculación con tablas BOE</a>.</p>
-              </div>
-            </div>
-          </section>
-
-          <section className="mb-16 sm:mb-20 md:mb-24 p-4 sm:p-6 md:p-8 lg:p-12 bg-white/[0.02] border border-white/5 rounded-3xl text-left">
-            <h2 className="text-3xl font-serif font-bold mb-8 italic text-gold-400">
-              Diésel o gasolina: cuándo puede interesar cada uno
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-gray-400 leading-relaxed">
-              <div>
-                <h3 className="text-white font-bold uppercase text-xs tracking-widest mb-3">Cuándo puede interesar importar un diésel</h3>
-                <p className="text-sm">Un diésel puede tener sentido si haces muchos kilómetros, buscas consumos bajos y el modelo concreto tiene emisiones de CO₂ contenidas. En coches como BMW 320d, Audi A4 TDI, Mercedes Clase C diésel o SUV premium con motor TDI, el impuesto puede ser competitivo si el CO₂ queda en un tramo bajo.</p>
-              </div>
-              <div>
-                <h3 className="text-white font-bold uppercase text-xs tracking-widest mb-3">Cuándo puede interesar importar un gasolina</h3>
-                <p className="text-sm">Un gasolina puede ser más interesante si buscas menor complejidad mecánica en determinados usos, mejor tacto de conducción, versiones deportivas o una unidad concreta con buen precio en Alemania. Aunque pague algo más de impuesto, el coste final puede seguir siendo bueno.</p>
-              </div>
-              <div>
-                <h3 className="text-white font-bold uppercase text-xs tracking-widest mb-3">Cuándo hay que tener especial cuidado</h3>
-                <p className="text-sm">Hay que prestar atención en coches potentes, SUV grandes, versiones deportivas o unidades sin CO₂ claro. En estos casos, calcular antes de reservar puede evitar sorpresas.</p>
-              </div>
-            </div>
-          </section>
-
-
 
           <section className="mt-32 pt-20 border-t border-white/10">
 
@@ -1032,80 +884,36 @@ export const CalculadoraImpuestos = () => {
               Valores orientativos. El cálculo final puede variar según COC, documentación técnica, tablas vigentes, comunidad autónoma y situación fiscal concreta.
             </p>
 
+            <div className="mt-16">
+              <SeoIntentLinks
+                title="Completa el coste de importación"
+                intro="El impuesto es una parte del presupuesto. Revisa también documentación, transporte y trámites antes de comprar en Alemania."
+                links={seoIntentLinks.calculator}
+              />
+            </div>
 
 
-            <div className="mt-20 border-t border-white/5 pt-20 text-left">
-              <h2 className="text-3xl font-serif font-bold mb-6 italic text-gold-400">
-                Error habitual: decidir solo por el precio de Alemania
+
+            <section className="mt-16 border border-white/10 bg-white/[0.02] p-6 text-left sm:p-8">
+              <h2 className="mb-4 font-serif text-2xl font-bold text-white">
+                ¿Diésel o gasolina?
               </h2>
-              <div className="space-y-4 text-gray-400 leading-relaxed max-w-4xl">
-                <p>
-                  Uno de los errores más frecuentes al importar es comparar dos coches únicamente por el precio anunciado. Un gasolina puede ser más barato en Alemania, pero pagar más impuesto. Un diésel puede pagar menos impuesto, pero tener más kilómetros o peor historial. Sin calcular el coste final, es fácil tomar una decisión equivocada.
-                </p>
-                <p>
-                  En Premium German Cars revisamos la operación completa: precio, vendedor, historial, documentación, CO₂, impuesto, transporte, ITV y coste final estimado puesto en España.
-                </p>
-                <p>
-                  Antes de reservar, también puedes ver cómo trabajamos para <a href="/blog/revision-coche-alemania-protocolo-auditoria" className="text-gold-400 hover:text-white transition-colors">revisar un coche en Alemania antes de comprarlo</a>.
-                </p>
-              </div>
+              <p className="max-w-3xl text-sm leading-relaxed text-gray-400">
+                El impuesto de matriculación no depende directamente del combustible, sino principalmente del CO₂ oficial, el valor fiscal y la antigüedad. Si estás comparando dos motores, calcula cada unidad por separado y revisa después nuestra guía completa sobre qué motor elegir en 2026.
+              </p>
               <a
-                href={comparisonWhatsAppUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-full bg-white/10 hover:bg-white/15 text-white text-sm font-bold transition-colors"
+                href="/blog/que-motor-elegir-importar-alemania-2026"
+                className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-gold-400 transition-colors hover:text-white"
               >
-                Comparar dos unidades antes de comprar
+                Ver guía diésel vs gasolina en 2026
                 <ArrowRight size={16} />
               </a>
-            </div>
-
-            <div className="mt-16 p-1 bg-gradient-to-r from-gold-600 to-gold-400 rounded-3xl text-left">
-              <div className="bg-black p-8 md:p-12 rounded-[calc(1.5rem-1px)]">
-                <h2 className="text-3xl md:text-4xl font-serif font-bold mb-5">
-                  ¿Tienes un diésel y un gasolina vistos en Alemania?
-                </h2>
-                <p className="text-gray-300 leading-relaxed max-w-3xl mb-8">
-                  Si ya tienes dos unidades localizadas, podemos ayudarte a compararlas antes de que reserves. Envíanos los enlaces de los coches y revisamos si el vendedor es fiable, si el precio tiene sentido, si el CO₂ está correctamente identificado, qué impuesto podría pagar cada unidad y cuál tiene mejor coste final puesta en España.
-                </p>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-300 mb-8">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="text-gold-400 shrink-0 mt-0.5" size={18} />
-                    <span>Revisión del anuncio y vendedor.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="text-gold-400 shrink-0 mt-0.5" size={18} />
-                    <span>Comprobación de CO₂ y documentación.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="text-gold-400 shrink-0 mt-0.5" size={18} />
-                    <span>Estimación de impuesto de matriculación.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="text-gold-400 shrink-0 mt-0.5" size={18} />
-                    <span>Transporte, ITV y coste final.</span>
-                  </li>
-                  <li className="flex items-start gap-3 md:col-span-2">
-                    <CheckCircle2 className="text-gold-400 shrink-0 mt-0.5" size={18} />
-                    <span>Recomendación sobre qué unidad compensa más.</span>
-                  </li>
-                </ul>
-                <a
-                  href={comparisonWhatsAppUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-gold-500 hover:bg-white text-black font-black transition-all"
-                >
-                  Enviar unidades para valoración
-                  <ArrowRight size={18} />
-                </a>
-              </div>
-            </div>
+            </section>
 
             <section className="mt-20 pt-20 border-t border-white/10 text-left">
               <h2 className="text-3xl font-serif font-bold mb-10 flex items-center gap-3">
                 <HelpCircle className="text-gold-400" size={28} />
-                Preguntas frecuentes sobre diésel, gasolina e impuesto de matriculación
+                Preguntas frecuentes sobre la calculadora de matriculación
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {calculatorFaqs.map((faq) => (
@@ -1123,22 +931,16 @@ export const CalculadoraImpuestos = () => {
               </h2>
               <div className="space-y-4 text-gray-400 leading-relaxed max-w-4xl">
                 <p>
-                  Importar un coche premium de Alemania puede ser una buena oportunidad, pero solo si el coste final está bien calculado antes de comprar. La diferencia entre un diésel y un gasolina no está solo en el consumo o en la etiqueta. También puede estar en el CO₂, el impuesto de matriculación, el valor fiscal, la documentación y los gastos de puesta en España.
-                </p>
-                <p>
-                  En Premium German Cars te ayudamos a revisar la unidad antes de tomar una decisión: anuncio, vendedor, historial, documentación, emisiones, impuesto, transporte, ITV y matriculación.
-                </p>
-                <p>
-                  ¿Tienes un Audi, BMW, Mercedes, Porsche o Volkswagen localizado en Alemania? Envíanos el enlace y te ayudamos a valorar si realmente compensa importarlo.
+                  Antes de reservar un coche en Alemania, revisa el impuesto, el CO₂, el valor fiscal, la documentación y el coste final puesto en España.
                 </p>
               </div>
               <a
-                href={comparisonWhatsAppUrl}
+                href={verificationWhatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 mt-8 px-7 py-4 rounded-full bg-gold-500 hover:bg-white text-black font-black transition-all"
               >
-                Enviar coche para valoración
+                Verificar coche antes de comprar
                 <ArrowRight size={18} />
               </a>
             </section>

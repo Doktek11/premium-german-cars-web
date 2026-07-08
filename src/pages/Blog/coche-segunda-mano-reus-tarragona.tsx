@@ -4,6 +4,7 @@ import { SEO } from "../../components/SEO";
 import { CheckCircle, ShieldCheck, Euro, MapPin, ArrowRight } from "lucide-react";
 import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
 import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+import { getResponsiveImageProps } from "../../lib/responsiveImages";
 
 const articleJsonLd = getBlogArticleJsonLd(
   "/blog/coche-segunda-mano-reus-tarragona"
@@ -42,9 +43,14 @@ const CochesReusTarragona = () => {
           {/* Imagen Destacada */}
           <div className="h-96 w-full bg-gradient-to-br from-metallic-800 to-black border border-white/10 flex items-center justify-center mb-16 overflow-hidden relative">
             <img
-              src="/amggtr-mobile.webp"
+              {...getResponsiveImageProps(
+                "/amggtr-mobile.webp",
+                "(min-width: 896px) 896px, 100vw"
+              )}
               className="w-full h-full object-cover opacity-40"
               alt="Coche Premium en Tarragona"
+              loading="lazy"
+              decoding="async"
             />
             <div className="absolute inset-0 flex items-center justify-center">
               <img

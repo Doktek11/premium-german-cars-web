@@ -1,10 +1,12 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
+import { getResponsiveImageProps } from "../lib/responsiveImages";
 
 export const Hero: React.FC = () => {
   const reviewMessage =
     "Hola! He visto una unidad en Alemania y me gustaria que la revisarais antes de comprar.";
   const reviewUrl = `https://wa.me/34603743608?text=${encodeURIComponent(reviewMessage)}`;
+  const heroImage = getResponsiveImageProps("/amggtr-mobile.webp", "100vw");
 
   return (
     <section
@@ -16,15 +18,13 @@ export const Hero: React.FC = () => {
         <picture>
           <source
             media="(min-width: 1024px)"
-            srcSet="/amggtr-mobile.webp"
+            srcSet={heroImage.srcSet}
             sizes="100vw"
             type="image/webp"
           />
           <img
-            src="/amggtr-mobile.webp"
+            {...heroImage}
             alt="Importacion de coches premium desde Alemania a Espana - Premium German Cars"
-            width="800"
-            height="1200"
             sizes="100vw"
             className="w-full h-full object-cover"
             {...({ fetchpriority: "high" } as Record<string, string>)}

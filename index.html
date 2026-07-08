@@ -29,7 +29,14 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Performance -->
-    <link rel="preload" as="image" href="/amggtr-mobile.webp" imagesizes="100vw" fetchpriority="high" />
+    <link
+      rel="preload"
+      as="image"
+      href="/amggtr-mobile.webp"
+      imagesrcset="/amggtr-mobile-640.webp 640w, /amggtr-mobile-960.webp 960w, /amggtr-mobile-1280.webp 1280w, /amggtr-mobile-1920.webp 1920w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
     <link rel="preload" href="/static-fonts/montserrat-400.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/static-fonts/playfair-700.woff2" as="font" type="font/woff2" crossorigin />
 

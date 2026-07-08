@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { cars } from "../data/cars";
 import { ArrowUpRight } from "lucide-react";
+import { getResponsiveImageProps } from "../lib/responsiveImages";
 
 export const Stock = () => {
   return (
@@ -49,7 +50,10 @@ export const Stock = () => {
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
 
                 <img
-                  src={car.image}
+                  {...getResponsiveImageProps(
+                    car.image,
+                    "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  )}
                   alt={`${car.make} ${car.model}`}
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
                   loading="lazy"

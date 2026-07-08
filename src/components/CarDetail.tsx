@@ -11,6 +11,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import { getResponsiveImageProps } from "../lib/responsiveImages";
 
 interface CarDetailProps {
   car: Car;
@@ -101,13 +102,14 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car, onClose }) => {
             {/* Image Principal con decoding sync solo para la primera */}
             <img
               key={allImages[currentImageIndex]}
-              src={allImages[currentImageIndex]}
+              {...getResponsiveImageProps(
+                allImages[currentImageIndex],
+                "(min-width: 768px) 100vw, 100vw"
+              )}
               alt={`${car.make} ${car.model}`}
               {...({ fetchpriority: currentImageIndex === 0 ? "high" : "low" } as Record<string, string>)}
               loading="eager"
               decoding={currentImageIndex === 0 ? "sync" : "async"}
-              width="1920"
-              height="1080"
               sizes="100vw"
               className="w-full h-full object-cover md:object-contain bg-black transition-opacity duration-300"
             />

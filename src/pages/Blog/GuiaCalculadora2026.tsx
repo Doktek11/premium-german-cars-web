@@ -4,6 +4,7 @@ import { SEO } from "../../components/SEO";
 // AÑADIDO: AlertTriangle en los imports
 import { Calculator, Cpu, BadgeEuro, Mail, ArrowRight, AlertTriangle } from 'lucide-react';
 import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+import { getResponsiveImageProps } from "../../lib/responsiveImages";
 
 const articleJsonLd = getBlogArticleJsonLd(
   "/blog/guia-calculo-impuesto-matriculacion-boe-2025"
@@ -63,9 +64,14 @@ const GuiaCalculadora2026 = () => {
 
             <div className="mb-12 border border-white/10 bg-gray-900/30 p-4 rounded-sm">
               <img 
-                src="/calculadora-impuesto-matriculacion-2026.webp" 
+                {...getResponsiveImageProps(
+                  "/calculadora-impuesto-matriculacion-2026.webp",
+                  "(min-width: 768px) 768px, 100vw"
+                )}
                 alt="Interfaz calculadora Premium German Cars paso 1" 
                 className="w-full h-auto mb-4 border border-white/5 shadow-2xl"
+                loading="lazy"
+                decoding="async"
               />
               <p className="text-center text-xs text-gray-500 italic uppercase tracking-widest">Interfaz principal: accede al asistente de IA gratuito</p>
             </div>
@@ -91,9 +97,14 @@ const GuiaCalculadora2026 = () => {
 
             <div className="mb-12 border border-white/10 bg-gray-900/30 p-4 rounded-sm">
               <img 
-                src="/valor-boe-coche-alemania-ia.webp" 
+                {...getResponsiveImageProps(
+                  "/valor-boe-coche-alemania-ia.webp",
+                  "(min-width: 768px) 768px, 100vw"
+                )}
                 alt="Consulta valor venal BOE IA paso 2" 
                 className="w-full h-auto mb-4 border border-white/5"
+                loading="lazy"
+                decoding="async"
               />
               <p className="text-center text-xs text-gray-500 italic uppercase tracking-widest">Paso 2: La IA identifica el valor de 46.900€ y el tramo de CO₂</p>
             </div>
@@ -121,9 +132,14 @@ const GuiaCalculadora2026 = () => {
               </div>
 
               <img 
-                src="/depreciacion-boe-bmw-320d-touring.webp" 
+                {...getResponsiveImageProps(
+                  "/depreciacion-boe-bmw-320d-touring.webp",
+                  "(min-width: 768px) 768px, 100vw"
+                )}
                 alt="Resultado final calculadora Premium German Cars" 
                 className="w-full h-auto border border-white/5 shadow-2xl mb-4"
+                loading="lazy"
+                decoding="async"
               />
               <p className="text-center text-xs text-gray-500 italic uppercase tracking-widest">Paso 3: Resultado final con todos los sliders ajustados al detalle</p>
             </div>

@@ -13,6 +13,7 @@ import {
   getCarPageJsonLd,
   getCarPageMetadata,
 } from "../data/carPageSchemas.mjs";
+import { getResponsiveImageProps } from "../lib/responsiveImages";
 
 export const CarPage = () => {
   const { slug = "" } = useParams<{ slug: string }>();
@@ -146,10 +147,14 @@ export const CarPage = () => {
                 className="overflow-hidden rounded-lg bg-metallic-900 border border-white/5"
               >
                 <img
-                  src={img}
+                  {...getResponsiveImageProps(
+                    img,
+                    "(min-width: 768px) 50vw, 100vw"
+                  )}
                   alt={`${car.make} ${car.model} imagen ${index + 1}`}
                   className="w-full h-[360px] object-cover hover:scale-105 transition-transform duration-700"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             ))}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { getResponsiveImageProps } from '../lib/responsiveImages';
 
 export const About: React.FC = () => {
   return (
@@ -26,7 +27,10 @@ export const About: React.FC = () => {
            <div className="lg:w-1/2 relative">
               <div className="absolute -inset-4 bg-gold-500/10 blur-2xl rounded-full"></div>
               <img
-                src="/amggtr-mobile.webp"
+                {...getResponsiveImageProps(
+                  "/amggtr-mobile.webp",
+                  "(min-width: 1024px) 50vw, 100vw"
+                )}
                 alt="AMG GTR - Premium German Cars"
                 className="relative rounded w-full h-auto shadow-2xl border border-white/5 grayscale hover:grayscale-0 transition-all duration-700"
                 loading="lazy"

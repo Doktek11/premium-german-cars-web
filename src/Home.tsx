@@ -7,6 +7,7 @@ import { SEO } from "./components/SEO";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 import { lazyNamed } from "./lib/lazyNamed";
 import { homeJsonLd } from "./data/corePageSchemas.mjs";
+import { getResponsiveImageProps } from "./lib/responsiveImages";
 
 const Guarantee = lazyNamed(() => import("./components/Guarantee"), "Guarantee");
 const ImportForm = lazyNamed(() => import("./components/ImportForm"), "ImportForm");
@@ -91,11 +92,11 @@ export function Home() {
                     </div>
 
                     <img
-                      src={car.image}
+                      {...getResponsiveImageProps(
+                        car.image,
+                        "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      )}
                       alt={`${car.make} ${car.model}`}
-                      width="800"
-                      height="600"
-                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       loading="lazy"
                       decoding="async"

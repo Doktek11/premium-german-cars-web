@@ -68,9 +68,8 @@ export const Navbar: React.FC = () => {
             alt="Logo Premium German Cars" 
             width="225"
             height="60"
-            {...({ fetchpriority: "high" } as Record<string, string>)}
             loading="eager"
-            decoding="sync"
+            decoding="async"
             className="h-10 md:h-14 w-auto brightness-0 invert" 
             style={{ minHeight: '40px' }} // Evita CLS en carga inicial
           />

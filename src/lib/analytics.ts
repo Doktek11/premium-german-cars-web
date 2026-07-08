@@ -73,10 +73,18 @@ export function trackEvent(
     return;
   }
 
+  const cleanedProperties = cleanProperties(properties);
+
   try {
-    track(eventName, cleanProperties(properties));
+    track(eventName, cleanedProperties);
   } catch {
     // Never block UI interactions if analytics fails.
+  }
+
+  try {
+    window.gtag?.("event", eventName, cleanedProperties);
+  } catch {
+    // Google Analytics must not affect lead interactions either.
   }
 }
 

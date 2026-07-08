@@ -109,7 +109,7 @@ export function Home() {
                       <span className="text-gray-400 font-sans font-light">{car.model}</span>
                     </h3>
 
-                    <p className="text-gold-400 font-serif text-xl mb-6">
+                    <p className="text-gold-400 font-serif font-bold text-xl mb-6">
                       {car.price.toLocaleString("de-DE")} €
                     </p>
 

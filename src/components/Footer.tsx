@@ -24,17 +24,19 @@ export const Footer: React.FC = () => {
                             href="https://www.instagram.com/premiumgermancars1?igsh=MWEzejNrZDhjbmowYg%3D%3D" 
                             target="_blank" 
                             rel="noopener noreferrer" 
+                            aria-label="Instagram de Premium German Cars"
                             className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors"
                         >
-                            <Instagram size={20} />
+                            <Instagram size={20} aria-hidden="true" />
                         </a>
                         <a 
                             href="https://facebook.com" 
                             target="_blank" 
                             rel="noopener noreferrer" 
+                            aria-label="Facebook de Premium German Cars"
                             className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold-500 hover:text-black transition-colors"
                         >
-                            <Facebook size={20} />
+                            <Facebook size={20} aria-hidden="true" />
                         </a>
                     </div>
 

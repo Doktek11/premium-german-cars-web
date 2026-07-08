@@ -79,7 +79,7 @@
       }
     </script>
 
-    <!-- Analytics diferido para no competir con LCP -->
+    <!-- GA4 se carga tras la primera interaccion; la cola conserva page views y conversiones. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       window.gtag = window.gtag || function gtag() {
@@ -88,16 +88,29 @@
       window.gtag("js", new Date());
 
       if (navigator.userAgent !== "ReactSnap") {
-        window.addEventListener(
-          "load",
-          () => {
-            const script = document.createElement("script");
-            script.src = "https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44";
-            script.async = true;
-            document.head.appendChild(script);
-          },
-          { once: true }
-        );
+        let analyticsLoaded = false;
+        const interactionEvents = ["pointerdown", "keydown", "scroll"];
+
+        const loadAnalytics = () => {
+          if (analyticsLoaded) return;
+          analyticsLoaded = true;
+
+          interactionEvents.forEach((eventName) => {
+            window.removeEventListener(eventName, loadAnalytics);
+          });
+
+          const script = document.createElement("script");
+          script.src = "https://www.googletagmanager.com/gtag/js?id=G-8KVXL3SX44";
+          script.async = true;
+          document.head.appendChild(script);
+        };
+
+        interactionEvents.forEach((eventName) => {
+          window.addEventListener(eventName, loadAnalytics, {
+            once: true,
+            passive: true,
+          });
+        });
       }
     </script>
   </head>

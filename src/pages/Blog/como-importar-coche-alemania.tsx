@@ -10,16 +10,22 @@ import {
   Info
 } from 'lucide-react';
 import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/como-importar-coche-alemania"
+);
 
 const ComoImportarCocheAlemania = () => {
   return (
     <>
       <SEO 
         title="Guía 2026: Importar Coche de Alemania a España sin Sorpresas | PGC"
-        description="Protocolo experto 2026 para la importación de vehículos premium. Aprenda a gestionar fiscalidad, emisiones de CO2 y logística profesional con Premium German Cars."
+        description="Protocolo experto 2026 para la importación de vehículos premium. Aprenda a gestionar fiscalidad, emisiones de CO₂ y logística profesional con Premium German Cars."
         article={true}
         image="/logoPGC.svg"
         canonical="https://www.premiumgermancars.com/blog/como-importar-coche-alemania"
+        jsonLd={articleJsonLd}
       />
       
       <Navbar />

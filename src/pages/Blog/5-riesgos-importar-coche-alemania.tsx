@@ -13,6 +13,11 @@ import {
   CreditCard,
 } from "lucide-react";
 import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/5-riesgos-importar-coche-alemania"
+);
 
 const RiesgosImportarCocheAlemania = () => {
   return (
@@ -23,34 +28,7 @@ const RiesgosImportarCocheAlemania = () => {
         article={true}
         image="/logoPGC.svg"
         canonical="https://www.premiumgermancars.com/blog/5-riesgos-importar-coche-alemania"
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "Article",
-          headline:
-            "Importar Coche de Alemania: 5 Riesgos Reales y Cómo Evitarlos en 2026",
-          description:
-            "Conoce los 5 riesgos más frecuentes al importar un coche de Alemania y cómo evitarlos con un protocolo de verificación profesional.",
-          image: ["https://www.premiumgermancars.com/logoPGC.svg"],
-          datePublished: "2026-01-07",
-          dateModified: "2026-01-07",
-          author: {
-            "@type": "Organization",
-            name: "Premium German Cars",
-          },
-          publisher: {
-            "@type": "Organization",
-            name: "Premium German Cars",
-            logo: {
-              "@type": "ImageObject",
-              url: "https://www.premiumgermancars.com/logoPGC.svg",
-            },
-          },
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id":
-              "https://www.premiumgermancars.com/blog/5-riesgos-importar-coche-alemania",
-          },
-        }}
+        jsonLd={articleJsonLd}
       />
 
       <Navbar />

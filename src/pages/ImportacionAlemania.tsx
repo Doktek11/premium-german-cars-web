@@ -6,6 +6,10 @@ import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
 import { SEO } from "../components/SEO";
 import { WhatsAppButton } from "../components/WhatsAppButton";
+import {
+  importacionFaqs as faqs,
+  importacionJsonLd,
+} from "../data/corePageSchemas.mjs";
 
 const contactUrl =
   "https://wa.me/34603743608?text=Hola,%20quiero%20solicitar%20una%20b%C3%BAsqueda%20personalizada%20de%20coche%20en%20Alemania.";
@@ -50,7 +54,7 @@ const risks = [
   "Daños previos no declarados.",
   "Documentación alemana incompleta.",
   "Cálculo incorrecto del impuesto de matriculación.",
-  "Emisiones de CO2 no revisadas antes de comprar.",
+  "Emisiones de CO₂ no revisadas antes de comprar.",
   "Coches aparentemente baratos que dejan de ser rentables al traerlos a España.",
 ];
 
@@ -85,91 +89,6 @@ const criteria = [
   "Explicamos los riesgos antes de tomar una decisión.",
   "Buscamos unidades que tengan sentido para el cliente, no solo anuncios atractivos.",
 ];
-
-const faqs = [
-  {
-    question: "¿Cuánto cuesta importar un coche de Alemania a España?",
-    answer:
-      "Depende del precio del vehículo, transporte, ITV, tasas, gestoría, emisiones de CO2, antigüedad y posible impuesto de matriculación. Por eso conviene calcular el coste total antes de reservar una unidad.",
-  },
-  {
-    question: "¿Qué impuestos se pagan al matricular un coche alemán en España?",
-    answer:
-      "Puede aplicarse impuesto de matriculación según emisiones de CO2, además de tasas y otros costes administrativos. Cada caso debe revisarse con datos actualizados del vehículo.",
-  },
-  {
-    question: "¿Merece la pena importar un BMW, Audi o Mercedes desde Alemania?",
-    answer:
-      "Puede merecer la pena si la unidad tiene buen historial, equipamiento interesante, precio coherente y costes de importación controlados. No todos los coches alemanes son una buena compra.",
-  },
-  {
-    question: "¿Podéis revisar un coche que he encontrado en Mobile.de?",
-    answer:
-      "Sí. Podemos ayudarte a valorar una unidad concreta antes de pagar una señal, revisando anuncio, vendedor, documentación disponible, precio, kilometraje y viabilidad de importación.",
-  },
-  {
-    question: "¿Cuánto tarda importar y matricular un coche de Alemania?",
-    answer:
-      "El plazo depende de la unidad, la documentación, el transporte, la ITV y la matriculación. Es mejor valorar cada operación individualmente para evitar expectativas poco realistas.",
-  },
-  {
-    question: "¿Qué documentación necesita un coche alemán para matricularse en España?",
-    answer:
-      "Se necesita documentación alemana correcta, factura o contrato, datos técnicos y documentación necesaria para ITV y matriculación. Antes de comprar, conviene verificar que todo esté disponible.",
-  },
-];
-
-const landingJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: "https://www.premiumgermancars.com/",
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Importar coche de Alemania a España",
-          item: "https://www.premiumgermancars.com/importacion-coches-alemania",
-        },
-      ],
-    },
-    {
-      "@type": "Service",
-      name: "Importar coche de Alemania a España",
-      description:
-        "Servicio de búsqueda, verificación, compra, transporte, ITV y matriculación de coches premium importados desde Alemania a España.",
-      serviceType: "Importación de coches premium desde Alemania",
-      areaServed: ["España", "Cambrils", "Tarragona", "Cataluña"],
-      provider: {
-        "@type": "AutoDealer",
-        name: "Premium German Cars",
-        url: "https://www.premiumgermancars.com/",
-        logo: "https://www.premiumgermancars.com/logoPGC.svg",
-        address: {
-          "@type": "PostalAddress",
-          addressCountry: "ES",
-        },
-      },
-    },
-    {
-      "@type": "FAQPage",
-      mainEntity: faqs.map(({ question, answer }) => ({
-        "@type": "Question",
-        name: question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: answer,
-        },
-      })),
-    },
-  ],
-};
 
 const SectionHeader = ({
   eyebrow,
@@ -231,7 +150,7 @@ export const ImportacionAlemania: React.FC = () => {
         title="Importar coche de Alemania a España | Premium German Cars"
         description="Importa tu coche premium desde Alemania con búsqueda, verificación, transporte, ITV y matriculación. Servicio en España desde Cambrils."
         canonical="https://www.premiumgermancars.com/importacion-coches-alemania"
-        jsonLd={landingJsonLd}
+        jsonLd={importacionJsonLd}
       />
 
       <Navbar />
@@ -312,7 +231,7 @@ export const ImportacionAlemania: React.FC = () => {
         <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
           <SectionHeader title="Cuánto cuesta importar un coche de Alemania">
             <p>
-              El coste de importar un coche desde Alemania depende de varios factores: precio de compra, transporte, ITV, tasas, gestoría, emisiones de CO2, antigüedad, comunidad autónoma y posible impuesto de matriculación.
+              El coste de importar un coche desde Alemania depende de varios factores: precio de compra, transporte, ITV, tasas, gestoría, emisiones de CO₂, antigüedad, comunidad autónoma y posible impuesto de matriculación.
             </p>
             <p>
               Por eso, antes de reservar una unidad, es importante estimar el coste total de la operación. Un coche que parece interesante en Alemania puede dejar de serlo si las emisiones, el transporte o la matriculación encarecen demasiado el proceso.

@@ -13,6 +13,11 @@ import {
   Star
 } from 'lucide-react';
 import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/bmw-alpina-nueva-era-lujo-aleman"
+);
 
 const BMWAlpinaNuevaEra = () => {
   return (
@@ -23,6 +28,7 @@ const BMWAlpinaNuevaEra = () => {
         article={true}
         image="/logoPGC.svg"
         canonical="https://www.premiumgermancars.com/blog/bmw-alpina-nueva-era-lujo-aleman"
+        jsonLd={articleJsonLd}
       />
       
       <Navbar />

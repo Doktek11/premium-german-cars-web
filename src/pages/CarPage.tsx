@@ -9,6 +9,10 @@ import { SEO } from "../components/SEO";
 import { SeoIntentLinks, seoIntentLinks } from "../components/SeoIntentLinks";
 import { getLeadContext } from "../lib/leadAttribution";
 import { trackLeadEvent } from "../lib/analytics";
+import {
+  getCarPageJsonLd,
+  getCarPageMetadata,
+} from "../data/carPageSchemas.mjs";
 
 export const CarPage = () => {
   const { slug = "" } = useParams<{ slug: string }>();
@@ -61,35 +65,12 @@ export const CarPage = () => {
     );
   }
 
+  const pageMetadata = getCarPageMetadata(car.slug);
   const isBmwSerie116i = car.slug === "bmw-serie-1-116i";
-  const title = isBmwSerie116i
-    ? "BMW Serie 1 116i importado de Alemania | Premium German Cars"
-    : `${car.make} ${car.model} en venta | Importado desde Alemania`;
-  const description = isBmwSerie116i
-    ? "BMW Serie 1 116i importado de Alemania con historial verificado, kilómetros certificados y opción de buscar unidades similares de reestreno."
-    : `Compra ${car.make} ${car.model} importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.`;
-  const carJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: `${car.make} ${car.model}`,
-    image: car.image.startsWith("http")
-      ? car.image
-      : `https://www.premiumgermancars.com${car.image}`,
-    description,
-    brand: {
-      "@type": "Brand",
-      name: car.make,
-    },
-    offers: {
-      "@type": "Offer",
-      price: car.price,
-      priceCurrency: "EUR",
-      availability: car.status.toLowerCase().includes("vend")
-        ? "https://schema.org/SoldOut"
-        : "https://schema.org/InStock",
-      url: `https://www.premiumgermancars.com/car/${car.slug}`,
-    },
-  };
+  const title = pageMetadata.title;
+  const description = pageMetadata.seoDescription;
+  const carUrl = pageMetadata.url;
+  const carJsonLd = getCarPageJsonLd(car.slug);
 
   // Si no hay galería, usa al menos la imagen principal
   const gallery = car.gallery?.length ? car.gallery : [car.image];
@@ -129,7 +110,7 @@ export const CarPage = () => {
       <SEO
         title={title}
         description={description}
-        canonical={`https://www.premiumgermancars.com/car/${car.slug}`}
+        canonical={carUrl}
         jsonLd={carJsonLd}
       />
 

@@ -16,6 +16,11 @@ import {
   Clock,
   Car
 } from 'lucide-react';
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/certificado-conformidad-coc-itv-matriculacion"
+);
 
 const CertificadoConformidadCOC = () => {
   return (
@@ -26,6 +31,7 @@ const CertificadoConformidadCOC = () => {
         article={true}
         image="/logoPGC.svg"
         canonical="https://www.premiumgermancars.com/blog/certificado-conformidad-coc-itv-matriculacion"
+        jsonLd={articleJsonLd}
       />
       
       <Navbar />

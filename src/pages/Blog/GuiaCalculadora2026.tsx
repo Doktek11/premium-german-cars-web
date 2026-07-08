@@ -3,6 +3,11 @@ import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
 // AÑADIDO: AlertTriangle en los imports
 import { Calculator, Cpu, BadgeEuro, Mail, ArrowRight, AlertTriangle } from 'lucide-react';
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/guia-calculo-impuesto-matriculacion-boe-2025"
+);
 
 const GuiaCalculadora2026 = () => {
   return (
@@ -11,6 +16,8 @@ const GuiaCalculadora2026 = () => {
         title="Guía: Cómo calcular el impuesto de matriculación BOE 2025 | Premium German Cars" 
         description="Aprende a usar nuestra calculadora con IA para obtener valores BOE exactos y calcular la depreciación real mes a mes de tu coche de importación."
         canonical="https://www.premiumgermancars.com/blog/guia-calculo-impuesto-matriculacion-boe-2025"
+        article={true}
+        jsonLd={articleJsonLd}
       />
       <Navbar />
       
@@ -88,7 +95,7 @@ const GuiaCalculadora2026 = () => {
                 alt="Consulta valor venal BOE IA paso 2" 
                 className="w-full h-auto mb-4 border border-white/5"
               />
-              <p className="text-center text-xs text-gray-500 italic uppercase tracking-widest">Paso 2: La IA identifica el valor de 46.900€ y el tramo de CO2</p>
+              <p className="text-center text-xs text-gray-500 italic uppercase tracking-widest">Paso 2: La IA identifica el valor de 46.900€ y el tramo de CO₂</p>
             </div>
 
             {/* SECCIÓN 3: DEMOSTRACIÓN PRÁCTICA */}

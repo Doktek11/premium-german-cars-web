@@ -11,6 +11,7 @@ import { Footer } from "../../components/Footer";
 import { WhatsAppButton } from "../../components/WhatsAppButton";
 import { SEO } from "../../components/SEO";
 import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
 
 const articleUrl =
   "https://www.premiumgermancars.com/blog/que-motor-elegir-importar-alemania-2026";
@@ -19,7 +20,7 @@ const metaTitle =
 const metaDescription =
   "Compara diésel, gasolina, MHEV y PHEV para importar de Alemania en 2026. Descubre cómo influyen el CO₂, el uso real y el impuesto de matriculación.";
 const comparisonWhatsAppUrl =
-  "https://wa.me/34603743608?text=Hola,%20tengo%20un%20di%C3%A9sel%20y%20un%20gasolina%20vistos%20en%20Alemania%20y%20quiero%20comparar%20impuesto,%20CO2,%20documentaci%C3%B3n%20y%20coste%20final%20puesto%20en%20Espa%C3%B1a.";
+  "https://wa.me/34603743608?text=Hola,%20tengo%20un%20di%C3%A9sel%20y%20un%20gasolina%20vistos%20en%20Alemania%20y%20quiero%20comparar%20impuesto,%20CO%E2%82%82,%20documentaci%C3%B3n%20y%20coste%20final%20puesto%20en%20Espa%C3%B1a.";
 const valuationWhatsAppUrl =
   "https://wa.me/34603743608?text=Hola,%20tengo%20un%20coche%20visto%20en%20Alemania%20y%20quiero%20saber%20si%20compensa%20importarlo.";
 
@@ -112,99 +113,9 @@ const faqItems = [
   },
 ];
 
-const articleJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://www.premiumgermancars.com/#organization",
-      name: "Premium German Cars",
-      url: "https://www.premiumgermancars.com/",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://www.premiumgermancars.com/logoPGC.svg",
-      },
-    },
-    {
-      "@type": "WebPage",
-      "@id": `${articleUrl}#webpage`,
-      url: articleUrl,
-      name: metaTitle,
-      description: metaDescription,
-      inLanguage: "es-ES",
-      datePublished: "2026-03-27",
-      dateModified: "2026-07-04",
-      breadcrumb: { "@id": `${articleUrl}#breadcrumb` },
-      mainEntity: { "@id": `${articleUrl}#article` },
-      hasPart: { "@id": `${articleUrl}#faq` },
-    },
-    {
-      "@type": "BreadcrumbList",
-      "@id": `${articleUrl}#breadcrumb`,
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Inicio",
-          item: "https://www.premiumgermancars.com/",
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Blog",
-          item: "https://www.premiumgermancars.com/blog",
-        },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: "Diésel o gasolina en 2026",
-          item: articleUrl,
-        },
-      ],
-    },
-    {
-      "@type": "Article",
-      "@id": `${articleUrl}#article`,
-      headline:
-        "Diésel o gasolina en 2026: qué motor conviene e impuesto de matriculación",
-      description: metaDescription,
-      image: ["https://www.premiumgermancars.com/logoPGC.svg"],
-      datePublished: "2026-03-27",
-      dateModified: "2026-07-04",
-      inLanguage: "es-ES",
-      author: { "@id": "https://www.premiumgermancars.com/#organization" },
-      publisher: { "@id": "https://www.premiumgermancars.com/#organization" },
-      mainEntityOfPage: { "@id": `${articleUrl}#webpage` },
-      about: [
-        { "@type": "Thing", name: "Impuesto de matriculación" },
-        { "@type": "Thing", name: "Coches diésel" },
-        { "@type": "Thing", name: "Coches de gasolina" },
-        { "@type": "Thing", name: "Vehículos híbridos" },
-        { "@type": "Thing", name: "Importación de coches desde Alemania" },
-      ],
-      keywords: [
-        "diésel o gasolina 2026",
-        "qué motor conviene",
-        "impuesto de matriculación",
-        "CO₂ coche importado",
-        "MHEV",
-        "PHEV",
-      ],
-    },
-    {
-      "@type": "FAQPage",
-      "@id": `${articleUrl}#faq`,
-      mainEntity: faqItems.map((faq) => ({
-        "@type": "Question",
-        name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer,
-        },
-      })),
-    },
-  ],
-};
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/que-motor-elegir-importar-alemania-2026"
+);
 
 const BulletList = ({ items }: { items: string[] }) => (
   <ul className="my-6 grid grid-cols-1 gap-3 sm:grid-cols-2">

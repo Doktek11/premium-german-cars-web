@@ -6,70 +6,13 @@ import { Hero } from "./components/Hero";
 import { SEO } from "./components/SEO";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 import { lazyNamed } from "./lib/lazyNamed";
-import { homeFaqs } from "./data/homeSeo";
+import { homeJsonLd } from "./data/corePageSchemas.mjs";
 
 const Guarantee = lazyNamed(() => import("./components/Guarantee"), "Guarantee");
 const ImportForm = lazyNamed(() => import("./components/ImportForm"), "ImportForm");
 const Testimonials = lazyNamed(() => import("./components/Testimonials"), "Testimonials");
 const Footer = lazyNamed(() => import("./components/Footer"), "Footer");
 const HomeLandingSeo = lazyNamed(() => import("./components/HomeLandingSeo"), "HomeLandingSeo");
-
-const homeJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      name: "Premium German Cars",
-      url: "https://www.premiumgermancars.com/",
-      logo: "https://www.premiumgermancars.com/logoPGC.svg",
-    },
-    {
-      "@type": "AutoDealer",
-      name: "Premium German Cars",
-      url: "https://www.premiumgermancars.com/",
-      image: "https://www.premiumgermancars.com/amggtr-mobile.webp",
-      address: {
-        "@type": "PostalAddress",
-        addressCountry: "ES",
-      },
-      areaServed: ["Espana", "Cambrils", "Tarragona", "Cataluna"],
-    },
-    {
-      "@type": "Service",
-      name: "Importacion de coches premium desde Alemania a Espana",
-      description:
-        "Servicio de busqueda, verificacion, transporte, ITV, matriculacion y entrega llave en mano de coches premium importados desde Alemania.",
-      provider: {
-        "@type": "Organization",
-        name: "Premium German Cars",
-      },
-      areaServed: ["Espana", "Cambrils", "Tarragona", "Cataluna"],
-      serviceType: "Importacion de vehiculos",
-    },
-    {
-      "@type": "FAQPage",
-      mainEntity: homeFaqs.map(([question, answer]) => ({
-        "@type": "Question",
-        name: question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: answer,
-        },
-      })),
-    },
-    {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: "https://www.premiumgermancars.com/",
-        },
-      ],
-    },
-  ],
-};
 
 function SectionLoader() {
   return (

@@ -6,29 +6,17 @@ import { faqs } from '../data/faqs';
 import { WhatsAppButton } from '../components/WhatsAppButton';
 import { SEO } from '../components/SEO';
 import { SeoIntentLinks, seoIntentLinks } from "../components/SeoIntentLinks";
+import { faqPageJsonLd } from "../data/structuralPageSchemas.mjs";
 
 export function FAQPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-
   return (
     <div className="bg-black min-h-screen">
       <SEO
         title="Preguntas frecuentes sobre importar coche de Alemania | PGC"
         description="Respuestas claras sobre importación de coches desde Alemania: impuestos, documentación, transporte, plazos y riesgos."
         canonical="https://www.premiumgermancars.com/preguntas-frecuentes"
-        jsonLd={faqSchema}
+        jsonLd={faqPageJsonLd}
       />
       <Navbar />
       <main className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">

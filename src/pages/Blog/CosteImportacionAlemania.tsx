@@ -6,6 +6,11 @@ import { SEO } from "../../components/SEO";
 import { ArrowRight, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/cuanto-cuesta-importar-coche-alemania-2026"
+);
 
 export const CosteImportacionAlemania: React.FC = () => {
   useEffect(() => {
@@ -20,34 +25,7 @@ export const CosteImportacionAlemania: React.FC = () => {
         canonical="https://www.premiumgermancars.com/blog/cuanto-cuesta-importar-coche-alemania-2026"
         article={true}
         image="/logoPGC.svg"
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "Article",
-          headline:
-            "¿Cuánto cuesta realmente importar un coche de Alemania en 2026? (La verdad que nadie te cuenta)",
-          description:
-            "Coste real de importar un coche de Alemania en 2026: transporte, impuestos, fiscalidad en Cataluña, pegatina ambiental y verificación técnica.",
-          image: ["https://www.premiumgermancars.com/logoPGC.svg"],
-          datePublished: "2026-03-19",
-          dateModified: "2026-03-19",
-          author: {
-            "@type": "Organization",
-            name: "Premium German Cars",
-          },
-          publisher: {
-            "@type": "Organization",
-            name: "Premium German Cars",
-            logo: {
-              "@type": "ImageObject",
-              url: "https://www.premiumgermancars.com/logoPGC.svg",
-            },
-          },
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id":
-              "https://www.premiumgermancars.com/blog/cuanto-cuesta-importar-coche-alemania-2026",
-          },
-        }}
+        jsonLd={articleJsonLd}
       />
 
       <Navbar />

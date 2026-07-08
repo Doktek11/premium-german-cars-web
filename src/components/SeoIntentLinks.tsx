@@ -59,7 +59,7 @@ export const seoIntentLinks = {
     {
       href: "/calculadora-impuesto-matriculacion",
       label: "calcular impuesto de matriculación",
-      description: "Pasa del coste orientativo a una estimación con valor, CO2 y antigüedad.",
+      description: "Pasa del coste orientativo a una estimación con valor, CO₂ y antigüedad.",
     },
     {
       href: "/blog/como-importar-coche-alemania",
@@ -108,7 +108,7 @@ export const seoIntentLinks = {
     {
       href: "/calculadora-impuesto-matriculacion",
       label: "calculadora fiscal 2026",
-      description: "Comprueba el impacto del CO2 y la antigüedad en el Modelo 576.",
+      description: "Comprueba el impacto del CO₂ y la antigüedad en el Modelo 576.",
     },
     {
       href: "/blog/5-riesgos-importar-coche-alemania",
@@ -139,14 +139,14 @@ export const seoIntentLinks = {
     },
     {
       href: "/calculadora-impuesto-matriculacion",
-      label: "impuesto por CO2",
+      label: "impuesto por CO₂",
       description: "Comprueba el tramo fiscal antes de cerrar una compra.",
     },
   ],
   motor: [
     {
       href: "/calculadora-impuesto-matriculacion",
-      label: "calcular impuesto por CO2",
+      label: "calcular impuesto por CO₂",
       description: "Convierte la elección de motor en una estimación fiscal concreta.",
     },
     {
@@ -169,7 +169,7 @@ export const seoIntentLinks = {
     {
       href: "/calculadora-impuesto-matriculacion",
       label: "calcular impuestos de un BMW importado",
-      description: "Valora CO2, edad y base fiscal antes de buscar unidad.",
+      description: "Valora CO₂, edad y base fiscal antes de buscar unidad.",
     },
     {
       href: "/blog/mejores-modelos-importar-alemania-2026",

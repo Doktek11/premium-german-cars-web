@@ -6,6 +6,11 @@ import { SEO } from "../../components/SEO";
 import { ArrowRight, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/mejores-modelos-importar-alemania-2026"
+);
 
 export const ArticuloModelos2026: React.FC = () => {
   useEffect(() => {
@@ -20,33 +25,7 @@ export const ArticuloModelos2026: React.FC = () => {
         canonical="https://www.premiumgermancars.com/blog/mejores-modelos-importar-alemania-2026"
         article={true}
         image="/logoPGC.svg"
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "Article",
-          headline:
-            "Mejores Coches para Importar de Alemania en 2026 (Guía para Acertar y No Perder Dinero)",
-          description:
-            "Guía 2026 para elegir los mejores coches a importar desde Alemania: criterios reales, modelos rentables, errores a evitar y costes clave.",
-          image: ["https://www.premiumgermancars.com/logoPGC.svg"],
-          datePublished: "2026-03-23",
-          dateModified: "2026-03-23",
-          author: {
-            "@type": "Organization",
-            name: "Premium German Cars",
-          },
-          publisher: {
-            "@type": "Organization",
-            name: "Premium German Cars",
-            logo: {
-              "@type": "ImageObject",
-              url: "https://www.premiumgermancars.com/logoPGC.svg",
-            },
-          },
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": "https://www.premiumgermancars.com/blog/mejores-modelos-importar-alemania-2026",
-          },
-        }}
+        jsonLd={articleJsonLd}
       />
 
       <Navbar />
@@ -366,7 +345,7 @@ export const ArticuloModelos2026: React.FC = () => {
 
         <SeoIntentLinks
           title="Elige modelo con coste, motor y riesgo controlados"
-          intro="Un buen modelo deja de ser rentable si el motor, el CO2 o el historial no encajan. Cruza estos criterios antes de buscar unidad."
+          intro="Un buen modelo deja de ser rentable si el motor, el CO₂ o el historial no encajan. Cruza estos criterios antes de buscar unidad."
           links={seoIntentLinks.models}
         />
 

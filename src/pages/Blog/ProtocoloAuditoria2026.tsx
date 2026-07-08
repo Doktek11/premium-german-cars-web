@@ -7,6 +7,7 @@ import {
   ArrowRight,
   CheckCircle,
 } from "lucide-react";
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
 
 const whatsappReviewUrl =
   "https://wa.me/34603743608?text=Hola,%20he%20visto%20un%20coche%20en%20Alemania%20y%20me%20gustar%C3%ADa%20que%20me%20ayudarais%20a%20revisar%20si%20merece%20la%20pena%20antes%20de%20pagar%20una%20se%C3%B1al.";
@@ -170,89 +171,9 @@ const faqItems = [
   },
 ];
 
-const articleJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "BreadcrumbList",
-      "@id":
-        "https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria#breadcrumb",
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Inicio",
-          item: "https://www.premiumgermancars.com/",
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Blog",
-          item: "https://www.premiumgermancars.com/blog",
-        },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: "Revisar coche en Alemania antes de comprar",
-          item: "https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria",
-        },
-      ],
-    },
-    {
-      "@type": "Article",
-      "@id":
-        "https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria#article",
-      headline: "Revisar un coche en Alemania antes de comprarlo",
-      description:
-        "Revisamos coches anunciados en Alemania antes de comprar: vendedor, historial, documentación, CO₂ y coste real de importación.",
-      datePublished: "2026-01-19",
-      dateModified: "2026-06-05",
-      author: {
-        "@type": "Organization",
-        name: "Premium German Cars",
-      },
-      publisher: {
-        "@type": "Organization",
-        name: "Premium German Cars",
-        logo: {
-          "@type": "ImageObject",
-          url: "https://www.premiumgermancars.com/logoPGC.svg",
-        },
-      },
-      mainEntityOfPage:
-        "https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria",
-      inLanguage: "es-ES",
-    },
-    {
-      "@type": "FAQPage",
-      "@id":
-        "https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria#faq",
-      mainEntity: faqItems.map((faq) => ({
-        "@type": "Question",
-        name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer,
-        },
-      })),
-    },
-    {
-      "@type": "Service",
-      "@id":
-        "https://www.premiumgermancars.com/blog/revision-coche-alemania-protocolo-auditoria#service",
-      name: "Revisión de coche en Alemania antes de comprar",
-      description:
-        "Revisión previa de anuncio, vendedor, historial, documentación, CO₂ y coste real antes de importar un coche premium desde Alemania.",
-      provider: {
-        "@type": "AutoDealer",
-        name: "Premium German Cars",
-        url: "https://www.premiumgermancars.com/",
-      },
-      areaServed: ["España", "Cambrils", "Tarragona", "Cataluña"],
-      serviceType: "Revisión previa de vehículos importados",
-    },
-  ],
-};
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/revision-coche-alemania-protocolo-auditoria"
+);
 
 const CheckList = ({ items }: { items: string[] }) => (
   <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">

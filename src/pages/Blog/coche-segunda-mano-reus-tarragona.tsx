@@ -3,6 +3,11 @@ import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
 import { CheckCircle, ShieldCheck, Euro, MapPin, ArrowRight } from "lucide-react";
 import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/coche-segunda-mano-reus-tarragona"
+);
 
 const CochesReusTarragona = () => {
   return (
@@ -11,6 +16,8 @@ const CochesReusTarragona = () => {
         title="Coches de segunda mano en Reus y Tarragona | Premium German Cars"
         description="¿Buscas un coche de ocasión en Tarragona o Reus? Descubre por qué la importación de reestreno premium en Cambrils es tu mejor opción. Ahorro y garantía oficial."
         canonical="https://www.premiumgermancars.com/blog/coche-segunda-mano-reus-tarragona"
+        article={true}
+        jsonLd={articleJsonLd}
       />
       <Navbar />
 

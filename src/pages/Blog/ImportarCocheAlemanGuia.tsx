@@ -12,6 +12,11 @@ import {
   FileSearch,
   Euro
 } from 'lucide-react';
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/importar-coche-aleman-guia-importacion-alemania"
+);
 
 const ImportacionAlemaniaMejorOpcion = () => {
   return (
@@ -22,6 +27,7 @@ const ImportacionAlemaniaMejorOpcion = () => {
         article={true}
         image="/logoPGC.svg"
         canonical="https://www.premiumgermancars.com/blog/importar-coche-aleman-guia-importacion-alemania"
+        jsonLd={articleJsonLd}
       />
 
       <Navbar />

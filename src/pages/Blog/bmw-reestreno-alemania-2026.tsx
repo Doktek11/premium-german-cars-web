@@ -3,6 +3,11 @@ import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
 import { ShieldCheck, Search, ArrowRight, Cpu, Star } from "lucide-react";
 import { SeoIntentLinks, seoIntentLinks } from "../../components/SeoIntentLinks";
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/bmw-reestreno-alemania-2026"
+);
 
 const BmwReestreno2026 = () => {
   return (
@@ -11,6 +16,8 @@ const BmwReestreno2026 = () => {
         title="BMW de Reestreno en Alemania 2026: Guía de Compra | Premium German Cars"
         description="Claves para importar un BMW de reestreno desde Alemania en 2026: garantía oficial, tecnología Live Cockpit y cómo evitar coches de flota."
         canonical="https://www.premiumgermancars.com/blog/bmw-reestreno-alemania-2026"
+        article={true}
+        jsonLd={articleJsonLd}
       />
       <Navbar />
       

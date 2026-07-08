@@ -2,6 +2,11 @@ import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { SEO } from "../../components/SEO";
 import { Cpu, TrendingUp, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
+import { getBlogArticleJsonLd } from "../../data/blogArticleSchemas.mjs";
+
+const articleJsonLd = getBlogArticleJsonLd(
+  "/blog/motores-bmw-en-mercedes-2027"
+);
 
 const MotoresBmwMercedes2027 = () => {
   return (
@@ -10,6 +15,8 @@ const MotoresBmwMercedes2027 = () => {
         title="¿Motores BMW en Mercedes-Benz? Análisis del Pacto Alemán | Premium German Cars"
         description="Analizamos el rumor del siglo: ¿Llevarán los futuros Mercedes motores BMW? Qué significa para el valor de reventa y la inversión en coches premium."
         canonical="https://www.premiumgermancars.com/blog/motores-bmw-en-mercedes-2027"
+        article={true}
+        jsonLd={articleJsonLd}
       />
       <Navbar />
 

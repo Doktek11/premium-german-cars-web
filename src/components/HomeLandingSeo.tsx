@@ -30,7 +30,7 @@ const brands = [
 const processSteps = [
   ["1. Definimos el coche que realmente te interesa", "Concretamos marca, modelo, presupuesto, ano minimo, kilometraje maximo, combustible, cambio, extras imprescindibles y uso previsto."],
   ["2. Buscamos unidades en el mercado aleman", "Localizamos coches priorizando vendedores fiables, historial documentado, coherencia de precio y documentacion completa."],
-  ["3. Verificamos documentacion, historial y fiscalidad", "Revisamos factura, IVA/MwSt., documentacion alemana, kilometraje, mantenimiento, CO2, COC, posibles danos y coste estimado de matriculacion."],
+  ["3. Verificamos documentacion, historial y fiscalidad", "Revisamos factura, IVA/MwSt., documentacion alemana, kilometraje, mantenimiento, CO₂, COC, posibles danos y coste estimado de matriculacion."],
   ["4. Coordinamos compra, transporte y entrega", "Una vez validada la unidad, gestionamos la operacion, el transporte profesional hasta Espana y los tramites necesarios."],
   ["5. ITV, matriculacion y entrega final", "Gestionamos ITV, impuestos, tasas, matriculacion y entrega final con una vision clara del coste real."],
 ];
@@ -49,7 +49,7 @@ const importCosts = [
 const risks = [
   ["Kilometraje o historial poco claro", "Un kilometraje razonable debe estar respaldado por mantenimientos, facturas, revisiones, inspecciones y coherencia general."],
   ["Factura incorrecta o dudas con el IVA", "Hay diferencias entre comprar a particular, concesionario, empresa, vehiculo con IVA deducible o regimen de margen."],
-  ["CO2 mal interpretado", "Una unidad puede parecer barata hasta que se calcula correctamente el impuesto de matriculacion."],
+  ["CO₂ mal interpretado", "Una unidad puede parecer barata hasta que se calcula correctamente el impuesto de matriculacion."],
   ["Falta de COC o documentacion tecnica", "Si falta el COC o hay problemas de homologacion, matricular en Espana puede complicarse."],
   ["Danos, reparaciones o procedencia dudosa", "Revisamos procedencia, historial, mantenimientos, posibles danos, vendedor y coherencia del precio."],
 ];
@@ -68,7 +68,7 @@ const reviewPoints = [
   "Mantenimiento documentado.",
   "Tipo de vendedor.",
   "Factura e IVA/MwSt.",
-  "Emisiones de CO2.",
+  "Emisiones de CO₂.",
   "Coste estimado de matriculacion.",
   "Riesgos de documentacion.",
   "Viabilidad de transporte y matriculacion en Espana.",
@@ -105,7 +105,7 @@ export const HomeLandingSeo = () => {
             <p>
               Comprar un coche en Alemania puede ser una gran oportunidad, pero
               no deberia basarse solo en comparar precios en Mobile.de o
-              AutoScout24. En una importacion intervienen CO2, impuesto de
+              AutoScout24. En una importacion intervienen CO₂, impuesto de
               matriculacion, IVA o MwSt., documentacion alemana, COC, ITV,
               transporte y estado real del vehiculo.
             </p>
@@ -173,7 +173,7 @@ export const HomeLandingSeo = () => {
             </ul>
           </div>
           <div className="border border-gold-400/20 bg-gold-400/5 p-6 sm:p-8 self-start">
-            <h3 className="text-2xl font-serif font-bold text-white mb-4">El CO2 puede cambiar la operacion</h3>
+            <h3 className="text-2xl font-serif font-bold text-white mb-4">El CO₂ puede cambiar la operacion</h3>
             <p className="text-gray-300 leading-relaxed mb-6">
               En SUVs, deportivos, motores gasolina potentes, V6, V8 o versiones
               AMG, M, S o RS, el impuesto de matriculacion puede tener impacto
@@ -217,7 +217,7 @@ export const HomeLandingSeo = () => {
 
       <section className="py-16 sm:py-20 md:py-28 bg-[#050505]">
         <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeader title="Por que elegir Premium German Cars" />
+          <SectionHeader title="Por qué elegir Premium German Cars" />
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4 mb-10">
             {reasons.map(([title, text]) => (
               <article key={title} className="border border-white/10 bg-white/[0.03] p-6">

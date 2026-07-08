@@ -4,6 +4,7 @@ import { Footer } from "../../components/Footer";
 import { WhatsAppButton } from "../../components/WhatsAppButton";
 import { SEO } from "../../components/SEO";
 import { Calendar, ArrowRight } from "lucide-react";
+import { blogIndexJsonLd } from "../../data/structuralPageSchemas.mjs";
 
 const blogPosts = [
   // ✅ NUEVO ARTÍCULO AÑADIDO (coincide con la ruta SEO-friendly en App.tsx)
@@ -87,7 +88,7 @@ const blogPosts = [
     id: 5,
     title: "Guía 2026: Importar un Coche de Alemania sin Sorpresas Fiscales",
     excerpt:
-      "Protocolo completo 2026. Entienda la fiscalidad de las emisiones de CO2, la documentación necesaria y cómo evitar los errores más comunes en la logística profesional.",
+      "Protocolo completo 2026. Entienda la fiscalidad de las emisiones de CO₂, la documentación necesaria y cómo evitar los errores más comunes en la logística profesional.",
     date: "05 Ene, 2026",
     slug: "como-importar-coche-alemania",
     category: "Protocolo PGC",
@@ -137,6 +138,7 @@ export default function BlogIndex() {
         title="Blog Premium German Cars | Importación de coches desde Alemania"
         description="Actualidad, protocolos de importación y análisis estratégico del mercado automotriz alemán para clientes de Premium German Cars."
         canonical="https://www.premiumgermancars.com/blog"
+        jsonLd={blogIndexJsonLd}
       />
       <Navbar />
 

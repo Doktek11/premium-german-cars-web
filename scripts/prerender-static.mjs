@@ -1,6 +1,27 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  organizationReference,
+  SITE_URL,
+} from "../src/lib/structuredData.mjs";
+import {
+  BLOG_ARTICLES,
+  getBlogArticleJsonLd,
+} from "../src/data/blogArticleSchemas.mjs";
+import {
+  calculatorJsonLd,
+  homeJsonLd,
+  importacionJsonLd,
+} from "../src/data/corePageSchemas.mjs";
+import {
+  CAR_PAGE_METADATA,
+  getCarPageJsonLd,
+} from "../src/data/carPageSchemas.mjs";
+import {
+  blogIndexJsonLd,
+  faqPageJsonLd,
+} from "../src/data/structuralPageSchemas.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, "..");
@@ -8,427 +29,28 @@ const distDir = join(projectRoot, "dist");
 const rootHtmlPath = join(distDir, "index.html");
 const sitemapPath = join(projectRoot, "public", "sitemap.xml");
 
-const siteUrl = "https://www.premiumgermancars.com";
+const siteUrl = SITE_URL;
 const defaultImage = `${siteUrl}/og.jpg`;
 
-const autoDealerJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "AutoDealer",
-  name: "Premium German Cars",
-  url: siteUrl,
-  logo: `${siteUrl}/favicon.svg`,
-  description:
-    "Importación de coches premium desde Alemania con garantía, historial certificado y entrega llave en mano en España.",
-  image: `${siteUrl}/amggtr-mobile.webp`,
-  address: {
-    "@type": "PostalAddress",
-    addressCountry: "ES",
-  },
-  areaServed: {
-    "@type": "Country",
-    name: "Spain",
-  },
-  inLanguage: "es-ES",
-};
+const carRoutes = CAR_PAGE_METADATA.map((car) => ({
+  path: car.path,
+  title: car.title,
+  description: car.seoDescription,
+  h1: `${car.make} ${car.model}`,
+  eyebrow: car.status === "Vendido" ? "Vehículo vendido" : "Vehículo disponible",
+  image: `${siteUrl}${car.image}`,
+  jsonLd: getCarPageJsonLd(car.slug),
+}));
 
-const homeJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      name: "Premium German Cars",
-      url: siteUrl,
-      logo: `${siteUrl}/logoPGC.svg`,
-    },
-    {
-      "@type": "AutoDealer",
-      name: "Premium German Cars",
-      url: siteUrl,
-      logo: `${siteUrl}/logoPGC.svg`,
-      image: `${siteUrl}/amggtr-mobile.webp`,
-      description:
-        "Importacion de coches premium desde Alemania con busqueda, verificacion, transporte, ITV, matriculacion y entrega llave en mano en Espana.",
-      address: {
-        "@type": "PostalAddress",
-        addressCountry: "ES",
-      },
-      areaServed: ["Espana", "Cambrils", "Tarragona", "Cataluna"],
-      inLanguage: "es-ES",
-    },
-    {
-      "@type": "Service",
-      name: "Importacion de coches premium desde Alemania a Espana",
-      description:
-        "Servicio de busqueda, verificacion, transporte, ITV, matriculacion y entrega llave en mano de coches premium importados desde Alemania.",
-      provider: {
-        "@type": "Organization",
-        name: "Premium German Cars",
-        url: siteUrl,
-      },
-      areaServed: ["Espana", "Cambrils", "Tarragona", "Cataluna"],
-      serviceType: "Importacion de vehiculos",
-    },
-    {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: `${siteUrl}/`,
-        },
-      ],
-    },
-  ],
-};
-
-const importacionJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: `${siteUrl}/`,
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Importar coche de Alemania a España",
-          item: `${siteUrl}/importacion-coches-alemania`,
-        },
-      ],
-    },
-    {
-      "@type": "Service",
-      name: "Importar coche de Alemania a España",
-      description:
-        "Servicio de búsqueda, verificación, compra, transporte, ITV y matriculación de coches premium importados desde Alemania a España.",
-      serviceType: "Importación de coches premium desde Alemania",
-      areaServed: ["España", "Cambrils", "Tarragona", "Cataluña"],
-      provider: {
-        "@type": "AutoDealer",
-        name: "Premium German Cars",
-        url: siteUrl,
-        logo: `${siteUrl}/logoPGC.svg`,
-        address: {
-          "@type": "PostalAddress",
-          addressCountry: "ES",
-        },
-      },
-    },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        [
-          "¿Cuánto cuesta importar un coche de Alemania a España?",
-          "Depende del precio del vehículo, transporte, ITV, tasas, gestoría, emisiones de CO2, antigüedad y posible impuesto de matriculación. Por eso conviene calcular el coste total antes de reservar una unidad.",
-        ],
-        [
-          "¿Qué impuestos se pagan al matricular un coche alemán en España?",
-          "Puede aplicarse impuesto de matriculación según emisiones de CO2, además de tasas y otros costes administrativos. Cada caso debe revisarse con datos actualizados del vehículo.",
-        ],
-        [
-          "¿Merece la pena importar un BMW, Audi o Mercedes desde Alemania?",
-          "Puede merecer la pena si la unidad tiene buen historial, equipamiento interesante, precio coherente y costes de importación controlados. No todos los coches alemanes son una buena compra.",
-        ],
-        [
-          "¿Podéis revisar un coche que he encontrado en Mobile.de?",
-          "Sí. Podemos ayudarte a valorar una unidad concreta antes de pagar una señal, revisando anuncio, vendedor, documentación disponible, precio, kilometraje y viabilidad de importación.",
-        ],
-        [
-          "¿Cuánto tarda importar y matricular un coche de Alemania?",
-          "El plazo depende de la unidad, la documentación, el transporte, la ITV y la matriculación. Es mejor valorar cada operación individualmente para evitar expectativas poco realistas.",
-        ],
-        [
-          "¿Qué documentación necesita un coche alemán para matricularse en España?",
-          "Se necesita documentación alemana correcta, factura o contrato, datos técnicos y documentación necesaria para ITV y matriculación. Antes de comprar, conviene verificar que todo esté disponible.",
-        ],
-      ].map(([name, text]) => ({
-        "@type": "Question",
-        name,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text,
-        },
-      })),
-    },
-  ],
-};
-
-const calculatorJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "SoftwareApplication",
-      "@id": `${siteUrl}/calculadora-impuesto-matriculacion#calculator`,
-      name: "Calculadora de impuesto de matriculación para coches importados",
-      url: `${siteUrl}/calculadora-impuesto-matriculacion`,
-      description:
-        "Herramienta para estimar el impuesto de matriculación de un coche importado según CO₂, valor fiscal y antigüedad.",
-      applicationCategory: "FinanceApplication",
-      operatingSystem: "Web",
-      inLanguage: "es-ES",
-      isAccessibleForFree: true,
-      dateModified: "2026-07-04",
-      featureList: [
-        "Cálculo por tramos de emisiones CO₂",
-        "Estimación por valor fiscal del vehículo",
-        "Aplicación de depreciación orientativa por antigüedad",
-        "Estimación del impuesto de matriculación en España",
-        "Orientación para coches importados de Alemania",
-        "Prefill de valores mediante parámetros de URL",
-      ],
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "EUR",
-      },
-      author: {
-        "@type": "Organization",
-        name: "Premium German Cars",
-        url: siteUrl,
-      },
-    },
-    {
-      "@type": "FAQPage",
-      "@id": `${siteUrl}/calculadora-impuesto-matriculacion#faq`,
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "¿Cómo se calcula el impuesto de matriculación?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "La calculadora identifica el tramo según las emisiones oficiales de CO₂, aplica una depreciación orientativa por antigüedad al valor fiscal y estima la cuota sobre la base resultante.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "¿Qué datos necesito para usar la calculadora?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Necesitas el valor fiscal o valor BOE aproximado del vehículo, las emisiones oficiales de CO₂ y la antigüedad expresada en meses.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "¿El resultado es definitivo?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "No. Es una estimación orientativa que debe verificarse con el COC, la ficha técnica, la documentación del vehículo y la normativa fiscal vigente.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "¿Qué CO₂ debo introducir?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Debes introducir las emisiones oficiales acreditadas para la unidad concreta. Conviene comprobarlas en el COC, la ficha técnica o documentación oficial y no depender solo del anuncio.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "¿Sirve para coches importados de Alemania?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Sí. Está orientada a estimar el impuesto de matriculación de coches importados de Alemania antes de comprar y matricular en España.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "¿Paga más un diésel o un gasolina?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "No depende directamente del combustible. Depende principalmente de las emisiones oficiales de CO₂, el valor fiscal y la antigüedad.",
-          },
-        },
-      ],
-    },
-  ],
-};
-
-const carRoutes = [
-  {
-    path: "/car/bmw-serie-1-116i",
-    title: "BMW Serie 1 116i importado de Alemania | Premium German Cars",
-    description:
-      "BMW Serie 1 116i importado de Alemania con historial verificado, kilómetros certificados y opción de buscar unidades similares de reestreno.",
-    h1: "BMW Serie 1 116i",
-    eyebrow: "Vehículo disponible",
-    image: `${siteUrl}/bmwconcesionario.webp`,
-  },
-  {
-    path: "/car/audi-rs6-avant",
-    title: "Audi RS6 Avant en venta | Importado desde Alemania",
-    description:
-      "Compra Audi RS6 Avant importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.",
-    h1: "Audi RS6 Avant",
-    eyebrow: "Vehículo vendido",
-    image: `${siteUrl}/rs6dos.webp`,
-  },
-  {
-    path: "/car/mercedes-benz-c63-amg",
-    title: "Mercedes-Benz C63 AMG en venta | Importado desde Alemania",
-    description:
-      "Compra Mercedes-Benz C63 AMG importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.",
-    h1: "Mercedes-Benz C63 AMG",
-    eyebrow: "Vehículo vendido",
-    image: `${siteUrl}/mercedes1.webp`,
-  },
-  {
-    path: "/car/audi-a3-sportback-35-tfsi",
-    title: "Audi A3 Sportback 35 TFSI en venta | Importado desde Alemania",
-    description:
-      "Compra Audi A3 Sportback 35 TFSI importado desde Alemania. Kilómetros certificados, historial verificado y entrega llave en mano en España.",
-    h1: "Audi A3 Sportback 35 TFSI",
-    eyebrow: "Vehículo vendido",
-    image: `${siteUrl}/audi1.webp`,
-  },
-];
-
-const articleRoutes = [
-  {
-    path: "/blog/certificado-conformidad-coc-itv-matriculacion",
-    title: "Certificado de Conformidad (COC): Qué es y cómo conseguirlo | PGC",
-    description:
-      "Evita la homologación individual. Guía completa sobre el Certificado de Conformidad (COC) para matricular coches de Alemania en España sin errores.",
-    h1: "Certificado de Conformidad (COC): guía para una matriculación sin errores",
-  },
-  {
-    path: "/blog/importar-coche-aleman-guia-importacion-alemania",
-    title: "¿Por qué Importar de Alemania es la Mejor Opción en 2026? | PGC",
-    description:
-      "Descubre por qué la importación de coches desde Alemania es la decisión más inteligente en 2026. Calidad, ahorro real y garantía oficial con el método PGC.",
-    h1: "Importación de Alemania: por qué es la mejor forma de comprar tu coche premium en 2026",
-  },
-  {
-    path: "/blog/revision-coche-alemania-protocolo-auditoria",
-    title: "Protocolo de Auditoría Técnica en Alemania | Premium German Cars",
-    description:
-      "Revisión de coches en Alemania: nuestro protocolo incluye historial digital oficial, medición de pintura y test en Autobahn para una importación 100% segura.",
-    h1: "Protocolo de auditoría técnica de Premium German Cars",
-  },
-  {
-    path: "/blog/cuanto-cuesta-importar-coche-alemania-2026",
-    title: "Coste real de importar coche de Alemania en 2026 | PGC",
-    description:
-      "Transporte, impuestos, fiscalidad y ejemplos reales. Descubre el coste total antes de comprar y evita sorpresas.",
-    h1: "Cuánto cuesta realmente importar un coche de Alemania en 2026",
-  },
-  {
-    path: "/blog/que-motor-elegir-importar-alemania-2026",
-    title: "Diésel o Gasolina en 2026: Impuesto, CO₂ y Qué Motor Conviene | PGC",
-    description:
-      "Compara diésel, gasolina, MHEV y PHEV para importar de Alemania en 2026. Descubre cómo influyen el CO₂, el uso real y el impuesto de matriculación.",
-    h1: "Diésel o gasolina en 2026: qué motor conviene e impuesto de matriculación",
-    datePublished: "2026-03-27",
-    dateModified: "2026-07-04",
-    faqs: [
-      {
-        question: "¿Paga más impuesto un gasolina que un diésel?",
-        answer:
-          "No siempre. El impuesto de matriculación depende principalmente del CO₂ oficial y de la base imponible, no del combustible. Un gasolina potente puede pagar más que un diésel eficiente, pero una versión gasolina electrificada puede tener emisiones inferiores y quedar en otro tramo.",
-      },
-      {
-        question: "¿Un diésel moderno suele pagar menos impuesto?",
-        answer:
-          "Puede ocurrir en modelos donde el diésel homologa menos CO₂ que el gasolina equivalente, pero no es una regla absoluta. Hay que revisar las emisiones y calcular cada unidad.",
-      },
-      {
-        question: "¿Qué motor conviene más para importar de Alemania?",
-        answer:
-          "Depende del uso. Para muchos kilómetros y autopista puede encajar un diésel moderno. Para ciudad o uso mixto pueden interesar un híbrido, MHEV, PHEV bien utilizado o gasolina eficiente. La decisión debe incluir impuesto, historial y coste final.",
-      },
-      {
-        question: "¿El CO₂ del anuncio sirve para calcular el impuesto?",
-        answer:
-          "Puede servir como orientación, pero no debería ser la única referencia. Antes de comprar conviene verificar las emisiones con documentación técnica, ficha oficial o Certificado de Conformidad.",
-      },
-      {
-        question: "¿Qué pasa si el coche no acredita bien las emisiones?",
-        answer:
-          "Puede complicar el cálculo fiscal y la matriculación. Por eso conviene revisar la documentación y el dato homologado antes de reservar o pagar el coche.",
-      },
-      {
-        question: "¿Merece la pena importar un gasolina aunque pague más impuesto?",
-        answer:
-          "Puede merecer la pena si el precio en Alemania, el estado, el historial, el kilometraje, el equipamiento o la demanda futura compensan la diferencia fiscal.",
-      },
-      {
-        question: "¿Qué es mejor para ciudad, diésel o gasolina?",
-        answer:
-          "Para ciudad pura normalmente conviene valorar antes un híbrido, MHEV, PHEV con carga disponible o gasolina eficiente. Un diésel utilizado casi siempre en trayectos cortos puede no encajar por su sistema anticontaminación y patrón de uso.",
-      },
-      {
-        question: "¿Qué es mejor para autopista?",
-        answer:
-          "Para muchos kilómetros por autopista, un diésel moderno sigue siendo una opción lógica por consumo y autonomía, siempre que la unidad, el historial y la documentación estén bien revisados.",
-      },
-    ],
-  },
-  {
-    path: "/blog/guia-calculo-impuesto-matriculacion-boe-2025",
-    title: "Guía: Cómo calcular el impuesto de matriculación BOE 2025 | Premium German Cars",
-    description:
-      "Aprende a usar nuestra calculadora con IA para obtener valores BOE exactos y calcular la depreciación real mes a mes de tu coche de importación.",
-    h1: "Cómo calcular el impuesto de matriculación según el BOE 2025",
-  },
-  {
-    path: "/blog/bmw-alpina-nueva-era-lujo-aleman",
-    title: "BMW y Alpina: El futuro del Lujo Automotriz en 2026 | PGC",
-    description:
-      "Análisis de la integración de Alpina en BMW Group. Qué significa para el mercado de importación y por qué las unidades pre-2026 son una inversión clave.",
-    h1: "BMW y Alpina: una nueva era en el lujo automotriz alemán",
-  },
-  {
-    path: "/blog/5-riesgos-importar-coche-alemania",
-    title: "Importar coche de Alemania: 5 riesgos reales en 2026 | PGC",
-    description:
-      "Conoce los 5 riesgos más frecuentes al importar un coche de Alemania y cómo evitarlos con un protocolo de verificación profesional.",
-    h1: "Los 5 riesgos más comunes al importar un coche de Alemania",
-  },
-  {
-    path: "/blog/como-importar-coche-alemania",
-    title: "Guía 2026: Importar Coche de Alemania a España sin Sorpresas | PGC",
-    description:
-      "Protocolo experto 2026 para la importación de vehículos premium. Aprenda a gestionar fiscalidad, emisiones de CO2 y logística profesional con Premium German Cars.",
-    h1: "Importar un coche de Alemania sin sorpresas fiscales",
-  },
-  {
-    path: "/blog/mejores-modelos-importar-alemania-2026",
-    title: "Mejores coches para importar de Alemania en 2026 | Guía PGC",
-    description:
-      "Modelos con alta demanda en España, baja depreciación y buena reventa. Criterio real para elegir sin perder dinero.",
-    h1: "Mejores coches para importar de Alemania en 2026",
-  },
-  {
-    path: "/blog/motores-bmw-en-mercedes-2027",
-    title: "¿Motores BMW en Mercedes-Benz? Análisis del Pacto Alemán | Premium German Cars",
-    description:
-      "Analizamos el rumor del siglo: ¿Llevarán los futuros Mercedes motores BMW? Qué significa para el valor de reventa y la inversión en coches premium.",
-    h1: "¿Motores BMW en Mercedes-Benz? Análisis del pacto alemán",
-  },
-  {
-    path: "/blog/bmw-reestreno-alemania-2026",
-    title: "BMW de Reestreno en Alemania 2026: Guía de Compra | Premium German Cars",
-    description:
-      "Claves para importar un BMW de reestreno desde Alemania en 2026: garantía oficial, tecnología Live Cockpit y cómo evitar coches de flota.",
-    h1: "BMW de reestreno en Alemania 2026",
-  },
-  {
-    path: "/blog/coche-segunda-mano-reus-tarragona",
-    title: "Coches de segunda mano en Reus y Tarragona | Premium German Cars",
-    description:
-      "¿Buscas un coche de ocasión en Tarragona o Reus? Descubre por qué la importación de reestreno premium en Cambrils es tu mejor opción.",
-    h1: "Coches de segunda mano en Reus y Tarragona",
-  },
-].map((route) => ({
-  ...route,
+const articleRoutes = BLOG_ARTICLES.map((article) => ({
+  path: article.path,
+  title: article.title,
+  description: article.description,
+  h1: article.headline,
+  image: article.image,
   article: true,
   eyebrow: "Blog Premium",
+  jsonLd: getBlogArticleJsonLd(article.path),
 }));
 
 const routes = [
@@ -468,6 +90,7 @@ const routes = [
       "Respuestas claras sobre importación de coches desde Alemania: impuestos, documentación, transporte, plazos y riesgos.",
     h1: "Preguntas frecuentes sobre importar coche de Alemania",
     eyebrow: "Centro de ayuda",
+    jsonLd: faqPageJsonLd,
   },
   {
     path: "/blog",
@@ -476,6 +99,7 @@ const routes = [
       "Actualidad, protocolos de importación y análisis estratégico del mercado automotriz alemán para clientes de Premium German Cars.",
     h1: "Blog Premium",
     eyebrow: "Guías y actualidad",
+    jsonLd: blogIndexJsonLd,
   },
   ...articleRoutes,
   ...carRoutes,
@@ -550,116 +174,6 @@ function safeJsonLd(value) {
   return JSON.stringify(value).replace(/</g, "\\u003c").replace(/<\/script/gi, "<\\/script");
 }
 
-function articleJsonLd(route) {
-  const article = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "@id": `${route.canonical}#article`,
-    headline: route.h1,
-    description: route.description,
-    image: [route.image],
-    inLanguage: "es-ES",
-    ...(route.datePublished ? { datePublished: route.datePublished } : {}),
-    ...(route.dateModified ? { dateModified: route.dateModified } : {}),
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": route.canonical,
-    },
-    author: {
-      "@type": "Organization",
-      name: "Premium German Cars",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Premium German Cars",
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteUrl}/logoPGC.svg`,
-      },
-    },
-  };
-
-  if (!route.faqs?.length) {
-    return article;
-  }
-
-  const organizationId = `${siteUrl}/#organization`;
-  const webpageId = `${route.canonical}#webpage`;
-  const breadcrumbId = `${route.canonical}#breadcrumb`;
-  const faqId = `${route.canonical}#faq`;
-
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": organizationId,
-        name: "Premium German Cars",
-        url: `${siteUrl}/`,
-        logo: {
-          "@type": "ImageObject",
-          url: `${siteUrl}/logoPGC.svg`,
-        },
-      },
-      {
-        "@type": "WebPage",
-        "@id": webpageId,
-        url: route.canonical,
-        name: route.title,
-        description: route.description,
-        inLanguage: "es-ES",
-        datePublished: route.datePublished,
-        dateModified: route.dateModified,
-        breadcrumb: { "@id": breadcrumbId },
-        mainEntity: { "@id": `${route.canonical}#article` },
-        hasPart: { "@id": faqId },
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": breadcrumbId,
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Inicio",
-            item: `${siteUrl}/`,
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "Blog",
-            item: `${siteUrl}/blog`,
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: route.h1,
-            item: route.canonical,
-          },
-        ],
-      },
-      {
-        ...article,
-        "@context": undefined,
-        mainEntityOfPage: { "@id": webpageId },
-        author: { "@id": organizationId },
-        publisher: { "@id": organizationId },
-      },
-      {
-        "@type": "FAQPage",
-        "@id": faqId,
-        mainEntity: route.faqs.map((faq) => ({
-          "@type": "Question",
-          name: faq.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: faq.answer,
-          },
-        })),
-      },
-    ],
-  };
-}
 
 function webPageJsonLd(route) {
   return {
@@ -669,10 +183,7 @@ function webPageJsonLd(route) {
     description: route.description,
     url: route.canonical,
     inLanguage: "es-ES",
-    publisher: {
-      "@type": "Organization",
-      name: "Premium German Cars",
-    },
+    publisher: organizationReference(),
   };
 }
 
@@ -692,7 +203,7 @@ function removeManagedHeadTags(html) {
 function renderHead(route) {
   const robotsContent = route.noIndex ? "noindex, nofollow" : "index, follow";
   const ogType = route.article ? "article" : "website";
-  const jsonLd = route.jsonLd ?? (route.article ? articleJsonLd(route) : route.canonical ? webPageJsonLd(route) : undefined);
+  const jsonLd = route.jsonLd ?? (route.canonical ? webPageJsonLd(route) : undefined);
   const canonicalTags = route.canonical
     ? `
     <link data-rh="true" rel="canonical" href="${escapeHtml(route.canonical)}" />

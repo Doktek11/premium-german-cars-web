@@ -8,6 +8,10 @@ import {
   getInitialSliderValue,
   getInitialSpecialCase,
 } from "../lib/calculatorUrlPrefill";
+import {
+  calculatorFaqs,
+  calculatorJsonLd,
+} from "../data/corePageSchemas.mjs";
 import { Navbar } from '../components/Navbar';
 
 import { Footer } from '../components/Footer';
@@ -136,90 +140,7 @@ export const CalculadoraImpuestos = () => {
   const ultimaActualizacionBoe = '5 abril 2026';
 
   const verificationWhatsAppUrl =
-    "https://wa.me/34603743608?text=Hola,%20tengo%20un%20coche%20visto%20en%20Alemania%20y%20quiero%20verificar%20impuesto,%20CO2,%20documentaci%C3%B3n%20y%20coste%20final%20puesto%20en%20Espa%C3%B1a.";
-
-  const calculatorFaqs = [
-    {
-      question: "¿Cómo se calcula el impuesto de matriculación?",
-      answer:
-        "La calculadora identifica el tramo según las emisiones oficiales de CO₂, aplica una depreciación orientativa por antigüedad al valor fiscal y estima la cuota sobre la base resultante.",
-    },
-    {
-      question: "¿Qué datos necesito para usar la calculadora?",
-      answer:
-        "Necesitas el valor fiscal o valor BOE aproximado del vehículo, las emisiones oficiales de CO₂ y la antigüedad expresada en meses.",
-    },
-    {
-      question: "¿El resultado es definitivo?",
-      answer:
-        "No. Es una estimación orientativa que debe verificarse con el COC, la ficha técnica, la documentación del vehículo y la normativa fiscal vigente.",
-    },
-    {
-      question: "¿Qué CO₂ debo introducir?",
-      answer:
-        "Debes introducir las emisiones oficiales acreditadas para la unidad concreta. Conviene comprobarlas en el COC, la ficha técnica o documentación oficial y no depender solo del anuncio.",
-    },
-    {
-      question: "¿Sirve para coches importados de Alemania?",
-      answer:
-        "Sí. Está orientada a estimar el impuesto de matriculación de coches importados de Alemania antes de comprar y matricular en España.",
-    },
-    {
-      question: "¿Paga más un diésel o un gasolina?",
-      answer:
-        "No depende directamente del combustible. Depende principalmente de las emisiones oficiales de CO₂, el valor fiscal y la antigüedad.",
-    },
-  ];
-
-  const calculadoraJsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "SoftwareApplication",
-        "@id": "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion#calculator",
-        name: "Calculadora de impuesto de matriculación para coches importados",
-        url: "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion",
-        description: "Herramienta para estimar el impuesto de matriculación de un coche importado según CO₂, valor fiscal y antigüedad.",
-        applicationCategory: "FinanceApplication",
-        operatingSystem: "Web",
-        inLanguage: "es-ES",
-        isAccessibleForFree: true,
-        dateModified: "2026-07-04",
-        featureList: [
-          "Cálculo por tramos de emisiones CO₂",
-          "Estimación por valor fiscal del vehículo",
-          "Aplicación de depreciación orientativa por antigüedad",
-          "Estimación del impuesto de matriculación en España",
-          "Orientación para coches importados de Alemania",
-          "Prefill de valores mediante parámetros de URL"
-        ],
-        offers: {
-          "@type": "Offer",
-          price: "0",
-          priceCurrency: "EUR"
-        },
-        author: {
-          "@type": "Organization",
-          name: "Premium German Cars",
-          url: "https://www.premiumgermancars.com"
-        }
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://www.premiumgermancars.com/calculadora-impuesto-matriculacion#faq",
-        mainEntity: calculatorFaqs.map((faq) => ({
-          "@type": "Question",
-          name: faq.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: faq.answer,
-          },
-        }))
-      }
-    ]
-  };
-
-
+    "https://wa.me/34603743608?text=Hola,%20tengo%20un%20coche%20visto%20en%20Alemania%20y%20quiero%20verificar%20impuesto,%20CO%E2%82%82,%20documentaci%C3%B3n%20y%20coste%20final%20puesto%20en%20Espa%C3%B1a.";
 
   const abrirAsistenteIA = () => {
     trackLeadEvent("lead_followup_click", {
@@ -380,7 +301,7 @@ export const CalculadoraImpuestos = () => {
         description="Calcula el impuesto de matriculación de un coche importado de Alemania según CO₂, valor fiscal y antigüedad. Estimación orientativa antes de comprar."
 
         canonical="https://www.premiumgermancars.com/calculadora-impuesto-matriculacion"
-        jsonLd={calculadoraJsonLd}
+        jsonLd={calculatorJsonLd}
       />
 
       

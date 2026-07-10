@@ -1,6 +1,14 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Calculator, CheckCircle2, Search } from "lucide-react";
+import {
+  ArrowRight,
+  Calculator,
+  CheckCircle2,
+  ClipboardCheck,
+  FileText,
+  Search,
+  ShieldCheck,
+} from "lucide-react";
 
 import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
@@ -11,82 +19,122 @@ import {
   importacionJsonLd,
 } from "../data/corePageSchemas.mjs";
 
-const contactUrl =
-  "https://wa.me/34603743608?text=Hola,%20quiero%20solicitar%20una%20b%C3%BAsqueda%20personalizada%20de%20coche%20en%20Alemania.";
-
 const reviewUrl =
   "https://wa.me/34603743608?text=Hola,%20he%20visto%20un%20coche%20en%20Alemania%20y%20quiero%20saber%20si%20merece%20la%20pena%20antes%20de%20pagar%20una%20se%C3%B1al.";
+
+const searchUrl =
+  "https://wa.me/34603743608?text=Hola,%20quiero%20solicitar%20una%20b%C3%BAsqueda%20personalizada%20de%20coche%20en%20Alemania.";
+
+const leadCards = [
+  {
+    title: "Ya has encontrado un coche",
+    text: "Nos envías el enlace del anuncio y revisamos si merece la pena antes de pagar señal: precio, vendedor, historial, documentación, CO₂, COC, transporte, ITV e impuesto.",
+    cta: "Revisar una unidad",
+    href: reviewUrl,
+    icon: ClipboardCheck,
+  },
+  {
+    title: "Quieres que busquemos por ti",
+    text: "Definimos el coche objetivo y buscamos unidades en Alemania que encajen por presupuesto, equipamiento, kilometraje, historial y coste final en España.",
+    cta: "Solicitar búsqueda personalizada",
+    href: searchUrl,
+    icon: Search,
+  },
+];
 
 const processSteps = [
   {
     title: "Definimos el coche objetivo",
-    text: "Antes de buscar, concretamos marca, modelo, presupuesto, kilometraje, año, equipamiento, tipo de uso y preferencias del cliente. No es lo mismo importar un BMW Serie 3 Touring familiar que un Porsche Macan, un Audi Q5 o un Mercedes-Benz Clase E.",
+    text: "Concretamos marca, modelo, presupuesto, kilometraje, año, equipamiento, uso previsto y margen real de compra.",
   },
   {
     title: "Buscamos unidades viables en Alemania",
-    text: "Filtramos unidades en el mercado alemán priorizando historial, vendedor, configuración, precio realista y viabilidad de importación. No recomendamos una unidad únicamente porque sea barata.",
+    text: "Filtramos anuncios por historial, vendedor, configuración, precio y viabilidad de importación a España.",
   },
   {
-    title: "Revisamos historial, documentación y vendedor",
-    text: "Analizamos la información disponible antes de avanzar: kilometraje, mantenimiento, documentación alemana, coherencia del anuncio, tipo de vendedor y posibles señales de riesgo.",
+    title: "Revisamos vendedor, historial y documentación",
+    text: "Comprobamos coherencia del anuncio, kilometraje, mantenimiento, titularidad, documentación alemana y señales de riesgo.",
   },
   {
-    title: "Calculamos costes antes de comprar",
-    text: "Estimamos los costes asociados a la importación: transporte, ITV, tasas, gestoría, impuesto de matriculación si aplica y otros gastos necesarios para matricular el coche en España.",
+    title: "Calculamos el coste total antes de comprar",
+    text: "Estimamos transporte, ITV, tasas, gestoría, placas, CO₂ e impuesto para saber si la unidad sigue compensando.",
     link: {
       href: "/calculadora-impuesto-matriculacion",
-      label: "calcular impuesto de matriculación de un coche importado",
+      label: "calcular impuesto de matriculación",
     },
   },
   {
-    title: "Gestionamos compra, transporte e ITV",
-    text: "Coordinamos el proceso de compra, la logística de transporte hasta España y los trámites necesarios para que el vehículo pueda pasar por ITV y continuar con la matriculación.",
+    title: "Coordinamos compra, transporte e ITV",
+    text: "Acompañamos la compra y organizamos la logística hasta España con la documentación preparada para ITV.",
   },
   {
-    title: "Matriculamos y entregamos el coche en España",
-    text: "El objetivo es que el cliente reciba el coche listo para circular, con el proceso gestionado de principio a fin y con una explicación clara de cada fase.",
+    title: "Matriculación y entrega en España",
+    text: "Cerramos los trámites de matriculación y entrega para que el coche quede listo para circular.",
   },
+];
+
+const costItems = [
+  "Precio de compra en Alemania",
+  "Transporte Alemania-España",
+  "ITV de importación",
+  "Impuesto de matriculación",
+  "Tasas, placas y trámites DGT",
+  "Gestión y revisión previa",
+];
+
+const documents = [
+  "Zulassungsbescheinigung Teil I",
+  "Zulassungsbescheinigung Teil II",
+  "COC",
+  "Factura o contrato de compraventa",
+  "Historial de mantenimiento",
+  "Dato oficial de CO₂",
 ];
 
 const risks = [
   "Kilometraje incoherente o difícil de verificar.",
   "Historial de mantenimiento incompleto.",
   "Daños previos no declarados.",
-  "Documentación alemana incompleta.",
+  "Documentación alemana incompleta o incorrecta.",
+  "COC ausente o datos técnicos que no cuadran.",
   "Cálculo incorrecto del impuesto de matriculación.",
-  "Emisiones de CO₂ no revisadas antes de comprar.",
-  "Coches aparentemente baratos que dejan de ser rentables al traerlos a España.",
+  "Emisiones de CO₂ no revisadas antes de reservar el coche.",
+  "Vendedor poco transparente o sin garantías suficientes.",
+  "Coches aparentemente baratos que dejan de compensar al traerlos a España.",
+  "Diferencias entre precio anunciado y coste real matriculado en España.",
+];
+
+const sellerTypes = [
+  {
+    title: "Concesionario oficial",
+    text: "Suele ofrecer mayor trazabilidad, documentación más ordenada y mejor respaldo de garantía, aunque no elimina la necesidad de revisar la unidad.",
+  },
+  {
+    title: "Compraventa profesional",
+    text: "Puede ser una buena vía si el vendedor es solvente, transparente y aporta historial, factura, garantía y datos técnicos completos.",
+  },
+  {
+    title: "Particular",
+    text: "Exige más cautela: cambian la garantía, la seguridad jurídica, la documentación disponible y la capacidad de reclamar si aparece un problema.",
+  },
 ];
 
 const brands = [
-  {
-    title: "Importar Audi de Alemania",
-    text: "Modelos como Audi A3, A5 Sportback, Q5, A6 Avant o versiones S y RS pueden ser interesantes cuando existe historial claro, buen equipamiento y una diferencia real frente al mercado español.",
-  },
-  {
-    title: "Importar BMW de Alemania",
-    text: "BMW Serie 3, Serie 5, X3, X5 o versiones M Performance suelen tener demanda entre compradores que buscan configuración, motorización y equipamiento concreto.",
-  },
-  {
-    title: "Importar Mercedes-Benz de Alemania",
-    text: "Mercedes Clase C, Clase E, GLC, GLE o versiones AMG requieren especial atención al historial, mantenimiento, emisiones y estado general de la unidad.",
-  },
-  {
-    title: "Importar Porsche de Alemania",
-    text: "En modelos como Porsche Macan, Cayenne, Panamera o 911, la documentación, el mantenimiento y la trazabilidad son especialmente importantes antes de recomendar una compra.",
-  },
-  {
-    title: "Importar Volkswagen de Alemania",
-    text: "Volkswagen Golf GTI o R, Tiguan, Touareg y Arteon pueden ser opciones interesantes si la unidad está bien configurada y el coste total de importación encaja.",
-  },
+  "Importar Audi de Alemania",
+  "Importar BMW de Alemania",
+  "Importar Mercedes-Benz de Alemania",
+  "Importar Porsche de Alemania",
+  "Importar Volkswagen de Alemania",
 ];
 
 const criteria = [
   "Descartamos unidades con historial poco claro.",
-  "Revisamos documentación antes de avanzar.",
+  "Revisamos documentación antes de pagar una señal.",
   "Calculamos costes reales antes de comprar.",
   "Priorizamos coches con mantenimiento verificable.",
-  "Explicamos los riesgos antes de tomar una decisión.",
+  "Analizamos CO₂, COC, ITV e impuesto de matriculación.",
+  "Revisamos si el vendedor ofrece garantías suficientes.",
+  "Comparamos el precio alemán con el coste final matriculado en España.",
   "Buscamos unidades que tengan sentido para el cliente, no solo anuncios atractivos.",
 ];
 
@@ -94,12 +142,14 @@ const SectionHeader = ({
   eyebrow,
   title,
   children,
+  center = false,
 }: {
   eyebrow?: string;
   title: string;
   children?: React.ReactNode;
+  center?: boolean;
 }) => (
-  <div className="max-w-3xl mb-10 sm:mb-12">
+  <div className={`${center ? "mx-auto text-center" : ""} max-w-3xl mb-10 sm:mb-12`}>
     {eyebrow ? (
       <span className="text-gold-400 text-xs font-bold tracking-[0.28em] uppercase mb-4 block">
         {eyebrow}
@@ -109,19 +159,19 @@ const SectionHeader = ({
       {title}
     </h2>
     {children ? (
-      <div className="mt-6 space-y-4 text-gray-300 text-lg leading-relaxed">
+      <div className="mt-6 space-y-4 text-gray-300 text-base sm:text-lg leading-relaxed">
         {children}
       </div>
     ) : null}
   </div>
 );
 
-const ContactButton = ({
-  href = contactUrl,
+const WhatsAppCta = ({
+  href,
   children,
   variant = "primary",
 }: {
-  href?: string;
+  href: string;
   children: React.ReactNode;
   variant?: "primary" | "secondary";
 }) => (
@@ -131,12 +181,33 @@ const ContactButton = ({
     rel="noopener noreferrer"
     className={
       variant === "primary"
-        ? "inline-flex items-center justify-center gap-2 bg-gold-400 text-black px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
-        : "inline-flex items-center justify-center gap-2 border border-white/15 text-white px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-black transition-colors min-h-[48px]"
+        ? "inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-gold-400 px-6 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-black transition-colors hover:bg-white"
+        : "inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-white/15 px-6 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-white transition-colors hover:bg-white hover:text-black"
     }
   >
     {children}
   </a>
+);
+
+const InternalCta = ({
+  to,
+  children,
+  variant = "secondary",
+}: {
+  to: string;
+  children: React.ReactNode;
+  variant?: "primary" | "secondary";
+}) => (
+  <Link
+    to={to}
+    className={
+      variant === "primary"
+        ? "inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-gold-400 px-6 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-black transition-colors hover:bg-white"
+        : "inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-white/15 px-6 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-white transition-colors hover:bg-white hover:text-black"
+    }
+  >
+    {children}
+  </Link>
 );
 
 export const ImportacionAlemania: React.FC = () => {
@@ -147,72 +218,113 @@ export const ImportacionAlemania: React.FC = () => {
   return (
     <>
       <SEO
-        title="Importar coche de Alemania a España | Premium German Cars"
-        description="Importa tu coche premium desde Alemania con búsqueda, verificación, transporte, ITV y matriculación. Servicio en España desde Cambrils."
+        title="Importar coche de Alemania a España 2026 | Coste, ITV y Matriculación"
+        description="Servicio para importar coches premium desde Alemania a España. Revisamos anuncio, historial, CO₂, COC, costes, transporte, ITV e impuesto de matriculación antes de comprar."
         canonical="https://www.premiumgermancars.com/importacion-coches-alemania"
+        image="https://www.premiumgermancars.com/bmwconcesionario-1280.webp"
         jsonLd={importacionJsonLd}
       />
 
       <Navbar />
 
-      <main className="bg-black text-white pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
-        <section className="container mx-auto px-4 sm:px-6 max-w-5xl text-center mb-16 sm:mb-20 md:mb-24">
-          <span className="text-gold-400 text-xs font-bold tracking-[0.32em] uppercase mb-6 block">
-            Servicio de importación premium
-          </span>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 sm:mb-8 leading-tight">
-            Importar coche de Alemania a España con gestión integral
-          </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-light max-w-4xl mx-auto leading-relaxed mb-6">
-            Especialistas en coches premium de importación desde Alemania para clientes en Cambrils, Tarragona, Cataluña y toda España.
-          </p>
-          <div className="max-w-4xl mx-auto space-y-4 text-gray-300 text-base sm:text-lg leading-relaxed">
-            <p>
-              Importamos coches premium desde Alemania para clientes que buscan una unidad concreta, bien verificada y con todos los trámites gestionados: búsqueda, revisión documental, compra, transporte, ITV, impuestos y matriculación en España.
-            </p>
-            <p>
-              Trabajamos con marcas como Audi, BMW, Mercedes-Benz, Porsche y Volkswagen, priorizando unidades con historial claro, configuración interesante y sentido económico real.
-            </p>
-          </div>
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <ContactButton>
-              Solicitar búsqueda personalizada <Search size={16} />
-            </ContactButton>
-            <Link
-              to="/calculadora-impuesto-matriculacion"
-              className="inline-flex items-center justify-center gap-2 border border-white/15 text-white px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-black transition-colors min-h-[48px]"
-            >
-              Calcular impuesto de matriculación <Calculator size={16} />
-            </Link>
+      <main className="bg-black text-white">
+        <section className="relative min-h-[86vh] overflow-hidden pt-28 sm:pt-32 md:pt-36">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/bmwconcesionario-1280.webp')" }}
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-black/75" aria-hidden="true" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent" aria-hidden="true" />
+
+          <div className="relative container mx-auto px-4 sm:px-6 max-w-6xl pb-20 sm:pb-24 md:pb-28">
+            <div className="max-w-4xl">
+              <span className="text-gold-400 text-xs font-bold tracking-[0.32em] uppercase mb-6 block">
+                Servicio de importación premium
+              </span>
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight mb-6 sm:mb-8">
+                Importar coche de Alemania a España con revisión, transporte,
+                ITV y matriculación
+              </h1>
+              <p className="max-w-3xl text-lg sm:text-xl md:text-2xl text-gray-200 leading-relaxed mb-8">
+                Ayudamos a compradores de España a encontrar, revisar y matricular
+                coches premium procedentes de Alemania evitando errores de
+                documentación, CO₂, impuesto de matriculación y coste final.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <WhatsAppCta href={reviewUrl}>
+                  Revisar una unidad antes de comprar <Search size={16} />
+                </WhatsAppCta>
+                <InternalCta to="/calculadora-impuesto-matriculacion">
+                  Calcular impuesto de matriculación <Calculator size={16} />
+                </InternalCta>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+        <section className="container mx-auto px-4 sm:px-6 max-w-6xl py-16 sm:py-20 md:py-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {leadCards.map((card) => {
+              const Icon = card.icon;
+
+              return (
+                <article
+                  key={card.title}
+                  className="border border-white/10 bg-white/[0.04] p-6 sm:p-8"
+                >
+                  <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-gold-400 text-black">
+                    <Icon size={20} />
+                  </div>
+                  <h2 className="text-2xl font-serif font-bold text-white mb-4">
+                    {card.title}
+                  </h2>
+                  <p className="text-gray-300 leading-relaxed mb-6">{card.text}</p>
+                  <WhatsAppCta href={card.href} variant="secondary">
+                    {card.cta} <ArrowRight size={16} />
+                  </WhatsAppCta>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl pb-16 sm:pb-20 md:pb-24">
           <SectionHeader title="Importación de coches premium desde Alemania, sin improvisar">
             <p>
-              En Premium German Cars no buscamos coches al azar ni perseguimos supuestas gangas. Analizamos cada unidad con criterio comercial, técnico y documental para saber si realmente merece la pena traerla a España.
+              Comprar un coche en Alemania puede ser una gran oportunidad, pero
+              solo si la operación está bien calculada. El precio anunciado no es
+              el coste real. Hay que comprobar documentación, emisiones,
+              fiscalidad, transporte, ITV, garantía, vendedor y matriculación en
+              España.
             </p>
             <p>
-              Nuestro trabajo empieza antes de comprar: revisamos el vendedor, el historial disponible, la configuración, el kilometraje, las emisiones, la documentación y los costes estimados de matriculación. Solo avanzamos cuando la operación tiene sentido para el cliente.
+              Nuestro trabajo empieza antes de pagar una señal. Revisamos la
+              unidad, detectamos riesgos y calculamos el coste total para que
+              sepas si el coche sigue siendo interesante cuando ya está
+              matriculado en España.
             </p>
           </SectionHeader>
         </section>
 
-        <section className="bg-metallic-900 py-14 sm:py-18 md:py-22 mb-16 sm:mb-20 md:mb-24">
-          <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+        <section className="bg-metallic-900 py-16 sm:py-20 md:py-24">
+          <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
             <SectionHeader
               eyebrow="Proceso"
               title="Cómo funciona nuestro servicio de importación desde Alemania"
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {processSteps.map((step) => (
-                <article key={step.title} className="border border-white/10 bg-black/30 p-6">
-                  <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
-                  <p className="text-gray-300 leading-relaxed">{step.text}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+              {processSteps.map((step, index) => (
+                <article key={step.title} className="border border-white/10 bg-black/35 p-6">
+                  <span className="text-gold-400 text-xs font-bold tracking-[0.2em] uppercase">
+                    Paso {index + 1}
+                  </span>
+                  <h3 className="mt-3 text-xl font-bold text-white">{step.title}</h3>
+                  <p className="mt-3 text-gray-300 leading-relaxed">{step.text}</p>
                   {step.link ? (
                     <Link
                       to={step.link.href}
-                      className="inline-flex mt-4 text-gold-400 underline underline-offset-4 hover:text-white"
+                      className="mt-4 inline-flex text-gold-400 underline underline-offset-4 transition-colors hover:text-white"
                     >
                       {step.link.label}
                     </Link>
@@ -220,107 +332,136 @@ export const ImportacionAlemania: React.FC = () => {
                 </article>
               ))}
             </div>
-            <div className="mt-10">
-              <ContactButton>
-                Solicitar búsqueda personalizada <ArrowRight size={16} />
-              </ContactButton>
-            </div>
           </div>
         </section>
 
-        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
-          <SectionHeader title="Cuánto cuesta importar un coche de Alemania">
+        <section className="container mx-auto px-4 sm:px-6 max-w-6xl py-16 sm:py-20 md:py-24">
+          <SectionHeader title="Cuánto cuesta importar un coche de Alemania a España">
             <p>
-              El coste de importar un coche desde Alemania depende de varios factores: precio de compra, transporte, ITV, tasas, gestoría, emisiones de CO₂, antigüedad, comunidad autónoma y posible impuesto de matriculación.
-            </p>
-            <p>
-              Por eso, antes de reservar una unidad, es importante estimar el coste total de la operación. Un coche que parece interesante en Alemania puede dejar de serlo si las emisiones, el transporte o la matriculación encarecen demasiado el proceso.
-            </p>
-            <p>
-              También puedes revisar nuestro desglose sobre{" "}
-              <Link
-                to="/blog/cuanto-cuesta-importar-coche-alemania-2026"
-                className="text-gold-400 underline underline-offset-4 hover:text-white"
-              >
-                cuánto cuesta importar un coche de Alemania
-              </Link>
-              .
+              El coste final depende del precio de compra, transporte, ITV, tasas,
+              gestoría, emisiones de CO₂, antigüedad, comunidad autónoma e
+              impuesto de matriculación. Por eso no basta con comparar el precio
+              alemán con el precio español.
             </p>
           </SectionHeader>
-          <Link
-            to="/calculadora-impuesto-matriculacion"
-            className="inline-flex items-center justify-center gap-2 bg-gold-400 text-black px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white transition-colors min-h-[48px]"
-          >
-            Calcular impuesto de matriculación <Calculator size={16} />
-          </Link>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
+            {costItems.map((item) => (
+              <div key={item} className="flex gap-3 border border-white/10 bg-white/[0.03] p-5">
+                <Calculator className="mt-0.5 shrink-0 text-gold-400" size={18} />
+                <h3 className="font-semibold text-white">{item}</h3>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <InternalCta to="/calculadora-impuesto-matriculacion" variant="primary">
+              Calcular impuesto de matriculación <Calculator size={16} />
+            </InternalCta>
+            <InternalCta to="/blog/cuanto-cuesta-importar-coche-alemania-2026">
+              Ver desglose de costes <ArrowRight size={16} />
+            </InternalCta>
+          </div>
         </section>
 
-        <section className="bg-metallic-950 py-14 sm:py-18 md:py-22 mb-16 sm:mb-20 md:mb-24">
-          <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
-            <SectionHeader title="Riesgos de comprar un coche en Alemania sin asesoramiento">
+        <section className="bg-metallic-950 py-16 sm:py-20 md:py-24">
+          <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+            <SectionHeader title="Documentos que revisamos antes de importar un coche">
               <p>
-                Comprar un coche en Alemania puede ser una buena decisión, pero también implica riesgos si no se revisa correctamente la operación. Los errores más habituales suelen aparecer antes de pagar la señal: unidades con historial incompleto, kilometraje poco coherente, documentación insuficiente, costes mal calculados o vendedores que no ofrecen garantías suficientes.
+                Muchos problemas aparecen cuando el coche ya está pagado. Por eso
+                revisamos la documentación antes de avanzar, especialmente si la
+                unidad viene de Alemania y necesita ITV de importación y
+                matriculación española.
               </p>
             </SectionHeader>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
-              {risks.map((risk) => (
-                <li key={risk} className="flex gap-3 border border-white/10 bg-black/30 p-4">
-                  <CheckCircle2 className="text-gold-400 shrink-0 mt-0.5" size={18} />
-                  <span className="text-gray-300">{risk}</span>
-                </li>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {documents.map((document) => (
+                <article key={document} className="border border-white/10 bg-black/35 p-5">
+                  <FileText className="mb-4 text-gold-400" size={22} />
+                  <h3 className="font-semibold text-white">{document}</h3>
+                </article>
               ))}
-            </ul>
-            <div className="border border-gold-400/25 bg-gold-400/5 p-6 sm:p-8">
-              <p className="text-xl font-serif text-white mb-5">
-                ¿Has visto un coche en Mobile.de? Revisamos si merece la pena antes de que pagues una señal.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <ContactButton href={reviewUrl}>
-                  Revisar una unidad <Search size={16} />
-                </ContactButton>
-                <Link
-                  to="/blog/5-riesgos-importar-coche-alemania"
-                  className="inline-flex items-center justify-center gap-2 border border-white/15 text-white px-6 py-4 rounded-full text-[11px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-black transition-colors min-h-[48px]"
-                >
-                  Riesgos de importar un coche de Alemania
-                </Link>
-              </div>
             </div>
           </div>
         </section>
 
-        <section className="container mx-auto px-4 sm:px-6 max-w-5xl mb-16 sm:mb-20 md:mb-24">
+        <section className="container mx-auto px-4 sm:px-6 max-w-6xl py-16 sm:py-20 md:py-24">
+          <SectionHeader title="Riesgos de comprar un coche en Alemania sin asesoramiento" />
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+            {risks.map((risk) => (
+              <li key={risk} className="flex gap-3 border border-white/10 bg-white/[0.03] p-4">
+                <CheckCircle2 className="text-gold-400 shrink-0 mt-0.5" size={18} />
+                <span className="text-gray-300">{risk}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="border border-gold-400/25 bg-gold-400/5 p-6 sm:p-8">
+            <h3 className="text-2xl font-serif font-bold text-white mb-4">
+              ¿Has visto un coche en Mobile.de o AutoScout24?
+            </h3>
+            <p className="text-gray-300 leading-relaxed mb-6">
+              Revisamos si merece la pena antes de que pagues una señal.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <WhatsAppCta href={reviewUrl}>
+                Revisar una unidad <Search size={16} />
+              </WhatsAppCta>
+              <InternalCta to="/blog/5-riesgos-importar-coche-alemania">
+                Ver riesgos habituales <ArrowRight size={16} />
+              </InternalCta>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-metallic-900 py-16 sm:py-20 md:py-24">
+          <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+            <SectionHeader title="Concesionario oficial, compraventa o particular: no todos tienen el mismo riesgo">
+              <p>
+                Cambia la garantía, la trazabilidad, la documentación y la
+                seguridad de la operación. Por eso valoramos el tipo de vendedor
+                antes de recomendar una unidad.
+              </p>
+            </SectionHeader>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {sellerTypes.map((seller) => (
+                <article key={seller.title} className="border border-white/10 bg-black/35 p-6">
+                  <ShieldCheck className="mb-4 text-gold-400" size={24} />
+                  <h3 className="text-xl font-bold text-white mb-3">{seller.title}</h3>
+                  <p className="text-gray-300 leading-relaxed">{seller.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 sm:px-6 max-w-6xl py-16 sm:py-20 md:py-24">
           <SectionHeader title="Qué coches premium merece la pena importar desde Alemania" />
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
             {brands.map((brand) => (
-              <article key={brand.title} className="border border-white/10 bg-white/[0.03] p-6">
-                <h3 className="text-lg font-bold text-white mb-3">{brand.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{brand.text}</p>
+              <article key={brand} className="border border-white/10 bg-white/[0.03] p-5">
+                <h3 className="font-bold text-white">{brand}</h3>
               </article>
             ))}
           </div>
-          <p className="mt-8 text-gray-300">
-            Para comparar opciones con criterio, revisa también nuestra guía de{" "}
+          <p className="mt-8 text-gray-300 leading-relaxed">
+            Para comparar marcas, versiones y oportunidades reales, revisa nuestra
+            guía de{" "}
             <Link
               to="/blog/mejores-modelos-importar-alemania-2026"
-              className="text-gold-400 underline underline-offset-4 hover:text-white"
+              className="text-gold-400 underline underline-offset-4 transition-colors hover:text-white"
             >
-              mejores coches para importar de Alemania
+              mejores modelos para importar desde Alemania
             </Link>
             .
           </p>
         </section>
 
-        <section className="bg-metallic-900 py-14 sm:py-18 md:py-22 mb-16 sm:mb-20 md:mb-24">
-          <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
-            <SectionHeader title="Nuestro criterio antes de recomendar una unidad">
-              <p>
-                No recomendamos coches solo por precio. Nuestro criterio se basa en revisar la operación completa: estado, historial, vendedor, configuración, documentación, emisiones, costes y viabilidad de matriculación en España.
-              </p>
-            </SectionHeader>
+        <section className="bg-metallic-950 py-16 sm:py-20 md:py-24">
+          <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+            <SectionHeader title="Nuestro criterio antes de recomendar una unidad" />
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {criteria.map((item) => (
-                <li key={item} className="flex gap-3 border border-white/10 bg-black/30 p-4">
+                <li key={item} className="flex gap-3 border border-white/10 bg-black/35 p-4">
                   <CheckCircle2 className="text-gold-400 shrink-0 mt-0.5" size={18} />
                   <span className="text-gray-300">{item}</span>
                 </li>
@@ -329,23 +470,30 @@ export const ImportacionAlemania: React.FC = () => {
           </div>
         </section>
 
-        <section className="container mx-auto px-4 sm:px-6 max-w-4xl mb-16 sm:mb-20 md:mb-24">
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl py-16 sm:py-20 md:py-24">
           <SectionHeader title="Importación de coches desde Alemania en Cambrils, Tarragona y Cataluña">
             <p>
-              Premium German Cars está en Cambrils, Tarragona, y trabaja con clientes de Cataluña y de toda España que quieren importar un coche premium desde Alemania con una gestión profesional y transparente.
+              Premium German Cars está en Cambrils, Tarragona, y trabaja con
+              clientes de Cataluña y de toda España que quieren importar un coche
+              premium desde Alemania con una gestión profesional, transparente y
+              calculada antes de comprar.
             </p>
             <p>
-              Si estás en Cambrils, Tarragona, Reus, Salou, Barcelona, Girona, Lleida o cualquier otra zona de España, podemos ayudarte a valorar si una unidad alemana merece la pena antes de iniciar el proceso.
+              Atendemos operaciones desde Cambrils, Tarragona, Reus, Salou,
+              Barcelona, Girona, Lleida y resto de España.
             </p>
           </SectionHeader>
         </section>
 
-        <section className="bg-metallic-950 py-14 sm:py-18 md:py-22 mb-16 sm:mb-20 md:mb-24">
-          <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
-            <SectionHeader title="Preguntas frecuentes sobre importar coches de Alemania" />
+        <section className="bg-metallic-900 py-16 sm:py-20 md:py-24" id="faq">
+          <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+            <SectionHeader
+              title="Preguntas frecuentes sobre importar coches de Alemania"
+              center
+            />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {faqs.map((faq) => (
-                <article key={faq.question} className="border border-white/10 bg-black/30 p-6">
+                <article key={faq.question} className="border border-white/10 bg-black/35 p-6">
                   <h3 className="text-lg font-bold text-white mb-3">{faq.question}</h3>
                   <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
                 </article>
@@ -354,24 +502,33 @@ export const ImportacionAlemania: React.FC = () => {
           </div>
         </section>
 
-        <section className="container mx-auto px-4 sm:px-6 max-w-4xl text-center">
+        <section className="container mx-auto px-4 sm:px-6 max-w-4xl py-16 sm:py-20 md:py-24 text-center">
           <span className="text-gold-400 text-xs font-bold tracking-[0.28em] uppercase mb-4 block">
-            Búsqueda personalizada
+            Decisión previa a la compra
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6">
-            Hablar con Premium German Cars
+            Antes de importar un coche de Alemania, revisa si realmente compensa
           </h2>
-          <p className="text-gray-300 text-lg leading-relaxed mb-8">
-            Cuéntanos qué coche estás buscando o envíanos la unidad que ya has encontrado. Revisamos si encaja por historial, documentación, costes y viabilidad antes de dar el siguiente paso.
+          <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-8">
+            Cuéntanos qué coche estás buscando o envíanos la unidad que ya has
+            encontrado. Revisamos precio, vendedor, historial, documentación,
+            CO₂, COC, transporte, ITV, impuesto y coste final antes de que tomes
+            una decisión.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <ContactButton>
-              Solicitar búsqueda personalizada <ArrowRight size={16} />
-            </ContactButton>
-            <ContactButton href={reviewUrl} variant="secondary">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+            <WhatsAppCta href={reviewUrl}>
               Revisar una unidad que he encontrado <Search size={16} />
-            </ContactButton>
+            </WhatsAppCta>
+            <WhatsAppCta href={searchUrl} variant="secondary">
+              Solicitar búsqueda personalizada <ArrowRight size={16} />
+            </WhatsAppCta>
           </div>
+          <Link
+            to="/calculadora-impuesto-matriculacion"
+            className="text-gold-400 underline underline-offset-4 transition-colors hover:text-white"
+          >
+            calculadora de impuesto de matriculación
+          </Link>
         </section>
       </main>
 

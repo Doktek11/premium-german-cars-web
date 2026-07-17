@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useMemo } from "react";
@@ -7,7 +7,14 @@ import { trackLeadEvent } from "../lib/analytics";
 import {
   getInitialSliderValue,
   getInitialSpecialCase,
+  getInitialStringValue,
 } from "../lib/calculatorUrlPrefill";
+import {
+  calculateRegistrationTax,
+  getTerritoryFromParam,
+  parseRateParam,
+  TERRITORIES,
+} from "../lib/registrationTax.mjs";
 import {
   calculatorFaqs,
   calculatorJsonLd,
@@ -44,8 +51,6 @@ import {
 
   Bot, 
 
-  Search,
-
   HelpCircle 
 
 } from 'lucide-react';
@@ -62,9 +67,37 @@ const MESES_MIN = 1;
 const MESES_MAX = 120;
 const MESES_DEFAULT = 36;
 
+const formatPercent = (value: number) =>
+  `${value.toLocaleString("es-ES", { maximumFractionDigits: 2 })} %`;
+
 export const CalculadoraImpuestos = () => {
   const location = useLocation();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTerritory = getTerritoryFromParam(
+    getInitialStringValue(searchParams, ["territorio", "territory"])
+  );
+  const initialOrigin = getInitialStringValue(searchParams, ["origen", "origin"]);
+  const initialUrlRate = parseRateParam(getInitialStringValue(searchParams, ["tramo"]));
+  const hasPrefilledData = [
+    "valor",
+    "valor_boe",
+    "valorBoe",
+    "precio",
+    "valor_fiscal",
+    "valorFiscal",
+    "co2",
+    "emisiones",
+    "emisiones_co2",
+    "emisionesCO2",
+    "antiguedad",
+    "antiguedad_meses",
+    "antiguedadMeses",
+    "meses",
+    "meses_antiguedad",
+    "mesesAntiguedad",
+  ].some((paramName) => searchParams.has(paramName));
+  const isAssistantPrefill = initialOrigin.toLocaleLowerCase("es-ES") === "asistente_pgc";
+
 
   const [precio, setPrecio] = useState<number>(
     getInitialSliderValue(
@@ -103,11 +136,19 @@ export const CalculadoraImpuestos = () => {
     )
   );
 
-  const [esComunidadIncrementada, setEsComunidadIncrementada] = useState<boolean>(
+  const [territorioId, setTerritorioId] = useState<string>(initialTerritory?.id ?? "");
+  const [emisionesNoAcreditadas, setEmisionesNoAcreditadas] = useState<boolean>(
     getInitialSpecialCase(searchParams)
   );
 
-  const [resultado, setResultado] = useState({ matriculacion: 0, tramo: 0 });
+  const [resultado, setResultado] = useState({
+    matriculacion: 0,
+    tramo: 0,
+    needsTerritory: false,
+    isProvisionalTerritory: false,
+    territoryLabel: "",
+    isUrlRateConsistent: true,
+  });
 
   const leadContext = useMemo(
     () =>
@@ -197,7 +238,11 @@ export const CalculadoraImpuestos = () => {
 
     setMeses(1);
 
-    setEsComunidadIncrementada(false);
+    setTerritorioId("");
+
+    setEmisionesNoAcreditadas(false);
+
+    setSearchParams({}, { replace: true });
 
   };
 
@@ -205,55 +250,33 @@ export const CalculadoraImpuestos = () => {
 
   useEffect(() => {
 
-    let tramo = 0;
-
-    if (emisiones <= 120) tramo = 0;
-
-    else if (emisiones <= 159) tramo = 4.75;
-
-    else if (emisiones <= 199) tramo = 9.75;
-
-    else {
-
-      tramo = esComunidadIncrementada ? 16 : 14.75;
-
-    }
-
-
-
-    let coef = 1;
-
-    if (meses <= 12) coef = 1;
-
-    else if (meses <= 24) coef = 0.84;
-
-    else if (meses <= 36) coef = 0.67;
-
-    else if (meses <= 48) coef = 0.56;
-
-    else if (meses <= 60) coef = 0.47;
-
-    else if (meses <= 72) coef = 0.39;
-
-    else coef = 0.30;
-
-
-
-    const baseImponible = precio * coef;
-
-    const impuesto = baseImponible * (tramo / 100);
-
-
+    const taxResult = calculateRegistrationTax({
+      price: precio,
+      emissions: emisiones,
+      months: meses,
+      territoryId: territorioId || null,
+      noAccreditedEmissions: emisionesNoAcreditadas,
+      urlRate: initialUrlRate,
+    });
 
     setResultado({
 
-      matriculacion: impuesto,
+      matriculacion: taxResult.tax,
 
-      tramo: tramo
+      tramo: taxResult.rate,
+
+      needsTerritory: taxResult.needsTerritory,
+
+      isProvisionalTerritory: taxResult.isProvisionalTerritory,
+
+      territoryLabel: taxResult.territoryForRate.displayName,
+
+
+      isUrlRateConsistent: taxResult.isUrlRateConsistent,
 
     });
 
-  }, [precio, emisiones, meses, esComunidadIncrementada]);
+  }, [precio, emisiones, meses, territorioId, emisionesNoAcreditadas, initialUrlRate]);
 
 
 
@@ -280,7 +303,12 @@ export const CalculadoraImpuestos = () => {
       context: leadContext,
     });
 
-    const message = `Hola, he usado la calculadora de impuesto de matriculación con un valor de ${precio}€, ${emisiones} g/km de CO₂ y ${meses} meses de antigüedad. El tramo estimado es ${resultado.tramo}% y el impuesto es de ${Math.round(resultado.matriculacion)}€. ¿Me ayudáis a verificar el impuesto y el coste final de importar este coche a España?`;
+    const territoryText = resultado.needsTerritory
+      ? resultado.isProvisionalTerritory
+        ? " Territorio pendiente de selección; tipo provisional aplicado: 14,75 %."
+        : ` Territorio de matriculación: ${resultado.territoryLabel}.`
+      : "";
+    const message = `Hola, he usado la calculadora de impuesto de matriculación con un valor de ${precio}€, ${emisiones} g/km de CO₂ y ${meses} meses de antigüedad. El tramo estimado es ${resultado.tramo}% y el impuesto es de ${Math.round(resultado.matriculacion)}€.${territoryText} ¿Me ayudáis a verificar el impuesto y el coste final de importar este coche a España?`;
 
     window.open(
       `https://wa.me/34603743608?text=${encodeURIComponent(message)}`,
@@ -314,7 +342,7 @@ export const CalculadoraImpuestos = () => {
 
         <div className="container mx-auto max-w-5xl">
 
-          <header className="mb-12 flex flex-col md:flex-row justify-between items-center gap-6">
+          <header className="mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
 
             <div className="text-center md:text-left">
 
@@ -324,14 +352,9 @@ export const CalculadoraImpuestos = () => {
 
               </h1>
 
-              <div className="space-y-3 text-gray-400 text-base sm:text-lg max-w-2xl text-left">
-                <p>
-                  Introduce el valor fiscal del vehículo, sus emisiones oficiales de CO₂ y la antigüedad para estimar cuánto pagarías al matricular en España un coche importado de Alemania.
-                </p>
-                <p>
-                  El resultado es orientativo y debe verificarse siempre con documentación oficial, COC, ficha técnica y normativa fiscal vigente.
-                </p>
-              </div>
+              <p className="text-gray-400 text-base sm:text-lg max-w-2xl text-left">
+                Calcula una estimación orientativa con el valor fiscal, el CO₂ y la antigüedad. Si llegas desde el Asistente PGC, los datos aparecen cargados para revisarlos o modificarlos.
+              </p>
 
             </div>
 
@@ -351,150 +374,48 @@ export const CalculadoraImpuestos = () => {
 
 
 
-          <section className="mb-8 sm:mb-10 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl text-left">
-            <h2 className="text-sm sm:text-base font-bold text-white uppercase tracking-[0.15em] mb-4">
-              Cómo usar la calculadora
-            </h2>
-            <p className="text-sm text-gray-300 mb-6">
-              Para calcular el impuesto de matriculación necesitas dos datos clave: el valor fiscal del coche cuando era nuevo y sus emisiones oficiales de CO₂. Si ya tienes esos datos, puedes introducirlos directamente. Si no los sabes, que es lo más habitual al valorar un coche de Alemania, puedes usar primero el asistente de IA.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div className="border border-white/10 bg-black/30 p-5 rounded-2xl">
-                <h3 className="text-white font-bold uppercase text-xs tracking-[0.18em] mb-3">
-                  No sé el valor BOE ni el CO₂
-                </h3>
-                <p className="text-sm text-gray-400 mb-4">
-                  Es el caso más habitual. Si tienes una unidad vista en Alemania pero no conoces el valor fiscal del coche nuevo ni sus emisiones oficiales, entra primero en el asistente de IA.
-                </p>
-                <ol className="space-y-2 text-xs text-gray-400 mb-5">
-                  <li>1. Introduce marca, modelo, versión y año del coche.</li>
-                  <li>2. El asistente te dará una referencia de valor y emisiones.</li>
-                  <li>3. Recibirás un enlace a esta calculadora con los datos ya introducidos.</li>
-                  <li>4. Revisa el resultado y, si quieres, solicita el reporte para que podamos verificarlo.</li>
-                </ol>
-                <button
-                  onClick={abrirAsistenteIA}
-                  className="inline-flex items-center justify-center gap-3 bg-gold-500 text-black px-5 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all min-h-[44px]"
-                >
-                  Buscar valores con el asistente IA <ArrowRight size={14} />
-                </button>
+          {hasPrefilledData && (
+            <div className="mb-6 rounded-2xl border border-gold-400/20 bg-gold-400/5 p-4 text-left text-sm text-gold-100">
+              Hemos cargado los datos localizados para este vehículo. Puedes revisarlos o modificarlos.
+              {isAssistantPrefill && <span> Proceden del Asistente PGC.</span>}
+            </div>
+          )}
+
+          <section className="mb-8 sm:mb-10 bg-gold-500/5 border border-gold-500/20 p-4 sm:p-6 rounded-2xl text-left">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+              <div className="flex items-start gap-4">
+                <div className="rounded-2xl bg-gold-500/15 p-3 text-gold-400">
+                  <Bot size={24} />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-white uppercase tracking-[0.15em] mb-2">
+                    ¿Ya tienes un coche visto en Alemania?
+                  </h2>
+                  <p className="text-sm text-gray-300 leading-relaxed max-w-2xl">
+                    Pega el enlace del anuncio en nuestro asistente o indica el modelo y la fecha de matriculación. Localizará el Valor BOE y una referencia de CO₂, y abrirá esta calculadora con los datos preparados.
+                  </p>
+                </div>
               </div>
-              <div className="border border-white/10 bg-black/30 p-5 rounded-2xl">
-                <h3 className="text-white font-bold uppercase text-xs tracking-[0.18em] mb-3">
-                  Ya sé el valor del coche y el CO₂
-                </h3>
-                <p className="text-sm text-gray-400 mb-4">
-                  Si ya conoces el valor fiscal aproximado del vehículo y sus emisiones oficiales de CO₂, puedes introducir los datos directamente en la calculadora.
-                </p>
-                <ol className="space-y-2 text-xs text-gray-400 mb-5">
-                  <li>1. Introduce el valor del vehículo.</li>
-                  <li>2. Añade las emisiones de CO₂.</li>
-                  <li>3. Indica la antigüedad en meses.</li>
-                  <li>4. La calculadora estimará el impuesto de matriculación.</li>
-                </ol>
-                <a
-                  href="#calculadora-inputs"
-                  className="inline-flex items-center justify-center gap-3 border border-white/20 text-white px-5 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-white hover:text-black transition-all min-h-[44px]"
-                >
-                  Introducir datos manualmente <ArrowRight size={14} />
-                </a>
-              </div>
+              <button
+                onClick={abrirAsistenteIA}
+                className="inline-flex items-center justify-center gap-3 bg-gold-500 text-black px-5 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all min-h-[44px]"
+              >
+                Analizar coche con el asistente <ArrowRight size={14} />
+              </button>
             </div>
           </section>
 
-          <div className="mb-8 sm:mb-10 bg-gradient-to-r from-gold-900/10 to-transparent border border-gold-500/20 p-4 sm:p-6 md:p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-sm text-left">
-
-            <div className="flex gap-5 items-start">
-
-              <div className="bg-gold-500/20 p-3 rounded-2xl">
-
-                <Bot className="text-gold-400" size={32} />
-
-              </div>
-
-              <div>
-
-                <h2 className="text-gold-400 font-bold uppercase text-xs tracking-[0.2em] mb-2 flex items-center gap-2 text-left">
-
-                  <Search size={14}/> Paso 1: averigua los datos del coche
-
-                </h2>
-
-                <p className="text-gray-300 text-sm leading-relaxed max-w-xl text-left">
-
-                  ¿No conoces el valor BOE o el CO₂ exacto de la unidad? Consulta nuestro asistente de valoración para obtener una referencia antes de calcular. Recuerda que el resultado debe verificarse siempre con documentación oficial, COC y datos fiscales vigentes.
-
-                </p>
-
-              </div>
-
-            </div>
-
-            <button 
-
-              onClick={abrirAsistenteIA}
-
-              className="whitespace-nowrap px-8 py-4 bg-gold-500 text-black font-black rounded-xl hover:bg-white transition-all uppercase text-[10px] tracking-widest flex items-center gap-3 shadow-xl shadow-gold-500/10 min-h-[48px] touch-manipulation"
-
-            >
-
-              Conocer Valor BOE <ArrowRight size={16}/>
-
-            </button>
-
-          </div>
-
-
-
           <div id="calculadora-inputs" className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 mb-16 sm:mb-20 md:mb-24">
 
-            <div className="lg:col-span-7 space-y-10 sm:space-y-12 bg-white/[0.03] p-4 sm:p-6 md:p-8 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-sm">
+            <div className={`lg:col-span-7 space-y-10 sm:space-y-12 bg-white/[0.03] p-4 sm:p-6 md:p-8 rounded-3xl border border-white/5 shadow-2xl backdrop-blur-sm ${hasPrefilledData ? "order-2 lg:order-1" : "order-1"}`}>
 
               <div className="text-left">
 
                 <h3 className="text-[10px] font-black uppercase text-gray-500 tracking-[0.3em] mb-8 border-b border-white/5 pb-4">
 
-                  Paso 2: Introduce los valores obtenidos
+                  Datos para el cálculo
 
                 </h3>
-
-
-
-                <div 
-
-                  className={`mb-10 p-5 rounded-2xl border transition-all cursor-pointer ${esComunidadIncrementada ? 'bg-gold-500/10 border-gold-500' : 'bg-white/5 border-white/10 hover:border-white/30'}`}
-
-                  onClick={() => setEsComunidadIncrementada(!esComunidadIncrementada)}
-
-                >
-
-                  <div className="flex items-start gap-4">
-
-                    <div className={`mt-1 w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${esComunidadIncrementada ? 'bg-gold-500 border-gold-500' : 'border-gray-600'}`}>
-
-                      {esComunidadIncrementada && <CheckCircle2 size={16} className="text-black" />}
-
-                    </div>
-
-                    <div className="flex flex-col">
-
-                      <span className="text-[11px] font-black uppercase tracking-widest text-white mb-1">
-
-                        ¿Coche sin emisiones acreditadas o caso fiscal especial?
-
-                      </span>
-
-                      <p className="text-[10px] text-gray-400 leading-tight uppercase font-medium">
-
-                        Marca esta opción si el vehículo no declara emisiones de CO₂, no permite acreditar el dato técnico con claridad o requiere aplicar un supuesto fiscal incrementado. Antes de comprar, conviene revisar documentación, COC y comunidad autónoma aplicable.
-
-                      </p>
-
-                    </div>
-
-                  </div>
-
-                </div>
 
 
 
@@ -616,11 +537,65 @@ export const CalculadoraImpuestos = () => {
 
               </div>
 
+              <div className="text-left rounded-2xl border border-white/10 bg-black/20 p-5">
+                <button
+                  type="button"
+                  className="w-full rounded-xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+                  onClick={() => setEmisionesNoAcreditadas(!emisionesNoAcreditadas)}
+                  aria-pressed={emisionesNoAcreditadas}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={emisionesNoAcreditadas ? "mt-1 w-5 h-5 rounded border-2 flex items-center justify-center transition-all bg-gold-500 border-gold-500" : "mt-1 w-5 h-5 rounded border-2 flex items-center justify-center transition-all border-gray-600"}>
+                      {emisionesNoAcreditadas && <CheckCircle2 size={14} className="text-black" />}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[11px] font-black uppercase tracking-widest text-white mb-1">
+                        Las emisiones oficiales no constan en la documentación
+                      </span>
+                      <p className="text-xs text-gray-400 leading-relaxed">
+                        Este supuesto aplica el tramo fiscal correspondiente a emisiones no acreditadas. No lo marques si simplemente estás utilizando una referencia de CO₂ obtenida por el asistente.
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              </div>
+
+              {resultado.needsTerritory && (
+                <div className="rounded-2xl border border-white/10 bg-black/30 p-5 text-left">
+                  <label htmlFor="territorio-matriculacion" className="mb-3 block text-xs font-bold uppercase tracking-[0.18em] text-gold-400">
+                    ¿Dónde vas a matricular el coche?
+                  </label>
+                  <select
+                    id="territorio-matriculacion"
+                    value={territorioId}
+                    onChange={(event) => setTerritorioId(event.target.value)}
+                    className="w-full rounded-xl border border-white/10 bg-black px-4 py-3 text-sm text-white outline-none transition-colors focus:border-gold-400 min-h-[48px]"
+                  >
+                    <option value="">Selecciona dónde matricularás el coche</option>
+                    {TERRITORIES.map((territory) => (
+                      <option key={territory.id} value={territory.id}>
+                        {territory.label}
+                      </option>
+                    ))}
+                  </select>
+                  {resultado.isProvisionalTerritory && (
+                    <p className="mt-3 text-xs text-gold-300 leading-relaxed">
+                      Tipo provisional aplicado: 14,75 %. Selecciona el territorio de matriculación para ajustar el cálculo.
+                    </p>
+                  )}
+                  {emisionesNoAcreditadas && !territorioId && (
+                    <p className="mt-3 text-xs text-red-300 leading-relaxed">
+                      Para emisiones no acreditadas conviene seleccionar el territorio antes de usar el resultado como referencia.
+                    </p>
+                  )}
+                </div>
+              )}
+
             </div>
 
 
 
-            <div className="lg:col-span-5 space-y-4 sm:space-y-6">
+            <div className={`lg:col-span-5 space-y-4 sm:space-y-6 ${hasPrefilledData ? "order-1 lg:order-2" : "order-2 lg:order-2"}`}>
 
               <div className="bg-gold-500 p-[1px] rounded-3xl shadow-2xl shadow-gold-500/10 text-left">
 
@@ -637,23 +612,50 @@ export const CalculadoraImpuestos = () => {
 
 
                   <div className="space-y-4 pt-6 border-t border-white/10 text-sm">
-
-                    <div className="flex justify-between items-center text-left">
-
-                      <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">Tramo Aplicado:</span>
-
-                      <span className="text-gold-400 font-mono font-bold text-lg">{resultado.tramo}%</span>
-
+                    <div className="flex justify-between items-center gap-4 text-left">
+                      <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">Tipo aplicado</span>
+                      <span className="text-gold-400 font-mono font-bold text-lg">{formatPercent(resultado.tramo)}</span>
                     </div>
-
-                    <div className="flex justify-between items-center text-left">
-
-                      <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">Reducción Aplicada:</span>
-
+                    <div className="flex justify-between items-center gap-4 text-left">
+                      <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">CO₂ utilizado</span>
+                      <span className="text-white font-mono">{emisiones} g/km</span>
+                    </div>
+                    <div className="flex justify-between items-center gap-4 text-left">
+                      <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">Antigüedad</span>
+                      <span className="text-white font-mono">{meses} meses</span>
+                    </div>
+                    {resultado.needsTerritory && (
+                      <div className="flex justify-between items-center gap-4 text-left">
+                        <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">Territorio</span>
+                        <span className="text-white font-mono text-right">{resultado.isProvisionalTerritory ? "Pendiente de selección" : resultado.territoryLabel}</span>
+                      </div>
+                    )}
+                    <p className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs leading-relaxed text-gray-300">
+                      {resultado.needsTerritory ? (
+                        resultado.isProvisionalTerritory ? (
+                          <>
+                            Tipo provisional aplicado: {formatPercent(resultado.tramo)}. Selecciona el territorio de matriculación para ajustar el cálculo.
+                          </>
+                        ) : (
+                          <>
+                            Tipo aplicado: {formatPercent(resultado.tramo)}. Matriculación en {resultado.territoryLabel}.
+                          </>
+                        )
+                      ) : (
+                        <>
+                          Tipo aplicado: {formatPercent(resultado.tramo)}. El territorio no modifica este tramo ordinario por CO₂.
+                        </>
+                      )}
+                    </p>
+                    {!resultado.isUrlRateConsistent && (
+                      <p className="text-xs leading-relaxed text-gold-300">
+                        El tramo recibido por URL no coincide con el CO₂ y el territorio. Se aplica el valor calculado por la herramienta.
+                      </p>
+                    )}
+                    <div className="flex justify-between items-center gap-4 text-left">
+                      <span className="text-gray-400 uppercase text-[10px] tracking-widest font-bold">Reducción aplicada</span>
                       <span className="text-white font-mono">{getReduccionText()}</span>
-
                     </div>
-
                   </div>
 
                   <CalculatorLeadCapture
@@ -663,6 +665,8 @@ export const CalculadoraImpuestos = () => {
                     tramo={resultado.tramo}
                     impuesto={resultado.matriculacion}
                     reduccion={getReduccionText()}
+                    territoryLabel={resultado.needsTerritory ? resultado.territoryLabel : ""}
+                    isProvisionalTerritory={resultado.isProvisionalTerritory}
                   />
 
                   <button
@@ -684,11 +688,15 @@ export const CalculadoraImpuestos = () => {
 
                 <p className="text-[10px] text-gray-500 leading-relaxed uppercase tracking-wider font-medium">
 
-                  {esComunidadIncrementada 
+                  {emisionesNoAcreditadas
 
-                    ? "ATENCIÓN: se está aplicando un supuesto incrementado o especial por falta de acreditación de emisiones o por criterio fiscal aplicable. Conviene revisar documentación antes de comprar."
+                    ? "ATENCIÓN: las emisiones oficiales no constan en la documentación. Selecciona el territorio para afinar el tipo aplicable."
 
-                    : "Este cálculo es orientativo. El resultado final puede variar según COC, documentación técnica, valor fiscal aplicable, comunidad autónoma y situación concreta del vehículo."}
+                    : resultado.isProvisionalTerritory
+
+                      ? "ATENCIÓN: falta el territorio de matriculación. Tipo provisional aplicado: 14,75 %. Selecciona el territorio de matriculación para ajustar el cálculo."
+
+                      : "Este cálculo es orientativo. El resultado final puede variar según COC, documentación técnica, valor fiscal aplicable, comunidad autónoma y situación concreta del vehículo."}
 
                 </p>
 
@@ -697,6 +705,8 @@ export const CalculadoraImpuestos = () => {
             </div>
 
           </div>
+
+
 
 
           <section className="mb-8 sm:mb-10 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl text-left">

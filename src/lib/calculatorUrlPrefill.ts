@@ -6,6 +6,11 @@ const getFirstParamValue = (
     .map((paramName) => searchParams.get(paramName))
     .find((value) => value !== null && value.trim() !== "");
 
+export const getInitialStringValue = (
+  searchParams: URLSearchParams,
+  paramNames: string[]
+) => getFirstParamValue(searchParams, paramNames)?.trim() ?? "";
+
 export const getInitialSliderValue = (
   searchParams: URLSearchParams,
   paramNames: string[],
@@ -26,19 +31,12 @@ export const getInitialSliderValue = (
 };
 
 export const getInitialSpecialCase = (searchParams: URLSearchParams) => {
-  const communityValue = getFirstParamValue(searchParams, [
-    "comunidad_incrementada",
-    "incrementado",
+  const specialCaseValue = getFirstParamValue(searchParams, [
     "supuesto_especial",
+    "emisiones_no_acreditadas",
+    "sin_emisiones_acreditadas",
   ]);
-  const normalizedCommunity = communityValue?.trim().toLocaleLowerCase("es-ES");
+  const normalizedSpecialCase = specialCaseValue?.trim().toLocaleLowerCase("es-ES");
 
-  if (["1", "true", "si", "sí"].includes(normalizedCommunity ?? "")) {
-    return true;
-  }
-
-  const rawRate = searchParams.get("tramo");
-  const rate = rawRate ? Number(rawRate.trim().replace(",", ".")) : Number.NaN;
-
-  return Number.isFinite(rate) && rate >= 16;
+  return ["1", "true", "si", "s�", "sí"].includes(normalizedSpecialCase ?? "");
 };

@@ -11,6 +11,8 @@ type CalculatorLeadCaptureProps = {
   tramo: number;
   impuesto: number;
   reduccion: string;
+  territoryLabel?: string;
+  isProvisionalTerritory?: boolean;
 };
 
 export const CalculatorLeadCapture = ({
@@ -20,6 +22,8 @@ export const CalculatorLeadCapture = ({
   tramo,
   impuesto,
   reduccion,
+  territoryLabel = "",
+  isProvisionalTerritory = false,
 }: CalculatorLeadCaptureProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,6 +44,12 @@ export const CalculatorLeadCapture = ({
       ),
     [location.pathname, location.search]
   );
+
+  const territorySummary = territoryLabel
+    ? isProvisionalTerritory
+      ? "Territorio pendiente de selección; tipo provisional aplicado: 14,75 %."
+      : `Territorio: ${territoryLabel}.`
+    : "";
 
   const validateContact = () => {
     if (!email.trim() || !email.includes("@")) {
@@ -82,6 +92,8 @@ export const CalculatorLeadCapture = ({
         calculatorRate: tramo,
         calculatorTax: Math.round(impuesto),
         calculatorReduction: reduccion,
+        calculatorTerritory: territoryLabel || undefined,
+        calculatorTerritoryIsProvisional: territoryLabel ? isProvisionalTerritory : undefined,
         sourcePath: leadContext.sourcePath,
         sourceQuery: leadContext.sourceQuery,
         sourceTitle: leadContext.sourceTitle,
@@ -119,6 +131,8 @@ export const CalculatorLeadCapture = ({
         pagePath: location.pathname,
         calculatorRate: tramo,
         calculatorTax: Math.round(impuesto),
+        calculatorTerritory: territoryLabel || undefined,
+        calculatorTerritoryIsProvisional: territoryLabel ? isProvisionalTerritory : undefined,
         hasNotes: Boolean(notes.trim()),
         context: leadContext,
       });
@@ -127,7 +141,9 @@ export const CalculatorLeadCapture = ({
           leadType: "calculadora-impuestos",
           budget: String(Math.round(precio)),
           estimatedTax: String(Math.round(impuesto)),
-          calculationSummary: `${emisiones} g/km · ${meses} meses · tramo ${tramo}%`,
+          calculationSummary: [`${emisiones} g/km · ${meses} meses · tramo ${tramo}%`, territorySummary]
+            .filter(Boolean)
+            .join(" · "),
         },
       });
     } catch {
@@ -151,8 +167,13 @@ export const CalculatorLeadCapture = ({
         Recibe tu desglose
       </p>
       <p className="text-sm text-gray-300 leading-relaxed">
-        Te enviamos el calculo por email con recomendaciones para decidir si esta unidad compensa importar.
+        Te enviamos el cálculo por email con recomendaciones para decidir si esta unidad compensa importar.
       </p>
+      {territorySummary && (
+        <p className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs leading-relaxed text-gray-300">
+          {territorySummary}
+        </p>
+      )}
 
       <input
         type="text"
@@ -184,7 +205,7 @@ export const CalculatorLeadCapture = ({
           setError("");
           setPhone(event.target.value);
         }}
-        placeholder="Telefono"
+        placeholder="Teléfono"
         className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors text-sm min-h-[44px]"
       />
 

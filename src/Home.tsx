@@ -41,8 +41,8 @@ export function Home() {
   return (
     <div className="bg-black">
       <SEO
-        title="Importacion de coches premium desde Alemania a Espana | Premium German Cars"
-        description="Importa tu coche premium desde Alemania con verificacion, transporte, ITV y matriculacion en Espana. Busqueda personalizada y entrega llave en mano."
+        title="Importación de coches premium desde Alemania a España | Premium German Cars"
+        description="Importa tu coche premium desde Alemania con verificación, transporte, ITV y matriculación en España. Búsqueda personalizada y entrega llave en mano."
         canonical="https://www.premiumgermancars.com/"
         jsonLd={homeJsonLd}
       />

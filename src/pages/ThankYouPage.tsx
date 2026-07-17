@@ -20,7 +20,7 @@ type ThankYouState = {
 
 function buildWhatsAppMessage(state: ThankYouState) {
   if (state.leadType === "calculadora-impuestos") {
-    return "Hola, acabo de enviar mi resultado de la calculadora y quiero validar si esta importacion compensa.";
+    return "Hola, acabo de enviar mi resultado de la calculadora y quiero validar si esta importación compensa.";
   }
 
   const vehicleLabel = [state.brand, state.model].filter(Boolean).join(" ").trim();
@@ -51,10 +51,10 @@ export const ThankYouPage = () => {
   const vehicleLabel = [state.brand, state.model].filter(Boolean).join(" ").trim();
   const isCalculatorLead = state.leadType === "calculadora-impuestos";
   const headingText = isCalculatorLead
-    ? "Gracias. Ya tenemos tu solicitud de calculo."
+    ? "Gracias. Ya tenemos tu solicitud de cálculo."
     : "Gracias. Ya tenemos tu solicitud.";
   const introText = isCalculatorLead
-    ? "Hemos registrado tu resultado para revisarlo con enfoque estrategico y ayudarte a decidir si esta unidad compensa."
+    ? "Hemos registrado tu resultado para revisarlo con enfoque estratégico y ayudarte a decidir si esta unidad compensa."
     : "Hemos registrado tu interes y revisaremos el caso para responderte con criterio, no con una respuesta generica.";
   const stepText = isCalculatorLead
     ? "Enviarnos por WhatsApp el enlace del anuncio o la ficha del coche para darte una validacion completa sobre coste total y riesgo de compra."
@@ -75,7 +75,7 @@ export const ThankYouPage = () => {
     <>
       <SEO
         title="Gracias | Premium German Cars"
-        description="Hemos recibido tu solicitud. Te indicamos el siguiente paso para avanzar con tu compra o busqueda."
+        description="Hemos recibido tu solicitud. Te indicamos el siguiente paso para avanzar con tu compra o búsqueda."
         canonical="https://www.premiumgermancars.com/gracias"
         noIndex={true}
       />

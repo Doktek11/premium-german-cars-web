@@ -4,7 +4,7 @@ import { getResponsiveImageProps } from "../lib/responsiveImages";
 
 export const Hero: React.FC = () => {
   const reviewMessage =
-    "Hola! He visto una unidad en Alemania y me gustaria que la revisarais antes de comprar.";
+    "Hola! He visto una unidad en Alemania y me gustaría que la revisarais antes de comprar.";
   const reviewUrl = `https://wa.me/34603743608?text=${encodeURIComponent(reviewMessage)}`;
   const heroImage = getResponsiveImageProps("/amggtr-mobile.webp", "100vw");
 
@@ -24,7 +24,7 @@ export const Hero: React.FC = () => {
           />
           <img
             {...heroImage}
-            alt="Importacion de coches premium desde Alemania a Espana - Premium German Cars"
+            alt="Importación de coches premium desde Alemania a España - Premium German Cars"
             sizes="100vw"
             className="w-full h-full object-cover"
             {...({ fetchpriority: "high" } as Record<string, string>)}
@@ -52,19 +52,19 @@ export const Hero: React.FC = () => {
           </div>
 
           <h1 className="text-[30px] sm:text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-5 sm:mb-6 leading-[1.08]">
-            Importacion de coches premium desde Alemania a Espana
+            Importación de coches premium desde Alemania a España
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 max-w-2xl font-normal leading-relaxed mx-auto md:mx-0">
-            Importamos coches premium desde Alemania con busqueda personalizada,
-            verificacion documental, transporte profesional, ITV, matriculacion
-            y entrega llave en mano en Espana.
+            Importamos coches premium desde Alemania con búsqueda personalizada,
+            verificación documental, transporte profesional, ITV, matriculación
+            y entrega llave en mano en España.
           </p>
 
           <p className="text-sm sm:text-base text-gray-300 mb-8 max-w-3xl leading-relaxed mx-auto md:mx-0">
             Ayudamos a particulares y empresas a encontrar, verificar e importar
             BMW, Audi, Mercedes-Benz, Porsche y Volkswagen con historial claro,
-            documentacion correcta y configuracion interesante para el mercado espanol.
+            documentación correcta y configuración interesante para el mercado español.
           </p>
 
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 justify-center md:justify-start">
@@ -72,7 +72,7 @@ export const Hero: React.FC = () => {
               href="#import"
               className="px-8 py-4 sm:py-5 bg-gold-400 hover:bg-gold-500 text-black font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-xl flex items-center justify-center gap-3 min-h-[48px] touch-manipulation"
             >
-              Solicitar busqueda personalizada
+              Solicitar búsqueda personalizada
               <ArrowRight size={18} />
             </a>
 
@@ -80,7 +80,7 @@ export const Hero: React.FC = () => {
               href="/calculadora-impuesto-matriculacion"
               className="px-8 py-4 sm:py-5 border border-white/20 hover:border-white text-white font-semibold text-sm uppercase tracking-widest hover:bg-white/5 transition-all duration-300 flex items-center justify-center min-h-[48px] touch-manipulation"
             >
-              Calcular impuesto de matriculacion
+              Calcular impuesto de matriculación
             </a>
 
             <a

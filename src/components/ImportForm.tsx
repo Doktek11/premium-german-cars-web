@@ -41,15 +41,15 @@ export const ImportForm: React.FC = () => {
       .join(" ")
       .trim();
 
-    return `Solicitud de importacion - Premium German Cars
+    return `Solicitud de importación - Premium German Cars
 
-Tipo de lead: busqueda personalizada
+Tipo de lead: búsqueda personalizada
 Vehiculo: ${vehicleLabel || "Sin definir"}
 Presupuesto maximo: ${formData.budget} EUR
 
 Datos de contacto:
 Email: ${formData.email}
-Telefono: ${formData.phone}
+Teléfono: ${formData.phone}
 
 Detalles especificos:
 ${formData.details || "Sin detalles adicionales"}`;
@@ -179,7 +179,7 @@ ${formData.details || "Sin detalles adicionales"}`;
         context: leadContext,
       });
       setSubmitError(
-        "Para WhatsApp, rellena al menos Marca, Modelo y Telefono."
+        "Para WhatsApp, rellena al menos Marca, Modelo y Teléfono."
       );
       return;
     }
@@ -210,7 +210,7 @@ ${formData.details || "Sin detalles adicionales"}`;
         <div className="flex flex-col lg:flex-row gap-16">
           <div className="lg:w-1/3">
             <span className="text-gold-400 text-xs tracking-widest uppercase font-bold mb-4 block">
-              Busqueda a la carta
+              Búsqueda a la carta
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-6 leading-tight">
               No encuentras lo que buscas?
@@ -309,7 +309,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                   </div>
                   <div className="group">
                     <label className="block text-xs uppercase tracking-widest text-gray-500 mb-3 group-focus-within:text-gold-400">
-                      Telefono
+                      Teléfono
                     </label>
                     <input
                       required
@@ -330,7 +330,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                   <textarea
                     name="details"
                     rows={2}
-                    placeholder="Techo panoramico, acabado mate, menos de 50.000km..."
+                    placeholder="Techo panorámico, acabado mate, menos de 50.000km..."
                     className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors resize-none text-base min-h-[44px] touch-manipulation"
                     onChange={handleChange}
                     value={formData.details}
@@ -361,7 +361,7 @@ ${formData.details || "Sin detalles adicionales"}`;
                 )}
 
                 <p className="text-[10px] text-gray-500 text-center uppercase tracking-widest opacity-50">
-                  Premium German Cars - Gestion Directa
+                  Premium German Cars - Gestión Directa
                 </p>
               </form>
             </div>

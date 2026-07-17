@@ -50,13 +50,13 @@ function buildHtml(payload, attribution) {
     .join("");
 
   return `
-    <h2>Nueva solicitud de importacion</h2>
+    <h2>Nueva solicitud de importación</h2>
     <p><strong>Tipo de lead:</strong> ${safePayload.leadType || "busqueda-personalizada"}</p>
     <p><strong>Vehiculo:</strong> ${safePayload.brand} ${safePayload.model}</p>
     <p><strong>Presupuesto maximo:</strong> ${safePayload.budget} EUR</p>
     <h3>Datos de contacto</h3>
     <p><strong>Email:</strong> ${safePayload.email}</p>
-    <p><strong>Telefono:</strong> ${safePayload.phone}</p>
+    <p><strong>Teléfono:</strong> ${safePayload.phone}</p>
     <h3>Detalles especificos</h3>
     <p>${safePayload.details || "Sin detalles adicionales"}</p>
     ${calculationRows ? `<h3>Datos de calculadora</h3><table>${calculationRows}</table>` : ""}
@@ -99,22 +99,22 @@ function buildCalculatorSummaryHtml(payload) {
       <div style="max-width:640px;margin:0 auto;background:#fff;border:1px solid #e8e8e8;">
         <div style="background:#050505;color:#fff;padding:24px;">
           <p style="margin:0 0 8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#d6b15f;">Premium German Cars</p>
-          <h1 style="margin:0;font-size:24px;line-height:1.25;">Tu desglose de impuesto de matriculacion</h1>
+          <h1 style="margin:0;font-size:24px;line-height:1.25;">Tu desglose de impuesto de matriculación</h1>
         </div>
         <div style="padding:24px;">
           <p style="margin:0 0 16px;">${safeName ? `Hola ${safeName},` : "Hola,"}</p>
-          <p style="margin:0 0 20px;">Hemos recibido tu calculo. Este es el resumen orientativo para valorar si la importacion compensa antes de avanzar con una unidad concreta.</p>
+          <p style="margin:0 0 20px;">Hemos recibido tu cálculo. Este es el resumen orientativo para valorar si la importación compensa antes de avanzar con una unidad concreta.</p>
           <table style="width:100%;border-collapse:collapse;margin:20px 0;border:1px solid #ececec;">
             ${rows}
           </table>
           ${safeDetails ? `<p style="margin:20px 0;"><strong>Notas:</strong> ${safeDetails}</p>` : ""}
-          <p style="margin:20px 0;">Para validar el coste real final, necesitamos revisar la ficha tecnica, emisiones homologadas, pais de origen, historial y documentacion del vehiculo.</p>
+          <p style="margin:20px 0;">Para validar el coste real final, necesitamos revisar la ficha técnica, emisiones homologadas, país de origen, historial y documentación del vehículo.</p>
           <p style="margin:24px 0 0;">
             <a href="https://wa.me/34603743608" style="display:inline-block;background:#111;color:#fff;text-decoration:none;padding:12px 18px;font-weight:700;">Enviar ficha por WhatsApp</a>
           </p>
         </div>
         <div style="padding:18px 24px;background:#fafafa;color:#777;font-size:12px;">
-          Este calculo es orientativo y no sustituye la validacion documental previa a la compra.
+          Este cálculo es orientativo y no sustituye la validación documental previa a la compra.
         </div>
       </div>
     </div>
@@ -319,7 +319,7 @@ export default async function handler(req, res) {
       await sendResendEmail({
         from: RESEND_FROM,
         to: [trimmedEmail],
-        subject: "Tu desglose de impuesto de matriculacion | Premium German Cars",
+        subject: "Tu desglose de impuesto de matriculación | Premium German Cars",
         html: buildCalculatorSummaryHtml(emailPayload),
         reply_to: RECIPIENT_EMAIL,
       });

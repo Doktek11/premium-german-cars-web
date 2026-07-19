@@ -13,6 +13,7 @@ import {
   calculatorJsonLd,
   homeJsonLd,
   importacionJsonLd,
+  revisionUnidadJsonLd,
 } from "../src/data/corePageSchemas.mjs";
 import {
   CAR_PAGE_METADATA,
@@ -72,6 +73,16 @@ const routes = [
     h1: "Importar coche de Alemania a España con gestión integral",
     eyebrow: "Servicio de importación premium",
     jsonLd: importacionJsonLd,
+  },
+  {
+    path: "/revision-unidad-alemania",
+    title: "Revisión de coches en Alemania antes de comprar | PGC",
+    description:
+      "¿Has encontrado un coche en Alemania? Analizamos el anuncio, vendedor, impuestos, garantía, documentación y coste probable antes de que pagues.",
+    h1: "Revisión de una unidad antes de comprarla en Alemania",
+    eyebrow: "Análisis previo a la compra",
+    image: `${siteUrl}/bmwconcesionario2-1280.webp`,
+    jsonLd: revisionUnidadJsonLd,
   },
   {
     path: "/calculadora-impuesto-matriculacion",

@@ -87,9 +87,67 @@ export const calculatorFaqs = [
   },
 ];
 
+export const revisionUnidadFaqs = [
+  {
+    question: "¿El coste final que recibiré será exacto?",
+    answer:
+      "Recibirás una estimación prudente basada en la información disponible. Cuando un gasto no pueda confirmarse, mostraremos una horquilla e indicaremos por qué puede variar. El presupuesto definitivo solo puede cerrarse después de verificar la documentación, las condiciones del vendedor y el transporte.",
+  },
+  {
+    question: "¿Contactáis con el concesionario?",
+    answer:
+      "La revisión de 79 € se basa inicialmente en el anuncio y en la información públicamente disponible. Si es necesario contactar con el vendedor, solicitar documentación o confirmar por escrito las condiciones de compra, te indicaremos el siguiente paso antes de realizar gestiones adicionales.",
+  },
+  {
+    question: "¿Comprobáis si el coche ha tenido accidentes?",
+    answer:
+      "Revisamos lo que el vendedor declara y detectamos posibles señales o contradicciones en el anuncio. La confirmación técnica del estado del vehículo requiere documentación adicional o una inspección física independiente en Alemania.",
+  },
+  {
+    question: "¿Incluye una inspección física?",
+    answer:
+      "No. La inspección física en origen es un servicio independiente. Si la unidad resulta interesante, podemos ayudarte a coordinar una revisión realizada por un perito externo antes de la compra.",
+  },
+  {
+    question: "¿Qué ocurre si recomendáis descartar el coche?",
+    answer:
+      "El servicio se considera realizado porque el objetivo del análisis es ayudarte a evitar una mala compra. Descubrir a tiempo que una unidad no compensa puede evitarte una pérdida muy superior al precio de la revisión.",
+  },
+  {
+    question: "¿Qué ocurre si el anuncio no contiene información suficiente?",
+    answer:
+      "Comprobaremos el enlace antes de confirmar el encargo y solicitar el pago. Si necesitamos algún dato adicional, nos pondremos en contacto contigo. Si no fuera posible realizar razonablemente el análisis, no tendrás que contratar el servicio.",
+  },
+  {
+    question: "¿Qué ocurre si el coche se vende durante la revisión?",
+    answer:
+      "Si el anuncio deja de estar disponible antes de que iniciemos el análisis, podrás enviarnos otra unidad. Si la revisión ya se ha iniciado, te entregaremos la información que haya podido analizarse y te indicaremos las alternativas disponibles.",
+  },
+  {
+    question: "¿Puedo enviar más de un coche?",
+    answer:
+      "La tarifa de 79 € corresponde al análisis de una unidad. Si estás comparando varios vehículos, podemos prepararte una propuesta específica de búsqueda o preselección.",
+  },
+  {
+    question: "¿Se descuentan los 79 € si contrato la importación?",
+    answer:
+      "Sí. Si posteriormente encargas a Premium German Cars la gestión integral de la unidad analizada, descontaremos íntegramente los 79 € de nuestros honorarios.",
+  },
+  {
+    question: "¿Cómo se realiza el pago?",
+    answer:
+      "Después de recibir la solicitud comprobaremos que el anuncio permite realizar el análisis. Si podemos efectuarlo, te enviaremos la confirmación del encargo y las instrucciones para pagar mediante Bizum o transferencia bancaria. El análisis comenzará después de confirmar el pago.",
+  },
+  {
+    question: "¿Cuánto tardaré en recibir el análisis?",
+    answer:
+      "El plazo habitual es de 24–48 horas laborables desde la recepción del pago y de todos los datos necesarios para realizar la revisión.",
+  },
+];
 const homeUrl = `${SITE_URL}/`;
 const importacionUrl = `${SITE_URL}/importacion-coches-alemania`;
 const calculatorUrl = `${SITE_URL}/calculadora-impuesto-matriculacion`;
+const revisionUnidadUrl = `${SITE_URL}/revision-unidad-alemania`;
 
 export const homeJsonLd = createGraph([
   createOrganizationSchema(),
@@ -165,4 +223,52 @@ export const calculatorJsonLd = createGraph([
     mainEntityOfPage: { "@id": `${calculatorUrl}#webpage` },
   },
   createFaqSchema({ url: calculatorUrl, faqs: calculatorFaqs }),
+]);
+
+export const revisionUnidadJsonLd = createGraph([
+  {
+    ...createWebPageSchema({
+      url: revisionUnidadUrl,
+      name: "Revisión de una unidad antes de comprarla en Alemania",
+      description:
+        "Revisión personalizada del anuncio, vendedor, fiscalidad, documentación, costes probables y viabilidad de compra antes de reservar un coche en Alemania.",
+      datePublished: "2026-07-19",
+      dateModified: "2026-07-19",
+      breadcrumbId: `${revisionUnidadUrl}#breadcrumb`,
+      mainEntityId: `${revisionUnidadUrl}#service`,
+      hasPartIds: [`${revisionUnidadUrl}#faq`],
+    }),
+    about: organizationReference(),
+    provider: organizationReference(),
+  },
+  createBreadcrumbSchema({
+    url: revisionUnidadUrl,
+    items: [
+      { name: "Inicio", url: homeUrl },
+      { name: "Revisión de una unidad", url: revisionUnidadUrl },
+    ],
+  }),
+  {
+    ...createServiceSchema({
+      id: `${revisionUnidadUrl}#service`,
+      url: revisionUnidadUrl,
+      name: "Revisión de una unidad antes de comprarla en Alemania",
+      description:
+        "Revisión personalizada del anuncio, vendedor, fiscalidad, documentación, costes probables y viabilidad de compra.",
+      serviceType: "Análisis previo de vehículos localizados en Alemania",
+      areaServed: ["España"],
+    }),
+    mainEntityOfPage: { "@id": `${revisionUnidadUrl}#webpage` },
+    offers: {
+      "@type": "Offer",
+      "@id": `${revisionUnidadUrl}#offer`,
+      url: revisionUnidadUrl,
+      price: "79",
+      priceCurrency: "EUR",
+      availability: "https://schema.org/InStock",
+      description: "Precio final con IVA incluido para la revisión de una unidad.",
+      seller: organizationReference(),
+    },
+  },
+  createFaqSchema({ url: revisionUnidadUrl, faqs: revisionUnidadFaqs }),
 ]);

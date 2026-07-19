@@ -18,6 +18,10 @@ const CalculadoraImpuestos = lazyNamed(
   () => import("./pages/CalculadoraImpuestos"),
   "CalculadoraImpuestos"
 );
+const RevisionUnidadAlemania = lazyNamed(
+  () => import("./pages/RevisionUnidadAlemania"),
+  "RevisionUnidadAlemania"
+);
 const FAQPage = lazyNamed(() => import("./pages/FAQPage"), "FAQPage");
 
 const BlogIndex = lazy(() => import("./pages/Blog/index"));
@@ -59,6 +63,7 @@ export default function App() {
           <Route path="/car/:slug" element={<CarPage />} />
           <Route path="/importacion-coches-alemania" element={<ImportacionAlemania />} />
           <Route path="/calculadora-impuesto-matriculacion" element={<CalculadoraImpuestos />} />
+          <Route path="/revision-unidad-alemania" element={<RevisionUnidadAlemania />} />
           <Route path="/preguntas-frecuentes" element={<FAQPage />} />
           <Route path="/gracias" element={<ThankYouPage />} />
           <Route path="/blog" element={<BlogIndex />} />

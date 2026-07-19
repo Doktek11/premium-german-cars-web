@@ -16,11 +16,16 @@ type ThankYouState = {
   budget?: string;
   estimatedTax?: string;
   calculationSummary?: string;
+  leadReference?: string;
 };
 
 function buildWhatsAppMessage(state: ThankYouState) {
   if (state.leadType === "calculadora-impuestos") {
     return "Hola, acabo de enviar mi resultado de la calculadora y quiero validar si esta importación compensa.";
+  }
+
+  if (state.leadType === "revision-unidad-alemania") {
+    return "Hola, acabo de enviar mi solicitud de revisión de una unidad y quiero esperar vuestra confirmación del encargo.";
   }
 
   const vehicleLabel = [state.brand, state.model].filter(Boolean).join(" ").trim();
@@ -50,15 +55,20 @@ export const ThankYouPage = () => {
   )}`;
   const vehicleLabel = [state.brand, state.model].filter(Boolean).join(" ").trim();
   const isCalculatorLead = state.leadType === "calculadora-impuestos";
-  const headingText = isCalculatorLead
-    ? "Gracias. Ya tenemos tu solicitud de cálculo."
-    : "Gracias. Ya tenemos tu solicitud.";
+  const isRevisionUnitLead = state.leadType === "revision-unidad-alemania";
+  const headingText = isRevisionUnitLead
+    ? "Hemos recibido tu solicitud"
+    : isCalculatorLead
+      ? "Gracias. Ya tenemos tu solicitud de cálculo."
+      : "Gracias. Ya tenemos tu solicitud.";
   const introText = isCalculatorLead
     ? "Hemos registrado tu resultado para revisarlo con enfoque estratégico y ayudarte a decidir si esta unidad compensa."
     : "Hemos registrado tu interes y revisaremos el caso para responderte con criterio, no con una respuesta generica.";
-  const stepText = isCalculatorLead
-    ? "Enviarnos por WhatsApp el enlace del anuncio o la ficha del coche para darte una validacion completa sobre coste total y riesgo de compra."
-    : "Enviarnos por WhatsApp una o varias referencias concretas, el uso que le vas a dar al coche y cualquier condicion que no quieras negociar.";
+  const stepText = isRevisionUnitLead
+    ? "Revisaremos el enlace enviado. Si podemos efectuar el análisis, recibirás la confirmación del encargo y las instrucciones de pago por correo electrónico o WhatsApp."
+    : isCalculatorLead
+      ? "Enviarnos por WhatsApp el enlace del anuncio o la ficha del coche para darte una validacion completa sobre coste total y riesgo de compra."
+      : "Enviarnos por WhatsApp una o varias referencias concretas, el uso que le vas a dar al coche y cualquier condicion que no quieras negociar.";
 
   useEffect(() => {
     trackLeadEvent("thank_you_view", {
@@ -67,9 +77,10 @@ export const ThankYouPage = () => {
       pagePath: location.pathname,
       hasVehicleContext: Boolean(vehicleLabel),
       isCalculatorLead,
+      isRevisionUnitLead,
       context: leadContext,
     });
-  }, [isCalculatorLead, leadContext, location.pathname, state.leadType, vehicleLabel]);
+  }, [isCalculatorLead, isRevisionUnitLead, leadContext, location.pathname, state.leadType, vehicleLabel]);
 
   return (
     <>
@@ -96,13 +107,32 @@ export const ThankYouPage = () => {
                 {headingText}
               </h1>
 
-              <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                {introText}
-              </p>
+              {isRevisionUnitLead ? (
+                <div className="space-y-4 text-gray-300 text-lg leading-relaxed mb-10">
+                  <p>
+                    Comprobaremos que el anuncio contiene la información necesaria para realizar la revisión.
+                  </p>
+                  <p>
+                    Si podemos efectuar el análisis, recibirás por correo electrónico o WhatsApp la confirmación del encargo y las instrucciones para pagar los 79 € IVA incluido mediante Bizum o transferencia bancaria.
+                  </p>
+                  <p>
+                    El plazo habitual de entrega es de 24–48 horas laborables desde la recepción del pago y de todos los datos necesarios.
+                  </p>
+                  <p>
+                    Enviar esta solicitud no implica ningún cargo ni te obliga a contratar el servicio.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                    {introText}
+                  </p>
 
-              <p className="text-gray-400 text-base leading-relaxed mb-10">
-                Tiempo objetivo de respuesta: menos de 24 horas laborables. Si quieres acelerar el proceso, el mejor siguiente paso es escribirnos ahora por WhatsApp y compartir cualquier referencia adicional.
-              </p>
+                  <p className="text-gray-400 text-base leading-relaxed mb-10">
+                    Tiempo objetivo de respuesta: menos de 24 horas laborables. Si quieres acelerar el proceso, el mejor siguiente paso es escribirnos ahora por WhatsApp y compartir cualquier referencia adicional.
+                  </p>
+                </>
+              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
                 <a
@@ -145,7 +175,12 @@ export const ThankYouPage = () => {
                 <p className="text-gray-300 leading-relaxed mb-4">
                   {stepText}
                 </p>
-                {vehicleLabel && (
+                {isRevisionUnitLead && state.leadReference && (
+                  <p className="text-sm text-gold-400">
+                    Referencia de solicitud: {state.leadReference}
+                  </p>
+                )}
+                {vehicleLabel && !isRevisionUnitLead && (
                   <p className="text-sm text-gold-400">
                     Solicitud enviada para: {vehicleLabel}
                     {state.budget ? ` - presupuesto maximo ${state.budget} EUR` : ""}

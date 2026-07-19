@@ -10,6 +10,11 @@ const RESEND_FROM =
   process.env.IMPORT_FORM_FROM ||
   "Premium German Cars <onboarding@resend.dev>";
 
+
+function createRevisionReference(date = new Date()) {
+  const suffix = String(date.getTime()).slice(-6);
+  return `REV-${date.getFullYear()}-${suffix}`;
+}
 function escapeHtml(value = "") {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -20,6 +25,7 @@ function escapeHtml(value = "") {
 }
 
 function buildHtml(payload, attribution) {
+  const isRevisionUnitLead = payload.leadType === "revision-unidad-alemania";
   const safePayload = Object.fromEntries(
     Object.entries(payload).map(([key, value]) => [key, escapeHtml(value)])
   );
@@ -33,6 +39,21 @@ function buildHtml(payload, attribution) {
         `<tr><td style="padding:6px 12px 6px 0;"><strong>${key}</strong></td><td style="padding:6px 0;">${value}</td></tr>`
     )
     .join("");
+  const revisionRows = [
+    ["Referencia o lead_id", safePayload.lead_id || safePayload.leadId || safePayload.reference],
+    ["Estado", safePayload.requestStatus],
+    ["Importe previsto", safePayload.servicePrice ? `${safePayload.servicePrice} EUR IVA incluido` : ""],
+    ["Métodos de pago disponibles después de aceptar", safePayload.paymentMethods],
+    ["Enlace del anuncio", safePayload.announcementUrl],
+    ["Lugar de matriculación", safePayload.registrationPlace],
+  ]
+    .filter(([, value]) => value || value === 0)
+    .map(
+      ([key, value]) =>
+        `<tr><td style="padding:6px 12px 6px 0;"><strong>${key}</strong></td><td style="padding:6px 0;">${value}</td></tr>`
+    )
+    .join("");
+
   const calculationRows = [
     ["name", safePayload.name],
     ["calculatorPrice", safePayload.calculatorPrice],
@@ -49,16 +70,27 @@ function buildHtml(payload, attribution) {
     )
     .join("");
 
+  const heading = isRevisionUnitLead
+    ? "Nueva solicitud de revisión de unidad"
+    : "Nueva solicitud de importación";
+  const vehicleSummary = isRevisionUnitLead
+    ? safePayload.announcementUrl || "Unidad pendiente de revisar"
+    : `${safePayload.brand} ${safePayload.model}`;
+  const budgetSummary = isRevisionUnitLead
+    ? "79 EUR IVA incluido"
+    : `${safePayload.budget} EUR`;
+
   return `
-    <h2>Nueva solicitud de importación</h2>
+    <h2>${heading}</h2>
     <p><strong>Tipo de lead:</strong> ${safePayload.leadType || "busqueda-personalizada"}</p>
-    <p><strong>Vehiculo:</strong> ${safePayload.brand} ${safePayload.model}</p>
-    <p><strong>Presupuesto maximo:</strong> ${safePayload.budget} EUR</p>
-    <h3>Datos de contacto</h3>
+    <p><strong>Servicio:</strong> ${safePayload.service_type || ""}</p>
+    <p><strong>Vehiculo:</strong> ${vehicleSummary}</p>
+    <p><strong>Presupuesto maximo / importe previsto:</strong> ${budgetSummary}</p>    <h3>Datos de contacto</h3>
     <p><strong>Email:</strong> ${safePayload.email}</p>
     <p><strong>Teléfono:</strong> ${safePayload.phone}</p>
     <h3>Detalles especificos</h3>
     <p>${safePayload.details || "Sin detalles adicionales"}</p>
+    ${revisionRows ? `<h3>Datos de revisión de unidad</h3><table>${revisionRows}</table>` : ""}
     ${calculationRows ? `<h3>Datos de calculadora</h3><table>${calculationRows}</table>` : ""}
     <h3>Contexto del lead</h3>
     <table>${attributionRows || "<tr><td>Sin datos adicionales</td></tr>"}</table>
@@ -208,12 +240,22 @@ export default async function handler(req, res) {
     utmTerm = "",
     utmContent = "",
     sessionId = "",
+    announcementUrl = "",
+    registrationPlace = "",
+    service_type = "",
+    servicePrice = "",
+    servicePriceCurrency = "",
+    serviceVatIncluded = false,
+    requestStatus = "",
+    paymentMethods = "",
+    paymentStatus = "",
   } = req.body || {};
 
   const trimmedEmail = String(email || "").trim();
   const trimmedPhone = String(phone || "").trim();
   const hasValidEmail = trimmedEmail.includes("@");
   const isCalculatorLead = leadType === "calculadora-impuestos";
+  const isRevisionUnitLead = leadType === "revision-unidad-alemania";
   const isCustomSearchLead = leadType === "busqueda-personalizada";
 
   if (isCustomSearchLead && (!brand || !model || !budget || !trimmedEmail || !trimmedPhone)) {
@@ -228,7 +270,16 @@ export default async function handler(req, res) {
     });
   }
 
-  if (!isCustomSearchLead && !isCalculatorLead && !budget) {
+  if (
+    isRevisionUnitLead &&
+    (!announcementUrl || !registrationPlace || !name || !hasValidEmail || !trimmedPhone)
+  ) {
+    return res.status(400).json({
+      error: "Missing required fields for revision-unidad-alemania",
+    });
+  }
+
+  if (!isCustomSearchLead && !isCalculatorLead && !isRevisionUnitLead && !budget) {
     return res.status(400).json({
       error: "Missing required budget",
     });
@@ -254,6 +305,7 @@ export default async function handler(req, res) {
   };
 
   const submittedAt = new Date().toISOString();
+  const revisionReference = isRevisionUnitLead ? createRevisionReference(new Date(submittedAt)) : "";
   const leadRecord = {
     submittedAt,
     fecha: submittedAt,
@@ -274,6 +326,17 @@ export default async function handler(req, res) {
     calculatorRate,
     calculatorTax,
     calculatorReduction,
+    lead_id: revisionReference,
+    leadId: revisionReference,
+    reference: revisionReference,
+    service_type,
+    requestStatus,
+    paymentMethods,
+    announcementUrl,
+    registrationPlace,
+    servicePrice,
+    servicePriceCurrency,
+    serviceVatIncluded,
     contact: {
       name,
       brand,
@@ -288,6 +351,17 @@ export default async function handler(req, res) {
       calculatorRate,
       calculatorTax,
       calculatorReduction,
+      lead_id: revisionReference,
+      leadId: revisionReference,
+      reference: revisionReference,
+      service_type,
+      requestStatus,
+      paymentMethods,
+      announcementUrl,
+      registrationPlace,
+      servicePrice,
+      servicePriceCurrency,
+      serviceVatIncluded,
     },
     attribution,
   };
@@ -312,6 +386,17 @@ export default async function handler(req, res) {
     calculatorRate,
     calculatorTax,
     calculatorReduction,
+    lead_id: revisionReference,
+    leadId: revisionReference,
+    reference: revisionReference,
+    service_type,
+    requestStatus,
+    paymentMethods,
+    announcementUrl,
+    registrationPlace,
+    servicePrice,
+    servicePriceCurrency,
+    serviceVatIncluded,
   };
 
   if (isCalculatorLead) {
@@ -337,7 +422,9 @@ export default async function handler(req, res) {
     try {
       const subject = isCalculatorLead
         ? `Nuevo Lead Calculadora: ${budget} EUR / ${calculatorEmissions || "N/A"} g/km`
-        : `Nueva Solicitud: ${brand} ${model}`;
+        : isRevisionUnitLead
+          ? `Nueva solicitud de revisión de unidad: ${revisionReference || registrationPlace || "sin ubicación"}`
+          : `Nueva Solicitud: ${brand} ${model}`;
       const resendBody = {
         from: RESEND_FROM,
         to: [RECIPIENT_EMAIL],
@@ -393,6 +480,8 @@ export default async function handler(req, res) {
 
   return res.status(200).json({
     ok: true,
+    leadId: revisionReference || undefined,
+    reference: revisionReference || undefined,
     emailSent,
     clientEmailSent,
     adminEmailSent,

@@ -45,11 +45,11 @@ const WARNING_MESSAGES_BY_CODE = {
   [WARNING_CODES.UNSUPPORTED_VEHICLE_CONDITION]:
     "Este supuesto requiere un calculo diferente o una revision individual.",
   [WARNING_CODES.UNSUPPORTED_HISTORICAL_PERIOD]:
-    "La fecha de primera matriculacion queda fuera de la matriz historica automatica implementada.",
+    "La fecha de primera matriculacion queda fuera de la matriz historica automatica implementada desde el 01/01/2008.",
   [WARNING_CODES.UNSUPPORTED_HISTORICAL_TERRITORY_RATE]:
     "No hay una tarifa historica territorial documentada para esa fecha y territorio. Requiere revision fiscal individual.",
   [WARNING_CODES.AMBIGUOUS_FIRST_REGISTRATION_DATE]:
-    "La primera matriculacion de julio de 2021 requiere dia exacto: la matriz CO2 temporal entro en vigor el 11/07/2021.",
+    "La primera matriculacion requiere dia exacto porque en ese mes hubo un cambio legal que puede alterar el tipo aplicable.",
   [WARNING_CODES.INVALID_INPUT]:
     "Los datos introducidos no permiten calcular el impuesto con seguridad.",
 };
@@ -180,43 +180,67 @@ const DEPRECIATION_BRACKETS = [
   [Infinity, 0.1],
 ];
 
-const IVA_21_START = "2012-09-01";
 const MODERN_CO2_IEDMT_START = "2008-01-01";
 const TEMPORARY_2021_IEDMT_START = "2021-07-11";
 const TEMPORARY_2021_IEDMT_END = "2021-12-31";
+const VAT_18_START = "2010-07-01";
+const VAT_21_START = "2012-09-01";
 const STATE_HIGH_EMISSION_RATE = 0.1475;
+const STATE_REGISTRATION_TAX_RATES = {
+  epigraph1: 0,
+  epigraph2: 0.0475,
+  epigraph3: 0.0975,
+  epigraph4: STATE_HIGH_EMISSION_RATE,
+};
 
-const HISTORICAL_HIGH_EMISSION_RATE_PERIODS = {
+const HISTORICAL_REGISTRATION_TAX_RATE_PERIODS = {
   peninsula_general: [
-    { from: "2008-01-01", rate: STATE_HIGH_EMISSION_RATE, source: "Ley 38/1992 art. 70.2.b, tipo estatal epigrafe 4" },
+    { from: "2008-01-01", rates: STATE_REGISTRATION_TAX_RATES, source: "Ley 38/1992 art. 70.2.b, tipos estatales por epigrafe" },
   ],
   asturias: [
-    { from: "2008-01-01", rate: STATE_HIGH_EMISSION_RATE, source: "Ley 38/1992 art. 70.2.b hasta entrada del tipo autonomico" },
-    { from: "2010-07-15", rate: 0.16, source: "Ley Asturias 5/2010 art. 7, BOE-A-2010-14629" },
+    { from: "2008-01-01", rates: STATE_REGISTRATION_TAX_RATES, source: "Ley 38/1992 art. 70.2.b hasta entrada del tipo autonomico" },
+    { from: "2010-07-15", rates: { ...STATE_REGISTRATION_TAX_RATES, epigraph4: 0.16 }, source: "Ley Asturias 5/2010 art. 7, BOE-A-2010-14629" },
   ],
   baleares: [
-    { from: "2008-01-01", rate: STATE_HIGH_EMISSION_RATE, source: "Ley 38/1992 art. 70.2.b, Peninsula e Illes Balears" },
-    { from: "2012-05-01", rate: 0.16, source: "Decreto-ley Illes Balears 4/2012 art. 4 y DT unica, BOIB-i-2012-90027" },
+    { from: "2008-01-01", rates: STATE_REGISTRATION_TAX_RATES, source: "Ley 38/1992 art. 70.2.b, Peninsula e Illes Balears" },
+    { from: "2012-05-01", rates: { ...STATE_REGISTRATION_TAX_RATES, epigraph4: 0.16 }, source: "Decreto-ley Illes Balears 4/2012 art. 4 y DT unica, BOIB-i-2012-90027" },
   ],
   cataluna: [
-    { from: "2008-01-01", rate: STATE_HIGH_EMISSION_RATE, source: "Ley 38/1992 art. 70.2.b hasta entrada del tipo autonomico" },
-    { from: "2010-07-01", rate: 0.16, source: "Decreto-ley Catalunya 3/2010 art. 6 y DF, BOE-A-2010-10217" },
+    { from: "2008-01-01", rates: STATE_REGISTRATION_TAX_RATES, source: "Ley 38/1992 art. 70.2.b hasta entrada del tipo autonomico" },
+    { from: "2010-07-01", rates: { ...STATE_REGISTRATION_TAX_RATES, epigraph4: 0.16 }, source: "Decreto-ley Catalunya 3/2010 art. 6 y DF, BOE-A-2010-10217" },
   ],
   comunidad_valenciana: [
-    { from: "2008-01-01", rate: STATE_HIGH_EMISSION_RATE, source: "Ley 38/1992 art. 70.2.b hasta entrada del tipo autonomico" },
-    { from: "2017-01-01", rate: 0.16, source: "Ley Generalitat Valenciana 13/2016 art. 18, BOE-A-2017-1291" },
+    { from: "2008-01-01", rates: STATE_REGISTRATION_TAX_RATES, source: "Ley 38/1992 art. 70.2.b hasta entrada del tipo autonomico" },
+    { from: "2017-01-01", rates: { ...STATE_REGISTRATION_TAX_RATES, epigraph4: 0.16 }, source: "Ley Generalitat Valenciana 13/2016 art. 18, BOE-A-2017-1291" },
   ],
   murcia: [
-    { from: "2008-01-01", rate: STATE_HIGH_EMISSION_RATE, source: "Ley 38/1992 art. 70.2.b hasta entrada del tipo autonomico" },
-    { from: "2013-07-11", rate: 0.159, source: "Ley Region de Murcia 6/2013 art. 1.6, BOE-A-2013-8990" },
+    { from: "2008-01-01", rates: STATE_REGISTRATION_TAX_RATES, source: "Ley 38/1992 art. 70.2.b hasta entrada del tipo autonomico" },
+    { from: "2013-07-11", rates: { ...STATE_REGISTRATION_TAX_RATES, epigraph4: 0.159 }, source: "Ley Region de Murcia 6/2013 art. 1.6, BOE-A-2013-8990" },
   ],
   cantabria: [
-    { from: "2008-01-01", rate: STATE_HIGH_EMISSION_RATE, source: "Ley 38/1992 art. 70.2.b hasta entrada del tipo autonomico" },
-    { from: "2011-01-01", rate: 0.16, source: "Ley Cantabria 11/2010, BOE-A-2011-1651" },
-    { from: "2018-01-01", rate: 0.15, source: "Ley Cantabria 9/2017 art. 18, BOE-A-2018-856" },
+    { from: "2008-01-01", rates: STATE_REGISTRATION_TAX_RATES, source: "Ley 38/1992 art. 70.2.b hasta entrada del tipo autonomico" },
+    { from: "2011-01-01", rates: { ...STATE_REGISTRATION_TAX_RATES, epigraph3: 0.11, epigraph4: 0.16 }, source: "Ley Cantabria 11/2010, BOE-A-2011-1651, epigrafes 3, 4 y 9" },
+    { from: "2018-01-01", rates: { ...STATE_REGISTRATION_TAX_RATES, epigraph3: 0.0975, epigraph4: 0.15 }, source: "Ley Cantabria 9/2017 art. 18, BOE-A-2018-856" },
   ],
 };
 
+const RESIDUAL_VAT_PERIODS = [
+  {
+    from: "2008-01-01",
+    rate: 0.16,
+    source: "Ley 37/1992 art. 90, tipo general 16% vigente hasta 2010-06-30",
+  },
+  {
+    from: VAT_18_START,
+    rate: 0.18,
+    source: "Ley 26/2009 art. 79, tipo general 18% desde 2010-07-01",
+  },
+  {
+    from: VAT_21_START,
+    rate: 0.21,
+    source: "Real Decreto-ley 20/2012 art. 23, tipo general 21% desde 2012-09-01",
+  },
+];
 export function normalizeTerritoryKey(value = "") {
   return String(value)
     .trim()
@@ -306,11 +330,14 @@ function firstRegistrationDateToIsoDate(value) {
     return { date: parsed.value, warningCode: "" };
   }
 
-  if (parsed.value === "2021-07") {
-    return { date: null, warningCode: WARNING_CODES.AMBIGUOUS_FIRST_REGISTRATION_DATE };
-  }
-
   return { date: `${parsed.value}-01`, warningCode: "" };
+}
+
+function getLastDayOfMonthIso(yearMonth) {
+  const [year, month] = yearMonth.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month, 0));
+
+  return `${yearMonth}-${String(date.getUTCDate()).padStart(2, "0")}`;
 }
 
 function normalizeCalculationDate(value) {
@@ -392,7 +419,7 @@ export function getDepreciationCoefficient(months) {
   return DEPRECIATION_BRACKETS.find(([maxMonths]) => wholeMonths <= maxMonths)?.[1] ?? 0.1;
 }
 
-function getRateFromEmissionsMatrix(emissions, highEmissionRate, matrix) {
+function getRegistrationTaxEpigraphFromEmissionsMatrix(emissions, matrix) {
   const numericEmissions = safeNumber(emissions);
 
   if (numericEmissions === null || numericEmissions < 0) {
@@ -400,18 +427,34 @@ function getRateFromEmissionsMatrix(emissions, highEmissionRate, matrix) {
   }
 
   if (numericEmissions <= matrix.zeroMax) {
-    return 0;
+    return "epigraph1";
   }
 
   if (numericEmissions < matrix.mediumMin) {
-    return 4.75;
+    return "epigraph2";
   }
 
   if (numericEmissions < matrix.highMin) {
-    return 9.75;
+    return "epigraph3";
   }
 
-  return toPercentRate(highEmissionRate);
+  return "epigraph4";
+}
+
+function getRateFromRegistrationTaxRates(rates, epigraph) {
+  const rate = rates?.[epigraph];
+  return typeof rate === "number" && Number.isFinite(rate) ? rate : null;
+}
+
+function getRateFromEmissionsMatrix(emissions, highEmissionRate, matrix) {
+  const epigraph = getRegistrationTaxEpigraphFromEmissionsMatrix(emissions, matrix);
+
+  if (!epigraph) {
+    return null;
+  }
+
+  const rates = { ...STATE_REGISTRATION_TAX_RATES, epigraph4: highEmissionRate };
+  return toPercentRate(getRateFromRegistrationTaxRates(rates, epigraph));
 }
 
 function getCo2MatrixForDate(date) {
@@ -432,22 +475,74 @@ function getCo2MatrixForDate(date) {
   };
 }
 
-function getHistoricalHighEmissionRate(territoryId, date) {
-  const periods = HISTORICAL_HIGH_EMISSION_RATE_PERIODS[territoryId];
+function getHistoricalRegistrationTaxRatePeriod(territoryId, date) {
+  const periods = HISTORICAL_REGISTRATION_TAX_RATE_PERIODS[territoryId];
 
   if (!periods) {
-    return { rate: null, source: "", supported: false };
+    return null;
   }
 
-  const period = [...periods].reverse().find((candidate) => date >= candidate.from);
-
-  if (!period) {
-    return { rate: null, source: "", supported: false };
-  }
-
-  return { rate: period.rate, source: period.source, supported: true };
+  return [...periods].reverse().find((candidate) => date >= candidate.from) ?? null;
 }
 
+function getResidualRegistrationTaxRateForDate({ date, emissions, territory }) {
+  if (date < MODERN_CO2_IEDMT_START) {
+    return {
+      rate: null,
+      supported: false,
+      sourcePeriod: "",
+      warningCode: WARNING_CODES.UNSUPPORTED_HISTORICAL_PERIOD,
+      warning: getWarningMessage(WARNING_CODES.UNSUPPORTED_HISTORICAL_PERIOD),
+    };
+  }
+
+  const period = getHistoricalRegistrationTaxRatePeriod(territory.id, date);
+
+  if (!period) {
+    return {
+      rate: null,
+      supported: false,
+      sourcePeriod: "",
+      warningCode: WARNING_CODES.UNSUPPORTED_HISTORICAL_TERRITORY_RATE,
+      warning: getWarningMessage(WARNING_CODES.UNSUPPORTED_HISTORICAL_TERRITORY_RATE),
+    };
+  }
+
+  const matrix = getCo2MatrixForDate(date);
+  const epigraph = getRegistrationTaxEpigraphFromEmissionsMatrix(emissions, matrix);
+  const rate = getRateFromRegistrationTaxRates(period.rates, epigraph);
+
+  return {
+    rate,
+    supported: rate !== null,
+    sourcePeriod: `${matrix.source}; ${period.source}`,
+    warningCode: rate === null ? WARNING_CODES.INVALID_INPUT : "",
+    warning: rate === null ? getWarningMessage(WARNING_CODES.INVALID_INPUT) : "",
+  };
+}
+
+function isMonthAmbiguousForResidualRegistrationTaxRate({ yearMonth, emissions, territory }) {
+  const startResult = getResidualRegistrationTaxRateForDate({
+    date: `${yearMonth}-01`,
+    emissions,
+    territory,
+  });
+  const endResult = getResidualRegistrationTaxRateForDate({
+    date: getLastDayOfMonthIso(yearMonth),
+    emissions,
+    territory,
+  });
+
+  if (!startResult.supported || !endResult.supported) {
+    return false;
+  }
+
+  return Math.abs(startResult.rate - endResult.rate) > 0.0000001;
+}
+
+function getResidualVatPeriod(date) {
+  return [...RESIDUAL_VAT_PERIODS].reverse().find((candidate) => date >= candidate.from) ?? null;
+}
 export function getRateFromEmissions(emissions, territoryId = DEFAULT_TERRITORY_ID) {
   const territory = getTerritoryById(territoryId) ?? getTerritoryById(DEFAULT_TERRITORY_ID);
 
@@ -522,10 +617,39 @@ export function getResidualRegistrationTaxRate({
     };
   }
 
-  const dateResult = firstRegistrationDateToIsoDate(firstRegistrationDate);
+  const parsedDate = parseFirstRegistrationDate(firstRegistrationDate);
 
-  if (!dateResult.date || dateResult.date < MODERN_CO2_IEDMT_START) {
-    const warningCode = dateResult.warningCode || WARNING_CODES.UNSUPPORTED_HISTORICAL_PERIOD;
+  if (!parsedDate) {
+    return {
+      rate: null,
+      supported: false,
+      sourcePeriod: "",
+      warningCode: WARNING_CODES.UNSUPPORTED_HISTORICAL_PERIOD,
+      warning: getWarningMessage(WARNING_CODES.UNSUPPORTED_HISTORICAL_PERIOD),
+    };
+  }
+
+  if (
+    parsedDate.precision === "month" &&
+    isMonthAmbiguousForResidualRegistrationTaxRate({
+      yearMonth: parsedDate.value,
+      emissions,
+      territory,
+    })
+  ) {
+    return {
+      rate: null,
+      supported: false,
+      sourcePeriod: "",
+      warningCode: WARNING_CODES.AMBIGUOUS_FIRST_REGISTRATION_DATE,
+      warning: getWarningMessage(WARNING_CODES.AMBIGUOUS_FIRST_REGISTRATION_DATE),
+    };
+  }
+
+  const dateResult = firstRegistrationDateToIsoDate(firstRegistrationDate);
+  const warningCode = dateResult.warningCode || WARNING_CODES.UNSUPPORTED_HISTORICAL_PERIOD;
+
+  if (!dateResult.date) {
     return {
       rate: null,
       supported: false,
@@ -535,30 +659,12 @@ export function getResidualRegistrationTaxRate({
     };
   }
 
-  const highRateResult = getHistoricalHighEmissionRate(territory.id, dateResult.date);
-
-  if (!highRateResult.supported) {
-    return {
-      rate: null,
-      supported: false,
-      sourcePeriod: "",
-      warningCode: WARNING_CODES.UNSUPPORTED_HISTORICAL_TERRITORY_RATE,
-      warning: getWarningMessage(WARNING_CODES.UNSUPPORTED_HISTORICAL_TERRITORY_RATE),
-    };
-  }
-
-  const matrix = getCo2MatrixForDate(dateResult.date);
-  const ratePercent = getRateFromEmissionsMatrix(emissions, highRateResult.rate, matrix);
-
-  return {
-    rate: ratePercent === null ? null : ratePercent / 100,
-    supported: ratePercent !== null,
-    sourcePeriod: `${matrix.source}; ${highRateResult.source}`,
-    warningCode: ratePercent === null ? WARNING_CODES.INVALID_INPUT : "",
-    warning: ratePercent === null ? getWarningMessage(WARNING_CODES.INVALID_INPUT) : "",
-  };
+  return getResidualRegistrationTaxRateForDate({
+    date: dateResult.date,
+    emissions,
+    territory,
+  });
 }
-
 export function getResidualIndirectTaxRate({ firstRegistrationDate, territoryId }) {
   const territory = getTerritoryById(territoryId) ?? getTerritoryById(DEFAULT_TERRITORY_ID);
 
@@ -586,11 +692,11 @@ export function getResidualIndirectTaxRate({ firstRegistrationDate, territoryId 
 
   const dateResult = firstRegistrationDateToIsoDate(firstRegistrationDate);
 
-  if (!dateResult.date || dateResult.date < IVA_21_START) {
+  if (!dateResult.date || dateResult.date < MODERN_CO2_IEDMT_START) {
     const warningCode = dateResult.warningCode || WARNING_CODES.UNSUPPORTED_HISTORICAL_PERIOD;
     return {
       rate: null,
-      taxName: "IVA",
+      taxName: "IVA residual historico",
       supported: false,
       sourcePeriod: "",
       warningCode,
@@ -598,11 +704,24 @@ export function getResidualIndirectTaxRate({ firstRegistrationDate, territoryId 
     };
   }
 
+  const vatPeriod = getResidualVatPeriod(dateResult.date);
+
+  if (!vatPeriod) {
+    return {
+      rate: null,
+      taxName: "IVA residual historico",
+      supported: false,
+      sourcePeriod: "",
+      warningCode: WARNING_CODES.UNSUPPORTED_HISTORICAL_PERIOD,
+      warning: getWarningMessage(WARNING_CODES.UNSUPPORTED_HISTORICAL_PERIOD),
+    };
+  }
+
   return {
-    rate: 0.21,
-    taxName: "IVA",
+    rate: vatPeriod.rate,
+    taxName: "IVA residual historico",
     supported: true,
-    sourcePeriod: "Ley 37/1992 art. 90, tipo general 21% desde 2012-09",
+    sourcePeriod: vatPeriod.source,
     warningCode: "",
     warning: "",
   };

@@ -73,7 +73,7 @@ export const calculatorFaqs = [
   {
     question: "Que casos no calcula automaticamente?",
     answer:
-      "La calculadora deriva a revision individual vehiculos nuevos, casos sin CO2 acreditado, fechas fuera de la matriz historica implementada y territorios con fiscalidad indirecta especifica como Canarias, Ceuta o Melilla.",
+      "La calculadora deriva a revision individual vehiculos nuevos, casos sin CO2 acreditado, fechas anteriores al 01/01/2008 o fuera de la matriz historica implementada y territorios con fiscalidad indirecta especifica como Canarias, Ceuta o Melilla.",
   },
   {
     question: "Que CO2 debo introducir?",

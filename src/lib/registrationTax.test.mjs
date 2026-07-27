@@ -5,6 +5,7 @@ import {
   calculateRegistrationTax,
   getDepreciationCoefficient,
   getMonthsFromFirstRegistrationDate,
+  getResidualIndirectTaxRate,
   getRateFromEmissions,
   getResidualRegistrationTaxRate,
   getTerritoryFromParam,
@@ -94,6 +95,27 @@ test("residual IEDMT respeta fronteras exactas de la ventana temporal 2021", () 
   assert.equal(getResidualRegistrationTaxRate({ firstRegistrationDate: "2022-01-01", emissions: 180, territoryId: "peninsula_general" }).rate, 0.0975);
 });
 
+
+test("IVA residual historico respeta fronteras 2010 y 2012", () => {
+  const residualVat = (firstRegistrationDate) =>
+    getResidualIndirectTaxRate({ firstRegistrationDate, territoryId: "peninsula_general" }).rate;
+
+  assert.equal(residualVat("2010-06-30"), 0.16);
+  assert.equal(residualVat("2010-07-01"), 0.18);
+  assert.equal(residualVat("2012-08-31"), 0.18);
+  assert.equal(residualVat("2012-09-01"), 0.21);
+});
+
+test("alcance automatico empieza el 01/01/2008", () => {
+  const unsupported = calculate({ firstRegistrationDate: "2007-12-31" });
+  const supported = calculate({ firstRegistrationDate: "2008-01-01" });
+
+  assert.equal(unsupported.supportedCalculation, false);
+  assert.equal(unsupported.tax, null);
+  assert.equal(unsupported.warningCodes.includes("UNSUPPORTED_HISTORICAL_PERIOD"), true);
+  assert.equal(supported.supportedCalculation, true);
+  assert.equal(supported.indirectTaxRate, 0.16);
+});
 test("fronteras CO2 temporales 144/145, 191/192 y 239/240", () => {
   const rate = (emissions) =>
     getResidualRegistrationTaxRate({
@@ -137,16 +159,77 @@ test("julio 2021 sin dia exacto queda bloqueado por ambiguedad fiscal", () => {
   assert.equal(result.warningCodes.includes("AMBIGUOUS_FIRST_REGISTRATION_DATE"), true);
 });
 
-test("tarifas historicas territoriales del tramo alto no usan el tipo actual como residual", () => {
-  const residual = (territoryId, firstRegistrationDate) =>
-    getResidualRegistrationTaxRate({ firstRegistrationDate, emissions: 210, territoryId }).rate;
+
+test("fecha mensual no se bloquea si el cambio legal no altera el tipo", () => {
+  const unaffectedAsturias = calculate({
+    firstRegistrationDate: "2010-07",
+    emissions: 180,
+    territoryId: "asturias",
+  });
+  const zeroTemporary = calculate({ firstRegistrationDate: "2021-07", emissions: 120 });
+
+  assert.equal(unaffectedAsturias.supportedCalculation, true);
+  assert.equal(unaffectedAsturias.residualRegistrationTaxRate, 0.0975);
+  assert.equal(zeroTemporary.supportedCalculation, true);
+  assert.equal(zeroTemporary.residualRegistrationTaxRate, 0);
+});
+
+test("Asturias 2010-07 sin dia bloquea solo el tramo alto afectado", () => {
+  const result = calculate({
+    firstRegistrationDate: "2010-07",
+    emissions: 210,
+    territoryId: "asturias",
+  });
+
+  assert.equal(result.supportedCalculation, false);
+  assert.equal(result.tax, null);
+  assert.equal(result.warningCodes.includes("AMBIGUOUS_FIRST_REGISTRATION_DATE"), true);
+});
+test("tarifas historicas territoriales por fecha y epigrafe", () => {
+  const residual = (territoryId, firstRegistrationDate, emissions = 210) =>
+    getResidualRegistrationTaxRate({ firstRegistrationDate, emissions, territoryId }).rate;
 
   assert.equal(residual("cataluna", "2010-06-30"), 0.1475);
   assert.equal(residual("cataluna", "2010-07-01"), 0.16);
+  assert.equal(residual("asturias", "2010-07-14"), 0.1475);
+  assert.equal(residual("asturias", "2010-07-15"), 0.16);
+  assert.equal(residual("baleares", "2012-04-30"), 0.1475);
+  assert.equal(residual("baleares", "2012-05-01"), 0.16);
   assert.equal(residual("comunidad_valenciana", "2016-12-31"), 0.1475);
   assert.equal(residual("comunidad_valenciana", "2017-01-01"), 0.16);
+  assert.equal(residual("cantabria", "2010-12-31"), 0.1475);
+  assert.equal(residual("cantabria", "2011-01-01"), 0.16);
   assert.equal(residual("cantabria", "2017-12-31"), 0.16);
   assert.equal(residual("cantabria", "2018-01-01"), 0.15);
+  assert.equal(residual("cantabria", "2012-03-01", 180), 0.11);
+  assert.equal(residual("peninsula_general", "2012-03-01", 180), 0.0975);
+});
+
+test("Cantabria separa tipo residual historico y tipo actual", () => {
+  const medium = calculate({
+    emissions: 180,
+    firstRegistrationDate: "2012-03-01",
+    territoryId: "cantabria",
+  });
+  const high = calculate({
+    emissions: 210,
+    firstRegistrationDate: "2012-03-01",
+    territoryId: "cantabria",
+  });
+  const modern = calculate({
+    emissions: 180,
+    firstRegistrationDate: "2018-01-01",
+    territoryId: "cantabria",
+  });
+
+  assert.equal(medium.supportedCalculation, true);
+  assert.equal(medium.residualRegistrationTaxRate, 0.11);
+  assert.equal(medium.currentRegistrationTaxRate, 0.0975);
+  assert.notEqual(medium.currentRegistrationTaxRate, 0.11);
+  assert.equal(high.residualRegistrationTaxRate, 0.16);
+  assert.equal(high.currentRegistrationTaxRate, 0.15);
+  assert.equal(modern.residualRegistrationTaxRate, 0.0975);
+  assert.equal(modern.currentRegistrationTaxRate, 0.0975);
 });
 
 test("territorios no soportados no hacen fallback silencioso en residual", () => {
@@ -169,6 +252,25 @@ test("territorios no soportados no hacen fallback silencioso en residual", () =>
   assert.equal(ceutaMelilla.warningCode, "UNSUPPORTED_CEUTA_MELILLA");
 });
 
+test("caso BMW marzo 2012 usa IVA 18% y calcula 81,65 EUR", () => {
+  const result = calculate({
+    boeValue: 21100,
+    emissions: 132,
+    firstRegistrationDate: "2012-03-01",
+    territoryId: "cataluna",
+  });
+
+  assert.equal(result.supportedCalculation, true);
+  assert.equal(result.depreciationCoefficient, 0.1);
+  assert.equal(result.indirectTaxName, "IVA residual historico");
+  assert.equal(result.indirectTaxRate, 0.18);
+  assert.equal(result.residualRegistrationTaxRate, 0.0475);
+  assert.equal(result.currentRegistrationTaxRate, 0.0475);
+  closeTo(result.marketValue, 2110);
+  closeTo(result.denominator, 1.2275);
+  closeTo(result.taxableBase, 1718.9409368635438);
+  closeTo(result.tax, 81.64969450101833);
+});
 test("caso control 1: coeficiente 1, IVA 21%, IEDMT residual 9,75%", () => {
   const result = calculate({ emissions: 180, firstRegistrationDate: "2025-07" });
   const expected = expectedTax({
@@ -328,7 +430,7 @@ test("fecha futura, fecha imposible y fecha antigua quedan excluidas", () => {
     false
   );
   assert.equal(
-    calculate({ firstRegistrationDate: "2012-08" }).supportedCalculation,
+    calculate({ firstRegistrationDate: "2007-12-31" }).supportedCalculation,
     false
   );
 });

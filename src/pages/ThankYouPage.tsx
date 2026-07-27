@@ -15,6 +15,7 @@ type ThankYouState = {
   model?: string;
   budget?: string;
   estimatedTax?: string;
+  calculationSupported?: boolean;
   calculationSummary?: string;
   leadReference?: string;
 };
@@ -56,6 +57,8 @@ export const ThankYouPage = () => {
   const vehicleLabel = [state.brand, state.model].filter(Boolean).join(" ").trim();
   const isCalculatorLead = state.leadType === "calculadora-impuestos";
   const isRevisionUnitLead = state.leadType === "revision-unidad-alemania";
+  const estimatedTaxNumber = Number(state.estimatedTax);
+  const hasSupportedEstimatedTax = state.calculationSupported !== false && Number.isFinite(estimatedTaxNumber);
   const headingText = isRevisionUnitLead
     ? "Hemos recibido tu solicitud"
     : isCalculatorLead
@@ -188,7 +191,9 @@ export const ThankYouPage = () => {
                 )}
                 {isCalculatorLead && (
                   <p className="text-sm text-gold-400">
-                    Calculo enviado: valor ${state.budget || "N/A"} EUR - impuesto estimado ${state.estimatedTax || "N/A"} EUR
+                    {hasSupportedEstimatedTax
+                      ? `Calculo enviado: valor ${state.budget || "N/A"} EUR - impuesto estimado ${state.estimatedTax} EUR`
+                      : `Calculo fiscal pendiente de revision individual.`}
                     {state.calculationSummary ? ` - ${state.calculationSummary}` : ""}
                   </p>
                 )}

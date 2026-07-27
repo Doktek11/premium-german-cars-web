@@ -3,27 +3,34 @@ import { Send } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getLeadContext } from "../lib/leadAttribution";
 import { trackLeadEvent } from "../lib/analytics";
+import type { EmissionsStandard, RegistrationTaxResult, VehicleCondition } from "../lib/registrationTax.mjs";
 
 type CalculatorLeadCaptureProps = {
-  precio: number;
-  emisiones: number;
-  meses: number;
-  tramo: number;
-  impuesto: number;
-  reduccion: string;
-  territoryLabel?: string;
-  isProvisionalTerritory?: boolean;
+  boeValue: number;
+  emissions: number;
+  firstRegistrationDate: string;
+  vehicleCondition: VehicleCondition;
+  emissionsStandard: EmissionsStandard;
+  result: RegistrationTaxResult;
+  externalWarnings?: string[];
+  externalWarningCodes?: string[];
 };
 
+const rounded = (value: number | null | undefined) =>
+  typeof value === "number" && Number.isFinite(value) ? Math.round(value) : undefined;
+
+const fixedRate = (value: number | null | undefined) =>
+  typeof value === "number" && Number.isFinite(value) ? Number((value * 100).toFixed(4)) : undefined;
+
 export const CalculatorLeadCapture = ({
-  precio,
-  emisiones,
-  meses,
-  tramo,
-  impuesto,
-  reduccion,
-  territoryLabel = "",
-  isProvisionalTerritory = false,
+  boeValue,
+  emissions,
+  firstRegistrationDate,
+  vehicleCondition,
+  emissionsStandard,
+  result,
+  externalWarnings = [],
+  externalWarningCodes = [],
 }: CalculatorLeadCaptureProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -45,11 +52,18 @@ export const CalculatorLeadCapture = ({
     [location.pathname, location.search]
   );
 
-  const territorySummary = territoryLabel
-    ? isProvisionalTerritory
-      ? "Territorio pendiente de selección; tipo provisional aplicado: 14,75 %."
-      : `Territorio: ${territoryLabel}.`
+  const territorySummary = result.territoryForRate?.displayName
+    ? result.isProvisionalTerritory
+      ? "Territorio pendiente de seleccion; se ha usado el supuesto visible de Peninsula/Baleares."
+      : `Territorio: ${result.territoryForRate.displayName}.`
     : "";
+
+  const combinedWarnings = [...result.warnings, ...externalWarnings];
+  const combinedWarningCodes = [...result.warningCodes, ...externalWarningCodes];
+
+  const calculationSummary = result.supportedCalculation
+    ? `${emissions} g/km · ${result.months ?? "-"} meses · cuota ${rounded(result.tax) ?? "pendiente"} EUR`
+    : `Revision fiscal individual: ${result.exclusionReason || "caso fuera de la matriz automatica"}`;
 
   const validateContact = () => {
     if (!email.trim() || !email.includes("@")) {
@@ -84,16 +98,34 @@ export const CalculatorLeadCapture = ({
         name: name.trim(),
         email: email.trim(),
         phone: phone.trim(),
-        budget: String(Math.round(precio)),
+        budget: String(Math.round(boeValue)),
         details: notes.trim(),
-        calculatorPrice: precio,
-        calculatorEmissions: emisiones,
-        calculatorMonths: meses,
-        calculatorRate: tramo,
-        calculatorTax: Math.round(impuesto),
-        calculatorReduction: reduccion,
-        calculatorTerritory: territoryLabel || undefined,
-        calculatorTerritoryIsProvisional: territoryLabel ? isProvisionalTerritory : undefined,
+        calculatorSupportedCalculation: result.supportedCalculation,
+        calculatorScope: result.scope,
+        calculatorBoeValue: boeValue,
+        calculatorPrice: boeValue,
+        calculatorEmissions: emissions,
+        calculatorFirstRegistrationDate: firstRegistrationDate || result.firstRegistrationDate || undefined,
+        calculatorVehicleCondition: vehicleCondition,
+        calculatorEmissionsStandard: emissionsStandard,
+        calculatorMonths: result.months ?? undefined,
+        calculatorDepreciationCoefficient: result.depreciationCoefficient ?? undefined,
+        calculatorMarketValue: rounded(result.marketValue),
+        calculatorTerritory: result.territoryForRate?.displayName || undefined,
+        calculatorTerritoryId: result.territoryForRate?.id || undefined,
+        calculatorTerritoryIsProvisional: result.isProvisionalTerritory || undefined,
+        calculatorIndirectTaxName: result.indirectTaxName || undefined,
+        calculatorIndirectTaxRate: fixedRate(result.indirectTaxRate),
+        calculatorResidualRegistrationTaxRate: fixedRate(result.residualRegistrationTaxRate),
+        calculatorOtherIndirectTaxRate: fixedRate(result.otherIndirectTaxRate),
+        calculatorTaxableBase: result.supportedCalculation ? rounded(result.taxableBase) : null,
+        calculatorCurrentRegistrationTaxRate: fixedRate(result.currentRegistrationTaxRate),
+        calculatorRate: result.supportedCalculation ? result.rate : undefined,
+        calculatorTax: result.supportedCalculation ? rounded(result.tax) : null,
+        calculatorAssumptions: result.assumptions.join(" | "),
+        calculatorWarnings: combinedWarnings.join(" | "),
+        calculatorWarningCodes: combinedWarningCodes.join(","),
+        calculatorExclusionReason: result.supportedCalculation ? undefined : result.exclusionReason,
         sourcePath: leadContext.sourcePath,
         sourceQuery: leadContext.sourceQuery,
         sourceTitle: leadContext.sourceTitle,
@@ -129,21 +161,25 @@ export const CalculatorLeadCapture = ({
         leadType: "calculadora-impuestos",
         channel: "form",
         pagePath: location.pathname,
-        calculatorRate: tramo,
-        calculatorTax: Math.round(impuesto),
-        calculatorTerritory: territoryLabel || undefined,
-        calculatorTerritoryIsProvisional: territoryLabel ? isProvisionalTerritory : undefined,
+        calculationSupported: result.supportedCalculation,
+        calculationScope: result.scope,
+        calculatorTerritoryId: result.territoryForRate?.id,
+        calculatorTerritoryIsProvisional: result.isProvisionalTerritory || undefined,
+        vehicleCondition,
+        emissionsStandard,
+        warningCodes: combinedWarningCodes.join(",") || undefined,
+        calculatorRate: result.supportedCalculation ? result.rate : undefined,
+        calculatorTax: result.supportedCalculation ? rounded(result.tax) : undefined,
         hasNotes: Boolean(notes.trim()),
         context: leadContext,
       });
       navigate("/gracias", {
         state: {
           leadType: "calculadora-impuestos",
-          budget: String(Math.round(precio)),
-          estimatedTax: String(Math.round(impuesto)),
-          calculationSummary: [`${emisiones} g/km · ${meses} meses · tramo ${tramo}%`, territorySummary]
-            .filter(Boolean)
-            .join(" · "),
+          budget: String(Math.round(boeValue)),
+          calculationSupported: result.supportedCalculation,
+          estimatedTax: result.supportedCalculation ? String(rounded(result.tax)) : undefined,
+          calculationSummary: [calculationSummary, territorySummary].filter(Boolean).join(" · "),
         },
       });
     } catch {
@@ -167,11 +203,16 @@ export const CalculatorLeadCapture = ({
         Recibe tu desglose
       </p>
       <p className="text-sm text-gray-300 leading-relaxed">
-        Te enviamos el cálculo por email con recomendaciones para decidir si esta unidad compensa importar.
+        Te enviamos el resumen por email con la cuota estimada o, si el caso queda fuera de la matriz automatica, el motivo de revision fiscal.
       </p>
       {territorySummary && (
         <p className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs leading-relaxed text-gray-300">
           {territorySummary}
+        </p>
+      )}
+      {!result.supportedCalculation && (
+        <p className="rounded-xl border border-gold-400/20 bg-gold-400/[0.08] p-3 text-xs leading-relaxed text-gold-100">
+          {result.exclusionReason || "Este caso requiere revision individual antes de estimar una cuota."}
         </p>
       )}
 
@@ -205,7 +246,7 @@ export const CalculatorLeadCapture = ({
           setError("");
           setPhone(event.target.value);
         }}
-        placeholder="Teléfono"
+        placeholder="Telefono"
         className="w-full bg-transparent border-b border-gray-700 text-white pb-3 focus:border-gold-400 focus:outline-none transition-colors text-sm min-h-[44px]"
       />
 
@@ -227,10 +268,11 @@ export const CalculatorLeadCapture = ({
         disabled={isSubmitting}
         className="w-full py-4 bg-gold-400 text-black font-extrabold rounded-xl hover:bg-white transition-all uppercase text-[11px] tracking-[0.15em] flex items-center justify-center gap-3 min-h-[48px] disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {isSubmitting ? "Enviando..." : "Recibir Desglose"} <Send size={14} />
+        {isSubmitting ? "Enviando..." : "Recibir desglose"} <Send size={14} />
       </button>
     </form>
   );
 };
 
 export default CalculatorLeadCapture;
+

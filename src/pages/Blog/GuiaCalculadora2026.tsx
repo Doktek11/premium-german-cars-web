@@ -15,7 +15,7 @@ const GuiaCalculadora2026 = () => {
     <>
       <SEO 
         title="Guía: Cómo calcular el impuesto de matriculación BOE 2025 | Premium German Cars" 
-        description="Aprende a usar nuestra calculadora con IA para obtener valores BOE exactos y calcular la depreciación real mes a mes de tu coche de importación."
+        description="Aprende a usar la calculadora con Valor BOE, primera matriculacion, CO2, territorio y revision fiscal de casos no automaticos."
         canonical="https://www.premiumgermancars.com/blog/guia-calculo-impuesto-matriculacion-boe-2025"
         article={true}
         jsonLd={articleJsonLd}
@@ -51,7 +51,7 @@ const GuiaCalculadora2026 = () => {
             </p>
             
             <p className="mb-8 text-base md:text-lg text-justify font-light">
-              En <strong>Premium German Cars</strong> hemos diseñado una herramienta avanzada, apoyada por un asistente de IA especializado en el BOE, que te permite obtener un cálculo realista y actualizado en pocos minutos. Todos los cálculos se basan en las tablas oficiales del BOE 2025, vigentes durante todo 2026.
+              En <strong>Premium German Cars</strong> hemos disenado una herramienta avanzada, apoyada por un asistente de IA especializado en el BOE, que ayuda a localizar referencias fiscales y preparar una estimacion prudente. El resultado automatico se limita a los supuestos soportados y siempre debe validarse con documentacion.
             </p>
 
             {/* SECCIÓN 1: PASO 1 */}
@@ -92,7 +92,7 @@ const GuiaCalculadora2026 = () => {
               Paso 2: introduce los datos obtenidos
             </h2>
             <p className="mb-8 text-justify font-light italic">
-              Una vez tienes los datos facilitados por nuestro asistente, es hora de volcar la información en la calculadora para aplicar la depreciación real.
+              Una vez tienes los datos facilitados por el asistente, vuelca la informacion en la calculadora: Valor BOE del vehiculo nuevo, primera matriculacion, CO2 acreditado, territorio y condicion del vehiculo.
             </p>
 
             <div className="mb-12 border border-white/10 bg-gray-900/30 p-4 rounded-sm">
@@ -111,23 +111,23 @@ const GuiaCalculadora2026 = () => {
 
             {/* SECCIÓN 3: DEMOSTRACIÓN PRÁCTICA */}
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-gold-400 mt-16 mb-8 uppercase tracking-wider text-center">
-              Demostración Práctica: BMW 320d
+              Ejemplo practico: BMW 320d
             </h2>
 
             <div className="mb-10 p-6 md:p-8 border border-white/10 bg-gray-900/30 rounded-sm">
               <div className="flex flex-col md:flex-row gap-8 items-center mb-8">
                 <div className="flex-1 text-justify">
-                  <h3 className="text-xl font-bold text-white mb-4 italic">Precisión por meses: el factor clave</h3>
+                  <h3 className="text-xl font-bold text-white mb-4 italic">Fecha de primera matriculacion: el factor clave</h3>
                   <p className="text-sm md:text-base text-gray-400 mb-4">
-                    Para este ejemplo, hemos ajustado un <strong>BMW 320d Touring de Junio 2022</strong>. No calculamos por años completos, sino por antigüedad real.
+                    Para este ejemplo, revisamos un <strong>BMW 320d Touring de junio de 2022</strong>. La calculadora usa la fecha de primera matriculacion para aplicar el coeficiente oficial por antiguedad.
                   </p>
                   <p className="text-gold-400 font-medium text-sm md:text-base flex items-center gap-2">
-                    <BadgeEuro size={16} /> Depreciación aplicada: 44% (Junio 2022).
+                    <BadgeEuro size={16} /> Coeficiente y base imponible sujetos a la documentacion de la unidad.
                   </p>
                 </div>
                 <div className="flex-1 bg-white/5 p-6 border-l-2 border-gold-400">
-                   <div className="text-3xl font-bold text-white mb-1">1.248€</div>
-                   <div className="text-xs uppercase tracking-widest text-gray-500">Impuesto estimado final</div>
+                   <div className="text-3xl font-bold text-white mb-1">Revision</div>
+                   <div className="text-xs uppercase tracking-widest text-gray-500">Estado del calculo</div>
                 </div>
               </div>
 
@@ -144,13 +144,13 @@ const GuiaCalculadora2026 = () => {
               <p className="text-center text-xs text-gray-500 italic uppercase tracking-widest">Paso 3: Resultado final con todos los sliders ajustados al detalle</p>
             </div>
 
-            {/* EXCEPCIÓN 16% */}
+            {/* CASOS NO AUTOMATICOS */}
             <div className="bg-red-900/10 p-8 border border-red-900/20 rounded-sm mb-12">
               <h3 className="text-xl font-bold mb-4 flex items-center text-white">
                 <AlertTriangle className="text-red-500 mr-3" size={20} /> ¿Coche antiguo o sin emisiones acreditadas?
               </h3>
               <p className="text-sm md:text-base text-gray-300 leading-relaxed text-justify">
-                Si tu vehículo no declara emisiones o resides en una CCAA con tipo incrementado (como Cataluña), marca la casilla correspondiente. Nuestra calculadora ajustará el cálculo al <strong>16%</strong> de forma automática para evitar sorpresas en Hacienda.
+                Si el vehiculo no acredita emisiones, la calculadora no muestra una cuota automatica: deriva el caso a revision fiscal individual. Para CCAA con tipo incrementado, selecciona el territorio de matriculacion y verifica siempre el dato con la documentacion.
               </p>
             </div>
 
@@ -174,7 +174,7 @@ const GuiaCalculadora2026 = () => {
                   <h4 className="font-bold text-white text-base mb-2 uppercase tracking-tight text-gold-400 flex items-center gap-2">
                     <ArrowRight size={16}/> Transparente
                   </h4>
-                  <p className="text-xs md:text-sm text-gray-400">Muestra el tramo y la depreciación exacta aplicada en tu presupuesto.</p>
+                  <p className="text-xs md:text-sm text-gray-400">Muestra tramo, coeficiente, base imponible, supuestos y advertencias cuando el supuesto esta soportado.</p>
                 </div>
               </div>
             </section>

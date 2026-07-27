@@ -59,7 +59,7 @@ const blogPosts = [
     id: 8,
     title: "Guía definitiva: Cómo calcular el impuesto de matriculación BOE 2025",
     excerpt:
-      "Utilice nuestra calculadora con IA para obtener valores BOE exactos y calcular la depreciación real mes a mes. Sin errores, sin sorpresas fiscales.",
+      "Use la calculadora para estimar el impuesto con Valor BOE, primera matriculacion, CO2, territorio y revision de casos no automaticos.",
     date: "13 Ene, 2026",
     slug: "guia-calculo-impuesto-matriculacion-boe-2025",
     category: "Herramientas",

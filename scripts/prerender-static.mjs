@@ -88,7 +88,7 @@ const routes = [
     path: "/calculadora-impuesto-matriculacion",
     title: "Calculadora Impuesto Matriculación 2026 | Coche Importado Alemania",
     description:
-      "Calcula el impuesto de matriculación de un coche importado de Alemania según CO₂, valor fiscal y antigüedad. Estimación orientativa antes de comprar.",
+      "Estima el impuesto de matriculacion de un coche usado importado con Valor BOE, primera matriculacion, CO2, territorio y base imponible fiscal.",
     h1: "Calculadora de impuesto de matriculación para coches importados",
     eyebrow: "Herramienta gratuita",
     image: `${siteUrl}/calculadora-impuesto-matriculacion-2026.webp`,

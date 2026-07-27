@@ -168,7 +168,7 @@ export const BLOG_ARTICLES = [
     path: "/blog/guia-calculo-impuesto-matriculacion-boe-2025",
     title: "Guía: Cómo calcular el impuesto de matriculación BOE 2025 | Premium German Cars",
     description:
-      "Aprende a usar nuestra calculadora con IA para obtener valores BOE exactos y calcular la depreciación real mes a mes de tu coche de importación.",
+      "Aprende a usar la calculadora para estimar el impuesto con Valor BOE, fecha de primera matriculacion, CO2, territorio y revision de casos no automaticos.",
     headline: "Guía definitiva: cómo calcular el impuesto de matriculación según el BOE 2025 (paso a paso)",
     datePublished: "2026-01-13",
     dateModified: "2026-01-13",

@@ -264,7 +264,7 @@ export const EleccionMotor2026: React.FC = () => {
                     "CO₂",
                     "Antigüedad",
                     "Tipo orientativo",
-                    "Cuota orientativa",
+                    "Lectura fiscal",
                   ].map((heading) => (
                     <th key={heading} className="px-4 py-4 font-semibold">
                       {heading}
@@ -279,7 +279,7 @@ export const EleccionMotor2026: React.FC = () => {
                   <td className="px-4 py-4 text-gray-300">135 g/km</td>
                   <td className="px-4 py-4 text-gray-300">36 meses</td>
                   <td className="px-4 py-4 text-gray-300">4,75%</td>
-                  <td className="px-4 py-4 text-gold-400">955 € aprox.</td>
+                  <td className="px-4 py-4 text-gold-400">Calculo normalmente inferior si el CO2 queda en 4,75%</td>
                 </tr>
                 <tr className="border-t border-white/10">
                   <td className="px-4 py-4 font-semibold text-white">Gasolina equivalente</td>
@@ -287,16 +287,16 @@ export const EleccionMotor2026: React.FC = () => {
                   <td className="px-4 py-4 text-gray-300">168 g/km</td>
                   <td className="px-4 py-4 text-gray-300">36 meses</td>
                   <td className="px-4 py-4 text-gray-300">9,75%</td>
-                  <td className="px-4 py-4 text-gold-400">1.960 € aprox.</td>
+                  <td className="px-4 py-4 text-gold-400">Calculo normalmente superior si el CO2 queda en 9,75%</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <p className="text-sm text-gray-400">
-            Cálculo ilustrativo usando el mismo valor inicial y una depreciación orientativa. La cuota real depende de la fecha exacta, el valor de mercado o referencia aplicable, la comunidad autónoma, las emisiones acreditadas y la situación fiscal del vehículo.
+            Ejemplo ilustrativo de tramos. La cuota debe calcularse con Valor BOE, fecha de primera matriculacion, territorio, impuestos residuales y emisiones acreditadas de la unidad concreta.
           </p>
           <p>
-            En este supuesto, el gasolina pagaría alrededor de 1.000 € más. Aun así, podría ser mejor compra si cuesta menos, tiene mejor historial, menos kilómetros o un equipamiento más valioso. La comparación correcta se hace con el coste total puesto en España.
+            En un caso real, el gasolina podria pagar mas impuesto si cae en un tramo superior. Aun asi, puede ser mejor compra si cuesta menos, tiene mejor historial, menos kilometros o un equipamiento mas valioso. La comparacion correcta se hace con el coste total puesto en Espana.
           </p>
 
           <h2>Qué motor elegir en 2026 según tu uso</h2>

@@ -56,34 +56,34 @@ export const importacionFaqs = [
 
 export const calculatorFaqs = [
   {
-    question: "¿Cómo se calcula el impuesto de matriculación?",
+    question: "Como se calcula el impuesto de matriculacion en la calculadora?",
     answer:
-      "La calculadora identifica el tramo según las emisiones oficiales de CO₂, aplica una depreciación orientativa por antigüedad al valor fiscal y estima la cuota sobre la base resultante.",
+      "Para vehiculos usados importados previamente matriculados, la herramienta parte del Valor BOE del vehiculo nuevo, aplica el coeficiente oficial por antiguedad, estima el valor de mercado y obtiene la base imponible minorando los impuestos indirectos residuales cuando el supuesto esta soportado.",
   },
   {
-    question: "¿Qué datos necesito para usar la calculadora?",
+    question: "Que datos necesito para usar la calculadora?",
     answer:
-      "Necesitas el valor fiscal o valor BOE aproximado del vehículo, las emisiones oficiales de CO₂ y la antigüedad expresada en meses.",
+      "Necesitas Valor BOE del vehiculo nuevo, fecha de primera matriculacion, emisiones oficiales de CO2 acreditadas, territorio de matriculacion, condicion del vehiculo y norma de emisiones si consta en la documentacion.",
   },
   {
-    question: "¿El resultado es definitivo?",
+    question: "La cuota es definitiva?",
     answer:
-      "No. Es una estimación orientativa que debe verificarse con el COC, la ficha técnica, la documentación del vehículo y la normativa fiscal vigente.",
+      "No. Es una estimacion orientativa dentro de una matriz fiscal concreta. Debe validarse con COC, ficha tecnica, documentacion, Modelo 576 y normativa vigente antes de comprar o matricular.",
   },
   {
-    question: "¿Qué CO₂ debo introducir?",
+    question: "Que casos no calcula automaticamente?",
     answer:
-      "Debes introducir las emisiones oficiales acreditadas para la unidad concreta. Conviene comprobarlas en el COC, la ficha técnica o documentación oficial y no depender solo del anuncio.",
+      "La calculadora deriva a revision individual vehiculos nuevos, casos sin CO2 acreditado, fechas fuera de la matriz historica implementada y territorios con fiscalidad indirecta especifica como Canarias, Ceuta o Melilla.",
   },
   {
-    question: "¿Sirve para coches importados de Alemania?",
+    question: "Que CO2 debo introducir?",
     answer:
-      "Sí. Está orientada a estimar el impuesto de matriculación de coches importados de Alemania antes de comprar y matricular en España.",
+      "Debes introducir las emisiones oficiales acreditadas para la unidad concreta. Conviene comprobarlas en el COC, ficha tecnica o documentacion oficial y no depender solo del anuncio.",
   },
   {
-    question: "¿Paga más un diésel o un gasolina?",
+    question: "Por que la base imponible no coincide con el valor BOE depreciado?",
     answer:
-      "No depende directamente del combustible. Depende principalmente de las emisiones oficiales de CO₂, el valor fiscal y la antigüedad.",
+      "En usados previamente matriculados en el extranjero, la base imponible puede obtenerse retirando del valor de mercado el importe residual de impuestos indirectos incluidos en ese valor, segun el esquema fiscal aplicable.",
   },
 ];
 
@@ -180,8 +180,8 @@ export const calculatorJsonLd = createGraph([
     url: calculatorUrl,
     name: "Calculadora Impuesto Matriculación 2026 | Coche Importado Alemania",
     description:
-      "Calcula el impuesto de matriculación de un coche importado de Alemania según CO₂, valor fiscal y antigüedad. Estimación orientativa antes de comprar.",
-    dateModified: "2026-07-04",
+      "Estima el impuesto de matriculacion de un coche usado importado con Valor BOE, primera matriculacion, CO2, territorio y base imponible fiscal.",
+    dateModified: "2026-07-27",
     breadcrumbId: `${calculatorUrl}#breadcrumb`,
     mainEntityId: `${calculatorUrl}#calculator`,
     hasPartIds: [`${calculatorUrl}#faq`],
@@ -199,18 +199,18 @@ export const calculatorJsonLd = createGraph([
     name: "Calculadora de impuesto de matriculación para coches importados",
     url: calculatorUrl,
     description:
-      "Herramienta para estimar el impuesto de matriculación de un coche importado según CO₂, valor fiscal y antigüedad.",
+      "Herramienta para estimar el impuesto de matriculacion de un coche usado importado segun Valor BOE, primera matriculacion, CO2, territorio y base imponible fiscal.",
     applicationCategory: "FinanceApplication",
     operatingSystem: "Web",
     inLanguage: "es-ES",
     isAccessibleForFree: true,
-    dateModified: "2026-07-04",
+    dateModified: "2026-07-27",
     featureList: [
-      "Cálculo por tramos de emisiones CO₂",
-      "Estimación por valor fiscal del vehículo",
-      "Aplicación de depreciación orientativa por antigüedad",
-      "Estimación del impuesto de matriculación en España",
-      "Orientación para coches importados de Alemania",
+      "Calculo por tramos de emisiones CO2",
+      "Estimacion desde Valor BOE y coeficiente oficial de antiguedad",
+      "Estimacion de base imponible descontando impuestos indirectos residuales",
+      "Tipos autonomicos para territorios soportados",
+      "Revision individual visible para casos no soportados",
       "Prefill de valores mediante parámetros de URL",
     ],
     offers: {

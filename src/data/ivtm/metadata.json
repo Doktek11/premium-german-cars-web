@@ -1,0 +1,236 @@
+{
+  "catalogYear": 2026,
+  "ratesYear": 2025,
+  "generatedAt": "deterministic-source-snapshot",
+  "generatedAtPolicy": "This value is intentionally stable. Reproducibility is tracked by sourceSha256, datasetSha256 and generatorVersion; no wall-clock timestamp is embedded in generated datasets.",
+  "generatorVersion": "ivtm-data-importer-v1",
+  "sources": {
+    "ineCatalog": {
+      "id": "ine-municipality-catalog-2026",
+      "url": "https://www.ine.es/daco/daco42/codmun/diccionario26.xlsx",
+      "landingUrl": "https://ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177031&idp=1254734710990",
+      "supplementaryMunicipalityXlsxUrl": "https://www.ine.es/daco/daco42/codmun/26codmun.xlsx",
+      "ccaaProvinceCodesUrl": "https://www.ine.es/daco/daco42/codmun/cod_ccaa_provincia.htm",
+      "sha256": "07f8e8d64eba73fe9d425196fe82f4e09a9886a287abd650e88ca8d98dd49052",
+      "format": "XLSX official INE workbook; CSV with equivalent headers is accepted for local tests"
+    },
+    "haciendaRates": {
+      "id": "hacienda-ivtm-2025-all-municipalities",
+      "url": "https://serviciostelematicosext.hacienda.gob.es/SGFAL/ConsultaTipos/aspx/ImpuestosExcel.aspx?provincia=TODAS&anosel=2025",
+      "landingUrl": "https://serviciostelematicosext.hacienda.gob.es/SGFAL/ConsultaTipos/aspx/listado_municipiosm.aspx",
+      "sha256": "883b417aeab2982d91e48609a8add49a1e356aa202cdff76f2e5f953efcbbfc5",
+      "format": "HTML table served as .xls with 45 columns",
+      "declaredClosingDate": "2025-09-01"
+    },
+    "trlrhlArticle95": {
+      "id": "trlrhl-art-95",
+      "url": "https://www.boe.es/eli/es/rdlg/2004/03/05/2/con",
+      "purpose": "State IVTM tourism quotas and maximum municipal coefficient validation"
+    }
+  },
+  "datasetSha256": {
+    "municipalities-2026.json": "8877912556b13524d74584c7850a6742a2547551c100b786d60404c6b4bc147c",
+    "municipal-rates-2025.json": "ff411c7fd446a629894810ff175a1e6586815bd051808e7f3601a9fd4115f12d"
+  },
+  "counts": {
+    "municipalities": 8132,
+    "municipalRates": 7399,
+    "missingRates": 733,
+    "anomalies": 9,
+    "duplicateExactMunicipalityNames": 17,
+    "rateRowsWithoutIneMunicipality": 0,
+    "partialRateRows": 0
+  },
+  "coverage": {
+    "exactMunicipalRates": {
+      "count": 7399,
+      "totalMunicipalities": 8132,
+      "percent": 90.9862
+    },
+    "legalRangeFallback": {
+      "count": 8132,
+      "percent": 100
+    }
+  },
+  "missingRates": {
+    "total": 733,
+    "foral": 524,
+    "navarra": 272,
+    "paisVasco": 252,
+    "alava": 51,
+    "bizkaia": 113,
+    "gipuzkoa": 88,
+    "commonRegime": 209,
+    "byProvince": {
+      "10": 1,
+      "12": 3,
+      "13": 3,
+      "16": 24,
+      "17": 3,
+      "18": 3,
+      "19": 15,
+      "20": 88,
+      "22": 2,
+      "23": 1,
+      "24": 13,
+      "25": 1,
+      "26": 1,
+      "28": 8,
+      "29": 4,
+      "30": 1,
+      "31": 272,
+      "32": 1,
+      "33": 1,
+      "34": 12,
+      "37": 11,
+      "39": 1,
+      "41": 1,
+      "43": 9,
+      "45": 6,
+      "47": 5,
+      "48": 113,
+      "49": 10,
+      "50": 9,
+      "01": 51,
+      "02": 1,
+      "04": 1,
+      "05": 23,
+      "06": 1,
+      "08": 10,
+      "09": 24
+    },
+    "byAutonomousCommunity": {
+      "10": 3,
+      "11": 2,
+      "12": 1,
+      "13": 8,
+      "14": 1,
+      "15": 272,
+      "16": 252,
+      "17": 1,
+      "01": 10,
+      "02": 11,
+      "03": 1,
+      "06": 1,
+      "07": 98,
+      "08": 49,
+      "09": 23
+    }
+  },
+  "anomalies": [
+    {
+      "ineCode": "02012",
+      "rawMunicipalityName": "Balazote",
+      "reviewReasons": [
+        "lt8: 2552 cents above legal maximum 2524 cents",
+        "from8To11_99: 6871 cents above legal maximum 6816 cents",
+        "from12To15_99: 14491 cents above legal maximum 14388 cents",
+        "from16To19_99: 18048 cents above legal maximum 17922 cents",
+        "gte20: 22581 cents above legal maximum 22400 cents"
+      ]
+    },
+    {
+      "ineCode": "02047",
+      "rawMunicipalityName": "Masegoso",
+      "reviewReasons": [
+        "lt8: 1202 cents below state quota 1262 cents",
+        "from8To11_99: 3245 cents below state quota 3408 cents",
+        "from12To15_99: 6852 cents below state quota 7194 cents",
+        "from16To19_99: 8534 cents below state quota 8961 cents"
+      ]
+    },
+    {
+      "ineCode": "28002",
+      "rawMunicipalityName": "Ajalvir",
+      "reviewReasons": [
+        "lt8: 316 cents below state quota 1262 cents",
+        "from8To11_99: 852 cents below state quota 3408 cents",
+        "from12To15_99: 1799 cents below state quota 7194 cents",
+        "from16To19_99: 2240 cents below state quota 8961 cents",
+        "gte20: 2800 cents below state quota 11200 cents"
+      ]
+    },
+    {
+      "ineCode": "28099",
+      "rawMunicipalityName": "Navas del Rey",
+      "reviewReasons": [
+        "lt8: 316 cents below state quota 1262 cents",
+        "from8To11_99: 852 cents below state quota 3408 cents",
+        "from12To15_99: 1799 cents below state quota 7194 cents",
+        "from16To19_99: 2240 cents below state quota 8961 cents",
+        "gte20: 2800 cents below state quota 11200 cents"
+      ]
+    },
+    {
+      "ineCode": "28151",
+      "rawMunicipalityName": "Torrelaguna",
+      "reviewReasons": [
+        "lt8: 316 cents below state quota 1262 cents",
+        "from8To11_99: 852 cents below state quota 3408 cents",
+        "from12To15_99: 1799 cents below state quota 7194 cents",
+        "from16To19_99: 2241 cents below state quota 8961 cents",
+        "gte20: 2800 cents below state quota 11200 cents"
+      ]
+    },
+    {
+      "ineCode": "28153",
+      "rawMunicipalityName": "Torremocha de Jarama",
+      "reviewReasons": [
+        "lt8: 316 cents below state quota 1262 cents",
+        "from8To11_99: 852 cents below state quota 3408 cents",
+        "from12To15_99: 1799 cents below state quota 7194 cents",
+        "from16To19_99: 2241 cents below state quota 8961 cents",
+        "gte20: 2800 cents below state quota 11200 cents"
+      ]
+    },
+    {
+      "ineCode": "44065",
+      "rawMunicipalityName": "Castejón de Tornos",
+      "reviewReasons": [
+        "from12To15_99: 6250 cents below state quota 7194 cents",
+        "gte20: 9864 cents below state quota 11200 cents"
+      ]
+    },
+    {
+      "ineCode": "44219",
+      "rawMunicipalityName": "Tornos",
+      "reviewReasons": [
+        "from12To15_99: 6050 cents below state quota 7194 cents",
+        "gte20: 9800 cents below state quota 11200 cents"
+      ]
+    },
+    {
+      "ineCode": "50165",
+      "rawMunicipalityName": "Mequinenza",
+      "reviewReasons": [
+        "lt8: 2599 cents above legal maximum 2524 cents",
+        "from8To11_99: 7020 cents above legal maximum 6816 cents",
+        "from12To15_99: 14820 cents above legal maximum 14388 cents",
+        "from16To19_99: 18460 cents above legal maximum 17922 cents",
+        "gte20: 23072 cents above legal maximum 22400 cents"
+      ]
+    }
+  ],
+  "stateReferenceQuotasCents": {
+    "lt8": 1262,
+    "from8To11_99": 3408,
+    "from12To15_99": 7194,
+    "from16To19_99": 8961,
+    "gte20": 11200
+  },
+  "maxMunicipalCoefficient": 2,
+  "roundingToleranceCents": 1,
+  "scopeNotes": [
+    "The municipality catalog is the INE official relation at 01/01/2026.",
+    "The municipal IVTM rates are from Hacienda exercise 2025 and must not be treated automatically as exact 2026 rates.",
+    "Municipal rates store official annual quotas in integer cents; derived coefficients are validation aids only.",
+    "Municipalities without Hacienda rates remain only in the catalog and must be handled by ordinance verification or legal range fallback.",
+    "Navarra and País Vasco are absent from the common-regime Hacienda rate export and require foral or municipal-source completion."
+  ],
+  "licenseAndAttribution": {
+    "ine": "INE reuse conditions are linked from the INE legal notice and datos.gob.es catalog entry.",
+    "hacienda": "Ministerio de Hacienda official public consultation export; retain source URL, source checksum and exercise.",
+    "boe": "BOE consolidated legislation used only as legal validation basis."
+  },
+  "warning": "Tarifas municipales IVTM 2025 no equivalen automaticamente a tarifas exactas 2026."
+}

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "node --experimental-strip-types --test src/lib/registrationTax.test.mjs src/lib/calculatorUrlPrefill.test.mjs",
+    "test": "node --experimental-strip-types --test src/lib/registrationTax.test.mjs src/lib/calculatorUrlPrefill.test.mjs src/lib/transferTax.test.mjs",
     "postbuild": "node ./scripts/prerender-static.mjs",
     "preview": "vite preview --host",
     "build:check": "npm run build && node ./scripts/check-bundle.mjs",

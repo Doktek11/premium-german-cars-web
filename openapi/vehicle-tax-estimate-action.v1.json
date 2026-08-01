@@ -1,0 +1,3456 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PGC Vehicle Import Tax Estimate Action",
+    "version": "1.0.0",
+    "description": "GPT Action contract for the PGC server-side vehicle import tax estimator. Send only structured fiscal DTO data; never send raw documents, free documentary text, PII, vehicle identifiers, plates, secrets or credential material. Runtime body limit is 256 KiB."
+  },
+  "servers": [
+    {
+      "url": "https://www.premiumgermancars.com"
+    }
+  ],
+  "paths": {
+    "/api/vehicle-tax-estimate-action": {
+      "post": {
+        "operationId": "estimateVehicleImportTax",
+        "summary": "Estimate Spanish fiscal costs for an imported vehicle from structured evidence.",
+        "description": "Build a strict vehicle_tax_action_request.v1 DTO from sanitized fiscal evidence, then let the PGC server-side adapter, case-file builder and orchestrator calculate. Do not include derived results, unstructured documentary content, file payloads, URLs, PII, vehicle identifiers, plates or secrets.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionRequest"
+              },
+              "examples": {
+                "partialCase": {
+                  "summary": "Partial structured case.",
+                  "value": {
+                    "schemaVersion": "vehicle_tax_action_request.v1",
+                    "caseId": "case-partial-1",
+                    "documents": [],
+                    "evidence": [
+                      {
+                        "evidenceId": "ev-category",
+                        "documentId": null,
+                        "candidateId": "candidate-1",
+                        "page": null,
+                        "field": "vehicle.category",
+                        "normalizedValue": "passenger_car",
+                        "valueType": "enum",
+                        "sourceType": "user_declaration",
+                        "extractionMethod": "manual",
+                        "verificationStatus": "confirmed_user"
+                      },
+                      {
+                        "evidenceId": "ev-region",
+                        "documentId": null,
+                        "candidateId": null,
+                        "page": null,
+                        "field": "taxDestination.autonomousCommunity",
+                        "normalizedValue": "madrid",
+                        "valueType": "enum",
+                        "sourceType": "user_declaration",
+                        "extractionMethod": "manual",
+                        "verificationStatus": "confirmed_user"
+                      }
+                    ],
+                    "selectedVehicleCandidateId": "candidate-1",
+                    "options": {
+                      "calculationDate": "2025-07-15",
+                      "taxYear": 2025,
+                      "scenarioPolicy": "confirmed_only",
+                      "maxScenarios": 0,
+                      "currency": "EUR"
+                    }
+                  }
+                },
+                "sufficientCase": {
+                  "summary": "Synthetic case with enough structured data for IVTM and DGT readiness.",
+                  "value": {
+                    "schemaVersion": "vehicle_tax_action_request.v1",
+                    "caseId": "case-complete-1",
+                    "documents": [
+                      {
+                        "documentId": "doc-tech-1",
+                        "documentType": "spanish_technical_card",
+                        "pageCount": 1,
+                        "candidateId": "candidate-1"
+                      }
+                    ],
+                    "evidence": [
+                      {
+                        "evidenceId": "ev-category",
+                        "documentId": "doc-tech-1",
+                        "candidateId": "candidate-1",
+                        "page": 1,
+                        "field": "vehicle.category",
+                        "normalizedValue": "passenger_car",
+                        "valueType": "enum",
+                        "sourceType": "official_document",
+                        "extractionMethod": "manual",
+                        "verificationStatus": "confirmed_official"
+                      },
+                      {
+                        "evidenceId": "ev-cvf",
+                        "documentId": "doc-tech-1",
+                        "candidateId": "candidate-1",
+                        "page": 1,
+                        "field": "vehicle.fiscalHorsepower",
+                        "normalizedValue": 12,
+                        "valueType": "number",
+                        "sourceType": "official_document",
+                        "extractionMethod": "manual",
+                        "verificationStatus": "confirmed_official"
+                      },
+                      {
+                        "evidenceId": "ev-spanish-reg",
+                        "documentId": "doc-tech-1",
+                        "candidateId": "candidate-1",
+                        "page": 1,
+                        "field": "vehicle.spanishRegistrationDate",
+                        "normalizedValue": "2025-07-15",
+                        "valueType": "date",
+                        "sourceType": "official_document",
+                        "extractionMethod": "manual",
+                        "verificationStatus": "confirmed_official"
+                      },
+                      {
+                        "evidenceId": "ev-municipality",
+                        "documentId": null,
+                        "candidateId": null,
+                        "page": null,
+                        "field": "taxDestination.municipalityCode",
+                        "normalizedValue": "28079",
+                        "valueType": "ine_code",
+                        "sourceType": "user_declaration",
+                        "extractionMethod": "manual",
+                        "verificationStatus": "confirmed_user"
+                      },
+                      {
+                        "evidenceId": "ev-settlement",
+                        "documentId": null,
+                        "candidateId": null,
+                        "page": null,
+                        "field": "taxDestination.expectedSettlementDate",
+                        "normalizedValue": "2025-07-15",
+                        "valueType": "date",
+                        "sourceType": "user_declaration",
+                        "extractionMethod": "manual",
+                        "verificationStatus": "confirmed_user"
+                      }
+                    ],
+                    "selectedVehicleCandidateId": "candidate-1",
+                    "options": {
+                      "calculationDate": "2025-07-15",
+                      "taxYear": 2025,
+                      "scenarioPolicy": "confirmed_only",
+                      "maxScenarios": 0,
+                      "currency": "EUR"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Canonical fiscal result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Canonical JSON error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                },
+                "examples": {
+                  "contractualError": {
+                    "value": {
+                      "schemaVersion": "vehicle_tax_estimate_response.v1",
+                      "requestId": "req-example-1",
+                      "ok": false,
+                      "error": {
+                        "code": "ACTION_FIELD_INVALID",
+                        "message": "field is invalid."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Canonical JSON error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Canonical JSON error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Canonical JSON error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Canonical JSON error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Canonical JSON error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Canonical JSON error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Canonical JSON error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Canonical JSON error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "opaque",
+        "description": "Opaque token configured outside this OpenAPI document in GPT Action authentication settings. Never paste the secret into this document or chat."
+      }
+    },
+    "schemas": {
+      "CaseId": {
+        "type": "string",
+        "pattern": "^[Cc][Aa][Ss][Ee]-(?!(?:[0-9]{4}[A-Za-z]{3}|[0-9]{8}[A-Za-z]|[XYZxyz][0-9]{7}[A-Za-z]|[ABCDEFGHJKLMNPQRSUVWabcdefghjklmnpqrsuvw][0-9]{7}[0-9A-Ja-j]|[A-Za-z]{2}[0-9]{2}[A-Za-z0-9]{11,30}|(?=[A-HJ-NPR-Za-hj-npr-z0-9]{17}$)(?=[A-HJ-NPR-Za-hj-npr-z0-9]*[0-9])[A-HJ-NPR-Za-hj-npr-z0-9]{17}|[A-Za-z]{1,3}-[A-Za-z]{1,2}-?[0-9]{1,4}[A-Za-z]?|[A-Za-z]{1,3}-[0-9]{1,4}-[A-Za-z]{1,2})$)(?:[0-9]{1,12}|[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*|[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89AaBb][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12})$",
+        "description": "Opaque case id; never use personal or vehicle identifiers."
+      },
+      "DocumentId": {
+        "type": "string",
+        "pattern": "^[Dd][Oo][Cc]-(?!(?:[0-9]{4}[A-Za-z]{3}|[0-9]{8}[A-Za-z]|[XYZxyz][0-9]{7}[A-Za-z]|[ABCDEFGHJKLMNPQRSUVWabcdefghjklmnpqrsuvw][0-9]{7}[0-9A-Ja-j]|[A-Za-z]{2}[0-9]{2}[A-Za-z0-9]{11,30}|(?=[A-HJ-NPR-Za-hj-npr-z0-9]{17}$)(?=[A-HJ-NPR-Za-hj-npr-z0-9]*[0-9])[A-HJ-NPR-Za-hj-npr-z0-9]{17}|[A-Za-z]{1,3}-[A-Za-z]{1,2}-?[0-9]{1,4}[A-Za-z]?|[A-Za-z]{1,3}-[0-9]{1,4}-[A-Za-z]{1,2})$)(?:[0-9]{1,12}|[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*|[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89AaBb][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12})$",
+        "description": "Opaque document id."
+      },
+      "EvidenceId": {
+        "type": "string",
+        "pattern": "^[Ee][Vv]-(?!(?:[0-9]{4}[A-Za-z]{3}|[0-9]{8}[A-Za-z]|[XYZxyz][0-9]{7}[A-Za-z]|[ABCDEFGHJKLMNPQRSUVWabcdefghjklmnpqrsuvw][0-9]{7}[0-9A-Ja-j]|[A-Za-z]{2}[0-9]{2}[A-Za-z0-9]{11,30}|(?=[A-HJ-NPR-Za-hj-npr-z0-9]{17}$)(?=[A-HJ-NPR-Za-hj-npr-z0-9]*[0-9])[A-HJ-NPR-Za-hj-npr-z0-9]{17}|[A-Za-z]{1,3}-[A-Za-z]{1,2}-?[0-9]{1,4}[A-Za-z]?|[A-Za-z]{1,3}-[0-9]{1,4}-[A-Za-z]{1,2})$)(?:[0-9]{1,12}|[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*|[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89AaBb][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12})$",
+        "description": "Opaque evidence id."
+      },
+      "CandidateId": {
+        "type": "string",
+        "pattern": "^[Cc][Aa][Nn][Dd][Ii][Dd][Aa][Tt][Ee]-(?!(?:[0-9]{4}[A-Za-z]{3}|[0-9]{8}[A-Za-z]|[XYZxyz][0-9]{7}[A-Za-z]|[ABCDEFGHJKLMNPQRSUVWabcdefghjklmnpqrsuvw][0-9]{7}[0-9A-Ja-j]|[A-Za-z]{2}[0-9]{2}[A-Za-z0-9]{11,30}|(?=[A-HJ-NPR-Za-hj-npr-z0-9]{17}$)(?=[A-HJ-NPR-Za-hj-npr-z0-9]*[0-9])[A-HJ-NPR-Za-hj-npr-z0-9]{17}|[A-Za-z]{1,3}-[A-Za-z]{1,2}-?[0-9]{1,4}[A-Za-z]?|[A-Za-z]{1,3}-[0-9]{1,4}-[A-Za-z]{1,2})$)(?:[0-9]{1,12}|[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*|[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89AaBb][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12})$",
+        "description": "Opaque vehicle candidate id."
+      },
+      "DocumentType": {
+        "type": "string",
+        "enum": [
+          "coc",
+          "german_registration_part_i",
+          "german_registration_part_ii",
+          "invoice",
+          "private_sale_contract",
+          "vehicle_ad",
+          "technical_inspection_document",
+          "spanish_technical_card",
+          "proof_of_tax_residence",
+          "municipal_ordinance",
+          "professional_report",
+          "user_declaration",
+          "other"
+        ]
+      },
+      "SourceType": {
+        "type": "string",
+        "enum": [
+          "official_document",
+          "professional_document",
+          "contractual_document",
+          "vehicle_ad",
+          "user_declaration",
+          "derived",
+          "other"
+        ]
+      },
+      "ExtractionMethod": {
+        "type": "string",
+        "enum": [
+          "manual",
+          "structured",
+          "ocr",
+          "ai",
+          "imported",
+          "unknown"
+        ]
+      },
+      "VerificationStatus": {
+        "type": "string",
+        "enum": [
+          "confirmed_official",
+          "confirmed_professional",
+          "confirmed_user",
+          "extracted",
+          "inferred",
+          "scenario",
+          "conflict",
+          "rejected"
+        ]
+      },
+      "FieldPath": {
+        "type": "string",
+        "enum": [
+          "vehicle.category",
+          "vehicle.fuelType",
+          "vehicle.engineDisplacementCc",
+          "vehicle.fiscalHorsepower",
+          "vehicle.firstRegistrationDate",
+          "vehicle.spanishRegistrationDate",
+          "vehicle.condition",
+          "vehicle.co2Wltp",
+          "vehicle.co2Nedc",
+          "vehicle.emissionsStandard",
+          "vehicle.zeroEmissionStatus",
+          "vehicle.boeValue",
+          "vehicle.boeValueYear",
+          "vehicle.isHistoricVehicle",
+          "vehicle.isEndOfLifeVehicle",
+          "transaction.date",
+          "transaction.purchasePrice",
+          "transaction.currency",
+          "transaction.purchaseCountry",
+          "transaction.documentType",
+          "transaction.sellerType",
+          "transaction.buyerType",
+          "transaction.vatRegime",
+          "transaction.vatItemizedStatus",
+          "transaction.rebuStatus",
+          "transaction.intendedForResale",
+          "parties.sellerCountry",
+          "parties.buyerTaxResidenceCountry",
+          "taxDestination.autonomousCommunity",
+          "taxDestination.province",
+          "taxDestination.municipalityCode",
+          "taxDestination.foralTerritory",
+          "taxDestination.expectedSettlementDate"
+        ]
+      },
+      "ValueType": {
+        "type": "string",
+        "enum": [
+          "boolean",
+          "country",
+          "currency",
+          "date",
+          "enum",
+          "ine_code",
+          "money",
+          "number",
+          "year"
+        ]
+      },
+      "Options": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "calculationDate",
+          "taxYear",
+          "scenarioPolicy",
+          "maxScenarios",
+          "currency"
+        ],
+        "properties": {
+          "calculationDate": {
+            "type": "string",
+            "format": "date",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Real calendar date in ISO YYYY-MM-DD format. Its year must match taxYear; runtime performs the authoritative semantic validation."
+          },
+          "taxYear": {
+            "type": "integer",
+            "minimum": 1990,
+            "maximum": 2100
+          },
+          "scenarioPolicy": {
+            "type": "string",
+            "enum": [
+              "confirmed_only",
+              "documentary_scenarios"
+            ]
+          },
+          "maxScenarios": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 12
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "EUR"
+            ]
+          }
+        }
+      },
+      "Document": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "documentId",
+          "documentType"
+        ],
+        "properties": {
+          "documentId": {
+            "$ref": "#/components/schemas/DocumentId"
+          },
+          "documentType": {
+            "$ref": "#/components/schemas/DocumentType"
+          },
+          "pageCount": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "Evidence_vehicle_category": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.category"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "passenger_car",
+              "turismo",
+              "suv",
+              "mixed_adaptable",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_fuelType": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.fuelType"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "gasoline",
+              "diesel",
+              "hybrid",
+              "phev",
+              "electric",
+              "hydrogen",
+              "other",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_engineDisplacementCc": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.engineDisplacementCc"
+          },
+          "normalizedValue": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "valueType": {
+            "const": "number"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_fiscalHorsepower": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.fiscalHorsepower"
+          },
+          "normalizedValue": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 100
+          },
+          "valueType": {
+            "const": "number"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_firstRegistrationDate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.firstRegistrationDate"
+          },
+          "normalizedValue": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}$",
+                "description": "ISO year-month when the exact day is not evidenced."
+              },
+              {
+                "type": "string",
+                "format": "date",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                "description": "Real calendar date in ISO YYYY-MM-DD format when the day is evidenced; runtime performs the authoritative semantic validation."
+              }
+            ]
+          },
+          "valueType": {
+            "const": "date"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_spanishRegistrationDate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.spanishRegistrationDate"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "format": "date",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Real calendar date in ISO YYYY-MM-DD format; runtime performs the authoritative semantic validation."
+          },
+          "valueType": {
+            "const": "date"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_condition": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.condition"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "usado_importado",
+              "nuevo_o_no_matriculado",
+              "desconocido"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_co2Wltp": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.co2Wltp"
+          },
+          "normalizedValue": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "valueType": {
+            "const": "number"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_co2Nedc": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.co2Nedc"
+          },
+          "normalizedValue": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "valueType": {
+            "const": "number"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_emissionsStandard": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.emissionsStandard"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "wltp",
+              "nedc",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_zeroEmissionStatus": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.zeroEmissionStatus"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "not_zero_emission",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_boeValue": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.boeValue"
+          },
+          "normalizedValue": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 2000000
+          },
+          "valueType": {
+            "const": "money"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_boeValueYear": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.boeValueYear"
+          },
+          "normalizedValue": {
+            "type": "integer",
+            "minimum": 1990,
+            "maximum": 2100
+          },
+          "valueType": {
+            "const": "year"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_isHistoricVehicle": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.isHistoricVehicle"
+          },
+          "normalizedValue": {
+            "type": "boolean"
+          },
+          "valueType": {
+            "const": "boolean"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_vehicle_isEndOfLifeVehicle": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "vehicle.isEndOfLifeVehicle"
+          },
+          "normalizedValue": {
+            "type": "boolean"
+          },
+          "valueType": {
+            "const": "boolean"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_date": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.date"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "format": "date",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Real calendar date in ISO YYYY-MM-DD format; runtime performs the authoritative semantic validation."
+          },
+          "valueType": {
+            "const": "date"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_purchasePrice": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.purchasePrice"
+          },
+          "normalizedValue": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 2000000
+          },
+          "valueType": {
+            "const": "money"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_currency": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.currency"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "EUR"
+            ]
+          },
+          "valueType": {
+            "const": "currency"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_purchaseCountry": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.purchaseCountry"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "DE",
+              "ES"
+            ]
+          },
+          "valueType": {
+            "const": "country"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_documentType": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.documentType"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "invoice",
+              "private_sale_contract",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_sellerType": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.sellerType"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "private",
+              "professional",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_buyerType": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.buyerType"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "private",
+              "professional",
+              "vehicle_reseller",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_vatRegime": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.vatRegime"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "general_vat",
+              "rebu",
+              "vat_not_itemized",
+              "not_applicable_private_sale",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_vatItemizedStatus": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.vatItemizedStatus"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "itemized",
+              "not_itemized",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_rebuStatus": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.rebuStatus"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "not_confirmed",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_transaction_intendedForResale": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "transaction.intendedForResale"
+          },
+          "normalizedValue": {
+            "type": "boolean"
+          },
+          "valueType": {
+            "const": "boolean"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_parties_sellerCountry": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "parties.sellerCountry"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "DE",
+              "ES"
+            ]
+          },
+          "valueType": {
+            "const": "country"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_parties_buyerTaxResidenceCountry": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "parties.buyerTaxResidenceCountry"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "DE",
+              "ES"
+            ]
+          },
+          "valueType": {
+            "const": "country"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_taxDestination_autonomousCommunity": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "taxDestination.autonomousCommunity"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "andalucia",
+              "aragon",
+              "asturias",
+              "canarias",
+              "cantabria",
+              "castilla_la_mancha",
+              "castilla_y_leon",
+              "cataluna",
+              "ceuta",
+              "comunitat_valenciana",
+              "extremadura",
+              "galicia",
+              "illes_balears",
+              "la_rioja",
+              "madrid",
+              "melilla",
+              "murcia",
+              "navarra",
+              "pais_vasco"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_taxDestination_province": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "taxDestination.province"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "alava",
+              "albacete",
+              "alicante",
+              "almeria",
+              "asturias",
+              "avila",
+              "badajoz",
+              "barcelona",
+              "bizkaia",
+              "burgos",
+              "caceres",
+              "cadiz",
+              "cantabria",
+              "castellon",
+              "ceuta",
+              "ciudad_real",
+              "cordoba",
+              "cuenca",
+              "girona",
+              "granada",
+              "guadalajara",
+              "gipuzkoa",
+              "huelva",
+              "huesca",
+              "illes_balears",
+              "jaen",
+              "la_coruna",
+              "la_rioja",
+              "las_palmas",
+              "leon",
+              "lleida",
+              "lugo",
+              "madrid",
+              "malaga",
+              "melilla",
+              "murcia",
+              "navarra",
+              "ourense",
+              "palencia",
+              "pontevedra",
+              "salamanca",
+              "santa_cruz_de_tenerife",
+              "segovia",
+              "sevilla",
+              "soria",
+              "tarragona",
+              "teruel",
+              "toledo",
+              "valencia",
+              "valladolid",
+              "zamora",
+              "zaragoza"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_taxDestination_municipalityCode": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "taxDestination.municipalityCode"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "pattern": "^\\d{5}$",
+            "description": "Five digit INE municipality code."
+          },
+          "valueType": {
+            "const": "ine_code"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_taxDestination_foralTerritory": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "taxDestination.foralTerritory"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "enum": [
+              "alava",
+              "bizkaia",
+              "gipuzkoa",
+              "none",
+              "unknown"
+            ]
+          },
+          "valueType": {
+            "const": "enum"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence_taxDestination_expectedSettlementDate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidenceId",
+          "field",
+          "normalizedValue",
+          "valueType",
+          "sourceType",
+          "extractionMethod",
+          "verificationStatus"
+        ],
+        "properties": {
+          "evidenceId": {
+            "$ref": "#/components/schemas/EvidenceId"
+          },
+          "documentId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "field": {
+            "const": "taxDestination.expectedSettlementDate"
+          },
+          "normalizedValue": {
+            "type": "string",
+            "format": "date",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Real calendar date in ISO YYYY-MM-DD format; runtime performs the authoritative semantic validation."
+          },
+          "valueType": {
+            "const": "date"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "extractionMethod": {
+            "$ref": "#/components/schemas/ExtractionMethod"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        }
+      },
+      "Evidence": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_category"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_fuelType"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_engineDisplacementCc"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_fiscalHorsepower"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_firstRegistrationDate"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_spanishRegistrationDate"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_condition"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_co2Wltp"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_co2Nedc"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_emissionsStandard"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_zeroEmissionStatus"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_boeValue"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_boeValueYear"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_isHistoricVehicle"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_vehicle_isEndOfLifeVehicle"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_date"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_purchasePrice"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_currency"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_purchaseCountry"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_documentType"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_sellerType"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_buyerType"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_vatRegime"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_vatItemizedStatus"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_rebuStatus"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_transaction_intendedForResale"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_parties_sellerCountry"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_parties_buyerTaxResidenceCountry"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_taxDestination_autonomousCommunity"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_taxDestination_province"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_taxDestination_municipalityCode"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_taxDestination_foralTerritory"
+          },
+          {
+            "$ref": "#/components/schemas/Evidence_taxDestination_expectedSettlementDate"
+          }
+        ]
+      },
+      "ActionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schemaVersion",
+          "caseId",
+          "documents",
+          "evidence",
+          "options"
+        ],
+        "description": "Strict Action v1 request. Runtime also enforces 256 KiB body size plus structural and privacy limits.",
+        "properties": {
+          "schemaVersion": {
+            "const": "vehicle_tax_action_request.v1"
+          },
+          "caseId": {
+            "$ref": "#/components/schemas/CaseId"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Document"
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            }
+          },
+          "selectedVehicleCandidateId": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "options": {
+            "$ref": "#/components/schemas/Options"
+          }
+        }
+      },
+      "ErrorBody": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schemaVersion",
+          "requestId",
+          "ok",
+          "error"
+        ],
+        "properties": {
+          "schemaVersion": {
+            "const": "vehicle_tax_estimate_response.v1"
+          },
+          "requestId": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 128
+          },
+          "ok": {
+            "const": false
+          },
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "EngineExecution": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "engineId",
+          "status",
+          "inputStatus",
+          "inputsUsed",
+          "evidenceIds",
+          "result",
+          "assumptions",
+          "warnings",
+          "warningCodes",
+          "missingFields"
+        ],
+        "properties": {
+          "engineId": {
+            "type": "string",
+            "enum": [
+              "iedmt",
+              "itp",
+              "ivtm",
+              "dgt_registration_fee"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "calculated_confirmed",
+              "calculated_scenario",
+              "not_run_missing_inputs",
+              "not_run_conflict",
+              "failed_validation",
+              "requires_review"
+            ]
+          },
+          "inputStatus": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "scenario",
+              "missing",
+              "conflict",
+              "invalid"
+            ]
+          },
+          "inputsUsed": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "evidenceIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Opaque evidence ids used."
+          },
+          "result": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Assumptions."
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Warnings."
+          },
+          "warningCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Warning codes."
+          },
+          "missingFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Missing fields."
+          }
+        }
+      },
+      "EngineExecutions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "iedmt",
+          "itp",
+          "ivtm",
+          "dgt_registration_fee"
+        ],
+        "properties": {
+          "iedmt": {
+            "$ref": "#/components/schemas/EngineExecution"
+          },
+          "itp": {
+            "$ref": "#/components/schemas/EngineExecution"
+          },
+          "ivtm": {
+            "$ref": "#/components/schemas/EngineExecution"
+          },
+          "dgt_registration_fee": {
+            "$ref": "#/components/schemas/EngineExecution"
+          }
+        }
+      },
+      "TaxSummary": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "additionalProperties": true,
+        "description": "Canonical tax summary. Interpret returned totals; do not recalculate.",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "confirmedSubtotal": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "exactTotal": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "probableTotal": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minimumTotal": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "maximumTotal": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "prudentBudget": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "exactTotalBlockedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Scenario": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "scenarioId": {
+            "type": "string"
+          },
+          "sourceScenarioId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "engineExecutions": {
+            "$ref": "#/components/schemas/EngineExecutions"
+          },
+          "taxSummary": {
+            "$ref": "#/components/schemas/TaxSummary"
+          },
+          "warningCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CalculationData": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schemaVersion",
+          "caseId",
+          "status",
+          "calculationDate",
+          "taxYear",
+          "currency",
+          "classification",
+          "engineExecutions",
+          "taxSummary",
+          "scenarios",
+          "readiness",
+          "assumptions",
+          "warnings",
+          "warningCodes",
+          "missingFields",
+          "privacySummary"
+        ],
+        "properties": {
+          "schemaVersion": {
+            "const": "vehicle_tax_calculation.v1"
+          },
+          "caseId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "exact",
+              "partial",
+              "estimated",
+              "scenario_required",
+              "requires_review",
+              "identity_conflict",
+              "invalid"
+            ]
+          },
+          "calculationDate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "taxYear": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "currency": {
+            "enum": [
+              "EUR",
+              null
+            ]
+          },
+          "classification": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "engineExecutions": {
+            "$ref": "#/components/schemas/EngineExecutions"
+          },
+          "taxSummary": {
+            "$ref": "#/components/schemas/TaxSummary"
+          },
+          "scenarios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Scenario"
+            }
+          },
+          "readiness": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Top-level assumptions."
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Top-level warnings."
+          },
+          "warningCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Top-level warning codes."
+          },
+          "missingFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Fields still needed."
+          },
+          "privacySummary": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "SuccessBody": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schemaVersion",
+          "requestId",
+          "ok",
+          "data"
+        ],
+        "properties": {
+          "schemaVersion": {
+            "const": "vehicle_tax_estimate_response.v1"
+          },
+          "requestId": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 128
+          },
+          "ok": {
+            "const": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/CalculationData"
+          }
+        }
+      }
+    }
+  }
+}

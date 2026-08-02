@@ -159,7 +159,7 @@ No enviar ni reflejar:
 - Bonificaciones IVTM estructuradas: no se admiten en Action v1.
 - Valor BOE inventado o derivado del precio de anuncio.
 - Transporte, ITV, placas, seguro, reparaciones, peritaje, COC y honorarios PGC dentro del total fiscal.
-- Configuracion real del GPT, OpenAPI publicado, privacidad publica y Vercel en esta subfase.
+- Configuracion real del GPT, OpenAPI publicado, pegado de la politica en el configurador del GPT, Vercel y cualquier publicacion real fuera de esta subfase.
 
 ## Configuracion posterior en GPT
 
@@ -169,7 +169,7 @@ No enviar ni reflejar:
 4. Mantener knowledge file `b61ebb0C.txt` para Valor BOE.
 5. Mantener navegacion web activa para CO2 y referencias tecnicas.
 6. No crear iniciadores salvo decision posterior.
-7. Configurar una politica de privacidad publica antes de publicar el GPT.
+7. Usar como URL de privacidad prevista `https://www.premiumgermancars.com/politica-privacidad`; no considerarla operativa para publicar el GPT hasta que el cambio este committeado, desplegado y verificado con HTTP 200.
 8. Probar con casos sin PII antes de activar para usuarios.
 
 ## Checklist previo a publicacion
@@ -179,7 +179,7 @@ No enviar ni reflejar:
 - Endpoint apunta a `https://www.premiumgermancars.com`.
 - Autenticacion Bearer, configurada fuera del schema.
 - No hay secretos en OpenAPI ni instrucciones.
-- Politica de privacidad publica definida.
+- Politica de privacidad publica definida en `https://www.premiumgermancars.com/politica-privacidad`, pendiente de commit, despliegue y verificacion HTTP 200 antes de configurar/publicar el GPT.
 - Action no envia PII ni texto bruto.
 - Tests locales y post-configuracion pasan.
 

@@ -33,6 +33,45 @@ const sitemapPath = join(projectRoot, "public", "sitemap.xml");
 const siteUrl = SITE_URL;
 const defaultImage = `${siteUrl}/og.jpg`;
 
+const privacyPolicyPrerenderSections = Object.freeze([
+  {
+    heading: "Responsable y contacto",
+    paragraphs: [
+      "Premium German Cars, NIF B39923112, con domicilio en Cambrils 43850, Tarragona, es el responsable del tratamiento. El canal de contacto para ejercer derechos ante PGC es info@premiumgermancars.com.",
+    ],
+  },
+  {
+    heading: "Finalidad y Asistente PGC",
+    paragraphs: [
+      "Esta política informa sobre el tratamiento de datos personales en solicitudes de información, presupuestos, importación, revisión, fiscalidad y matriculación de vehículos.",
+      "El Asistente PGC puede preparar una estimación fiscal reducida mediante una GPT Action conectada a /api/vehicle-tax-estimate-action. El cálculo es orientativo y no sustituye una liquidación oficial ni asesoramiento profesional.",
+    ],
+  },
+  {
+    heading: "OpenAI, GPT Action y minimización",
+    paragraphs: [
+      [
+        "OpenAI/ChatGPT procesa la conversación conforme a sus propias políticas y controles. Premium German Cars recibe únicamente el DTO fiscal estructurado que la GPT Action transmite al endpoint de PGC, y no controla toda la conservación interna de las conversaciones o datos dentro de ChatGPT/OpenAI. Para consultar, gestionar o solicitar la supresión de datos conservados exclusivamente por OpenAI, el usuario debe utilizar los controles y canales oficiales de OpenAI, sin que esta política anticipe un resultado concreto de esas solicitudes: ",
+        { href: "https://openai.com/policies/privacy-policy/", text: "política de privacidad de OpenAI" },
+        " y ",
+        { href: "https://privacy.openai.com/", text: "portal de privacidad de OpenAI" },
+        ".",
+      ],
+      "La Action debe usar identificadores opacos y enviar solo datos técnicos y fiscales necesarios: vehículo, fechas, precio o Valor BOE, CO2, clasificación de vendedor/comprador/documento y destino territorial. No debe enviar nombres, DNI, email, teléfono, dirección, IBAN, firma, VIN completo, matrícula, documentos, OCR, texto bruto, credenciales ni secretos.",
+    ],
+  },
+  {
+    heading: "Derechos y reclamaciones",
+    paragraphs: [
+      [
+        "El usuario puede ejercer sus derechos de acceso, rectificación, supresión, oposición, limitación, portabilidad y, cuando proceda, a no ser objeto de decisiones individuales automatizadas escribiendo a info@premiumgermancars.com. También puede presentar una reclamación ante la ",
+        { href: "https://www.aepd.es", text: "Agencia Española de Protección de Datos (AEPD)" },
+        ".",
+      ],
+    ],
+  },
+]);
+
 const carRoutes = CAR_PAGE_METADATA.map((car) => ({
   path: car.path,
   title: car.title,
@@ -125,10 +164,11 @@ const routes = [
   {
     path: "/politica-privacidad",
     title: "Política de Privacidad | Premium German Cars",
-    description: "Información sobre el tratamiento de datos personales.",
+    description: "Información sobre tratamiento de datos personales, Asistente PGC y GPT Action.",
     h1: "Política de Privacidad",
     eyebrow: "Privacidad",
     noIndex: true,
+    prerenderSections: privacyPolicyPrerenderSections,
   },
   {
     path: "/gracias",
@@ -246,6 +286,37 @@ function renderHead(route) {
   `;
 }
 
+function renderInlineContent(content) {
+  const items = Array.isArray(content) ? content : [content];
+  return items
+    .map((item) => {
+      if (typeof item === "string") return escapeHtml(item);
+      return `<a href="${escapeHtml(item.href)}" target="_blank" rel="noopener noreferrer" class="text-gold-400 underline underline-offset-4 hover:text-white">${escapeHtml(item.text)}</a>`;
+    })
+    .join("");
+}
+
+function renderPrerenderSections(route) {
+  if (!Array.isArray(route.prerenderSections) || route.prerenderSections.length === 0) return "";
+
+  const sections = route.prerenderSections
+    .map((section) => {
+      const paragraphs = section.paragraphs
+        .map((paragraph) => `<p class="text-sm leading-relaxed text-gray-300">${renderInlineContent(paragraph)}</p>`)
+        .join("\n              ");
+
+      return `<section class="space-y-3 border-t border-white/10 pt-6">
+              <h2 class="text-xs font-bold uppercase tracking-[0.24em] text-white">${escapeHtml(section.heading)}</h2>
+              ${paragraphs}
+            </section>`;
+    })
+    .join("\n            ");
+
+  return `
+            <div class="mt-10 space-y-8">${sections}
+            </div>`;
+}
+
 function renderBody(route) {
   const Wrapper = route.article ? "article" : "section";
 
@@ -255,7 +326,7 @@ function renderBody(route) {
           <${Wrapper} class="mx-auto max-w-5xl">
             <p class="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-gold-400">${escapeHtml(route.eyebrow ?? "Premium German Cars")}</p>
             <h1 class="mb-6 font-serif text-4xl font-bold text-white md:text-6xl">${escapeHtml(route.h1 ?? route.title)}</h1>
-            <p class="max-w-3xl text-lg leading-relaxed text-gray-300">${escapeHtml(route.description)}</p>
+            <p class="max-w-3xl text-lg leading-relaxed text-gray-300">${escapeHtml(route.description)}</p>${renderPrerenderSections(route)}
           </${Wrapper}>
         </main>
       </div>

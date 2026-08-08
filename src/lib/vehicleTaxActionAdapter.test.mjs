@@ -300,9 +300,65 @@ test("DTO alimenta ITP y DGT soportados sin aliases falsos", async () => {
   assert.equal(result.engineExecutions.iedmt.status, "calculated_confirmed");
   assert.equal(result.engineExecutions.itp.status, "calculated_confirmed");
   assert.equal(result.engineExecutions.dgt_registration_fee.status, "calculated_confirmed");
-  assert.equal(result.engineExecutions.itp.inputsUsed.officialMarketValue, 24000);
+  assert.equal(result.engineExecutions.itp.inputsUsed.originalBoeValue, 24000);
+  assert.equal(result.engineExecutions.itp.inputsUsed.officialMarketValue, 9360);
   assert.equal(result.engineExecutions.itp.inputsUsed.purchasePrice, 21500);
   assert.equal(Object.hasOwn(adapted.caseFile, "officialMarketValue"), false);
+});
+
+test("Action La Rioja usa IEDMT peninsula, ITP depreciado y no provincia no foral", async () => {
+  const input = dto({ root: { options: { calculationDate: "2026-08-02", taxYear: 2026, scenarioPolicy: "confirmed_only", maxScenarios: 0, currency: "EUR" } } });
+  input.documents.push(document({ documentId: "doc-tax-1", documentType: "technical_inspection_document" }));
+  input.evidence.find((item) => item.evidenceId === "ev-boe").normalizedValue = 47100;
+  input.evidence.push(evidence({ evidenceId: "ev-boe-year", documentId: "doc-report-1", field: "vehicle.boeValueYear", normalizedValue: 2026, valueType: "year", sourceType: "professional_document", verificationStatus: "confirmed_professional" }));
+  input.evidence.find((item) => item.evidenceId === "ev-first-reg").normalizedValue = "2024-06";
+  input.evidence.find((item) => item.evidenceId === "ev-co2-wltp").normalizedValue = 138;
+  input.evidence.find((item) => item.evidenceId === "ev-displacement").normalizedValue = 1969;
+  input.evidence.find((item) => item.evidenceId === "ev-cvf").normalizedValue = 13.4;
+  input.evidence.find((item) => item.evidenceId === "ev-price").normalizedValue = 30000;
+  input.evidence.find((item) => item.evidenceId === "ev-tx-date").normalizedValue = "2026-08-02";
+  input.evidence.find((item) => item.evidenceId === "ev-region").normalizedValue = "la_rioja";
+  input.evidence.find((item) => item.evidenceId === "ev-province").normalizedValue = "la_rioja";
+  input.evidence.find((item) => item.evidenceId === "ev-foral").normalizedValue = "none";
+  input.evidence.find((item) => item.evidenceId === "ev-municipality").normalizedValue = "26089";
+  input.evidence.find((item) => item.evidenceId === "ev-settlement").normalizedValue = "2026-08-02";
+  input.evidence.find((item) => item.evidenceId === "ev-spanish-reg").normalizedValue = "2026-08-02";
+  for (const evidenceId of ["ev-zero", "ev-historic"]) {
+    const item = input.evidence.find((entry) => entry.evidenceId === evidenceId);
+    item.documentId = "doc-tax-1";
+    item.sourceType = "official_document";
+    item.verificationStatus = "confirmed_official";
+  }
+  input.evidence.push(evidence({ evidenceId: "ev-end-life", documentId: "doc-tax-1", field: "vehicle.isEndOfLifeVehicle", normalizedValue: false, valueType: "boolean" }));
+
+  const result = await calculate(input);
+  assert.equal(result.engineExecutions.iedmt.status, "calculated_confirmed");
+  assert.equal(result.engineExecutions.iedmt.inputsUsed.territoryId, "peninsula_general");
+  assert.equal(result.engineExecutions.itp.status, "calculated_confirmed");
+  assert.equal(result.engineExecutions.itp.inputsUsed.originalBoeValue, 47100);
+  assert.equal(result.engineExecutions.itp.inputsUsed.officialMarketValue, 31557);
+  assert.equal(Object.hasOwn(result.engineExecutions.itp.inputsUsed, "buyerProvince"), false);
+  assert.equal(result.engineExecutions.itp.result.taxableBase, 31557);
+  assert.equal(result.engineExecutions.itp.result.taxAmount, 1262.28);
+  assert.equal(result.engineExecutions.itp.warningCodes.includes("INVALID_BUYER_PROVINCE"), false);
+  assert.equal(result.taxSummary.exactTotal, null);
+  assert.equal(result.taxSummary.exactTotalBlockedBy.includes("ivtm"), true);
+  assert.equal(result.taxSummary.lineItems.some((item) => item.status === "invalid" && item.amount === 0), false);
+
+  const noDate = JSON.parse(JSON.stringify(input));
+  noDate.caseId = "case-action-no-date";
+  noDate.evidence = noDate.evidence.filter((item) => item.evidenceId !== "ev-tx-date");
+  const noDateResult = await calculate(noDate);
+  assert.equal(noDateResult.engineExecutions.itp.status, "not_run_missing_inputs");
+  assert.equal(noDateResult.engineExecutions.itp.missingFields.includes("transaction.date"), true);
+  assert.equal(Object.hasOwn(noDateResult.engineExecutions.itp.inputsUsed, "officialMarketValue"), false);
+});
+
+test("instrucciones GPT no permiten inferir transaction.date y caben en el limite compacto", () => {
+  const instructions = readFileSync(new URL("../../docs/asistente-pgc-instructions.md", import.meta.url), "utf8");
+  assert.match(instructions, /Nunca infieras .*transaction.date/);
+  assert.match(instructions, /si el usuario no da fecha contractual, omitela/i);
+  assert.ok(instructions.length < 8000, instructions.length);
 });
 
 test("Madrid conserva requires_review para evidencia no representable e IVTM no inventa bonificacion", async () => {

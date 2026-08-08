@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { VEHICLE_TAX_CASE_FILE_SCHEMA_VERSION } from "../data/vehicleTaxCaseFileCatalogs.mjs";
+import { VEHICLE_TAX_ACTION_FIELD_CONTRACT } from "./vehicleTaxActionAdapter.mjs";
 import { buildVehicleTaxCaseFile } from "./vehicleTaxCaseFile.mjs";
 import { calculateVehicleTaxSummary } from "./vehicleTaxSummary.mjs";
 import {
@@ -192,6 +193,47 @@ test("runs confirmed documentary case through the four isolated engines", async 
   assert.equal(result.engineExecutions.iedmt.inputsUsed.territoryId, "peninsula_general");
   assert.equal(result.engineExecutions.itp.inputsUsed.evidence.evidenceIds.includes("price"), true);
   piiFree(result);
+});
+
+test("todas las CCAA Action resuelven territorio IEDMT explicito", async () => {
+  const expected = {
+    andalucia: "peninsula_general",
+    aragon: "peninsula_general",
+    asturias: "asturias",
+    canarias: "canarias",
+    cantabria: "cantabria",
+    castilla_la_mancha: "peninsula_general",
+    castilla_y_leon: "peninsula_general",
+    cataluna: "cataluna",
+    ceuta: "ceuta_melilla",
+    comunitat_valenciana: "comunidad_valenciana",
+    extremadura: "peninsula_general",
+    galicia: "peninsula_general",
+    illes_balears: "baleares",
+    la_rioja: "peninsula_general",
+    madrid: "peninsula_general",
+    melilla: "ceuta_melilla",
+    murcia: "murcia",
+    navarra: "peninsula_general",
+    pais_vasco: "peninsula_general",
+  };
+  const ccaa = VEHICLE_TAX_ACTION_FIELD_CONTRACT["taxDestination.autonomousCommunity"].enumValues;
+  assert.deepEqual([...ccaa].sort(), Object.keys(expected).sort());
+
+  for (const autonomousCommunity of ccaa) {
+    let iedmtInput = null;
+    const result = await calculateVehicleTaxCase(makeCase({ evidenceOverrides: { region: { normalizedValue: autonomousCommunity } } }), {
+      ...DEFAULT_OPTIONS,
+      dependencies: {
+        calculateIedmt: (input) => {
+          iedmtInput = input;
+          return jsonClone(STUB_RESULTS.iedmt);
+        },
+      },
+    });
+    assert.notEqual(result.engineExecutions.iedmt.status, VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_MISSING_INPUTS, autonomousCommunity);
+    assert.equal(iedmtInput.territoryId, expected[autonomousCommunity], autonomousCommunity);
+  }
 });
 
 test("does not rely on the IEDMT default territory when destination is missing", async () => {

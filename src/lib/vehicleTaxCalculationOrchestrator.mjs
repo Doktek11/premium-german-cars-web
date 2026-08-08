@@ -1,6 +1,6 @@
 import { VEHICLE_TAX_CASE_FILE_SCHEMA_VERSION, VEHICLE_TAX_CASE_FILE_FACT_STATUSES } from "../data/vehicleTaxCaseFileCatalogs.mjs";
 import { classifyVehicleTaxOperation } from "./vehicleTaxOperationClassifier.mjs";
-import { calculateRegistrationTax, getTerritoryFromParam } from "./registrationTax.mjs";
+import { calculateRegistrationTax, getDepreciationCoefficient, getMonthsFromFirstRegistrationDate, getTerritoryFromParam } from "./registrationTax.mjs";
 import { calculateTransferTax } from "./transferTax.mjs";
 import { resolveIvtmMunicipalityData } from "./ivtmDataLookup.mjs";
 import { calculateMunicipalVehicleTax } from "./municipalVehicleTax.mjs";
@@ -33,6 +33,28 @@ const INPUT_ALLOWLIST = Object.freeze({
   dgt_registration_fee: ["procedure", "vehicleType", "feeDate", "calculationDate", "currency"],
 });
 const FIELD_TO_OVERRIDE = Object.freeze({ "vehicle.boeValue": "officialMarketValue", "vehicle.co2Wltp": "emissions", "vehicle.co2Nedc": "emissions", "vehicle.firstRegistrationDate": "firstRegistrationDate", "vehicle.category": "vehicleCategory", "vehicle.engineDisplacementCc": "engineDisplacement", "vehicle.fiscalHorsepower": "fiscalHorsepower", "vehicle.zeroEmissionStatus": "zeroEmissionStatus", "transaction.purchasePrice": "purchasePrice", "transaction.date": "transactionDate", "taxDestination.autonomousCommunity": "buyerRegion", "taxDestination.province": "buyerProvince", "taxDestination.foralTerritory": "buyerProvince", "parties.buyerTaxResidenceCountry": "buyerTaxResidenceCountry", "parties.sellerCountry": "sellerCountry" });
+const IEDMT_TERRITORY_BY_AUTONOMOUS_COMMUNITY = Object.freeze({
+  andalucia: "peninsula_general",
+  aragon: "peninsula_general",
+  asturias: "asturias",
+  canarias: "canarias",
+  cantabria: "cantabria",
+  castilla_la_mancha: "peninsula_general",
+  castilla_y_leon: "peninsula_general",
+  cataluna: "cataluna",
+  ceuta: "ceuta_melilla",
+  comunitat_valenciana: "comunidad_valenciana",
+  extremadura: "peninsula_general",
+  galicia: "peninsula_general",
+  illes_balears: "baleares",
+  la_rioja: "peninsula_general",
+  madrid: "peninsula_general",
+  melilla: "ceuta_melilla",
+  murcia: "murcia",
+  navarra: "peninsula_general",
+  pais_vasco: "peninsula_general",
+});
+const BASQUE_FORAL_TERRITORIES = new Set(["alava", "bizkaia", "gipuzkoa"]);
 
 function isPlainObject(value) { return !!value && typeof value === "object" && !Array.isArray(value) && [Object.prototype, null].includes(Object.getPrototypeOf(value)); }
 function cloneJson(value) { return value === undefined ? undefined : JSON.parse(JSON.stringify(value)); }
@@ -159,6 +181,19 @@ function addPreparedValue(prepared, caseFile, candidate, field, key, map, kind) 
 function emptyPrepared(input = {}) { return { input, evidenceIds: [], missing: [], conflicts: [], unsafe: false }; }
 function cleanPrepared(prepared) { prepared.evidenceIds = uniqueStrings(prepared.evidenceIds); prepared.missing = uniqueStrings(prepared.missing); prepared.conflicts = uniqueStrings(prepared.conflicts); return prepared; }
 function vehicleTypeFromCategory(value) { return ["passenger_car", "turismo", "suv"].includes(value) ? "passenger_car" : null; }
+function roundMoney(value) { return Math.round((value + Number.EPSILON) * 100) / 100; }
+function registrationTaxTerritoryFromAutonomousCommunity(value) {
+  const mapped = typeof value === "string" ? IEDMT_TERRITORY_BY_AUTONOMOUS_COMMUNITY[value] : null;
+  if (mapped) return getTerritoryFromParam(mapped);
+  return getTerritoryFromParam(value);
+}
+function depreciatedOfficialMarketValue({ originalBoeValue, firstRegistrationDate, transactionDate }) {
+  if (typeof originalBoeValue !== "number" || !Number.isFinite(originalBoeValue)) return null;
+  if (typeof firstRegistrationDate !== "string" || typeof transactionDate !== "string") return null;
+  const months = getMonthsFromFirstRegistrationDate(firstRegistrationDate, transactionDate);
+  const coefficient = getDepreciationCoefficient(months);
+  return coefficient === null ? null : roundMoney(originalBoeValue * coefficient);
+}
 
 function buildIedmtInput(caseFile, candidate, map, options) {
   const prepared = emptyPrepared({ calculationDate: options.calculationDate });
@@ -167,7 +202,7 @@ function buildIedmtInput(caseFile, candidate, map, options) {
   addPreparedValue(prepared, caseFile, candidate, "vehicle.condition", "vehicleCondition", map, "any");
   const territory = confirmedFact(caseFile, candidate, "taxDestination.autonomousCommunity", map, "any");
   if (territory.ok) {
-    const resolvedTerritory = getTerritoryFromParam(territory.value);
+    const resolvedTerritory = registrationTaxTerritoryFromAutonomousCommunity(territory.value);
     if (resolvedTerritory?.id) prepared.input.territoryId = resolvedTerritory.id; else prepared.missing.push("taxDestination.autonomousCommunity");
     prepared.evidenceIds.push(...territory.evidenceIds);
   } else if (territory.reason === "conflict") prepared.conflicts.push("taxDestination.autonomousCommunity"); else prepared.missing.push("taxDestination.autonomousCommunity");
@@ -217,10 +252,7 @@ function buildItpInput(caseFile, candidate, map, classification, overridePatch =
   for (const [field, key, kind] of [
     ["transaction.date", "transactionDate", "contractual"],
     ["taxDestination.autonomousCommunity", "buyerRegion", "any"],
-    ["taxDestination.province", "buyerProvince", "any"],
-    ["taxDestination.foralTerritory", "buyerProvince", "any"],
     ["transaction.purchasePrice", "purchasePrice", "contractual"],
-    ["vehicle.boeValue", "officialMarketValue", "technical"],
     ["vehicle.boeValue", "originalBoeValue", "technical"],
     ["vehicle.firstRegistrationDate", "firstRegistrationDate", "technical"],
     ["vehicle.category", "vehicleCategory", "technical"],
@@ -234,6 +266,16 @@ function buildItpInput(caseFile, candidate, map, classification, overridePatch =
   ]) {
     if (prepared.input[key] === undefined || key === "officialMarketValue" || key === "originalBoeValue") addPreparedValue(prepared, caseFile, candidate, field, key, map, kind);
   }
+  const foralTerritory = confirmedFact(caseFile, candidate, "taxDestination.foralTerritory", map, "any");
+  if (foralTerritory.ok && BASQUE_FORAL_TERRITORIES.has(foralTerritory.value)) {
+    prepared.input.buyerProvince = foralTerritory.value;
+    prepared.evidenceIds.push(...foralTerritory.evidenceIds);
+  } else if (prepared.input.buyerRegion === "pais_vasco") {
+    addPreparedValue(prepared, caseFile, candidate, "taxDestination.province", "buyerProvince", map, "any");
+  }
+  const officialMarketValue = depreciatedOfficialMarketValue(prepared.input);
+  if (officialMarketValue !== null) prepared.input.officialMarketValue = officialMarketValue;
+  else if (prepared.input.originalBoeValue !== undefined && prepared.input.transactionDate !== undefined && prepared.input.firstRegistrationDate !== undefined) prepared.missing.push("officialMarketValue");
   for (const key of ["sellerType", "buyerType", "documentType", "vatRegime"]) if (!prepared.input[key] || prepared.input[key] === "unknown") prepared.missing.push(`classification.${key}`);
   if (prepared.input.intendedForResale === undefined) prepared.input.intendedForResale = null;
   if (prepared.input.buyerTaxResidenceCountry === undefined) prepared.missing.push("classification.buyerTaxResidenceCountry");

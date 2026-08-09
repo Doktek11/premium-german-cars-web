@@ -188,6 +188,36 @@ function volvoNaturalWithoutDocumentTypeDto() {
   input.evidence.find((entry) => entry.evidenceId === "ev-volvo-settlement").verificationStatus = "scenario";
   return input;
 }
+function bmwProfessionalRebuScenarioDto({ sellerType = "professional", buyerType = "private", intendedForResale = undefined, rebuField = "transaction.vatRegime", vatRegime = "rebu", addContradictoryVat = false } = {}) {
+  const options = { calculationDate: "2026-08-09", taxYear: 2026, scenarioPolicy: "documentary_scenarios", maxScenarios: 3, currency: "EUR" };
+  const candidateId = "candidate-a1";
+  const item = (evidenceId, field, normalizedValue, valueType, candidate = null, verificationStatus = "confirmed_user") => evidence({ evidenceId, documentId: null, candidateId: candidate, page: null, field, normalizedValue, valueType, sourceType: "user_declaration", verificationStatus });
+  const evidenceItems = [
+    item("ev-a01", "vehicle.category", "passenger_car", "enum", candidateId),
+    item("ev-a02", "vehicle.engineDisplacementCc", 1598, "number", candidateId),
+    item("ev-a03", "vehicle.fiscalHorsepower", 9.7, "number", candidateId),
+    item("ev-a04", "vehicle.firstRegistrationDate", "2012-03-01", "date", candidateId),
+    item("ev-a05", "vehicle.condition", "usado_importado", "enum", candidateId),
+    item("ev-a06", "vehicle.co2Wltp", 132, "number", candidateId),
+    item("ev-a07", "vehicle.emissionsStandard", "wltp", "enum", candidateId),
+    item("ev-a08", "vehicle.zeroEmissionStatus", "not_zero_emission", "enum", candidateId),
+    item("ev-a09", "vehicle.isHistoricVehicle", false, "boolean", candidateId),
+    item("ev-a10", "vehicle.isEndOfLifeVehicle", false, "boolean", candidateId),
+    item("ev-a11", "vehicle.boeValue", 21100, "money", candidateId),
+    item("ev-a12", "transaction.purchasePrice", 12000, "money"),
+    item("ev-a13", "transaction.sellerType", sellerType, "enum"),
+    item("ev-a14", "transaction.buyerType", buyerType, "enum"),
+    item("ev-a15", rebuField, rebuField === "transaction.rebuStatus" ? "confirmed" : vatRegime, "enum", null, "scenario"),
+    item("ev-a16", "parties.sellerCountry", "DE", "country"),
+    item("ev-a17", "parties.buyerTaxResidenceCountry", "ES", "country"),
+    item("ev-a18", "taxDestination.autonomousCommunity", "la_rioja", "enum"),
+    item("ev-a19", "taxDestination.province", "la_rioja", "enum"),
+    item("ev-a20", "taxDestination.municipalityCode", "26089", "ine_code"),
+  ];
+  if (intendedForResale !== undefined) evidenceItems.push(item("ev-a21", "transaction.intendedForResale", intendedForResale, "boolean"));
+  if (addContradictoryVat) evidenceItems.push(item("ev-a22", "transaction.vatRegime", vatRegime === "general_vat" ? "rebu" : "general_vat", "enum", null, "scenario"));
+  return { schemaVersion: VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION, caseId: "case-a1", documents: [], evidence: evidenceItems, selectedVehicleCandidateId: candidateId, options };
+}
 
 async function calculate(dtoInput) {
   const adapted = buildVehicleTaxCaseFromActionDto(dtoInput);
@@ -445,6 +475,130 @@ test("Action La Rioja usa IEDMT peninsula, ITP depreciado y no provincia no fora
   assert.equal(Object.hasOwn(noDateResult.engineExecutions.itp.inputsUsed, "officialMarketValue"), false);
 });
 
+test("profesional REBU sin factura calcula ITP no sujeto solo como escenario", async () => {
+  for (const intendedForResale of [undefined, true, false]) {
+    const result = await calculate(bmwProfessionalRebuScenarioDto({ buyerType: "professional", intendedForResale }));
+    assert.equal(result.taxSummary, null);
+    assert.equal(result.estimatedSummary.exactTotal, null);
+    assert.equal(result.estimatedSummary.estimatedTotal, 212.22);
+    assert.equal(result.estimatedSummary.prudentBudget, 215.5);
+    for (const engineId of ["iedmt", "itp", "ivtm", "dgt_registration_fee"]) assert.equal(result.engineExecutions[engineId].status, "calculated_scenario", engineId);
+    assert.equal(result.engineExecutions.iedmt.result.tax.toFixed(2), "81.65");
+    assert.equal(result.engineExecutions.itp.result.applicability, "not_subject");
+    assert.equal(result.engineExecutions.itp.result.taxAmount, 0);
+    assert.equal(result.engineExecutions.itp.inputsUsed.documentType, "invoice");
+    assert.equal(result.engineExecutions.itp.inputsUsed.vatRegime, "rebu");
+    assert.equal(result.engineExecutions.itp.inputsUsed.assumedTransactionDate, "2026-08-09");
+    assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), true);
+    assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_REBU"), true);
+    assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_TRANSACTION_DATE"), true);
+    assert.equal(result.engineExecutions.itp.evidenceIds.some((id) => id.includes("doc")), false);
+    assert.equal(result.engineExecutions.ivtm.result.referenceProratedTax, 30.8);
+    assert.equal(result.engineExecutions.ivtm.result.prudentBudget, 34.08);
+    assert.equal(result.engineExecutions.dgt_registration_fee.result.amount, 99.77);
+    const itpLine = result.estimatedSummary.lineItems.find((item) => item.id === "itp");
+    assert.equal(itpLine.amount, 0);
+  }
+
+  const privateBuyer = await calculate(bmwProfessionalRebuScenarioDto({ buyerType: "private" }));
+  assert.equal(privateBuyer.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(privateBuyer.engineExecutions.itp.result.applicability, "not_subject");
+  assert.equal(privateBuyer.engineExecutions.itp.result.taxAmount, 0);
+
+  const rebuStatusOnly = await calculate(bmwProfessionalRebuScenarioDto({ rebuField: "transaction.rebuStatus" }));
+  assert.equal(rebuStatusOnly.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(rebuStatusOnly.engineExecutions.itp.result.applicability, "not_subject");
+});
+
+test("profesional IVA general sin factura calcula ITP no sujeto solo como escenario", async () => {
+  for (const buyerType of ["private", "professional"]) {
+    for (const intendedForResale of [undefined, true, false]) {
+      const result = await calculate(bmwProfessionalRebuScenarioDto({ buyerType, intendedForResale, vatRegime: "general_vat" }));
+      assert.equal(result.taxSummary, null);
+      assert.equal(result.estimatedSummary.exactTotal, null);
+      assert.equal(result.estimatedSummary.estimatedTotal, 212.22);
+      for (const engineId of ["iedmt", "itp", "ivtm", "dgt_registration_fee"]) assert.equal(result.engineExecutions[engineId].status, "calculated_scenario", `${buyerType}-${intendedForResale}-${engineId}`);
+      assert.equal(result.engineExecutions.itp.result.applicability, "not_subject");
+      assert.equal(result.engineExecutions.itp.result.taxAmount, 0);
+      assert.equal(result.engineExecutions.itp.inputsUsed.documentType, "invoice");
+      assert.equal(result.engineExecutions.itp.inputsUsed.vatRegime, "general_vat");
+      assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), true);
+      assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_REBU"), false);
+      assert.equal(result.engineExecutions.itp.warnings.some((warning) => warning.includes("REBU")), false);
+      assert.equal(result.engineExecutions.itp.evidenceIds.some((id) => id.includes("doc")), false);
+      const itpLine = result.estimatedSummary.lineItems.find((item) => item.id === "itp");
+      assert.equal(itpLine.amount, 0);
+    }
+  }
+});
+
+test("inferencia profesional IVA general no se aplica a seller private unknown contradiccion confirmed_only", async () => {
+  const privateSeller = await calculate(bmwProfessionalRebuScenarioDto({ sellerType: "private", vatRegime: "general_vat" }));
+  assert.notEqual(privateSeller.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(privateSeller.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), false);
+
+  const unknownSeller = await calculate(bmwProfessionalRebuScenarioDto({ sellerType: "unknown", vatRegime: "general_vat" }));
+  assert.notEqual(unknownSeller.engineExecutions.itp.inputsUsed.documentType, "invoice");
+  assert.equal(unknownSeller.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), false);
+
+  const contradiction = await calculate(bmwProfessionalRebuScenarioDto({ vatRegime: "general_vat", addContradictoryVat: true }));
+  assert.notEqual(contradiction.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(contradiction.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), false);
+
+  const confirmedOnlyInput = bmwProfessionalRebuScenarioDto({ vatRegime: "general_vat" });
+  confirmedOnlyInput.options.scenarioPolicy = "confirmed_only";
+  const strict = await calculate(confirmedOnlyInput);
+  assert.notEqual(strict.engineExecutions.itp.status, "calculated_scenario");
+  assert.notEqual(strict.engineExecutions.itp.inputsUsed.documentType, "invoice");
+});
+test("inferencia profesional REBU no se aplica a seller private unknown o REBU contradictorio", async () => {
+  const privateSeller = await calculate(bmwProfessionalRebuScenarioDto({ sellerType: "private" }));
+  assert.notEqual(privateSeller.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(privateSeller.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), false);
+
+  const unknownSeller = await calculate(bmwProfessionalRebuScenarioDto({ sellerType: "unknown" }));
+  assert.notEqual(unknownSeller.engineExecutions.itp.inputsUsed.documentType, "invoice");
+  assert.equal(unknownSeller.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), false);
+
+  const contradiction = await calculate(bmwProfessionalRebuScenarioDto({ addContradictoryVat: true }));
+  assert.notEqual(contradiction.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(contradiction.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_REBU"), false);
+});
+
+test("factura IVA general confirmada conserva el flujo confirmado sin hipotesis", async () => {
+  const input = dto({ seller: "professional", documentType: "invoice", vatRegime: "general_vat", rebuStatus: "unknown" });
+  for (const evidenceId of ["ev-zero", "ev-historic"]) {
+    const item = input.evidence.find((entry) => entry.evidenceId === evidenceId);
+    item.documentId = "doc-1";
+    item.page = 1;
+    item.sourceType = "official_document";
+    item.verificationStatus = "confirmed_official";
+  }
+  input.evidence.push(evidence({ evidenceId: "ev-end-life", documentId: "doc-1", field: "vehicle.isEndOfLifeVehicle", normalizedValue: false, valueType: "boolean" }));
+  const result = await calculate(input);
+  assert.equal(result.engineExecutions.itp.status, "calculated_confirmed");
+  assert.equal(result.engineExecutions.itp.result.applicability, "not_subject");
+  assert.equal(result.engineExecutions.itp.result.taxAmount, 0);
+  assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), false);
+  assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_REBU"), false);
+});
+test("factura REBU confirmada conserva el flujo confirmado sin hipotesis", async () => {
+  const input = dto({ seller: "professional", documentType: "invoice", vatRegime: "rebu", rebuStatus: "confirmed" });
+  for (const evidenceId of ["ev-zero", "ev-historic"]) {
+    const item = input.evidence.find((entry) => entry.evidenceId === evidenceId);
+    item.documentId = "doc-1";
+    item.page = 1;
+    item.sourceType = "official_document";
+    item.verificationStatus = "confirmed_official";
+  }
+  input.evidence.push(evidence({ evidenceId: "ev-end-life", documentId: "doc-1", field: "vehicle.isEndOfLifeVehicle", normalizedValue: false, valueType: "boolean" }));
+  const result = await calculate(input);
+  assert.equal(result.engineExecutions.itp.status, "calculated_confirmed");
+  assert.equal(result.engineExecutions.itp.result.applicability, "not_subject");
+  assert.equal(result.engineExecutions.itp.result.taxAmount, 0);
+  assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), false);
+  assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_REBU"), false);
+});
 test("request natural sin documentType infiere contrato privado solo como hipotesis ITP", async () => {
   const input = volvoNaturalWithoutDocumentTypeDto();
   const before = JSON.stringify(input);

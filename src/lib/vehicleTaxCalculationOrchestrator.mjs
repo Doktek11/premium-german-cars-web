@@ -11,10 +11,10 @@ export const VEHICLE_TAX_CALCULATION_SCHEMA_VERSION = "vehicle_tax_calculation.v
 export const VEHICLE_TAX_CALCULATION_STATUSES = Object.freeze({ EXACT: "exact", PARTIAL: "partial", ESTIMATED: "estimated", SCENARIO_REQUIRED: "scenario_required", REQUIRES_REVIEW: "requires_review", IDENTITY_CONFLICT: "identity_conflict", INVALID: "invalid" });
 export const VEHICLE_TAX_ENGINE_EXECUTION_STATUSES = Object.freeze({ CALCULATED_CONFIRMED: "calculated_confirmed", CALCULATED_SCENARIO: "calculated_scenario", NOT_RUN_MISSING_INPUTS: "not_run_missing_inputs", NOT_RUN_CONFLICT: "not_run_conflict", FAILED_VALIDATION: "failed_validation", REQUIRES_REVIEW: "requires_review" });
 export const VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES = Object.freeze({
-  INVALID_ORCHESTRATOR_INPUT: "INVALID_ORCHESTRATOR_INPUT", INCOMPATIBLE_CASE_FILE_SCHEMA: "INCOMPATIBLE_CASE_FILE_SCHEMA", INVALID_ORCHESTRATOR_OPTIONS: "INVALID_ORCHESTRATOR_OPTIONS", VEHICLE_CANDIDATE_REQUIRED: "VEHICLE_CANDIDATE_REQUIRED", ORCHESTRATOR_IDENTITY_CONFLICT: "ORCHESTRATOR_IDENTITY_CONFLICT", ENGINE_INPUTS_MISSING: "ENGINE_INPUTS_MISSING", ENGINE_INPUTS_CONFLICT: "ENGINE_INPUTS_CONFLICT", ENGINE_EXECUTION_FAILED: "ENGINE_EXECUTION_FAILED", IVTM_LOOKUP_FAILED: "IVTM_LOOKUP_FAILED", SUMMARY_NOT_AVAILABLE: "SUMMARY_NOT_AVAILABLE", PROVISIONAL_IEDMT_RESULT: "PROVISIONAL_IEDMT_RESULT", SCENARIO_LIMIT_EXCEEDED: "SCENARIO_LIMIT_EXCEEDED", ORCHESTRATOR_SCENARIOS_TRUNCATED: "ORCHESTRATOR_SCENARIOS_TRUNCATED", UNSAFE_EVIDENCE_SOURCE: "UNSAFE_EVIDENCE_SOURCE", SCENARIO_FROM_DECLARED_DATA: "SCENARIO_FROM_DECLARED_DATA", ASSUMED_TRANSACTION_DATE: "ASSUMED_TRANSACTION_DATE", ASSUMED_PRIVATE_SALE_CONTRACT: "ASSUMED_PRIVATE_SALE_CONTRACT", ASSUMED_SPANISH_REGISTRATION_DATE: "ASSUMED_SPANISH_REGISTRATION_DATE", NON_SERIALIZABLE_ORCHESTRATOR_INPUT: "NON_SERIALIZABLE_ORCHESTRATOR_INPUT",
+  INVALID_ORCHESTRATOR_INPUT: "INVALID_ORCHESTRATOR_INPUT", INCOMPATIBLE_CASE_FILE_SCHEMA: "INCOMPATIBLE_CASE_FILE_SCHEMA", INVALID_ORCHESTRATOR_OPTIONS: "INVALID_ORCHESTRATOR_OPTIONS", VEHICLE_CANDIDATE_REQUIRED: "VEHICLE_CANDIDATE_REQUIRED", ORCHESTRATOR_IDENTITY_CONFLICT: "ORCHESTRATOR_IDENTITY_CONFLICT", ENGINE_INPUTS_MISSING: "ENGINE_INPUTS_MISSING", ENGINE_INPUTS_CONFLICT: "ENGINE_INPUTS_CONFLICT", ENGINE_EXECUTION_FAILED: "ENGINE_EXECUTION_FAILED", IVTM_LOOKUP_FAILED: "IVTM_LOOKUP_FAILED", SUMMARY_NOT_AVAILABLE: "SUMMARY_NOT_AVAILABLE", PROVISIONAL_IEDMT_RESULT: "PROVISIONAL_IEDMT_RESULT", SCENARIO_LIMIT_EXCEEDED: "SCENARIO_LIMIT_EXCEEDED", ORCHESTRATOR_SCENARIOS_TRUNCATED: "ORCHESTRATOR_SCENARIOS_TRUNCATED", UNSAFE_EVIDENCE_SOURCE: "UNSAFE_EVIDENCE_SOURCE", SCENARIO_FROM_DECLARED_DATA: "SCENARIO_FROM_DECLARED_DATA", ASSUMED_TRANSACTION_DATE: "ASSUMED_TRANSACTION_DATE", ASSUMED_PRIVATE_SALE_CONTRACT: "ASSUMED_PRIVATE_SALE_CONTRACT", ASSUMED_PROFESSIONAL_INVOICE: "ASSUMED_PROFESSIONAL_INVOICE", ASSUMED_PROFESSIONAL_REBU: "ASSUMED_PROFESSIONAL_REBU", ASSUMED_SPANISH_REGISTRATION_DATE: "ASSUMED_SPANISH_REGISTRATION_DATE", NON_SERIALIZABLE_ORCHESTRATOR_INPUT: "NON_SERIALIZABLE_ORCHESTRATOR_INPUT",
 });
 export const VEHICLE_TAX_ORCHESTRATOR_WARNING_MESSAGES = Object.freeze({
-  INVALID_ORCHESTRATOR_INPUT: "The orchestrator input is invalid.", INCOMPATIBLE_CASE_FILE_SCHEMA: "The case file schemaVersion is not vehicle_tax_case_file.v1.", INVALID_ORCHESTRATOR_OPTIONS: "The orchestrator options are invalid.", VEHICLE_CANDIDATE_REQUIRED: "A selected vehicle candidate is required.", ORCHESTRATOR_IDENTITY_CONFLICT: "Vehicle identity is unresolved; technical facts were not mixed.", ENGINE_INPUTS_MISSING: "One or more engine inputs are missing or not confirmed.", ENGINE_INPUTS_CONFLICT: "One or more engine inputs are conflicting.", ENGINE_EXECUTION_FAILED: "A tax engine failed during isolated execution.", IVTM_LOOKUP_FAILED: "The IVTM local lookup failed.", SUMMARY_NOT_AVAILABLE: "The tax summary was not calculated because no engine produced a usable result or the summary aggregator failed.", PROVISIONAL_IEDMT_RESULT: "IEDMT returned a provisional territory result and was not treated as exact.", SCENARIO_LIMIT_EXCEEDED: "The requested scenario limit exceeds the absolute maximum.", ORCHESTRATOR_SCENARIOS_TRUNCATED: "Orchestrator scenarios were truncated deterministically.", UNSAFE_EVIDENCE_SOURCE: "A fact was not used because its evidence source is not compatible.", SCENARIO_FROM_DECLARED_DATA: "A scenario calculation uses declared or non-confirmed structured data.", ASSUMED_TRANSACTION_DATE: "A scenario calculation uses calculationDate as the assumed transaction date.", ASSUMED_PRIVATE_SALE_CONTRACT: "A scenario calculation assumes a private-sale contract for a private-to-private transfer when no contract document exists yet.", ASSUMED_SPANISH_REGISTRATION_DATE: "A scenario calculation uses an assumed Spanish registration date.", NON_SERIALIZABLE_ORCHESTRATOR_INPUT: "The orchestrator received non JSON-serializable input.",
+  INVALID_ORCHESTRATOR_INPUT: "The orchestrator input is invalid.", INCOMPATIBLE_CASE_FILE_SCHEMA: "The case file schemaVersion is not vehicle_tax_case_file.v1.", INVALID_ORCHESTRATOR_OPTIONS: "The orchestrator options are invalid.", VEHICLE_CANDIDATE_REQUIRED: "A selected vehicle candidate is required.", ORCHESTRATOR_IDENTITY_CONFLICT: "Vehicle identity is unresolved; technical facts were not mixed.", ENGINE_INPUTS_MISSING: "One or more engine inputs are missing or not confirmed.", ENGINE_INPUTS_CONFLICT: "One or more engine inputs are conflicting.", ENGINE_EXECUTION_FAILED: "A tax engine failed during isolated execution.", IVTM_LOOKUP_FAILED: "The IVTM local lookup failed.", SUMMARY_NOT_AVAILABLE: "The tax summary was not calculated because no engine produced a usable result or the summary aggregator failed.", PROVISIONAL_IEDMT_RESULT: "IEDMT returned a provisional territory result and was not treated as exact.", SCENARIO_LIMIT_EXCEEDED: "The requested scenario limit exceeds the absolute maximum.", ORCHESTRATOR_SCENARIOS_TRUNCATED: "Orchestrator scenarios were truncated deterministically.", UNSAFE_EVIDENCE_SOURCE: "A fact was not used because its evidence source is not compatible.", SCENARIO_FROM_DECLARED_DATA: "A scenario calculation uses declared or non-confirmed structured data.", ASSUMED_TRANSACTION_DATE: "A scenario calculation uses calculationDate as the assumed transaction date.", ASSUMED_PRIVATE_SALE_CONTRACT: "A scenario calculation assumes a private-sale contract for a private-to-private transfer when no contract document exists yet.", ASSUMED_PROFESSIONAL_INVOICE: "A professional invoice is assumed only for this documentary scenario.", ASSUMED_PROFESSIONAL_REBU: "A scenario calculation treats compatible REBU structured data as an orientative professional REBU hypothesis.", ASSUMED_SPANISH_REGISTRATION_DATE: "A scenario calculation uses an assumed Spanish registration date.", NON_SERIALIZABLE_ORCHESTRATOR_INPUT: "The orchestrator received non JSON-serializable input.",
 });
 
 const ENGINE_IDS = Object.freeze(["iedmt", "itp", "ivtm", "dgt_registration_fee"]);
@@ -221,13 +221,29 @@ function addPreparedValue(prepared, caseFile, candidate, field, key, map, kind, 
 }
 function removeMissing(prepared, field) { prepared.missing = prepared.missing.filter((item) => item !== field); }
 function scenarioAssumption(prepared, text, code) { prepared.assumptions.push(text); prepared.warningCodes.push(code); prepared.scenarioFields += 1; }
+function hasBlockingOperationIssue(classification) {
+  if (["conflict", "identity_conflict", "invalid"].includes(classification?.status)) return true;
+  return (classification?.warningCodes ?? []).includes("INTERMEDIARY_SELLER_UNRESOLVED");
+}
+function hasSingleVehicleCandidate(caseFile) {
+  return Array.isArray(caseFile?.vehicleCandidates) && caseFile.vehicleCandidates.length <= 1;
+}
 function canAssumePrivateSaleContract(caseFile, classification, prepared) {
-  if (!Array.isArray(caseFile?.vehicleCandidates) || caseFile.vehicleCandidates.length > 1) return false;
+  if (!hasSingleVehicleCandidate(caseFile)) return false;
   if (prepared.input.sellerType !== "private" || prepared.input.buyerType !== "private") return false;
   if (prepared.input.documentType && prepared.input.documentType !== "unknown") return false;
   if (prepared.input.vatRegime && prepared.input.vatRegime !== "unknown") return false;
-  if (["conflict", "identity_conflict", "invalid"].includes(classification?.status)) return false;
-  if ((classification?.warningCodes ?? []).includes("INTERMEDIARY_SELLER_UNRESOLVED")) return false;
+  if (hasBlockingOperationIssue(classification)) return false;
+  return true;
+}
+function canAssumeProfessionalInvoice(caseFile, classification, prepared) {
+  if (!hasSingleVehicleCandidate(caseFile)) return false;
+  if (prepared.input.sellerType !== "professional") return false;
+  if (prepared.input.buyerType !== "private" && prepared.input.buyerType !== "professional") return false;
+  if (prepared.input.documentType && prepared.input.documentType !== "unknown") return false;
+  if (prepared.input.vatRegime !== "rebu" && prepared.input.vatRegime !== "general_vat") return false;
+  if (classification?.vatRegimeStatus === "conflict" || classification?.rebuStatusCertainty === "conflict") return false;
+  if (hasBlockingOperationIssue(classification)) return false;
   return true;
 }
 function confidenceLevel(prepared, scenario) {
@@ -347,6 +363,13 @@ function buildItpInput(caseFile, candidate, map, classification, overridePatch =
     removeMissing(prepared, "classification.documentType");
     removeMissing(prepared, "classification.vatRegime");
     scenarioAssumption(prepared, "Se asume internamente private_sale_contract para una transmision particular a particular sin contrato existente; no crea documento ni evidencia contractual.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_PRIVATE_SALE_CONTRACT);
+  }
+  if (mode === "scenario" && canAssumeProfessionalInvoice(caseFile, classification, prepared)) {
+    prepared.input.documentType = "invoice";
+    removeMissing(prepared, "transaction.documentType");
+    removeMissing(prepared, "classification.documentType");
+    scenarioAssumption(prepared, "Se asume internamente invoice para una transmision profesional con regimen IVA estructurado sin factura existente; no crea documento ni evidencia contractual.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_PROFESSIONAL_INVOICE);
+    if (prepared.input.vatRegime === "rebu") scenarioAssumption(prepared, "Se evalua REBU solo como hipotesis orientativa a partir de datos estructurados compatibles; no confirma regimen de factura.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_PROFESSIONAL_REBU);
   }
   const foralTerritory = readFact(caseFile, candidate, "taxDestination.foralTerritory", map, "any", mode);
   if (foralTerritory.ok && BASQUE_FORAL_TERRITORIES.has(foralTerritory.value)) {

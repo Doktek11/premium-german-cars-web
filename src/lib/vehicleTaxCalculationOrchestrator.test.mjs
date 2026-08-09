@@ -292,6 +292,58 @@ test("intermediary warning prevents private contract scenario assumption", async
   assert.equal(result.engineExecutions.itp.warningCodes.includes(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_PRIVATE_SALE_CONTRACT), false);
   assert.notEqual(result.engineExecutions.itp.inputsUsed.documentType, "private_sale_contract");
 });
+test("intermediary warning prevents professional REBU invoice scenario assumption", async () => {
+  const result = await calculateVehicleTaxCase(makeCase({ remove: ["doc-type", "vat", "tx-date"] }), {
+    ...DEFAULT_OPTIONS,
+    scenarioPolicy: "documentary_scenarios",
+    dependencies: {
+      classifyOperation: () => ({
+        status: "scenario_required",
+        sellerType: "professional",
+        buyerType: "private",
+        documentType: "unknown",
+        vatRegime: "rebu",
+        rebuStatus: "confirmed",
+        vatRegimeStatus: "scenario_required",
+        rebuStatusCertainty: "scenario_required",
+        warningCodes: ["INTERMEDIARY_SELLER_UNRESOLVED"],
+        evidenceIds: ["seller", "vat"],
+        scenarios: [],
+        transferTaxClassification: { ...PRIVATE_PATCH, sellerType: "professional", buyerType: "private", documentType: "unknown", vatRegime: "rebu", intendedForResale: null },
+      }),
+      calculateItp: () => { throw new Error("ITP should not run for intermediary professional REBU scenario"); },
+    },
+  });
+  assert.notEqual(result.engineExecutions.itp.status, VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO);
+  assert.equal(result.engineExecutions.itp.warningCodes.includes(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_PROFESSIONAL_INVOICE), false);
+  assert.notEqual(result.engineExecutions.itp.inputsUsed.documentType, "invoice");
+});
+test("intermediary warning prevents professional general VAT invoice scenario assumption", async () => {
+  const result = await calculateVehicleTaxCase(makeCase({ remove: ["doc-type", "vat", "tx-date"] }), {
+    ...DEFAULT_OPTIONS,
+    scenarioPolicy: "documentary_scenarios",
+    dependencies: {
+      classifyOperation: () => ({
+        status: "scenario_required",
+        sellerType: "professional",
+        buyerType: "private",
+        documentType: "unknown",
+        vatRegime: "general_vat",
+        rebuStatus: "unknown",
+        vatRegimeStatus: "scenario_required",
+        rebuStatusCertainty: "missing",
+        warningCodes: ["INTERMEDIARY_SELLER_UNRESOLVED"],
+        evidenceIds: ["seller", "vat"],
+        scenarios: [],
+        transferTaxClassification: { ...PRIVATE_PATCH, sellerType: "professional", buyerType: "private", documentType: "unknown", vatRegime: "general_vat", intendedForResale: null },
+      }),
+      calculateItp: () => { throw new Error("ITP should not run for intermediary professional VAT scenario"); },
+    },
+  });
+  assert.notEqual(result.engineExecutions.itp.status, VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO);
+  assert.equal(result.engineExecutions.itp.warningCodes.includes(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_PROFESSIONAL_INVOICE), false);
+  assert.notEqual(result.engineExecutions.itp.inputsUsed.documentType, "invoice");
+});
 test("documentary scenarios are deterministic and capped", async () => {
   const options = { ...DEFAULT_OPTIONS, scenarioPolicy: "documentary_scenarios", maxScenarios: 2 };
   const first = await calculateVehicleTaxCase(makeCase({ remove: ["seller", "vat"] }), options);

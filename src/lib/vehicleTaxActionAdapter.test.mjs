@@ -138,6 +138,40 @@ function volvoDeclaredDto({ transactionDate = null, expectedSettlementDate = nul
     options,
   };
 }
+const SEMANTIC_VALUE_TYPES = Object.freeze({
+  "vehicle.category": "vehicle_category",
+  "vehicle.fuelType": "fuel_type",
+  "vehicle.engineDisplacementCc": "engine_displacement_cc",
+  "vehicle.fiscalHorsepower": "fiscal_horsepower",
+  "vehicle.firstRegistrationDate": "year_month",
+  "vehicle.condition": "vehicle_condition",
+  "vehicle.co2Wltp": "co2_wltp",
+  "vehicle.emissionsStandard": "emissions_standard",
+  "vehicle.zeroEmissionStatus": "zero_emission_status",
+  "vehicle.isHistoricVehicle": "boolean_flag",
+  "vehicle.isEndOfLifeVehicle": "boolean_flag",
+  "vehicle.boeValue": "money_eur",
+  "transaction.purchasePrice": "money_eur",
+  "transaction.documentType": "document_type",
+  "transaction.sellerType": "seller_type",
+  "transaction.buyerType": "buyer_type",
+  "transaction.vatRegime": "vat_regime",
+  "transaction.intendedForResale": "boolean_flag",
+  "parties.sellerCountry": "country_code",
+  "parties.buyerTaxResidenceCountry": "country_code",
+  "taxDestination.autonomousCommunity": "autonomous_community",
+  "taxDestination.province": "province_code",
+  "taxDestination.municipalityCode": "municipality_code",
+  "transaction.date": "date_iso",
+  "taxDestination.expectedSettlementDate": "date_iso",
+});
+
+function withSemanticValueTypes(input) {
+  const copy = JSON.parse(JSON.stringify(input));
+  for (const item of copy.evidence) item.valueType = SEMANTIC_VALUE_TYPES[item.field] ?? item.valueType;
+  return copy;
+}
+
 async function calculate(dtoInput) {
   const adapted = buildVehicleTaxCaseFromActionDto(dtoInput);
   return calculateVehicleTaxCase(adapted.caseFile, adapted.options);
@@ -219,9 +253,10 @@ test("rechaza referencias rotas, paginas invalidas, campos y enums desconocidos"
   const badEnum = dto();
   badEnum.evidence[0].normalizedValue = "lorry";
   assertActionError(() => buildVehicleTaxCaseFromActionDto(badEnum), "ACTION_VALUE_INVALID");
-  const badType = dto();
-  badType.evidence[0].valueType = "string";
-  assertActionError(() => buildVehicleTaxCaseFromActionDto(badType), "ACTION_VALUE_TYPE_INVALID");
+  const badIne = dto();
+  badIne.evidence.find((item) => item.evidenceId === "ev-municipality").normalizedValue = "26A89";
+  badIne.evidence.find((item) => item.evidenceId === "ev-municipality").valueType = "municipality_code";
+  assertActionError(() => buildVehicleTaxCaseFromActionDto(badIne), "ACTION_VALUE_INVALID");
 });
 
 test("rechaza numericos invalidos, PII, raw OCR, VIN e IDs con PII", () => {
@@ -393,6 +428,28 @@ test("Action La Rioja usa IEDMT peninsula, ITP depreciado y no provincia no fora
   assert.equal(Object.hasOwn(noDateResult.engineExecutions.itp.inputsUsed, "officialMarketValue"), false);
 });
 
+test("normaliza valueType semanticos desde FIELD_RULES sin reflejarlos", async () => {
+  const input = withSemanticValueTypes(volvoDeclaredDto());
+  const before = JSON.stringify(input);
+  const adapted = buildVehicleTaxCaseFromActionDto(input);
+  assert.equal(JSON.stringify(input), before);
+
+  const valueTypesByField = new Map(adapted.caseFile.evidence.map((item) => [item.field, item.valueType]));
+  assert.equal(valueTypesByField.get("vehicle.category"), "enum");
+  assert.equal(valueTypesByField.get("vehicle.fuelType"), "enum");
+  assert.equal(valueTypesByField.get("vehicle.engineDisplacementCc"), "number");
+  assert.equal(valueTypesByField.get("vehicle.fiscalHorsepower"), "number");
+  assert.equal(valueTypesByField.get("vehicle.firstRegistrationDate"), "date");
+  assert.equal(valueTypesByField.get("vehicle.boeValue"), "money");
+  assert.equal(valueTypesByField.get("parties.sellerCountry"), "country");
+  assert.equal(valueTypesByField.get("taxDestination.municipalityCode"), "ine_code");
+  for (const semanticType of Object.values(SEMANTIC_VALUE_TYPES)) assert.equal(JSON.stringify(adapted).includes(semanticType), false, semanticType);
+
+  const result = await calculateVehicleTaxCase(adapted.caseFile, adapted.options);
+  for (const engineId of ["iedmt", "itp", "ivtm", "dgt_registration_fee"]) assert.equal(result.engineExecutions[engineId].status, "calculated_scenario", engineId);
+  assert.equal(result.estimatedSummary.estimatedTotal, 2619.06);
+  for (const semanticType of Object.values(SEMANTIC_VALUE_TYPES)) assert.equal(JSON.stringify(result).includes(semanticType), false, semanticType);
+});
 test("Volvo declarado sin documentos calcula estimacion orientativa separada", async () => {
   const input = volvoDeclaredDto();
   const before = JSON.stringify(input);

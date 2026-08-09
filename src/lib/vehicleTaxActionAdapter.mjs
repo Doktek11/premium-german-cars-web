@@ -156,11 +156,10 @@ function validateOptions(options) {
   return { ...options };
 }
 
-function validateNormalizedValue(field, value, valueType) {
+function validateNormalizedValue(field, value) {
   const meta = VEHICLE_TAX_ACTION_FIELD_CONTRACT[field];
   if (!meta) throw new VehicleTaxActionDtoError("ACTION_FIELD_INVALID", "field is invalid.");
   if (value === null || value === undefined) throw new VehicleTaxActionDtoError("ACTION_VALUE_INVALID", "Evidence value is invalid.");
-  if (valueType !== meta.valueType) throw new VehicleTaxActionDtoError("ACTION_VALUE_TYPE_INVALID", "Evidence valueType is invalid.");
   if (meta.valueType === "number" || meta.valueType === "money") {
     if (typeof value !== "number" || !Number.isFinite(value) || value < meta.min || value > meta.max) throw new VehicleTaxActionDtoError("ACTION_VALUE_INVALID", "Evidence value is invalid.");
     return value;
@@ -234,7 +233,7 @@ function validateEvidence(evidenceItems, documentsById) {
     if (!SOURCE_TYPES.has(item.sourceType)) throw new VehicleTaxActionDtoError("ACTION_SOURCE_INVALID", "sourceType is invalid.");
     if (!EXTRACTION_METHODS.has(item.extractionMethod)) throw new VehicleTaxActionDtoError("ACTION_EXTRACTION_INVALID", "extractionMethod is invalid.");
     if (!VERIFICATION_STATUSES.has(item.verificationStatus)) throw new VehicleTaxActionDtoError("ACTION_VERIFICATION_INVALID", "verificationStatus is invalid.");
-    const normalizedValue = validateNormalizedValue(item.field, item.normalizedValue, item.valueType);
+    const normalizedValue = validateNormalizedValue(item.field, item.normalizedValue);
     return {
       evidenceId,
       documentId,

@@ -373,10 +373,14 @@ test("success schema permite interpretar totales, escenarios y warnings clave", 
   const data = OPENAPI.components.schemas.CalculationData.properties;
   assert.deepEqual(data.status.enum, Object.values(VEHICLE_TAX_CALCULATION_STATUSES));
   assert.equal(data.engineExecutions.$ref, "#/components/schemas/EngineExecutions");
+  assert.equal(data.estimatedSummary.$ref, "#/components/schemas/EstimatedSummary");
   const execution = OPENAPI.components.schemas.EngineExecution;
   assert.deepEqual(execution.properties.status.enum, Object.values(VEHICLE_TAX_ENGINE_EXECUTION_STATUSES));
+  assert.deepEqual(execution.properties.confidenceLevel.enum, ["confirmed", "mixed", "declared"]);
   const taxSummary = OPENAPI.components.schemas.TaxSummary;
   for (const key of ["status", "confirmedSubtotal", "exactTotal", "probableTotal", "minimumTotal", "maximumTotal", "prudentBudget", "exactTotalBlockedBy"]) assert.ok(Object.hasOwn(taxSummary.properties, key), key);
+  const estimatedSummary = OPENAPI.components.schemas.EstimatedSummary;
+  for (const key of ["status", "confirmedSubtotal", "estimatedTotal", "minimumTotal", "maximumTotal", "prudentBudget", "exactTotal", "exactTotalBlockedBy"]) assert.ok(Object.hasOwn(estimatedSummary.properties, key), `estimated:${key}`);
   for (const key of ["scenarios", "missingFields", "warningCodes", "warnings", "requestId"]) assert.match(TEXT, new RegExp(`"${key}"`));
   assert.equal(OPENAPI.components.schemas.SuccessBody.properties.schemaVersion.const, VEHICLE_TAX_ESTIMATE_RESPONSE_SCHEMA_VERSION);
 });

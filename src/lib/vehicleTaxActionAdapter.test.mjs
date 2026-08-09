@@ -99,6 +99,45 @@ function sharedRefCount(value, seen = new WeakSet(), refs = new WeakMap()) {
   return count;
 }
 
+function volvoDeclaredDto({ transactionDate = null, expectedSettlementDate = null, scenarioPolicy = "documentary_scenarios" } = {}) {
+  const options = { calculationDate: "2026-08-09", taxYear: 2026, scenarioPolicy, maxScenarios: 3, currency: "EUR" };
+  const item = (evidenceId, field, normalizedValue, valueType, candidateId = null) => evidence({ evidenceId, documentId: null, candidateId, page: null, field, normalizedValue, valueType, sourceType: "user_declaration", verificationStatus: "confirmed_user" });
+  const evidenceItems = [
+    item("ev-volvo-category", "vehicle.category", "passenger_car", "enum", "candidate-volvo"),
+    item("ev-volvo-fuel", "vehicle.fuelType", "gasoline", "enum", "candidate-volvo"),
+    item("ev-volvo-cc", "vehicle.engineDisplacementCc", 1969, "number", "candidate-volvo"),
+    item("ev-volvo-cvf", "vehicle.fiscalHorsepower", 13.4, "number", "candidate-volvo"),
+    item("ev-volvo-first-reg", "vehicle.firstRegistrationDate", "2024-06", "date", "candidate-volvo"),
+    item("ev-volvo-condition", "vehicle.condition", "usado_importado", "enum", "candidate-volvo"),
+    item("ev-volvo-co2", "vehicle.co2Wltp", 138, "number", "candidate-volvo"),
+    item("ev-volvo-standard", "vehicle.emissionsStandard", "wltp", "enum", "candidate-volvo"),
+    item("ev-volvo-zero", "vehicle.zeroEmissionStatus", "not_zero_emission", "enum", "candidate-volvo"),
+    item("ev-volvo-historic", "vehicle.isHistoricVehicle", false, "boolean", "candidate-volvo"),
+    item("ev-volvo-end-life", "vehicle.isEndOfLifeVehicle", false, "boolean", "candidate-volvo"),
+    item("ev-volvo-boe", "vehicle.boeValue", 47100, "money", "candidate-volvo"),
+    item("ev-volvo-price", "transaction.purchasePrice", 30000, "money"),
+    item("ev-volvo-doc-type", "transaction.documentType", "private_sale_contract", "enum"),
+    item("ev-volvo-seller", "transaction.sellerType", "private", "enum"),
+    item("ev-volvo-buyer", "transaction.buyerType", "private", "enum"),
+    item("ev-volvo-vat", "transaction.vatRegime", "not_applicable_private_sale", "enum"),
+    item("ev-volvo-resale", "transaction.intendedForResale", false, "boolean"),
+    item("ev-volvo-seller-country", "parties.sellerCountry", "DE", "country"),
+    item("ev-volvo-buyer-country", "parties.buyerTaxResidenceCountry", "ES", "country"),
+    item("ev-volvo-region", "taxDestination.autonomousCommunity", "la_rioja", "enum"),
+    item("ev-volvo-province", "taxDestination.province", "la_rioja", "enum"),
+    item("ev-volvo-municipality", "taxDestination.municipalityCode", "26089", "ine_code"),
+  ];
+  if (transactionDate) evidenceItems.push(item("ev-volvo-tx-date", "transaction.date", transactionDate, "date"));
+  if (expectedSettlementDate) evidenceItems.push(item("ev-volvo-settlement", "taxDestination.expectedSettlementDate", expectedSettlementDate, "date"));
+  return {
+    schemaVersion: VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION,
+    caseId: "case-volvo-declared",
+    documents: [],
+    evidence: evidenceItems,
+    selectedVehicleCandidateId: "candidate-volvo",
+    options,
+  };
+}
 async function calculate(dtoInput) {
   const adapted = buildVehicleTaxCaseFromActionDto(dtoInput);
   return calculateVehicleTaxCase(adapted.caseFile, adapted.options);
@@ -354,6 +393,59 @@ test("Action La Rioja usa IEDMT peninsula, ITP depreciado y no provincia no fora
   assert.equal(Object.hasOwn(noDateResult.engineExecutions.itp.inputsUsed, "officialMarketValue"), false);
 });
 
+test("Volvo declarado sin documentos calcula estimacion orientativa separada", async () => {
+  const input = volvoDeclaredDto();
+  const before = JSON.stringify(input);
+  const result = await calculate(input);
+  assert.equal(JSON.stringify(input), before);
+  assert.deepEqual(result, JSON.parse(JSON.stringify(result)));
+  assert.equal(sharedRefCount(result), 0);
+  assert.equal(result.status, "estimated");
+  assert.equal(result.taxSummary, null);
+  assert.equal(result.estimatedSummary.exactTotal, null);
+  assert.equal(result.estimatedSummary.confirmedSubtotal, null);
+  assert.equal(result.estimatedSummary.estimatedTotal, 2619.06);
+  assert.equal(result.estimatedSummary.prudentBudget, 2626);
+  assert.deepEqual(result.estimatedSummary.exactTotalBlockedBy, ["iedmt", "itp", "ivtm", "dgt_registration_fee"]);
+  for (const engineId of ["iedmt", "itp", "ivtm", "dgt_registration_fee"]) {
+    assert.equal(result.engineExecutions[engineId].status, "calculated_scenario", engineId);
+    assert.equal(result.engineExecutions[engineId].inputStatus, "scenario", engineId);
+    assert.equal(result.engineExecutions[engineId].confidenceLevel, "declared", engineId);
+    assert.equal(result.engineExecutions[engineId].warningCodes.includes("SCENARIO_FROM_DECLARED_DATA"), true, engineId);
+  }
+  assert.equal(result.engineExecutions.iedmt.result.tax.toFixed(2), "1192.01");
+  assert.equal(result.engineExecutions.itp.inputsUsed.assumedTransactionDate, "2026-08-09");
+  assert.equal(result.engineExecutions.itp.inputsUsed.officialMarketValue, 31557);
+  assert.equal(result.engineExecutions.itp.result.taxAmount, 1262.28);
+  assert.equal(result.engineExecutions.ivtm.inputsUsed.assumedSpanishRegistrationDate, "2026-08-09");
+  assert.equal(result.engineExecutions.dgt_registration_fee.inputsUsed.assumedSpanishRegistrationDate, "2026-08-09");
+  assert.equal(result.engineExecutions.dgt_registration_fee.result.amount, 99.77);
+  assert.equal(JSON.stringify(result).includes("confirmed_official"), false);
+});
+
+test("Volvo declarado con fechas previstas usa esas fechas solo en escenario", async () => {
+  const result = await calculate(volvoDeclaredDto({ transactionDate: "2026-08-02", expectedSettlementDate: "2026-08-02" }));
+  assert.equal(result.status, "estimated");
+  assert.equal(result.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(result.engineExecutions.itp.inputsUsed.transactionDate, "2026-08-02");
+  assert.equal(Object.hasOwn(result.engineExecutions.itp.inputsUsed, "assumedTransactionDate"), false);
+  assert.equal(result.engineExecutions.ivtm.inputsUsed.spanishRegistrationDate, "2026-08-02");
+  assert.equal(result.engineExecutions.ivtm.inputsUsed.assumedSpanishRegistrationDate, "2026-08-02");
+  assert.equal(result.engineExecutions.dgt_registration_fee.inputsUsed.feeDate, "2026-08-02");
+  assert.equal(result.engineExecutions.dgt_registration_fee.inputsUsed.assumedSpanishRegistrationDate, "2026-08-02");
+  assert.equal(result.taxSummary, null);
+  assert.equal(result.estimatedSummary.exactTotal, null);
+});
+
+test("confirmed_only mantiene bloqueo estricto con datos solo declarados", async () => {
+  const result = await calculate(volvoDeclaredDto({ scenarioPolicy: "confirmed_only" }));
+  assert.equal(result.status, "partial");
+  assert.equal(result.estimatedSummary, null);
+  assert.equal(result.engineExecutions.iedmt.status, "not_run_missing_inputs");
+  assert.equal(result.engineExecutions.itp.status, "not_run_missing_inputs");
+  assert.equal(result.engineExecutions.ivtm.status, "not_run_missing_inputs");
+  assert.equal(result.engineExecutions.dgt_registration_fee.status, "not_run_missing_inputs");
+});
 test("instrucciones GPT no permiten inferir transaction.date y caben en el limite compacto", () => {
   const instructions = readFileSync(new URL("../../docs/asistente-pgc-instructions.md", import.meta.url), "utf8");
   assert.match(instructions, /Nunca infieras .*transaction.date/);

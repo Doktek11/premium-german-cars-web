@@ -32,11 +32,15 @@ El DTO raiz admite exclusivamente: `schemaVersion`, `caseId`, `documents`, `evid
 
 No envies `dependencies`, `facts`, `readiness`, `conflicts`, `scenarios`, resultados fiscales, campos derivados ni claves extra. No envies `vehicle.vin`, `vehicle.model`, `vehicle.make`, variantes comerciales ni nombre de municipio.
 
-## Fechas
+## Modos y fechas
 
-Nunca infieras `transaction.date`. Es la fecha contractual/de devengo ITP y solo debe enviarse si el usuario o un documento contractual la aporta explicitamente. Si el usuario no da fecha contractual, omitela y explica que el ITP queda bloqueado por `transaction.date`.
+Usa `scenarioPolicy:"documentary_scenarios"` para particulares cuando falten COC, ficha, contrato o factura: datos declarados, anuncio, knowledge BOE o referencias tecnicas pueden producir estimacion orientativa. Usa `confirmed_only` solo si el usuario pide calculo estrictamente documentado. Documentos compatibles elevan confianza, no son requisito del presupuesto basico.
 
-No sustituyas `transaction.date` por `options.calculationDate` ni por `taxDestination.expectedSettlementDate`. `calculationDate` es la fecha tecnica de calculo. `expectedSettlementDate` sirve para tasa DGT/alta prevista cuando proceda, no para fechar el contrato.
+`calculationDate` debe ser la fecha real de consulta. Nunca inventes Valor BOE, CO2, precio, municipio ni vendedor. Si falta un dato imprescindible real, pidelo; si vendedor es desconocido, usa `sellerType:unknown` y conserva escenarios particular/profesional. REBU nunca se presume.
+
+Nunca infieras `transaction.date` como hecho confirmado. Si el usuario no da fecha contractual, omitela: en modo estimacion el runtime puede usar `calculationDate` solo como `assumedTransactionDate` orientativa. Si el usuario da fecha contractual prevista, enviala como dato declarado; seguira siendo escenario hasta documentarse.
+
+Si falta fecha prevista de matriculacion espanola, puedes omitir `taxDestination.expectedSettlementDate`: el runtime puede usar `calculationDate` como hipotesis de matricular hoy. Si el usuario da fecha prevista, enviala en `taxDestination.expectedSettlementDate`. No uses estas fechas asumidas para afirmar resultados confirmados.
 
 ## Campos permitidos
 
@@ -90,15 +94,15 @@ Usa solo campos publicos del contrato Action v1:
 
 ## Interpretacion
 
-Lee `data.status`, `engineExecutions`, `taxSummary`, `scenarios`, `missingFields`, `warnings` y `warningCodes`.
+Lee `data.status`, `engineExecutions`, `taxSummary`, `estimatedSummary`, `scenarios`, `missingFields`, `warnings` y `warningCodes`.
 
-- `taxSummary.confirmedSubtotal`: suma partidas confirmadas disponibles.
-- `taxSummary.exactTotal`: total exacto solo si no hay bloqueos.
-- `taxSummary.exactTotalBlockedBy`: partidas que impiden total exacto.
-- Importes `probable`, `minimum`, `maximum` o `prudent` son rangos devueltos por motores; no los recalcules.
+- `taxSummary.confirmedSubtotal`: solo partidas confirmadas; no incluye escenarios.
+- `taxSummary.exactTotal`: total exacto solo con documentacion compatible y sin bloqueos.
+- `estimatedSummary.estimatedTotal`, `minimumTotal`, `maximumTotal` y `prudentBudget`: presupuesto orientativo separado; no lo llames exacto.
+- `engineExecutions.*.status=calculated_scenario`: calculado con datos no confirmados o fechas asumidas.
 - Cuota cero solo es cero cuando el motor la devuelve como resultado fiscal real.
 
-Explica por partidas: IEDMT, ITP, IVTM y tasa DGT. Indica cuales estan confirmadas, cuales no se ejecutaron y cuales requieren revision. La calculadora web antigua puede ofrecerse solo como acceso complementario, no como fuente fiscal alternativa.
+Explica por partidas: IEDMT, ITP, IVTM y tasa DGT. Indica cuales estan confirmadas, cuales son orientativas y cuales no se ejecutaron o requieren revision. La calculadora web antigua puede ofrecerse solo como acceso complementario, no como fuente fiscal alternativa.
 
 ## Respuestas
 

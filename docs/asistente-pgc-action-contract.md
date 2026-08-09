@@ -98,7 +98,7 @@ Campos no admitidos: `vehicle.vin`, `vehicle.model`, `vehicle.make`, variantes c
 | --- | --- |
 | `calculationDate` | Fecha real del calendario en ISO `YYYY-MM-DD`; su ano debe coincidir con `taxYear`. |
 | `taxYear` | Entero 1990-2100; debe coincidir con el ano de `calculationDate`; el runtime aplica la validacion semantica autoritativa. |
-| `scenarioPolicy` | `confirmed_only` o `documentary_scenarios`. |
+| `scenarioPolicy` | `confirmed_only` mantiene evidencia estricta; `documentary_scenarios` permite estimacion orientativa con datos saneados declarados/no confirmados. |
 | `maxScenarios` | Entero 0-12. |
 | `currency` | Solo `EUR`. |
 
@@ -118,9 +118,11 @@ No incluir `dependencies` en la request HTTP.
 
 ## Interpretacion de totales
 
-- `confirmedSubtotal`: subtotal de partidas confirmadas.
-- `exactTotal`: total exacto solo cuando existe y no esta bloqueado.
-- `exactTotalBlockedBy`: motores o partidas que impiden exactitud.
+- `taxSummary.confirmedSubtotal`: subtotal de partidas confirmadas; no suma resultados `calculated_scenario`.
+- `taxSummary.exactTotal`: total exacto solo cuando existe y no esta bloqueado.
+- `taxSummary.exactTotalBlockedBy`: motores o partidas que impiden exactitud.
+- `estimatedSummary`: resumen orientativo separado con `estimatedTotal`, `minimumTotal`, `maximumTotal` y `prudentBudget`; nunca equivale a `exactTotal`.
+- `engineExecutions.*.confidenceLevel`: `confirmed`, `mixed` o `declared` segun las fuentes usadas.
 - `probable`, `minimum`, `maximum` y `prudent` deben explicarse como estimacion/rango/presupuesto si el motor los devuelve.
 - No convertir `null`, no ejecutado, missing, outdated, scenario o review en cero.
 - Una cuota cero solo es real si viene devuelta por un motor como resultado fiscal confirmado/no sujeto/exento, segun contrato.

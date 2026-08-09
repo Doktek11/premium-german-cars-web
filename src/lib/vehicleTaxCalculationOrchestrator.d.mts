@@ -68,6 +68,7 @@ export interface VehicleTaxEngineExecution<Result = unknown> {
   engineId: VehicleTaxEngineId;
   status: VehicleTaxEngineExecutionStatus;
   inputStatus: "confirmed" | "scenario" | "missing" | "conflict" | "invalid";
+  confidenceLevel: "confirmed" | "mixed" | "declared";
   inputsUsed: Record<string, unknown>;
   evidenceIds: string[];
   result: Result | null;
@@ -77,6 +78,38 @@ export interface VehicleTaxEngineExecution<Result = unknown> {
   missingFields: string[];
 }
 
+export interface VehicleTaxEstimatedSummaryLineItem {
+  id: VehicleTaxEngineId;
+  status: VehicleTaxEngineExecutionStatus;
+  inputStatus: "confirmed" | "scenario" | "missing" | "conflict" | "invalid";
+  confidenceLevel: "confirmed" | "mixed" | "declared";
+  amount: number | null;
+  minimumAmount: number | null;
+  maximumAmount: number | null;
+  prudentAmount: number | null;
+  evidenceIds: string[];
+  assumptions: string[];
+  warnings: string[];
+  warningCodes: string[];
+  missingFields: string[];
+}
+
+export interface VehicleTaxEstimatedSummary {
+  status: "estimated";
+  currency: VehicleTaxCalculationCurrency | null;
+  exactTotal: null;
+  confirmedSubtotal: number | null;
+  estimatedTotal: number | null;
+  minimumTotal: number | null;
+  maximumTotal: number | null;
+  prudentBudget: number | null;
+  lineItems: VehicleTaxEstimatedSummaryLineItem[];
+  assumptions: string[];
+  warnings: string[];
+  warningCodes: string[];
+  missingFields: string[];
+  exactTotalBlockedBy: VehicleTaxEngineId[];
+}
 export interface VehicleTaxCalculationScenario {
   scenarioId: string;
   sourceScenarioId: string | null;
@@ -129,6 +162,7 @@ export interface VehicleTaxCalculationResult {
   classification: VehicleTaxOperationClassification | null;
   engineExecutions: VehicleTaxEngineExecutionMap;
   taxSummary: VehicleTaxSummaryResult | null;
+  estimatedSummary: VehicleTaxEstimatedSummary | null;
   scenarios: VehicleTaxCalculationScenario[];
   readiness: VehicleTaxCalculationReadiness;
   assumptions: string[];

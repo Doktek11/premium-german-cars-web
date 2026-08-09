@@ -33,6 +33,7 @@ const RESPONSE_ALLOWED_KEYS = Object.freeze([
   "classification",
   "engineExecutions",
   "taxSummary",
+  "estimatedSummary",
   "scenarios",
   "readiness",
   "assumptions",

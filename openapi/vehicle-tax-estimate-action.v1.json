@@ -3097,6 +3097,7 @@
           "engineId",
           "status",
           "inputStatus",
+          "confidenceLevel",
           "inputsUsed",
           "evidenceIds",
           "result",
@@ -3135,6 +3136,15 @@
               "conflict",
               "invalid"
             ]
+          },
+          "confidenceLevel": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "mixed",
+              "declared"
+            ],
+            "description": "Confidence level for the execution inputs. Scenario values are not official evidence."
           },
           "inputsUsed": {
             "type": "object",
@@ -3267,6 +3277,58 @@
           }
         }
       },
+      "EstimatedSummary": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "additionalProperties": true,
+        "description": "Orientative summary separated from confirmed totals. Never treat as exactTotal.",
+        "properties": {
+          "status": {
+            "const": "estimated"
+          },
+          "confirmedSubtotal": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "estimatedTotal": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minimumTotal": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "maximumTotal": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "prudentBudget": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "exactTotal": {
+            "type": "null"
+          },
+          "exactTotalBlockedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "Scenario": {
         "type": "object",
         "additionalProperties": true,
@@ -3316,6 +3378,7 @@
           "classification",
           "engineExecutions",
           "taxSummary",
+          "estimatedSummary",
           "scenarios",
           "readiness",
           "assumptions",
@@ -3380,6 +3443,9 @@
           },
           "taxSummary": {
             "$ref": "#/components/schemas/TaxSummary"
+          },
+          "estimatedSummary": {
+            "$ref": "#/components/schemas/EstimatedSummary"
           },
           "scenarios": {
             "type": "array",

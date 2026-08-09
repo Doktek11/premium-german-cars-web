@@ -11,10 +11,10 @@ export const VEHICLE_TAX_CALCULATION_SCHEMA_VERSION = "vehicle_tax_calculation.v
 export const VEHICLE_TAX_CALCULATION_STATUSES = Object.freeze({ EXACT: "exact", PARTIAL: "partial", ESTIMATED: "estimated", SCENARIO_REQUIRED: "scenario_required", REQUIRES_REVIEW: "requires_review", IDENTITY_CONFLICT: "identity_conflict", INVALID: "invalid" });
 export const VEHICLE_TAX_ENGINE_EXECUTION_STATUSES = Object.freeze({ CALCULATED_CONFIRMED: "calculated_confirmed", CALCULATED_SCENARIO: "calculated_scenario", NOT_RUN_MISSING_INPUTS: "not_run_missing_inputs", NOT_RUN_CONFLICT: "not_run_conflict", FAILED_VALIDATION: "failed_validation", REQUIRES_REVIEW: "requires_review" });
 export const VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES = Object.freeze({
-  INVALID_ORCHESTRATOR_INPUT: "INVALID_ORCHESTRATOR_INPUT", INCOMPATIBLE_CASE_FILE_SCHEMA: "INCOMPATIBLE_CASE_FILE_SCHEMA", INVALID_ORCHESTRATOR_OPTIONS: "INVALID_ORCHESTRATOR_OPTIONS", VEHICLE_CANDIDATE_REQUIRED: "VEHICLE_CANDIDATE_REQUIRED", ORCHESTRATOR_IDENTITY_CONFLICT: "ORCHESTRATOR_IDENTITY_CONFLICT", ENGINE_INPUTS_MISSING: "ENGINE_INPUTS_MISSING", ENGINE_INPUTS_CONFLICT: "ENGINE_INPUTS_CONFLICT", ENGINE_EXECUTION_FAILED: "ENGINE_EXECUTION_FAILED", IVTM_LOOKUP_FAILED: "IVTM_LOOKUP_FAILED", SUMMARY_NOT_AVAILABLE: "SUMMARY_NOT_AVAILABLE", PROVISIONAL_IEDMT_RESULT: "PROVISIONAL_IEDMT_RESULT", SCENARIO_LIMIT_EXCEEDED: "SCENARIO_LIMIT_EXCEEDED", ORCHESTRATOR_SCENARIOS_TRUNCATED: "ORCHESTRATOR_SCENARIOS_TRUNCATED", UNSAFE_EVIDENCE_SOURCE: "UNSAFE_EVIDENCE_SOURCE", NON_SERIALIZABLE_ORCHESTRATOR_INPUT: "NON_SERIALIZABLE_ORCHESTRATOR_INPUT",
+  INVALID_ORCHESTRATOR_INPUT: "INVALID_ORCHESTRATOR_INPUT", INCOMPATIBLE_CASE_FILE_SCHEMA: "INCOMPATIBLE_CASE_FILE_SCHEMA", INVALID_ORCHESTRATOR_OPTIONS: "INVALID_ORCHESTRATOR_OPTIONS", VEHICLE_CANDIDATE_REQUIRED: "VEHICLE_CANDIDATE_REQUIRED", ORCHESTRATOR_IDENTITY_CONFLICT: "ORCHESTRATOR_IDENTITY_CONFLICT", ENGINE_INPUTS_MISSING: "ENGINE_INPUTS_MISSING", ENGINE_INPUTS_CONFLICT: "ENGINE_INPUTS_CONFLICT", ENGINE_EXECUTION_FAILED: "ENGINE_EXECUTION_FAILED", IVTM_LOOKUP_FAILED: "IVTM_LOOKUP_FAILED", SUMMARY_NOT_AVAILABLE: "SUMMARY_NOT_AVAILABLE", PROVISIONAL_IEDMT_RESULT: "PROVISIONAL_IEDMT_RESULT", SCENARIO_LIMIT_EXCEEDED: "SCENARIO_LIMIT_EXCEEDED", ORCHESTRATOR_SCENARIOS_TRUNCATED: "ORCHESTRATOR_SCENARIOS_TRUNCATED", UNSAFE_EVIDENCE_SOURCE: "UNSAFE_EVIDENCE_SOURCE", SCENARIO_FROM_DECLARED_DATA: "SCENARIO_FROM_DECLARED_DATA", ASSUMED_TRANSACTION_DATE: "ASSUMED_TRANSACTION_DATE", ASSUMED_SPANISH_REGISTRATION_DATE: "ASSUMED_SPANISH_REGISTRATION_DATE", NON_SERIALIZABLE_ORCHESTRATOR_INPUT: "NON_SERIALIZABLE_ORCHESTRATOR_INPUT",
 });
 export const VEHICLE_TAX_ORCHESTRATOR_WARNING_MESSAGES = Object.freeze({
-  INVALID_ORCHESTRATOR_INPUT: "The orchestrator input is invalid.", INCOMPATIBLE_CASE_FILE_SCHEMA: "The case file schemaVersion is not vehicle_tax_case_file.v1.", INVALID_ORCHESTRATOR_OPTIONS: "The orchestrator options are invalid.", VEHICLE_CANDIDATE_REQUIRED: "A selected vehicle candidate is required.", ORCHESTRATOR_IDENTITY_CONFLICT: "Vehicle identity is unresolved; technical facts were not mixed.", ENGINE_INPUTS_MISSING: "One or more engine inputs are missing or not confirmed.", ENGINE_INPUTS_CONFLICT: "One or more engine inputs are conflicting.", ENGINE_EXECUTION_FAILED: "A tax engine failed during isolated execution.", IVTM_LOOKUP_FAILED: "The IVTM local lookup failed.", SUMMARY_NOT_AVAILABLE: "The tax summary was not calculated because no engine produced a usable result or the summary aggregator failed.", PROVISIONAL_IEDMT_RESULT: "IEDMT returned a provisional territory result and was not treated as exact.", SCENARIO_LIMIT_EXCEEDED: "The requested scenario limit exceeds the absolute maximum.", ORCHESTRATOR_SCENARIOS_TRUNCATED: "Orchestrator scenarios were truncated deterministically.", UNSAFE_EVIDENCE_SOURCE: "A fact was not used because its evidence source is not compatible.", NON_SERIALIZABLE_ORCHESTRATOR_INPUT: "The orchestrator received non JSON-serializable input.",
+  INVALID_ORCHESTRATOR_INPUT: "The orchestrator input is invalid.", INCOMPATIBLE_CASE_FILE_SCHEMA: "The case file schemaVersion is not vehicle_tax_case_file.v1.", INVALID_ORCHESTRATOR_OPTIONS: "The orchestrator options are invalid.", VEHICLE_CANDIDATE_REQUIRED: "A selected vehicle candidate is required.", ORCHESTRATOR_IDENTITY_CONFLICT: "Vehicle identity is unresolved; technical facts were not mixed.", ENGINE_INPUTS_MISSING: "One or more engine inputs are missing or not confirmed.", ENGINE_INPUTS_CONFLICT: "One or more engine inputs are conflicting.", ENGINE_EXECUTION_FAILED: "A tax engine failed during isolated execution.", IVTM_LOOKUP_FAILED: "The IVTM local lookup failed.", SUMMARY_NOT_AVAILABLE: "The tax summary was not calculated because no engine produced a usable result or the summary aggregator failed.", PROVISIONAL_IEDMT_RESULT: "IEDMT returned a provisional territory result and was not treated as exact.", SCENARIO_LIMIT_EXCEEDED: "The requested scenario limit exceeds the absolute maximum.", ORCHESTRATOR_SCENARIOS_TRUNCATED: "Orchestrator scenarios were truncated deterministically.", UNSAFE_EVIDENCE_SOURCE: "A fact was not used because its evidence source is not compatible.", SCENARIO_FROM_DECLARED_DATA: "A scenario calculation uses declared or non-confirmed structured data.", ASSUMED_TRANSACTION_DATE: "A scenario calculation uses calculationDate as the assumed transaction date.", ASSUMED_SPANISH_REGISTRATION_DATE: "A scenario calculation uses an assumed Spanish registration date.", NON_SERIALIZABLE_ORCHESTRATOR_INPUT: "The orchestrator received non JSON-serializable input.",
 });
 
 const ENGINE_IDS = Object.freeze(["iedmt", "itp", "ivtm", "dgt_registration_fee"]);
@@ -24,13 +24,19 @@ const OFFICIAL_SOURCE_TYPES = new Set(["official_document", "professional_docume
 const TECHNICAL_DOCUMENT_TYPES = new Set(["coc", "german_registration_part_i", "german_registration_part_ii", "spanish_technical_card", "technical_inspection_document", "professional_report"]);
 const CONTRACTUAL_SOURCE_TYPES = new Set(["contractual_document"]);
 const CONTRACTUAL_DOCUMENT_TYPES = new Set(["invoice", "private_sale_contract"]);
+const SCENARIO_SOURCE_TYPES = new Set(["official_document", "professional_document", "contractual_document", "vehicle_ad", "user_declaration", "derived", "other"]);
+const SCENARIO_FACT_STATUSES = new Set([
+  VEHICLE_TAX_CASE_FILE_FACT_STATUSES.CONFIRMED,
+  VEHICLE_TAX_CASE_FILE_FACT_STATUSES.PROBABLE,
+  VEHICLE_TAX_CASE_FILE_FACT_STATUSES.INFERRED,
+]);
 const DESTINATION_FIELDS = new Set(["taxDestination.autonomousCommunity", "taxDestination.province", "taxDestination.foralTerritory", "taxDestination.municipalityCode", "taxDestination.expectedSettlementDate"]);
 const USER_DECLARED_CONFIRMED_FIELDS = new Set([...DESTINATION_FIELDS, "vehicle.condition", "transaction.intendedForResale", "parties.buyerTaxResidenceCountry"]);
 const INPUT_ALLOWLIST = Object.freeze({
   iedmt: ["boeValue", "emissions", "firstRegistrationDate", "calculationDate", "territoryId", "noAccreditedEmissions", "vehicleCondition", "emissionsStandard", "otherIndirectTaxRate", "urlRate"],
-  itp: ["transactionDate", "buyerRegion", "buyerProvince", "sellerType", "buyerType", "documentType", "vatRegime", "purchasePrice", "officialMarketValue", "originalBoeValue", "firstRegistrationDate", "vehicleCategory", "engineDisplacement", "fiscalHorsepower", "intendedForResale", "isHistoricVehicle", "isEndOfLifeVehicle", "zeroEmissionStatus", "buyerTaxResidenceCountry", "sellerCountry", "evidence"],
-  ivtm: ["municipalityCode", "taxYear", "spanishRegistrationDate", "fiscalHorsepower", "vehicleType", "zeroEmissionStatus", "isHistoricVehicle", "bonusStatus", "confirmedBonusRate", "bonusEvidence", "calculationDate"],
-  dgt_registration_fee: ["procedure", "vehicleType", "feeDate", "calculationDate", "currency"],
+  itp: ["transactionDate", "assumedTransactionDate", "buyerRegion", "buyerProvince", "sellerType", "buyerType", "documentType", "vatRegime", "purchasePrice", "officialMarketValue", "originalBoeValue", "firstRegistrationDate", "vehicleCategory", "engineDisplacement", "fiscalHorsepower", "intendedForResale", "isHistoricVehicle", "isEndOfLifeVehicle", "zeroEmissionStatus", "buyerTaxResidenceCountry", "sellerCountry", "evidence"],
+  ivtm: ["municipalityCode", "taxYear", "spanishRegistrationDate", "assumedSpanishRegistrationDate", "fiscalHorsepower", "vehicleType", "zeroEmissionStatus", "isHistoricVehicle", "bonusStatus", "confirmedBonusRate", "bonusEvidence", "calculationDate"],
+  dgt_registration_fee: ["procedure", "vehicleType", "feeDate", "assumedSpanishRegistrationDate", "calculationDate", "currency"],
 });
 const FIELD_TO_OVERRIDE = Object.freeze({ "vehicle.boeValue": "officialMarketValue", "vehicle.co2Wltp": "emissions", "vehicle.co2Nedc": "emissions", "vehicle.firstRegistrationDate": "firstRegistrationDate", "vehicle.category": "vehicleCategory", "vehicle.engineDisplacementCc": "engineDisplacement", "vehicle.fiscalHorsepower": "fiscalHorsepower", "vehicle.zeroEmissionStatus": "zeroEmissionStatus", "transaction.purchasePrice": "purchasePrice", "transaction.date": "transactionDate", "taxDestination.autonomousCommunity": "buyerRegion", "taxDestination.province": "buyerProvince", "taxDestination.foralTerritory": "buyerProvince", "parties.buyerTaxResidenceCountry": "buyerTaxResidenceCountry", "parties.sellerCountry": "sellerCountry" });
 const IEDMT_TERRITORY_BY_AUTONOMOUS_COMMUNITY = Object.freeze({
@@ -102,8 +108,8 @@ function validateCaseFile(caseFile) {
   return { ok: true, missingFields: [], warningCodes: [] };
 }
 
-function engineExecution({ engineId, status, inputStatus, inputsUsed = {}, evidenceIds = [], result = null, assumptions = [], warnings = [], warningCodes = [], missingFields = [] }) {
-  return cloneJson({ engineId, status, inputStatus, inputsUsed: allowInputs(engineId, inputsUsed), evidenceIds: uniqueStrings(evidenceIds), result: result === undefined ? null : result, assumptions: uniqueStrings(assumptions), warnings: uniqueStrings(warnings), warningCodes: uniqueStrings(warningCodes), missingFields: uniqueStrings(missingFields) });
+function engineExecution({ engineId, status, inputStatus, inputsUsed = {}, evidenceIds = [], result = null, assumptions = [], warnings = [], warningCodes = [], missingFields = [], confidenceLevel = "confirmed" }) {
+  return cloneJson({ engineId, status, inputStatus, confidenceLevel, inputsUsed: allowInputs(engineId, inputsUsed), evidenceIds: uniqueStrings(evidenceIds), result: result === undefined ? null : result, assumptions: uniqueStrings(assumptions), warnings: uniqueStrings(warnings), warningCodes: uniqueStrings(warningCodes), missingFields: uniqueStrings(missingFields) });
 }
 
 function notRun(engineId, status, inputsUsed = {}, evidenceIds = [], missingFields = [], extraCode = null) {
@@ -126,11 +132,16 @@ function engineStatus(engineId, result, scenario) {
   return VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.REQUIRES_REVIEW;
 }
 
-function calculated(engineId, input, evidenceIds, result, scenario = false) {
+function calculated(engineId, input, evidenceIds, result, scenario = false, prepared = null) {
   const status = engineStatus(engineId, result, scenario);
-  const codes = [];
+  const codes = [...(prepared?.warningCodes ?? [])];
+  const assumptions = [...(prepared?.assumptions ?? [])];
+  if (scenario && (prepared?.scenarioFields ?? 0) > 0) {
+    codes.push(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.SCENARIO_FROM_DECLARED_DATA);
+    assumptions.push("Calculo orientativo: usa datos estructurados declarados o no confirmados y no constituye evidencia oficial.");
+  }
   if (engineId === "iedmt" && result?.isProvisionalTerritory === true) codes.push(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.PROVISIONAL_IEDMT_RESULT);
-  return engineExecution({ engineId, status, inputStatus: scenario ? "scenario" : "confirmed", inputsUsed: input, evidenceIds, result, assumptions: result?.assumptions ?? [], warnings: [...(result?.warnings ?? []), ...codeMessages(codes)], warningCodes: uniqueStrings([...(result?.warningCodes ?? []), ...codes]), missingFields: result?.missingFields ?? [] });
+  return engineExecution({ engineId, status, inputStatus: scenario ? "scenario" : "confirmed", confidenceLevel: confidenceLevel(prepared ?? emptyPrepared(), scenario), inputsUsed: input, evidenceIds, result, assumptions: [...(result?.assumptions ?? []), ...assumptions], warnings: [...(result?.warnings ?? []), ...codeMessages(codes)], warningCodes: uniqueStrings([...(result?.warningCodes ?? []), ...codes]), missingFields: result?.missingFields ?? [] });
 }
 
 function emptyExecutions(status = VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_MISSING_INPUTS) { return Object.fromEntries(ENGINE_IDS.map((engineId) => [engineId, notRun(engineId, status)])); }
@@ -146,9 +157,9 @@ function readinessFrom(engineExecutions, classification, taxSummary) {
   return readiness;
 }
 
-function output({ caseFile = null, options = {}, status = VEHICLE_TAX_CALCULATION_STATUSES.INVALID, classification = null, engineExecutions = emptyExecutions(), taxSummary = null, scenarios = [], warningCodes = [], missingFields = [], assumptions = [] }) {
+function output({ caseFile = null, options = {}, status = VEHICLE_TAX_CALCULATION_STATUSES.INVALID, classification = null, engineExecutions = emptyExecutions(), taxSummary = null, estimatedSummary = null, scenarios = [], warningCodes = [], missingFields = [], assumptions = [] }) {
   const codes = new Set(warningCodes);
-  return cloneJson({ schemaVersion: VEHICLE_TAX_CALCULATION_SCHEMA_VERSION, caseId: safeCaseId(caseFile?.caseId), status, calculationDate: validIsoDate(options.calculationDate) ? options.calculationDate : null, taxYear: Number.isInteger(options.taxYear) ? options.taxYear : null, currency: options.currency === "EUR" ? "EUR" : null, classification, engineExecutions, taxSummary, scenarios, readiness: readinessFrom(engineExecutions, classification, taxSummary), assumptions: uniqueStrings(assumptions), warnings: codeMessages(codes), warningCodes: uniqueStrings([...codes]), missingFields: uniqueStrings(missingFields), privacySummary: privacySummaryFrom(caseFile) });
+  return cloneJson({ schemaVersion: VEHICLE_TAX_CALCULATION_SCHEMA_VERSION, caseId: safeCaseId(caseFile?.caseId), status, calculationDate: validIsoDate(options.calculationDate) ? options.calculationDate : null, taxYear: Number.isInteger(options.taxYear) ? options.taxYear : null, currency: options.currency === "EUR" ? "EUR" : null, classification, engineExecutions, taxSummary, estimatedSummary, scenarios, readiness: readinessFrom(engineExecutions, classification, taxSummary), assumptions: uniqueStrings(assumptions), warnings: codeMessages(codes), warningCodes: uniqueStrings([...codes]), missingFields: uniqueStrings(missingFields), privacySummary: privacySummaryFrom(caseFile) });
 }
 
 function selectedCandidate(caseFile) { return caseFile.vehicleCandidates.find((candidate) => candidate.vehicleCandidateId === caseFile.selectedVehicleCandidateId) ?? null; }
@@ -168,18 +179,54 @@ function confirmedFact(caseFile, candidate, field, map, kind = "any") {
   if (!evidenceKindOk(field, kind, evidenceIds, map)) return { ok: false, reason: "unsafe", evidenceIds };
   const acceptedUserDeclaration = fact.status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.PROBABLE && USER_DECLARED_CONFIRMED_FIELDS.has(field) && evidenceIds.some((id) => map.get(id)?.verificationStatus === "confirmed_user");
   if (fact.status !== VEHICLE_TAX_CASE_FILE_FACT_STATUSES.CONFIRMED && !acceptedUserDeclaration) return { ok: false, reason: fact.status, evidenceIds };
-  return { ok: true, value: fact.normalizedValue, evidenceIds, fact };
+  return { ok: true, value: fact.normalizedValue, evidenceIds, fact, confirmed: fact.status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.CONFIRMED };
 }
-function addPreparedValue(prepared, caseFile, candidate, field, key, map, kind) {
-  const item = confirmedFact(caseFile, candidate, field, map, kind);
-  if (item.ok) { prepared.input[key] = item.value; prepared.evidenceIds.push(...item.evidenceIds); return item.value; }
+function scenarioEvidenceKindOk(kind, evidenceIds, map) {
+  if (kind === "any") return true;
+  if (evidenceIds.length === 0) return false;
+  return evidenceIds.some((id) => {
+    const ev = map.get(id);
+    return ev && ev.verificationStatus !== "rejected" && SCENARIO_SOURCE_TYPES.has(ev.sourceType);
+  });
+}
+function scenarioFact(caseFile, candidate, field, map, kind = "any") {
+  const fact = factFor(caseFile, candidate, field);
+  if (!fact) return { ok: false, reason: "missing", evidenceIds: [] };
+  const evidenceIds = uniqueStrings(fact.selectedEvidenceId ? [fact.selectedEvidenceId] : fact.evidenceIds);
+  if (fact.status === "conflict" || fact.status === "scenario_required") return { ok: false, reason: "conflict", evidenceIds };
+  if (!scenarioEvidenceKindOk(kind, evidenceIds, map)) return { ok: false, reason: "unsafe", evidenceIds };
+  if (!SCENARIO_FACT_STATUSES.has(fact.status)) return { ok: false, reason: fact.status, evidenceIds };
+  return { ok: true, value: fact.normalizedValue, evidenceIds, fact, confirmed: fact.status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.CONFIRMED && evidenceKindOk(field, kind, evidenceIds, map) };
+}
+function readFact(caseFile, candidate, field, map, kind, mode) {
+  return mode === "scenario" ? scenarioFact(caseFile, candidate, field, map, kind) : confirmedFact(caseFile, candidate, field, map, kind);
+}
+function markPreparedConfidence(prepared, item) {
+  if (item.confirmed) prepared.confirmedFields += 1;
+  else prepared.scenarioFields += 1;
+}
+function addPreparedValue(prepared, caseFile, candidate, field, key, map, kind, mode = "confirmed") {
+  const item = readFact(caseFile, candidate, field, map, kind, mode);
+  if (item.ok) {
+    prepared.input[key] = item.value;
+    prepared.evidenceIds.push(...item.evidenceIds);
+    markPreparedConfidence(prepared, item);
+    return item.value;
+  }
   if (item.reason === "conflict") prepared.conflicts.push(field); else prepared.missing.push(field);
   if (item.reason === "unsafe") prepared.unsafe = true;
   prepared.evidenceIds.push(...item.evidenceIds);
   return null;
 }
-function emptyPrepared(input = {}) { return { input, evidenceIds: [], missing: [], conflicts: [], unsafe: false }; }
-function cleanPrepared(prepared) { prepared.evidenceIds = uniqueStrings(prepared.evidenceIds); prepared.missing = uniqueStrings(prepared.missing); prepared.conflicts = uniqueStrings(prepared.conflicts); return prepared; }
+function removeMissing(prepared, field) { prepared.missing = prepared.missing.filter((item) => item !== field); }
+function scenarioAssumption(prepared, text, code) { prepared.assumptions.push(text); prepared.warningCodes.push(code); prepared.scenarioFields += 1; }
+function confidenceLevel(prepared, scenario) {
+  if (!scenario) return "confirmed";
+  if (prepared.scenarioFields > 0 && prepared.confirmedFields > 0) return "mixed";
+  return prepared.scenarioFields > 0 ? "declared" : "confirmed";
+}
+function emptyPrepared(input = {}) { return { input, evidenceIds: [], missing: [], conflicts: [], unsafe: false, assumptions: [], warningCodes: [], confirmedFields: 0, scenarioFields: 0 }; }
+function cleanPrepared(prepared) { prepared.evidenceIds = uniqueStrings(prepared.evidenceIds); prepared.missing = uniqueStrings(prepared.missing); prepared.conflicts = uniqueStrings(prepared.conflicts); prepared.assumptions = uniqueStrings(prepared.assumptions); prepared.warningCodes = uniqueStrings(prepared.warningCodes); return prepared; }
 function vehicleTypeFromCategory(value) { return ["passenger_car", "turismo", "suv"].includes(value) ? "passenger_car" : null; }
 function roundMoney(value) { return Math.round((value + Number.EPSILON) * 100) / 100; }
 function registrationTaxTerritoryFromAutonomousCommunity(value) {
@@ -195,21 +242,21 @@ function depreciatedOfficialMarketValue({ originalBoeValue, firstRegistrationDat
   return coefficient === null ? null : roundMoney(originalBoeValue * coefficient);
 }
 
-function buildIedmtInput(caseFile, candidate, map, options) {
+function buildIedmtInput(caseFile, candidate, map, options, mode = "confirmed") {
   const prepared = emptyPrepared({ calculationDate: options.calculationDate });
-  addPreparedValue(prepared, caseFile, candidate, "vehicle.boeValue", "boeValue", map, "technical");
-  addPreparedValue(prepared, caseFile, candidate, "vehicle.firstRegistrationDate", "firstRegistrationDate", map, "technical");
-  addPreparedValue(prepared, caseFile, candidate, "vehicle.condition", "vehicleCondition", map, "any");
-  const territory = confirmedFact(caseFile, candidate, "taxDestination.autonomousCommunity", map, "any");
+  addPreparedValue(prepared, caseFile, candidate, "vehicle.boeValue", "boeValue", map, "technical", mode);
+  addPreparedValue(prepared, caseFile, candidate, "vehicle.firstRegistrationDate", "firstRegistrationDate", map, "technical", mode);
+  addPreparedValue(prepared, caseFile, candidate, "vehicle.condition", "vehicleCondition", map, "any", mode);
+  const territory = readFact(caseFile, candidate, "taxDestination.autonomousCommunity", map, "any", mode);
   if (territory.ok) {
     const resolvedTerritory = registrationTaxTerritoryFromAutonomousCommunity(territory.value);
     if (resolvedTerritory?.id) prepared.input.territoryId = resolvedTerritory.id; else prepared.missing.push("taxDestination.autonomousCommunity");
     prepared.evidenceIds.push(...territory.evidenceIds);
   } else if (territory.reason === "conflict") prepared.conflicts.push("taxDestination.autonomousCommunity"); else prepared.missing.push("taxDestination.autonomousCommunity");
 
-  const standard = confirmedFact(caseFile, candidate, "vehicle.emissionsStandard", map, "technical");
-  const wltp = confirmedFact(caseFile, candidate, "vehicle.co2Wltp", map, "technical");
-  const nedc = confirmedFact(caseFile, candidate, "vehicle.co2Nedc", map, "technical");
+  const standard = readFact(caseFile, candidate, "vehicle.emissionsStandard", map, "technical", mode);
+  const wltp = readFact(caseFile, candidate, "vehicle.co2Wltp", map, "technical", mode);
+  const nedc = readFact(caseFile, candidate, "vehicle.co2Nedc", map, "technical", mode);
   prepared.evidenceIds.push(...standard.evidenceIds, ...wltp.evidenceIds, ...nedc.evidenceIds);
   if (standard.reason === "conflict" || wltp.reason === "conflict" || nedc.reason === "conflict") prepared.conflicts.push("vehicle.emissions");
   if (standard.ok && standard.value === "wltp" && wltp.ok) {
@@ -237,7 +284,7 @@ function buildIedmtInput(caseFile, candidate, map, options) {
   return cleanPrepared(prepared);
 }
 
-function buildItpInput(caseFile, candidate, map, classification, overridePatch = null, scenarioEvidenceIds = []) {
+function buildItpInput(caseFile, candidate, map, classification, overridePatch = null, scenarioEvidenceIds = [], options = null, mode = "confirmed") {
   const patch = { ...(classification?.transferTaxClassification ?? {}), ...(overridePatch ?? {}) };
   const prepared = emptyPrepared({
     sellerType: patch.sellerType,
@@ -264,14 +311,30 @@ function buildItpInput(caseFile, candidate, map, classification, overridePatch =
     ["parties.buyerTaxResidenceCountry", "buyerTaxResidenceCountry", "any"],
     ["parties.sellerCountry", "sellerCountry", "any"],
   ]) {
-    if (prepared.input[key] === undefined || key === "officialMarketValue" || key === "originalBoeValue") addPreparedValue(prepared, caseFile, candidate, field, key, map, kind);
+    if (prepared.input[key] === undefined || key === "officialMarketValue" || key === "originalBoeValue") addPreparedValue(prepared, caseFile, candidate, field, key, map, kind, mode);
   }
-  const foralTerritory = confirmedFact(caseFile, candidate, "taxDestination.foralTerritory", map, "any");
+  if (mode === "scenario") {
+    for (const [field, key] of [
+      ["transaction.documentType", "documentType"],
+      ["transaction.sellerType", "sellerType"],
+      ["transaction.buyerType", "buyerType"],
+      ["transaction.vatRegime", "vatRegime"],
+    ]) {
+      if (prepared.input[key] === undefined || prepared.input[key] === "unknown") addPreparedValue(prepared, caseFile, candidate, field, key, map, "contractual", mode);
+    }
+  }
+  if (mode === "scenario" && prepared.input.transactionDate === undefined && validIsoDate(options?.calculationDate)) {
+    prepared.input.transactionDate = options.calculationDate;
+    prepared.input.assumedTransactionDate = options.calculationDate;
+    removeMissing(prepared, "transaction.date");
+    scenarioAssumption(prepared, "Se usa calculationDate como assumedTransactionDate porque no consta transaction.date contractual; no confirma fecha de contrato.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_TRANSACTION_DATE);
+  }
+  const foralTerritory = readFact(caseFile, candidate, "taxDestination.foralTerritory", map, "any", mode);
   if (foralTerritory.ok && BASQUE_FORAL_TERRITORIES.has(foralTerritory.value)) {
     prepared.input.buyerProvince = foralTerritory.value;
     prepared.evidenceIds.push(...foralTerritory.evidenceIds);
   } else if (prepared.input.buyerRegion === "pais_vasco") {
-    addPreparedValue(prepared, caseFile, candidate, "taxDestination.province", "buyerProvince", map, "any");
+    addPreparedValue(prepared, caseFile, candidate, "taxDestination.province", "buyerProvince", map, "any", mode);
   }
   const officialMarketValue = depreciatedOfficialMarketValue(prepared.input);
   if (officialMarketValue !== null) prepared.input.officialMarketValue = officialMarketValue;
@@ -285,58 +348,160 @@ function buildItpInput(caseFile, candidate, map, classification, overridePatch =
   return cleanPrepared(prepared);
 }
 
-function buildIvtmInput(caseFile, candidate, map, options) {
+function buildIvtmInput(caseFile, candidate, map, options, mode = "confirmed") {
   const prepared = emptyPrepared({ taxYear: options.taxYear, calculationDate: options.calculationDate, bonusStatus: "unknown" });
-  addPreparedValue(prepared, caseFile, candidate, "taxDestination.municipalityCode", "municipalityCode", map, "any");
-  addPreparedValue(prepared, caseFile, candidate, "vehicle.spanishRegistrationDate", "spanishRegistrationDate", map, "technical");
-  addPreparedValue(prepared, caseFile, candidate, "vehicle.fiscalHorsepower", "fiscalHorsepower", map, "technical");
-  const category = confirmedFact(caseFile, candidate, "vehicle.category", map, "technical");
+  addPreparedValue(prepared, caseFile, candidate, "taxDestination.municipalityCode", "municipalityCode", map, "any", mode);
+  addPreparedValue(prepared, caseFile, candidate, "vehicle.spanishRegistrationDate", "spanishRegistrationDate", map, "technical", mode);
+  if (mode === "scenario" && prepared.input.spanishRegistrationDate === undefined) {
+    const expected = readFact(caseFile, candidate, "taxDestination.expectedSettlementDate", map, "any", mode);
+    if (expected.ok) {
+      prepared.input.spanishRegistrationDate = expected.value;
+      prepared.input.assumedSpanishRegistrationDate = expected.value;
+      prepared.evidenceIds.push(...expected.evidenceIds);
+      markPreparedConfidence(prepared, expected);
+      removeMissing(prepared, "vehicle.spanishRegistrationDate");
+      scenarioAssumption(prepared, "Se usa taxDestination.expectedSettlementDate como assumedSpanishRegistrationDate para estimar el alta IVTM; no confirma matriculacion espanola.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_SPANISH_REGISTRATION_DATE);
+    } else if (validIsoDate(options.calculationDate)) {
+      prepared.input.spanishRegistrationDate = options.calculationDate;
+      prepared.input.assumedSpanishRegistrationDate = options.calculationDate;
+      removeMissing(prepared, "vehicle.spanishRegistrationDate");
+      scenarioAssumption(prepared, "Se usa calculationDate como assumedSpanishRegistrationDate bajo la hipotesis explicita de matricular hoy; no confirma matriculacion espanola.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_SPANISH_REGISTRATION_DATE);
+    }
+  }
+  addPreparedValue(prepared, caseFile, candidate, "vehicle.fiscalHorsepower", "fiscalHorsepower", map, "technical", mode);
+  const category = readFact(caseFile, candidate, "vehicle.category", map, "technical", mode);
   if (category.ok) {
     const type = vehicleTypeFromCategory(category.value);
     if (type) prepared.input.vehicleType = type; else prepared.missing.push("vehicle.category");
     prepared.evidenceIds.push(...category.evidenceIds);
   } else if (category.reason === "conflict") prepared.conflicts.push("vehicle.category"); else prepared.missing.push("vehicle.category");
   for (const [field, key] of [["vehicle.zeroEmissionStatus", "zeroEmissionStatus"], ["vehicle.isHistoricVehicle", "isHistoricVehicle"]]) {
-    const fact = confirmedFact(caseFile, candidate, field, map, "technical");
+    const fact = readFact(caseFile, candidate, field, map, "technical", mode);
     if (fact.ok) { prepared.input[key] = fact.value; prepared.evidenceIds.push(...fact.evidenceIds); }
   }
   if (typeof prepared.input.municipalityCode === "string" && !/^\d{5}$/.test(prepared.input.municipalityCode)) prepared.conflicts.push("taxDestination.municipalityCode");
   return cleanPrepared(prepared);
 }
 
-function buildDgtInput(caseFile, candidate, map, options) {
+function buildDgtInput(caseFile, candidate, map, options, mode = "confirmed") {
   const prepared = emptyPrepared({ procedure: "ordinary_vehicle_registration", calculationDate: options.calculationDate, currency: options.currency });
-  const category = confirmedFact(caseFile, candidate, "vehicle.category", map, "technical");
+  const category = readFact(caseFile, candidate, "vehicle.category", map, "technical", mode);
   if (category.ok) {
     const type = vehicleTypeFromCategory(category.value);
     if (type) prepared.input.vehicleType = type; else prepared.missing.push("vehicle.category");
     prepared.evidenceIds.push(...category.evidenceIds);
   } else if (category.reason === "conflict") prepared.conflicts.push("vehicle.category"); else prepared.missing.push("vehicle.category");
-  addPreparedValue(prepared, caseFile, candidate, "taxDestination.expectedSettlementDate", "feeDate", map, "any");
+  addPreparedValue(prepared, caseFile, candidate, "taxDestination.expectedSettlementDate", "feeDate", map, "any", mode);
+  if (mode === "scenario" && prepared.input.feeDate !== undefined && prepared.input.assumedSpanishRegistrationDate === undefined) {
+    prepared.input.assumedSpanishRegistrationDate = prepared.input.feeDate;
+    scenarioAssumption(prepared, "Se usa taxDestination.expectedSettlementDate como fecha prevista de tasa DGT; no confirma matriculacion espanola.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_SPANISH_REGISTRATION_DATE);
+  }
+  if (mode === "scenario" && prepared.input.feeDate === undefined && validIsoDate(options.calculationDate)) {
+    prepared.input.feeDate = options.calculationDate;
+    prepared.input.assumedSpanishRegistrationDate = options.calculationDate;
+    removeMissing(prepared, "taxDestination.expectedSettlementDate");
+    scenarioAssumption(prepared, "Se usa calculationDate como fecha de tasa DGT bajo la hipotesis explicita de matricular hoy; no confirma matriculacion espanola.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_SPANISH_REGISTRATION_DATE);
+  }
   return cleanPrepared(prepared);
 }
 
-function executionFromPrepared(engineId, prepared, run) {
+function executionFromPrepared(engineId, prepared, run, scenario = false) {
   if (prepared.conflicts.length > 0) return notRun(engineId, VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_CONFLICT, prepared.input, prepared.evidenceIds, prepared.conflicts);
   if (prepared.missing.length > 0) return notRun(engineId, VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_MISSING_INPUTS, prepared.input, prepared.evidenceIds, prepared.missing, prepared.unsafe ? VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.UNSAFE_EVIDENCE_SOURCE : null);
   try {
     const result = run(prepared.input);
-    return calculated(engineId, prepared.input, prepared.evidenceIds, result);
+    return calculated(engineId, prepared.input, prepared.evidenceIds, result, scenario, prepared);
   } catch {
     return failed(engineId, prepared.input, prepared.evidenceIds);
   }
 }
 
-async function ivtmExecution(prepared, deps) {
+async function ivtmExecution(prepared, deps, scenario = false) {
   if (prepared.conflicts.length > 0) return notRun("ivtm", VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_CONFLICT, prepared.input, prepared.evidenceIds, prepared.conflicts);
   if (prepared.missing.length > 0) return notRun("ivtm", VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_MISSING_INPUTS, prepared.input, prepared.evidenceIds, prepared.missing, prepared.unsafe ? VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.UNSAFE_EVIDENCE_SOURCE : null);
   try {
     const municipalData = await deps.lookupMunicipalData(prepared.input.municipalityCode, { taxYear: prepared.input.taxYear });
     const result = deps.calculateIvtm(prepared.input, municipalData);
-    return calculated("ivtm", prepared.input, prepared.evidenceIds, result);
+    return calculated("ivtm", prepared.input, prepared.evidenceIds, result, scenario, prepared);
   } catch {
     return failed("ivtm", prepared.input, prepared.evidenceIds, VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.IVTM_LOOKUP_FAILED);
   }
+}
+function resultAmount(engineId, result) {
+  if (!isPlainObject(result)) return null;
+  if (engineId === "iedmt") return typeof result.tax === "number" ? result.tax : null;
+  if (engineId === "itp") return typeof result.taxAmount === "number" ? result.taxAmount : typeof result.prudentBudget === "number" ? result.prudentBudget : null;
+  if (engineId === "ivtm") return typeof result.taxAmount === "number" ? result.taxAmount : typeof result.proratedTax === "number" ? result.proratedTax : typeof result.referenceProratedTax === "number" ? result.referenceProratedTax : typeof result.prudentBudget === "number" ? result.prudentBudget : null;
+  if (engineId === "dgt_registration_fee") return typeof result.amount === "number" ? result.amount : typeof result.prudentAmount === "number" ? result.prudentAmount : null;
+  return null;
+}
+function resultRangeAmount(engineId, result, field, fallback = null) {
+  if (!isPlainObject(result)) return fallback;
+  const key = engineId === "dgt_registration_fee" && field === "prudentBudget" ? "prudentAmount" : field;
+  if (typeof result[key] === "number") return result[key];
+  if (field === "minimumAmount" && typeof result.minimumAmount === "number") return result.minimumAmount;
+  if (field === "maximumAmount" && typeof result.maximumAmount === "number") return result.maximumAmount;
+  return fallback;
+}
+function sumNullable(values) { return values.every((value) => typeof value === "number") ? roundMoney(values.reduce((total, value) => total + value, 0)) : null; }
+function estimatedLineItem(engineId, execution) {
+  const amount = resultAmount(engineId, execution?.result);
+  const minimumAmount = resultRangeAmount(engineId, execution?.result, "minimumAmount", amount);
+  const maximumAmount = resultRangeAmount(engineId, execution?.result, "maximumAmount", amount);
+  const prudentAmount = resultRangeAmount(engineId, execution?.result, "prudentBudget", amount);
+  return cloneJson({
+    id: engineId,
+    status: execution?.status ?? VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_MISSING_INPUTS,
+    inputStatus: execution?.inputStatus ?? "missing",
+    confidenceLevel: execution?.confidenceLevel ?? "confirmed",
+    amount,
+    minimumAmount,
+    maximumAmount,
+    prudentAmount,
+    evidenceIds: execution?.evidenceIds ?? [],
+    assumptions: execution?.assumptions ?? [],
+    warnings: execution?.warnings ?? [],
+    warningCodes: execution?.warningCodes ?? [],
+    missingFields: execution?.missingFields ?? [],
+  });
+}
+function estimatedSummaryFrom(executions, taxSummary, options) {
+  const lineItems = ENGINE_IDS.map((engineId) => estimatedLineItem(engineId, executions[engineId])).filter((item) => item.amount !== null || item.minimumAmount !== null || item.maximumAmount !== null || item.prudentAmount !== null);
+  if (lineItems.length === 0) return null;
+  return cloneJson({
+    status: "estimated",
+    currency: options.currency === "EUR" ? "EUR" : null,
+    exactTotal: null,
+    confirmedSubtotal: taxSummary?.confirmedSubtotal ?? null,
+    estimatedTotal: sumNullable(lineItems.map((item) => item.amount)),
+    minimumTotal: sumNullable(lineItems.map((item) => item.minimumAmount)),
+    maximumTotal: sumNullable(lineItems.map((item) => item.maximumAmount)),
+    prudentBudget: sumNullable(lineItems.map((item) => item.prudentAmount)),
+    lineItems,
+    assumptions: uniqueStrings(lineItems.flatMap((item) => item.assumptions)),
+    warnings: uniqueStrings(lineItems.flatMap((item) => item.warnings)),
+    warningCodes: uniqueStrings(lineItems.flatMap((item) => item.warningCodes)),
+    missingFields: uniqueStrings(lineItems.flatMap((item) => item.missingFields.map((field) => `${item.id}.${field}`))),
+    exactTotalBlockedBy: ENGINE_IDS.filter((engineId) => executions[engineId]?.status !== VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_CONFIRMED),
+  });
+}
+function mergeScenarioExecutions(strictExecutions, scenarioExecutions) {
+  return Object.fromEntries(ENGINE_IDS.map((engineId) => {
+    const strict = strictExecutions[engineId];
+    const scenario = scenarioExecutions[engineId];
+    return [engineId, strict?.status === VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_CONFIRMED ? strict : scenario?.status === VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO ? scenario : strict];
+  }));
+}
+async function buildScenarioExecutions(caseFile, candidate, map, classification, deps, options) {
+  const iedmt = executionFromPrepared("iedmt", buildIedmtInput(caseFile, candidate, map, options, "scenario"), deps.calculateIedmt, true);
+  const itpPrepared = buildItpInput(caseFile, candidate, map, classification, null, [], options, "scenario");
+  const itpBlocked = ["conflict", "scenario_required", "identity_conflict", "invalid"].includes(classification.status);
+  const itp = itpBlocked
+    ? notRun("itp", VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_CONFLICT, itpPrepared.input, itpPrepared.evidenceIds, ["classification"])
+    : executionFromPrepared("itp", itpPrepared, deps.calculateItp, true);
+  const ivtm = await ivtmExecution(buildIvtmInput(caseFile, candidate, map, options, "scenario"), deps, true);
+  const dgt = executionFromPrepared("dgt_registration_fee", buildDgtInput(caseFile, candidate, map, options, "scenario"), deps.calculateDgtFee, true);
+  return { iedmt, itp, ivtm, dgt_registration_fee: dgt };
 }
 function summaryFrom(executions, deps, options, codes) {
   const results = {
@@ -365,13 +530,14 @@ function summaryFrom(executions, deps, options, codes) {
   }
 }
 
-function statusFrom(executions, classification, taxSummary, scenarios, codes) {
+function statusFrom(executions, classification, taxSummary, estimatedSummary, scenarios, codes) {
   const statuses = Object.values(executions).map((item) => item.status);
   if (classification?.status === "identity_conflict" || codes.has(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ORCHESTRATOR_IDENTITY_CONFLICT)) return VEHICLE_TAX_CALCULATION_STATUSES.IDENTITY_CONFLICT;
   if (statuses.includes(VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.FAILED_VALIDATION)) return VEHICLE_TAX_CALCULATION_STATUSES.REQUIRES_REVIEW;
   if (statuses.includes(VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_CONFLICT) || classification?.status === "conflict") return VEHICLE_TAX_CALCULATION_STATUSES.SCENARIO_REQUIRED;
   if (classification?.status === "scenario_required" || scenarios.length > 0) return VEHICLE_TAX_CALCULATION_STATUSES.SCENARIO_REQUIRED;
   if (statuses.includes(VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.REQUIRES_REVIEW) || taxSummary?.status === "requires_review") return VEHICLE_TAX_CALCULATION_STATUSES.REQUIRES_REVIEW;
+  if (statuses.includes(VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO) && estimatedSummary) return VEHICLE_TAX_CALCULATION_STATUSES.ESTIMATED;
   if (statuses.includes(VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_MISSING_INPUTS) || taxSummary === null) return VEHICLE_TAX_CALCULATION_STATUSES.PARTIAL;
   return taxSummary?.status === "exact" ? VEHICLE_TAX_CALCULATION_STATUSES.EXACT : VEHICLE_TAX_CALCULATION_STATUSES.PARTIAL;
 }
@@ -451,17 +617,25 @@ export async function calculateVehicleTaxCase(caseFileInput, optionsInput = {}) 
     : executionFromPrepared("itp", itpPrepared, deps.calculateItp);
   const ivtm = await ivtmExecution(buildIvtmInput(caseFile, candidate, map, options), deps);
   const dgt = executionFromPrepared("dgt_registration_fee", buildDgtInput(caseFile, candidate, map, options), deps.calculateDgtFee);
-  const engineExecutions = { iedmt, itp, ivtm, dgt_registration_fee: dgt };
-  for (const execution of Object.values(engineExecutions)) for (const code of execution.warningCodes) addCode(codes, code);
-  const taxSummary = summaryFrom(engineExecutions, deps, options, codes);
+  const strictEngineExecutions = { iedmt, itp, ivtm, dgt_registration_fee: dgt };
+  for (const execution of Object.values(strictEngineExecutions)) for (const code of execution.warningCodes) addCode(codes, code);
+  const taxSummary = summaryFrom(strictEngineExecutions, deps, options, codes);
+  let engineExecutions = strictEngineExecutions;
+  let estimatedSummary = null;
+  if (options.scenarioPolicy === "documentary_scenarios") {
+    const scenarioExecutions = await buildScenarioExecutions(caseFile, candidate, map, classification, deps, options);
+    engineExecutions = mergeScenarioExecutions(strictEngineExecutions, scenarioExecutions);
+    for (const execution of Object.values(engineExecutions)) for (const code of execution.warningCodes) addCode(codes, code);
+    estimatedSummary = estimatedSummaryFrom(engineExecutions, taxSummary, options);
+  }
   const scenarios = [];
   if (options.scenarioPolicy === "documentary_scenarios" && options.maxScenarios > 0) {
     for (const [index, scenario] of scenarioPatches(classification, options.maxScenarios, codes).entries()) {
-      const prepared = buildItpInput(caseFile, candidate, map, classification, scenario.classificationPatch, scenario.evidenceIds);
-      const execution = executionFromPrepared("itp", prepared, deps.calculateItp);
+      const prepared = buildItpInput(caseFile, candidate, map, classification, scenario.classificationPatch, scenario.evidenceIds, options, "scenario");
+      const execution = executionFromPrepared("itp", prepared, deps.calculateItp, true);
       scenarios.push(scenarioOutput(scenario, execution, index));
     }
   }
-  const status = statusFrom(engineExecutions, classification, taxSummary, scenarios, codes);
-  return output({ caseFile, options, status, classification, engineExecutions, taxSummary, scenarios, warningCodes: [...codes] });
+  const status = statusFrom(engineExecutions, classification, taxSummary, estimatedSummary, scenarios, codes);
+  return output({ caseFile, options, status, classification, engineExecutions, taxSummary, estimatedSummary, scenarios, warningCodes: [...codes] });
 }

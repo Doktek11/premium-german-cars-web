@@ -172,6 +172,16 @@ function withSemanticValueTypes(input) {
   return copy;
 }
 
+function volvoNaturalScenarioDto() {
+  const input = volvoDeclaredDto({ transactionDate: "2026-08-09", expectedSettlementDate: "2026-08-09" });
+  input.evidence = input.evidence.filter((item) => item.evidenceId !== "ev-volvo-vat");
+  for (const evidenceId of ["ev-volvo-doc-type", "ev-volvo-tx-date", "ev-volvo-settlement"]) {
+    const item = input.evidence.find((entry) => entry.evidenceId === evidenceId);
+    item.verificationStatus = "scenario";
+  }
+  return input;
+}
+
 async function calculate(dtoInput) {
   const adapted = buildVehicleTaxCaseFromActionDto(dtoInput);
   return calculateVehicleTaxCase(adapted.caseFile, adapted.options);
@@ -428,6 +438,64 @@ test("Action La Rioja usa IEDMT peninsula, ITP depreciado y no provincia no fora
   assert.equal(Object.hasOwn(noDateResult.engineExecutions.itp.inputsUsed, "officialMarketValue"), false);
 });
 
+test("request natural con evidencias scenario calcula cuatro motores orientativos", async () => {
+  const input = volvoNaturalScenarioDto();
+  const before = JSON.stringify(input);
+  const result = await calculate(input);
+  assert.equal(JSON.stringify(input), before);
+  assert.equal(result.taxSummary, null);
+  assert.equal(result.estimatedSummary.exactTotal, null);
+  assert.equal(result.estimatedSummary.confirmedSubtotal, null);
+  assert.equal(result.estimatedSummary.estimatedTotal, 2619.06);
+  assert.equal(result.estimatedSummary.prudentBudget, 2626);
+  assert.equal(result.classification.sellerType, "private");
+  assert.equal(result.classification.buyerType, "private");
+  assert.equal(result.classification.documentType, "private_sale_contract");
+  assert.equal(result.classification.vatRegime, "not_applicable_private_sale");
+  assert.notEqual(result.classification.rebuStatus, "confirmed");
+  for (const engineId of ["iedmt", "itp", "ivtm", "dgt_registration_fee"]) {
+    assert.equal(result.engineExecutions[engineId].status, "calculated_scenario", engineId);
+    assert.equal(result.engineExecutions[engineId].inputStatus, "scenario", engineId);
+  }
+  assert.equal(result.engineExecutions.iedmt.result.tax.toFixed(2), "1192.01");
+  assert.equal(result.engineExecutions.itp.result.taxAmount, 1262.28);
+  assert.equal(result.engineExecutions.itp.inputsUsed.transactionDate, "2026-08-09");
+  assert.equal(result.engineExecutions.itp.inputsUsed.vatRegime, "not_applicable_private_sale");
+  assert.equal(result.engineExecutions.ivtm.result.referenceProratedTax, 65);
+  assert.equal(result.engineExecutions.ivtm.result.prudentBudget, 71.94);
+  assert.equal(result.engineExecutions.ivtm.result.dataStatus, "outdated");
+  assert.equal(result.engineExecutions.dgt_registration_fee.result.amount, 99.77);
+  assert.equal(JSON.stringify(result).includes("confirmed_official"), false);
+});
+
+test("escenarios naturales no presumen REBU ni mezclan conflictos o candidatos", async () => {
+  const professional = volvoNaturalScenarioDto();
+  professional.evidence.find((item) => item.evidenceId === "ev-volvo-seller").normalizedValue = "professional";
+  const professionalResult = await calculate(professional);
+  assert.equal(professionalResult.classification.status, "conflict");
+  assert.notEqual(professionalResult.classification.vatRegime, "not_applicable_private_sale");
+  assert.notEqual(professionalResult.engineExecutions.itp.status, "calculated_scenario");
+
+  const unknown = volvoNaturalScenarioDto();
+  unknown.evidence.find((item) => item.evidenceId === "ev-volvo-seller").normalizedValue = "unknown";
+  const unknownResult = await calculate(unknown);
+  assert.notEqual(unknownResult.classification.rebuStatus, "confirmed");
+  assert.notEqual(unknownResult.engineExecutions.itp.inputsUsed.vatRegime, "rebu");
+
+  const conflict = volvoNaturalScenarioDto();
+  conflict.evidence.push(evidence({ evidenceId: "ev-volvo-seller-conflict", documentId: null, candidateId: null, page: null, field: "transaction.sellerType", normalizedValue: "professional", valueType: "enum", sourceType: "user_declaration", verificationStatus: "confirmed_user" }));
+  const conflictResult = await calculate(conflict);
+  assert.equal(conflictResult.classification.status, "conflict");
+  assert.notEqual(conflictResult.engineExecutions.itp.status, "calculated_scenario");
+
+  const multiple = volvoNaturalScenarioDto();
+  multiple.evidence.push(evidence({ evidenceId: "ev-other-category", documentId: null, candidateId: "candidate-other", page: null, field: "vehicle.category", normalizedValue: "passenger_car", valueType: "enum", sourceType: "user_declaration", verificationStatus: "confirmed_user" }));
+  multiple.evidence.push(evidence({ evidenceId: "ev-other-boe", documentId: null, candidateId: "candidate-other", page: null, field: "vehicle.boeValue", normalizedValue: 9000, valueType: "money", sourceType: "user_declaration", verificationStatus: "confirmed_user" }));
+  const multipleResult = await calculate(multiple);
+  assert.equal(multipleResult.engineExecutions.iedmt.status, "calculated_scenario");
+  assert.equal(multipleResult.engineExecutions.iedmt.result.tax.toFixed(2), "1192.01");
+  assert.equal(multipleResult.engineExecutions.itp.result.taxAmount, 1262.28);
+});
 test("normaliza valueType semanticos desde FIELD_RULES sin reflejarlos", async () => {
   const input = withSemanticValueTypes(volvoDeclaredDto());
   const before = JSON.stringify(input);

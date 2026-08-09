@@ -472,7 +472,7 @@ function evidenceIsAdOnly(evidence) {
 function factEvidenceIsCompatible(outputField, evidence) {
   if (!evidence) return true;
   if (evidenceIsAdOnly(evidence) && ["sellerType", "buyerType", "documentType", "vatRegime", "vatItemizedStatus", "rebuStatus", "intendedForResale"].includes(outputField)) return false;
-  if (outputField === "documentType") return CONTRACTUAL_DOCUMENT_TYPES.has(evidence.documentType);
+  if (outputField === "documentType") return CONTRACTUAL_DOCUMENT_TYPES.has(evidence.documentType) || (evidence.verificationStatus === VEHICLE_TAX_CASE_FILE_VERIFICATION_STATUSES.SCENARIO && evidence.field === FACT_FIELDS.documentType && CONTRACTUAL_DOCUMENT_TYPES.has(evidence.normalizedValue));
   return true;
 }
 
@@ -496,13 +496,11 @@ function normalizeFactField(caseFile, field, outputField, indexes, warningCodes)
   if (status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.CONFLICT) {
     return { value: outputField.includes("Country") ? null : UNKNOWN, status: "conflict", evidenceIds, selectedEvidence: selected };
   }
-  if (status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.SCENARIO_REQUIRED) {
-    return { value: outputField.includes("Country") ? null : UNKNOWN, status: "scenario_required", evidenceIds, selectedEvidence: selected };
-  }
+
   if (status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.MISSING || status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.NOT_APPLICABLE) {
     return { value: outputField.includes("Country") ? null : UNKNOWN, status: "missing", evidenceIds, selectedEvidence: null };
   }
-  if ((status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.CONFIRMED || status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.PROBABLE) && (!selectedEvidence || selectedIdIsInvalid || !factEvidenceIsCompatible(outputField, selectedEvidence))) {
+  if ([VEHICLE_TAX_CASE_FILE_FACT_STATUSES.CONFIRMED, VEHICLE_TAX_CASE_FILE_FACT_STATUSES.PROBABLE, VEHICLE_TAX_CASE_FILE_FACT_STATUSES.SCENARIO_REQUIRED].includes(status) && (!selectedEvidence || selectedIdIsInvalid || !factEvidenceIsCompatible(outputField, selectedEvidence))) {
     return { value: outputField.includes("Country") ? null : UNKNOWN, status: "missing", evidenceIds: [], selectedEvidence: null };
   }
   let value;
@@ -522,6 +520,7 @@ function normalizeFactField(caseFile, field, outputField, indexes, warningCodes)
   if (status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.CONFIRMED) return { value, status: "confirmed", evidenceIds, selectedEvidence: selected };
   if (status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.PROBABLE) return { value, status: "probable", evidenceIds, selectedEvidence: selected };
   if (status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.INFERRED) return { value, status: "inferred", evidenceIds, selectedEvidence: selected };
+  if (status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.SCENARIO_REQUIRED) return { value, status: "scenario_required", evidenceIds, selectedEvidence: selected };
   return { value: outputField.includes("Country") ? null : UNKNOWN, status: "missing", evidenceIds, selectedEvidence: null };
 }
 function selectableContractualEvidence(indexes, documentType = null) {
@@ -671,7 +670,7 @@ function patchWithField(state, outputField, value) {
 function addFactDrivenConflicts(context) {
   const { state, statuses, facts, indexes, conflicts, scenarios, warningCodes } = context;
   for (const [outputField, fact] of Object.entries(facts)) {
-    if (statuses[outputField] !== "conflict" && statuses[outputField] !== "scenario_required") continue;
+    if (statuses[outputField] !== "conflict") continue;
     const field = FACT_FIELDS[outputField];
     const alternatives = alternativeValuesForFact(fact, outputField, indexes);
     const evidenceIds = uniqueStrings([
@@ -803,10 +802,11 @@ function applyConsistencyRules(context) {
   }
 
   if (state.sellerType === "private" && state.documentType === "private_sale_contract" && state.vatRegime === UNKNOWN) {
+    const scenarioDerived = statuses.sellerType === "scenario_required" || statuses.documentType === "scenario_required";
     state.vatRegime = "not_applicable_private_sale";
-    statuses.vatRegime = statuses.vatRegime === "missing" ? "confirmed" : statuses.vatRegime;
+    statuses.vatRegime = statuses.vatRegime === "missing" ? (scenarioDerived ? "scenario_required" : "confirmed") : statuses.vatRegime;
     state.rebuStatus = "rejected";
-    statuses.rebuStatus = "confirmed";
+    statuses.rebuStatus = scenarioDerived ? "scenario_required" : "confirmed";
   }
 
   const sellerContradictions = [];

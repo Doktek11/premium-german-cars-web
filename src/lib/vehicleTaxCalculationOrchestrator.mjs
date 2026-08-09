@@ -29,6 +29,7 @@ const SCENARIO_FACT_STATUSES = new Set([
   VEHICLE_TAX_CASE_FILE_FACT_STATUSES.CONFIRMED,
   VEHICLE_TAX_CASE_FILE_FACT_STATUSES.PROBABLE,
   VEHICLE_TAX_CASE_FILE_FACT_STATUSES.INFERRED,
+  VEHICLE_TAX_CASE_FILE_FACT_STATUSES.SCENARIO_REQUIRED,
 ]);
 const DESTINATION_FIELDS = new Set(["taxDestination.autonomousCommunity", "taxDestination.province", "taxDestination.foralTerritory", "taxDestination.municipalityCode", "taxDestination.expectedSettlementDate"]);
 const USER_DECLARED_CONFIRMED_FIELDS = new Set([...DESTINATION_FIELDS, "vehicle.condition", "transaction.intendedForResale", "parties.buyerTaxResidenceCountry"]);
@@ -193,7 +194,7 @@ function scenarioFact(caseFile, candidate, field, map, kind = "any") {
   const fact = factFor(caseFile, candidate, field);
   if (!fact) return { ok: false, reason: "missing", evidenceIds: [] };
   const evidenceIds = uniqueStrings(fact.selectedEvidenceId ? [fact.selectedEvidenceId] : fact.evidenceIds);
-  if (fact.status === "conflict" || fact.status === "scenario_required") return { ok: false, reason: "conflict", evidenceIds };
+  if (fact.status === "conflict") return { ok: false, reason: "conflict", evidenceIds };
   if (!scenarioEvidenceKindOk(kind, evidenceIds, map)) return { ok: false, reason: "unsafe", evidenceIds };
   if (!SCENARIO_FACT_STATUSES.has(fact.status)) return { ok: false, reason: fact.status, evidenceIds };
   return { ok: true, value: fact.normalizedValue, evidenceIds, fact, confirmed: fact.status === VEHICLE_TAX_CASE_FILE_FACT_STATUSES.CONFIRMED && evidenceKindOk(field, kind, evidenceIds, map) };
@@ -495,7 +496,7 @@ function mergeScenarioExecutions(strictExecutions, scenarioExecutions) {
 async function buildScenarioExecutions(caseFile, candidate, map, classification, deps, options) {
   const iedmt = executionFromPrepared("iedmt", buildIedmtInput(caseFile, candidate, map, options, "scenario"), deps.calculateIedmt, true);
   const itpPrepared = buildItpInput(caseFile, candidate, map, classification, null, [], options, "scenario");
-  const itpBlocked = ["conflict", "scenario_required", "identity_conflict", "invalid"].includes(classification.status);
+  const itpBlocked = ["conflict", "identity_conflict", "invalid"].includes(classification.status);
   const itp = itpBlocked
     ? notRun("itp", VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_CONFLICT, itpPrepared.input, itpPrepared.evidenceIds, ["classification"])
     : executionFromPrepared("itp", itpPrepared, deps.calculateItp, true);

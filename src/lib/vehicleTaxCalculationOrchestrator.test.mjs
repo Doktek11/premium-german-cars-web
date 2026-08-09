@@ -273,6 +273,25 @@ test("classifier conflict blocks ITP main execution", async () => {
   assert.equal(result.status, VEHICLE_TAX_CALCULATION_STATUSES.SCENARIO_REQUIRED);
 });
 
+test("intermediary warning prevents private contract scenario assumption", async () => {
+  const result = await calculateVehicleTaxCase(makeCase({ remove: ["doc-type", "vat", "tx-date"] }), {
+    ...DEFAULT_OPTIONS,
+    scenarioPolicy: "documentary_scenarios",
+    dependencies: {
+      classifyOperation: () => ({
+        status: "insufficient_data",
+        warningCodes: ["INTERMEDIARY_SELLER_UNRESOLVED"],
+        evidenceIds: ["seller"],
+        scenarios: [],
+        transferTaxClassification: { ...PRIVATE_PATCH, documentType: "unknown", vatRegime: "unknown" },
+      }),
+      calculateItp: () => { throw new Error("ITP should not run for intermediary scenario"); },
+    },
+  });
+  assert.notEqual(result.engineExecutions.itp.status, VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO);
+  assert.equal(result.engineExecutions.itp.warningCodes.includes(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_PRIVATE_SALE_CONTRACT), false);
+  assert.notEqual(result.engineExecutions.itp.inputsUsed.documentType, "private_sale_contract");
+});
 test("documentary scenarios are deterministic and capped", async () => {
   const options = { ...DEFAULT_OPTIONS, scenarioPolicy: "documentary_scenarios", maxScenarios: 2 };
   const first = await calculateVehicleTaxCase(makeCase({ remove: ["seller", "vat"] }), options);

@@ -182,6 +182,13 @@ function volvoNaturalScenarioDto() {
   return input;
 }
 
+function volvoNaturalWithoutDocumentTypeDto() {
+  const input = volvoDeclaredDto({ expectedSettlementDate: "2026-08-09" });
+  input.evidence = input.evidence.filter((item) => !["ev-volvo-doc-type", "ev-volvo-vat"].includes(item.evidenceId));
+  input.evidence.find((entry) => entry.evidenceId === "ev-volvo-settlement").verificationStatus = "scenario";
+  return input;
+}
+
 async function calculate(dtoInput) {
   const adapted = buildVehicleTaxCaseFromActionDto(dtoInput);
   return calculateVehicleTaxCase(adapted.caseFile, adapted.options);
@@ -438,6 +445,60 @@ test("Action La Rioja usa IEDMT peninsula, ITP depreciado y no provincia no fora
   assert.equal(Object.hasOwn(noDateResult.engineExecutions.itp.inputsUsed, "officialMarketValue"), false);
 });
 
+test("request natural sin documentType infiere contrato privado solo como hipotesis ITP", async () => {
+  const input = volvoNaturalWithoutDocumentTypeDto();
+  const before = JSON.stringify(input);
+  const result = await calculate(input);
+  assert.equal(JSON.stringify(input), before);
+  assert.equal(result.taxSummary, null);
+  assert.equal(result.estimatedSummary.exactTotal, null);
+  assert.equal(result.estimatedSummary.estimatedTotal, 2619.06);
+  assert.equal(result.estimatedSummary.prudentBudget, 2626);
+  assert.equal(result.classification.documentType, "unknown");
+  assert.notEqual(result.classification.rebuStatus, "confirmed");
+  for (const engineId of ["iedmt", "itp", "ivtm", "dgt_registration_fee"]) assert.equal(result.engineExecutions[engineId].status, "calculated_scenario", engineId);
+  assert.equal(result.engineExecutions.iedmt.result.tax.toFixed(2), "1192.01");
+  assert.equal(result.engineExecutions.itp.result.taxAmount, 1262.28);
+  assert.equal(result.engineExecutions.itp.inputsUsed.documentType, "private_sale_contract");
+  assert.equal(result.engineExecutions.itp.inputsUsed.vatRegime, "not_applicable_private_sale");
+  assert.equal(result.engineExecutions.itp.inputsUsed.assumedTransactionDate, "2026-08-09");
+  assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PRIVATE_SALE_CONTRACT"), true);
+  assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_TRANSACTION_DATE"), true);
+  assert.equal(result.engineExecutions.itp.evidenceIds.includes("ev-volvo-doc-type"), false);
+  assert.equal(JSON.stringify(result).includes("ev-volvo-doc-type"), false);
+  assert.equal(result.engineExecutions.ivtm.result.referenceProratedTax, 65);
+  assert.equal(result.engineExecutions.ivtm.result.prudentBudget, 71.94);
+  assert.equal(result.engineExecutions.dgt_registration_fee.result.amount, 99.77);
+});
+
+test("inferencia de contrato privado no se aplica a professional unknown conflicto o candidatos multiples", async () => {
+  const professional = volvoNaturalWithoutDocumentTypeDto();
+  professional.evidence.find((item) => item.evidenceId === "ev-volvo-seller").normalizedValue = "professional";
+  const professionalResult = await calculate(professional);
+  assert.notEqual(professionalResult.engineExecutions.itp.status, "calculated_scenario");
+  assert.notEqual(professionalResult.engineExecutions.itp.inputsUsed.documentType, "private_sale_contract");
+  assert.equal(professionalResult.engineExecutions.itp.warningCodes.includes("ASSUMED_PRIVATE_SALE_CONTRACT"), false);
+
+  const unknown = volvoNaturalWithoutDocumentTypeDto();
+  unknown.evidence.find((item) => item.evidenceId === "ev-volvo-seller").normalizedValue = "unknown";
+  const unknownResult = await calculate(unknown);
+  assert.notEqual(unknownResult.engineExecutions.itp.status, "calculated_scenario");
+  assert.notEqual(unknownResult.engineExecutions.itp.inputsUsed.documentType, "private_sale_contract");
+  assert.notEqual(unknownResult.engineExecutions.itp.inputsUsed.vatRegime, "rebu");
+
+  const conflict = volvoNaturalWithoutDocumentTypeDto();
+  conflict.evidence.push(evidence({ evidenceId: "ev-volvo-seller-conflict", documentId: null, candidateId: null, page: null, field: "transaction.sellerType", normalizedValue: "professional", valueType: "enum", sourceType: "user_declaration", verificationStatus: "confirmed_user" }));
+  const conflictResult = await calculate(conflict);
+  assert.equal(conflictResult.classification.status, "conflict");
+  assert.notEqual(conflictResult.engineExecutions.itp.status, "calculated_scenario");
+
+  const multiple = volvoNaturalWithoutDocumentTypeDto();
+  multiple.evidence.push(evidence({ evidenceId: "ev-other-category-no-doc", documentId: null, candidateId: "candidate-other", page: null, field: "vehicle.category", normalizedValue: "passenger_car", valueType: "enum", sourceType: "user_declaration", verificationStatus: "confirmed_user" }));
+  multiple.evidence.push(evidence({ evidenceId: "ev-other-boe-no-doc", documentId: null, candidateId: "candidate-other", page: null, field: "vehicle.boeValue", normalizedValue: 9000, valueType: "money", sourceType: "user_declaration", verificationStatus: "confirmed_user" }));
+  const multipleResult = await calculate(multiple);
+  assert.notEqual(multipleResult.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(multipleResult.engineExecutions.itp.warningCodes.includes("ASSUMED_PRIVATE_SALE_CONTRACT"), false);
+});
 test("request natural con evidencias scenario calcula cuatro motores orientativos", async () => {
   const input = volvoNaturalScenarioDto();
   const before = JSON.stringify(input);

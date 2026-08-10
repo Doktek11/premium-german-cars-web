@@ -254,11 +254,14 @@ function canUseProfessionalNotSubjectScenario(caseFile, classification, prepared
   if (!hasSingleVehicleCandidate(caseFile)) return false;
   if (prepared.input.sellerType !== "professional") return false;
   if (prepared.input.buyerType !== "private" && prepared.input.buyerType !== "professional") return false;
-  if (prepared.input.documentType && prepared.input.documentType !== "unknown" && prepared.input.documentType !== "invoice") return false;
+  if (prepared.input.documentType && prepared.input.documentType !== "unknown") return false;
   if (prepared.input.vatRegime && !["unknown", "rebu", "general_vat"].includes(prepared.input.vatRegime)) return false;
   if (classification?.vatRegimeStatus === "conflict" || classification?.rebuStatusCertainty === "conflict") return false;
   if (hasBlockingOperationIssue(classification)) return false;
   return true;
+}
+function shouldUseDocumentaryItpScenario(caseFile, classification, prepared, options) {
+  return options?.scenarioPolicy === "documentary_scenarios" && canUseProfessionalNotSubjectScenario(caseFile, classification, prepared);
 }
 function confidenceLevel(prepared, scenario) {
   if (!scenario) return "confirmed";
@@ -543,10 +546,11 @@ function estimatedSummaryFrom(executions, taxSummary, options) {
     exactTotalBlockedBy: ENGINE_IDS.filter((engineId) => executions[engineId]?.status !== VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_CONFIRMED),
   });
 }
-function removeObsoleteEngineInputConflict(codes, engineExecutions) {
-  const finalExecutions = Object.values(engineExecutions ?? {});
-  const finalHasConflict = finalExecutions.some((execution) => (execution?.warningCodes ?? []).includes(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ENGINE_INPUTS_CONFLICT));
-  if (!finalHasConflict) codes.delete(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ENGINE_INPUTS_CONFLICT);
+function taxSummaryExecutions(executions) {
+  return Object.fromEntries(ENGINE_IDS.map((engineId) => {
+    const execution = executions[engineId];
+    return [engineId, execution?.status === VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO ? { ...execution, result: null } : execution];
+  }));
 }
 function mergeScenarioExecutions(strictExecutions, scenarioExecutions) {
   return Object.fromEntries(ENGINE_IDS.map((engineId) => {
@@ -555,16 +559,29 @@ function mergeScenarioExecutions(strictExecutions, scenarioExecutions) {
     return [engineId, strict?.status === VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_CONFIRMED ? strict : scenario?.status === VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO ? scenario : strict];
   }));
 }
-async function buildScenarioExecutions(caseFile, candidate, map, classification, deps, options) {
+async function buildScenarioExecutions(caseFile, candidate, map, classification, deps, options, effectiveItp = null) {
   const iedmt = executionFromPrepared("iedmt", buildIedmtInput(caseFile, candidate, map, options, "scenario"), deps.calculateIedmt, true);
   const itpPrepared = buildItpInput(caseFile, candidate, map, classification, null, [], options, "scenario");
   const itpBlocked = ["conflict", "identity_conflict", "invalid"].includes(classification.status);
-  const itp = itpBlocked
-    ? notRun("itp", VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_CONFLICT, itpPrepared.input, itpPrepared.evidenceIds, ["classification"])
-    : executionFromPrepared("itp", itpPrepared, deps.calculateItp, true);
+  const itp = effectiveItp?.status === VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO
+    ? effectiveItp
+    : itpBlocked
+      ? notRun("itp", VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_CONFLICT, itpPrepared.input, itpPrepared.evidenceIds, ["classification"])
+      : executionFromPrepared("itp", itpPrepared, deps.calculateItp, true);
   const ivtm = await ivtmExecution(buildIvtmInput(caseFile, candidate, map, options, "scenario"), deps, true);
   const dgt = executionFromPrepared("dgt_registration_fee", buildDgtInput(caseFile, candidate, map, options, "scenario"), deps.calculateDgtFee, true);
   return { iedmt, itp, ivtm, dgt_registration_fee: dgt };
+}
+function itpExecutionFromEffectiveClassification(caseFile, candidate, map, classification, deps, options) {
+  const itpPrepared = buildItpInput(caseFile, candidate, map, classification);
+  if (shouldUseDocumentaryItpScenario(caseFile, classification, itpPrepared, options)) {
+    const scenarioPrepared = buildItpInput(caseFile, candidate, map, classification, null, [], options, "scenario");
+    return executionFromPrepared("itp", scenarioPrepared, deps.calculateItp, true);
+  }
+  const itpBlocked = ["conflict", "scenario_required", "identity_conflict", "invalid"].includes(classification.status);
+  return itpBlocked
+    ? notRun("itp", VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_CONFLICT, itpPrepared.input, itpPrepared.evidenceIds, ["classification"])
+    : executionFromPrepared("itp", itpPrepared, deps.calculateItp);
 }
 function summaryFrom(executions, deps, options, codes) {
   const results = {
@@ -673,22 +690,16 @@ export async function calculateVehicleTaxCase(caseFileInput, optionsInput = {}) 
   }
 
   const iedmt = executionFromPrepared("iedmt", buildIedmtInput(caseFile, candidate, map, options), deps.calculateIedmt);
-  const itpPrepared = buildItpInput(caseFile, candidate, map, classification);
-  const itpBlocked = ["conflict", "scenario_required", "identity_conflict", "invalid"].includes(classification.status);
-  const itp = itpBlocked
-    ? notRun("itp", VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_CONFLICT, itpPrepared.input, itpPrepared.evidenceIds, ["classification"])
-    : executionFromPrepared("itp", itpPrepared, deps.calculateItp);
+  const itp = itpExecutionFromEffectiveClassification(caseFile, candidate, map, classification, deps, options);
   const ivtm = await ivtmExecution(buildIvtmInput(caseFile, candidate, map, options), deps);
   const dgt = executionFromPrepared("dgt_registration_fee", buildDgtInput(caseFile, candidate, map, options), deps.calculateDgtFee);
   const strictEngineExecutions = { iedmt, itp, ivtm, dgt_registration_fee: dgt };
-  for (const execution of Object.values(strictEngineExecutions)) for (const code of execution.warningCodes) addCode(codes, code);
-  const taxSummary = summaryFrom(strictEngineExecutions, deps, options, codes);
+  const taxSummary = summaryFrom(taxSummaryExecutions(strictEngineExecutions), deps, options, codes);
   let engineExecutions = strictEngineExecutions;
   let estimatedSummary = null;
   if (options.scenarioPolicy === "documentary_scenarios") {
-    const scenarioExecutions = await buildScenarioExecutions(caseFile, candidate, map, classification, deps, options);
+    const scenarioExecutions = await buildScenarioExecutions(caseFile, candidate, map, classification, deps, options, itp);
     engineExecutions = mergeScenarioExecutions(strictEngineExecutions, scenarioExecutions);
-    for (const execution of Object.values(engineExecutions)) for (const code of execution.warningCodes) addCode(codes, code);
     estimatedSummary = estimatedSummaryFrom(engineExecutions, taxSummary, options);
   }
   const scenarios = [];
@@ -699,7 +710,7 @@ export async function calculateVehicleTaxCase(caseFileInput, optionsInput = {}) 
       scenarios.push(scenarioOutput(scenario, execution, index));
     }
   }
-  removeObsoleteEngineInputConflict(codes, engineExecutions);
+  for (const execution of Object.values(engineExecutions)) for (const code of execution.warningCodes) addCode(codes, code);
   const status = statusFrom(engineExecutions, classification, taxSummary, estimatedSummary, scenarios, codes);
   return output({ caseFile, options, status, classification, engineExecutions, taxSummary, estimatedSummary, scenarios, warningCodes: [...codes] });
 }

@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
+import { cp, mkdir, mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import { Readable } from "node:stream";
 import test from "node:test";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+import { build as buildBundle } from "esbuild";
 
 import apiHandler from "../../api/vehicle-tax-estimate-action.js";
 import { VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION, buildVehicleTaxCaseFromActionDto } from "./vehicleTaxActionAdapter.mjs";
@@ -115,6 +121,38 @@ function assertActionDiagnostics(headers, scenarioPolicy) {
   assert.equal(headers["X-PGC-Orchestrator-Revision"], VEHICLE_TAX_ORCHESTRATOR_REVISION);
   assert.equal(headers["X-PGC-Scenario-Policy"], scenarioPolicy);
   assert.equal(headers["X-PGC-Node-Version"], process.version);
+}
+
+async function callRealActionHandler(handler, body) {
+  const old = process.env.VEHICLE_TAX_ESTIMATE_API_KEY;
+  process.env.VEHICLE_TAX_ESTIMATE_API_KEY = API_KEY;
+  try {
+    const res = { headers: {}, statusCode: null, jsonBody: null, setHeader(name, value) { this.headers[name] = value; return this; }, status(code) { this.statusCode = code; return this; }, json(body) { this.jsonBody = body; return this; } };
+    await handler(req(body), res);
+    return res;
+  } finally {
+    if (old === undefined) delete process.env.VEHICLE_TAX_ESTIMATE_API_KEY;
+    else process.env.VEHICLE_TAX_ESTIMATE_API_KEY = old;
+  }
+}
+
+async function bundledActionHandler() {
+  const root = await mkdtemp(path.join(tmpdir(), "pgc-action-bundle-"));
+  const outfile = path.join(root, "api", "vehicle-tax-estimate-action.mjs");
+  await mkdir(path.dirname(outfile), { recursive: true });
+  await mkdir(path.join(root, "data"), { recursive: true });
+  await cp(fileURLToPath(new URL("../data/ivtm", import.meta.url)), path.join(root, "data", "ivtm"), { recursive: true });
+  await buildBundle({
+    entryPoints: [fileURLToPath(new URL("../../api/vehicle-tax-estimate-action.js", import.meta.url))],
+    outfile,
+    bundle: true,
+    platform: "node",
+    format: "esm",
+    target: "node24",
+    logLevel: "silent",
+  });
+  const module = await import(pathToFileURL(outfile).href + "?t=" + Date.now());
+  return { handler: module.default, cleanup: () => rm(root, { recursive: true, force: true }) };
 }
 
 function calculationResult(overrides = {}) {
@@ -248,26 +286,50 @@ test("stream, endpoint Vercel e IVTM local con datasets disponibles", async () =
 
 test("endpoint Action real expone diagnostico no sensible sin alterar resultado fiscal", async () => {
   const body = professionalItpDeclarationScenarioDto();
-  const baseline = await handleVehicleTaxActionRequest(req(body), config());
-  assert.equal(baseline.statusCode, 200);
-  assert.equal(baseline.body.data.engineExecutions.itp.status, "calculated_scenario");
-  assert.equal(baseline.body.data.engineExecutions.itp.result.applicability, "not_subject");
-  assert.equal(baseline.body.data.engineExecutions.itp.result.taxAmount, 0);
-  const old = process.env.VEHICLE_TAX_ESTIMATE_API_KEY;
-  process.env.VEHICLE_TAX_ESTIMATE_API_KEY = API_KEY;
+  const source = await callRealActionHandler(apiHandler, body);
+  assert.equal(source.statusCode, 200);
+  assertActionDiagnostics(source.headers, "documentary_scenarios");
+  assert.equal(source.jsonBody.data.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(source.jsonBody.data.engineExecutions.itp.inputStatus, "scenario");
+  assert.equal(source.jsonBody.data.engineExecutions.itp.confidenceLevel, "declared");
+  assert.equal(source.jsonBody.data.engineExecutions.itp.result.applicability, "not_subject");
+  assert.equal(source.jsonBody.data.engineExecutions.itp.result.taxAmount, 0);
+  assert.deepEqual(source.jsonBody.data.engineExecutions.itp.missingFields, []);
+  assert.equal(source.jsonBody.data.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), false);
+  assert.equal(source.jsonBody.data.engineExecutions.itp.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), false);
+
+  const direct = await handleVehicleTaxActionRequest(req(body), config());
+  assert.equal(direct.statusCode, 200);
+  assert.deepEqual(source.jsonBody.data.engineExecutions.itp, direct.body.data.engineExecutions.itp);
+  assert.deepEqual(source.jsonBody.data.taxSummary, direct.body.data.taxSummary);
+  assert.deepEqual(source.jsonBody.data.estimatedSummary, direct.body.data.estimatedSummary);
+
+  const bundled = await bundledActionHandler();
   try {
-    const res = { headers: {}, statusCode: null, jsonBody: null, setHeader(name, value) { this.headers[name] = value; return this; }, status(code) { this.statusCode = code; return this; }, json(body) { this.jsonBody = body; return this; } };
-    await apiHandler(req(body), res);
-    assert.equal(res.statusCode, 200);
-    assertActionDiagnostics(res.headers, "documentary_scenarios");
-    assert.equal(res.headers["Cache-Control"], baseline.headers["Cache-Control"]);
-    assert.deepEqual(res.jsonBody.data.engineExecutions.itp, baseline.body.data.engineExecutions.itp);
-    assert.deepEqual(res.jsonBody.data.taxSummary, baseline.body.data.taxSummary);
-    assert.deepEqual(res.jsonBody.data.estimatedSummary, baseline.body.data.estimatedSummary);
+    const bundledResponse = await callRealActionHandler(bundled.handler, body);
+    assert.equal(bundledResponse.statusCode, 200);
+    assertActionDiagnostics(bundledResponse.headers, "documentary_scenarios");
+    assert.deepEqual(bundledResponse.jsonBody.data.engineExecutions.itp, source.jsonBody.data.engineExecutions.itp);
+    assert.deepEqual(bundledResponse.jsonBody.data.taxSummary, source.jsonBody.data.taxSummary);
+    assert.deepEqual(bundledResponse.jsonBody.data.estimatedSummary, source.jsonBody.data.estimatedSummary);
   } finally {
-    if (old === undefined) delete process.env.VEHICLE_TAX_ESTIMATE_API_KEY;
-    else process.env.VEHICLE_TAX_ESTIMATE_API_KEY = old;
+    await bundled.cleanup();
   }
+
+  const confirmedOnly = await callRealActionHandler(apiHandler, { ...body, options: { ...body.options, scenarioPolicy: "confirmed_only", maxScenarios: 0 } });
+  assert.equal(confirmedOnly.statusCode, 200);
+  assertActionDiagnostics(confirmedOnly.headers, "confirmed_only");
+  assert.equal(confirmedOnly.jsonBody.data.engineExecutions.itp.status, "not_run_conflict");
+  assert.equal(confirmedOnly.jsonBody.data.engineExecutions.itp.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), true);
+
+  const conflictBody = JSON.parse(JSON.stringify(body));
+  conflictBody.evidence.push(ev("ev-899", "doc-8001", null, "transaction.sellerType", "private", "enum", "user_declaration", "scenario"));
+  const conflict = await callRealActionHandler(apiHandler, conflictBody);
+  assert.equal(conflict.statusCode, 200);
+  assert.equal(conflict.jsonBody.data.classification.status, "conflict");
+  assert.equal(conflict.jsonBody.data.engineExecutions.itp.status, "not_run_conflict");
+  assert.equal(conflict.jsonBody.data.engineExecutions.itp.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), true);
+  assert.equal(conflict.jsonBody.data.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), true);
 
   const invalidPolicy = await handleVehicleTaxActionRequest(req({ ...body, options: { ...body.options, scenarioPolicy: "invalid" } }), config());
   assert.equal(invalidPolicy.statusCode, 400);

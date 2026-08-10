@@ -133,16 +133,28 @@ function engineStatus(engineId, result, scenario) {
   return VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.REQUIRES_REVIEW;
 }
 
+function scenarioAdjustedResultAssumptions(engineId, input, result, scenario) {
+  if (!Array.isArray(result?.assumptions)) return null;
+  if (!scenario || engineId !== "itp" || input?.sellerType !== "professional" || result?.applicability !== "not_subject") return result.assumptions;
+  return result.assumptions.map((assumption) => (
+    typeof assumption === "string" && /vendedor profesional confirmado/i.test(assumption)
+      ? "A professional seller is assumed from declared data only for this documentary scenario."
+      : assumption
+  ));
+}
+
 function calculated(engineId, input, evidenceIds, result, scenario = false, prepared = null) {
   const status = engineStatus(engineId, result, scenario);
   const codes = [...(prepared?.warningCodes ?? [])];
   const assumptions = [...(prepared?.assumptions ?? [])];
   if (scenario && (prepared?.scenarioFields ?? 0) > 0) {
     codes.push(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.SCENARIO_FROM_DECLARED_DATA);
-    assumptions.push("Calculo orientativo: usa datos estructurados declarados o no confirmados y no constituye evidencia oficial.");
+    assumptions.push("Calculo orientativo: usa datos estructurados declarados o no verificados y no constituye evidencia oficial.");
   }
   if (engineId === "iedmt" && result?.isProvisionalTerritory === true) codes.push(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.PROVISIONAL_IEDMT_RESULT);
-  return engineExecution({ engineId, status, inputStatus: scenario ? "scenario" : "confirmed", confidenceLevel: confidenceLevel(prepared ?? emptyPrepared(), scenario), inputsUsed: input, evidenceIds, result, assumptions: [...(result?.assumptions ?? []), ...assumptions], warnings: [...(result?.warnings ?? []), ...codeMessages(codes)], warningCodes: uniqueStrings([...(result?.warningCodes ?? []), ...codes]), missingFields: result?.missingFields ?? [] });
+  const resultAssumptions = scenarioAdjustedResultAssumptions(engineId, input, result, scenario);
+  const adjustedResult = resultAssumptions && resultAssumptions !== result.assumptions ? { ...result, assumptions: resultAssumptions } : result;
+  return engineExecution({ engineId, status, inputStatus: scenario ? "scenario" : "confirmed", confidenceLevel: confidenceLevel(prepared ?? emptyPrepared(), scenario), inputsUsed: input, evidenceIds, result: adjustedResult, assumptions: [...(resultAssumptions ?? []), ...assumptions], warnings: [...(result?.warnings ?? []), ...codeMessages(codes)], warningCodes: uniqueStrings([...(result?.warningCodes ?? []), ...codes]), missingFields: result?.missingFields ?? [] });
 }
 
 function emptyExecutions(status = VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_MISSING_INPUTS) { return Object.fromEntries(ENGINE_IDS.map((engineId) => [engineId, notRun(engineId, status)])); }
@@ -236,12 +248,13 @@ function canAssumePrivateSaleContract(caseFile, classification, prepared) {
   if (hasBlockingOperationIssue(classification)) return false;
   return true;
 }
-function canAssumeProfessionalInvoice(caseFile, classification, prepared) {
+
+function canUseProfessionalNotSubjectScenario(caseFile, classification, prepared) {
   if (!hasSingleVehicleCandidate(caseFile)) return false;
   if (prepared.input.sellerType !== "professional") return false;
   if (prepared.input.buyerType !== "private" && prepared.input.buyerType !== "professional") return false;
-  if (prepared.input.documentType && prepared.input.documentType !== "unknown") return false;
-  if (prepared.input.vatRegime !== "rebu" && prepared.input.vatRegime !== "general_vat") return false;
+  if (prepared.input.documentType && prepared.input.documentType !== "unknown" && prepared.input.documentType !== "invoice") return false;
+  if (prepared.input.vatRegime && !["unknown", "rebu", "general_vat"].includes(prepared.input.vatRegime)) return false;
   if (classification?.vatRegimeStatus === "conflict" || classification?.rebuStatusCertainty === "conflict") return false;
   if (hasBlockingOperationIssue(classification)) return false;
   return true;
@@ -353,7 +366,7 @@ function buildItpInput(caseFile, candidate, map, classification, overridePatch =
     prepared.input.transactionDate = options.calculationDate;
     prepared.input.assumedTransactionDate = options.calculationDate;
     removeMissing(prepared, "transaction.date");
-    scenarioAssumption(prepared, "Se usa calculationDate como assumedTransactionDate porque no consta transaction.date contractual; no confirma fecha de contrato.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_TRANSACTION_DATE);
+    scenarioAssumption(prepared, "Se usa calculationDate como assumedTransactionDate porque no consta transaction.date contractual; no documenta fecha de contrato.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_TRANSACTION_DATE);
   }
   if (mode === "scenario" && canAssumePrivateSaleContract(caseFile, classification, prepared)) {
     prepared.input.documentType = "private_sale_contract";
@@ -364,13 +377,7 @@ function buildItpInput(caseFile, candidate, map, classification, overridePatch =
     removeMissing(prepared, "classification.vatRegime");
     scenarioAssumption(prepared, "Se asume internamente private_sale_contract para una transmision particular a particular sin contrato existente; no crea documento ni evidencia contractual.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_PRIVATE_SALE_CONTRACT);
   }
-  if (mode === "scenario" && canAssumeProfessionalInvoice(caseFile, classification, prepared)) {
-    prepared.input.documentType = "invoice";
-    removeMissing(prepared, "transaction.documentType");
-    removeMissing(prepared, "classification.documentType");
-    scenarioAssumption(prepared, "Se asume internamente invoice para una transmision profesional con regimen IVA estructurado sin factura existente; no crea documento ni evidencia contractual.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_PROFESSIONAL_INVOICE);
-    if (prepared.input.vatRegime === "rebu") scenarioAssumption(prepared, "Se evalua REBU solo como hipotesis orientativa a partir de datos estructurados compatibles; no confirma regimen de factura.", VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_PROFESSIONAL_REBU);
-  }
+
   const foralTerritory = readFact(caseFile, candidate, "taxDestination.foralTerritory", map, "any", mode);
   if (foralTerritory.ok && BASQUE_FORAL_TERRITORIES.has(foralTerritory.value)) {
     prepared.input.buyerProvince = foralTerritory.value;
@@ -382,6 +389,14 @@ function buildItpInput(caseFile, candidate, map, classification, overridePatch =
   if (officialMarketValue !== null) prepared.input.officialMarketValue = officialMarketValue;
   else if (prepared.input.originalBoeValue !== undefined && prepared.input.transactionDate !== undefined && prepared.input.firstRegistrationDate !== undefined) prepared.missing.push("officialMarketValue");
   for (const key of ["sellerType", "buyerType", "documentType", "vatRegime"]) if (!prepared.input[key] || prepared.input[key] === "unknown") prepared.missing.push(`classification.${key}`);
+  if (mode === "scenario" && canUseProfessionalNotSubjectScenario(caseFile, classification, prepared)) {
+    removeMissing(prepared, "transaction.documentType");
+    removeMissing(prepared, "transaction.vatRegime");
+    removeMissing(prepared, "classification.documentType");
+    removeMissing(prepared, "classification.vatRegime");
+    prepared.assumptions.push("Se evalua venta profesional declarada como hipotesis documental no sujeta; no crea factura, documento ni evidencia fiscal.");
+    prepared.scenarioFields += 1;
+  }
   if (prepared.input.intendedForResale === undefined) prepared.input.intendedForResale = null;
   if (prepared.input.buyerTaxResidenceCountry === undefined) prepared.missing.push("classification.buyerTaxResidenceCountry");
   if (prepared.input.sellerCountry === undefined) prepared.missing.push("classification.sellerCountry");
@@ -526,6 +541,11 @@ function estimatedSummaryFrom(executions, taxSummary, options) {
     missingFields: uniqueStrings(lineItems.flatMap((item) => item.missingFields.map((field) => `${item.id}.${field}`))),
     exactTotalBlockedBy: ENGINE_IDS.filter((engineId) => executions[engineId]?.status !== VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_CONFIRMED),
   });
+}
+function removeObsoleteEngineInputConflict(codes, engineExecutions) {
+  const finalExecutions = Object.values(engineExecutions ?? {});
+  const finalHasConflict = finalExecutions.some((execution) => (execution?.warningCodes ?? []).includes(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ENGINE_INPUTS_CONFLICT));
+  if (!finalHasConflict) codes.delete(VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ENGINE_INPUTS_CONFLICT);
 }
 function mergeScenarioExecutions(strictExecutions, scenarioExecutions) {
   return Object.fromEntries(ENGINE_IDS.map((engineId) => {
@@ -678,6 +698,7 @@ export async function calculateVehicleTaxCase(caseFileInput, optionsInput = {}) 
       scenarios.push(scenarioOutput(scenario, execution, index));
     }
   }
+  removeObsoleteEngineInputConflict(codes, engineExecutions);
   const status = statusFrom(engineExecutions, classification, taxSummary, estimatedSummary, scenarios, codes);
   return output({ caseFile, options, status, classification, engineExecutions, taxSummary, estimatedSummary, scenarios, warningCodes: [...codes] });
 }

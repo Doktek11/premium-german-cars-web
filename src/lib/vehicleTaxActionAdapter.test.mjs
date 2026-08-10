@@ -219,6 +219,54 @@ function bmwProfessionalRebuScenarioDto({ sellerType = "professional", buyerType
   return { schemaVersion: VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION, caseId: "case-a1", documents: [], evidence: evidenceItems, selectedVehicleCandidateId: candidateId, options };
 }
 
+function professionalItpDeclarationScenarioDto({ sellerType = "professional", buyerType = "private", vatRegime, rebuStatus, intendedForResale, scenarioPolicy = "documentary_scenarios", extraEvidence = [] } = {}) {
+  const candidateId = "candidate-8001";
+  const docId = "doc-8001";
+  const item = (evidenceId, field, normalizedValue, valueType, candidateIdOverride = null) => evidence({
+    evidenceId,
+    documentId: docId,
+    candidateId: candidateIdOverride,
+    page: null,
+    field,
+    normalizedValue,
+    valueType,
+    sourceType: "user_declaration",
+    verificationStatus: "scenario",
+  });
+  const evidenceItems = [
+    item("ev-801", "vehicle.category", "passenger_car", "enum", candidateId),
+    item("ev-802", "vehicle.engineDisplacementCc", 1598, "number", candidateId),
+    item("ev-803", "vehicle.fiscalHorsepower", 9.7, "number", candidateId),
+    item("ev-804", "vehicle.firstRegistrationDate", "2012-03-01", "date", candidateId),
+    item("ev-805", "vehicle.condition", "usado_importado", "enum", candidateId),
+    item("ev-806", "vehicle.co2Wltp", 132, "number", candidateId),
+    item("ev-807", "vehicle.emissionsStandard", "wltp", "enum", candidateId),
+    item("ev-808", "vehicle.zeroEmissionStatus", "not_zero_emission", "enum", candidateId),
+    item("ev-809", "vehicle.isHistoricVehicle", false, "boolean", candidateId),
+    item("ev-810", "vehicle.isEndOfLifeVehicle", false, "boolean", candidateId),
+    item("ev-811", "vehicle.boeValue", 21100, "money", candidateId),
+    item("ev-812", "transaction.purchasePrice", 12000, "money"),
+    item("ev-815", "transaction.sellerType", sellerType, "enum"),
+    item("ev-816", "transaction.buyerType", buyerType, "enum"),
+    item("ev-813", "parties.sellerCountry", "DE", "country"),
+    item("ev-814", "parties.buyerTaxResidenceCountry", "ES", "country"),
+    item("ev-817", "taxDestination.autonomousCommunity", "la_rioja", "enum"),
+    item("ev-818", "taxDestination.province", "la_rioja", "enum"),
+    item("ev-819", "taxDestination.municipalityCode", "26089", "ine_code"),
+  ];
+  if (vatRegime !== undefined) evidenceItems.push(item("ev-820", "transaction.vatRegime", vatRegime, "enum"));
+  if (rebuStatus !== undefined) evidenceItems.push(item("ev-821", "transaction.rebuStatus", rebuStatus, "enum"));
+  if (intendedForResale !== undefined) evidenceItems.push(item("ev-822", "transaction.intendedForResale", intendedForResale, "boolean"));
+  evidenceItems.push(...extraEvidence);
+  return {
+    schemaVersion: VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION,
+    caseId: "case-itp-professional-declaration",
+    documents: [{ documentId: docId, documentType: "user_declaration", pageCount: null, candidateId: null }],
+    evidence: evidenceItems,
+    selectedVehicleCandidateId: candidateId,
+    options: { calculationDate: "2026-08-09", taxYear: 2026, scenarioPolicy, maxScenarios: 3, currency: "EUR" },
+  };
+}
 async function calculate(dtoInput) {
   const adapted = buildVehicleTaxCaseFromActionDto(dtoInput);
   return calculateVehicleTaxCase(adapted.caseFile, adapted.options);
@@ -475,6 +523,113 @@ test("Action La Rioja usa IEDMT peninsula, ITP depreciado y no provincia no fora
   assert.equal(Object.hasOwn(noDateResult.engineExecutions.itp.inputsUsed, "officialMarketValue"), false);
 });
 
+test("ITP profesional documental desde Action user_declaration scenario cubre matriz sin factura sintetica", async () => {
+  const vatCases = [
+    ["absent", undefined],
+    ["unknown", "unknown"],
+    ["rebu", "rebu"],
+    ["general_vat", "general_vat"],
+  ];
+  const rebuCases = [
+    ["absent", undefined],
+    ["present", "unknown"],
+  ];
+  const intendedCases = [
+    ["absent", undefined],
+    ["true", true],
+    ["false", false],
+  ];
+
+  for (const buyerType of ["private", "professional"]) {
+    for (const [vatLabel, vatRegime] of vatCases) {
+      for (const [rebuLabel, rebuStatus] of rebuCases) {
+        for (const [intendedLabel, intendedForResale] of intendedCases) {
+          const input = professionalItpDeclarationScenarioDto({ buyerType, vatRegime, rebuStatus, intendedForResale });
+          const before = JSON.stringify(input);
+          assert.equal(input.documents.length, 1, `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(input.documents[0].documentType, "user_declaration", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(input.evidence.every((item) => item.documentId === "doc-8001" && item.verificationStatus === "scenario"), true, `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+
+          const adapted = buildVehicleTaxCaseFromActionDto(input);
+          assert.equal(JSON.stringify(input), before, `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(adapted.caseFile.documents[0].documentType, "user_declaration", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(adapted.caseFile.facts["transaction.sellerType"].status, "scenario_required", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(adapted.caseFile.facts["transaction.documentType"].status, "missing", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+
+          const result = await calculateVehicleTaxCase(adapted.caseFile, adapted.options);
+          assert.equal(result.classification.sellerType, "professional", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.classification.sellerTypeStatus, "scenario_required", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.classification.buyerType, buyerType, `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.classification.documentType, "unknown", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.classification.documentTypeStatus, "missing", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.deepEqual(result.classification.conflicts, [], `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.engineExecutions.itp.status, "calculated_scenario", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.engineExecutions.itp.inputStatus, "scenario", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.engineExecutions.itp.confidenceLevel, "declared", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.engineExecutions.itp.inputsUsed.documentType, "unknown", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.engineExecutions.itp.inputsUsed.vatRegime, vatRegime ?? "unknown", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.engineExecutions.itp.inputsUsed.intendedForResale, intendedForResale ?? null, `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.engineExecutions.itp.result.applicability, "not_subject", `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.engineExecutions.itp.result.taxAmount, 0, `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.deepEqual(result.engineExecutions.itp.missingFields, [], `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+          assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), false, `${buyerType}-${vatLabel}-${rebuLabel}-${intendedLabel}`);
+        }
+      }
+    }
+  }
+
+  const rebuConfirmed = await calculate(professionalItpDeclarationScenarioDto({ vatRegime: "rebu", rebuStatus: "confirmed" }));
+  assert.equal(rebuConfirmed.classification.rebuStatus, "confirmed");
+  assert.equal(rebuConfirmed.classification.rebuStatusCertainty, "scenario_required");
+  assert.equal(rebuConfirmed.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(rebuConfirmed.engineExecutions.itp.inputStatus, "scenario");
+  assert.equal(rebuConfirmed.engineExecutions.itp.confidenceLevel, "declared");
+  assert.equal(rebuConfirmed.engineExecutions.itp.inputsUsed.documentType, "unknown");
+  assert.equal(rebuConfirmed.engineExecutions.itp.result.applicability, "not_subject");
+  assert.equal(rebuConfirmed.engineExecutions.itp.result.taxAmount, 0);
+  assert.deepEqual(rebuConfirmed.engineExecutions.itp.missingFields, []);
+  assert.equal(rebuConfirmed.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), false);
+  assert.equal(rebuConfirmed.warnings.some((warning) => /inputs are conflicting/i.test(warning)), false);
+  const itpAssumptionText = [
+    ...rebuConfirmed.engineExecutions.itp.assumptions,
+    ...(rebuConfirmed.engineExecutions.itp.result.assumptions ?? []),
+  ].join(" ");
+  assert.equal(/confirmed|confirmad/i.test(itpAssumptionText), false);
+  assert.match(itpAssumptionText, /declared data only for this documentary scenario/);
+  assert.equal(rebuConfirmed.estimatedSummary.exactTotal, null);
+  const itpLine = rebuConfirmed.estimatedSummary.lineItems.find((item) => item.id === "itp");
+  assert.equal(itpLine.status, "calculated_scenario");
+  assert.equal(itpLine.amount, 0);
+});
+
+test("ITP profesional documental desde Action no se aplica a private unknown intermediario conflicto ni confirmed_only", async () => {
+  const privateSeller = await calculate(professionalItpDeclarationScenarioDto({ sellerType: "private", vatRegime: undefined }));
+  assert.notEqual(privateSeller.engineExecutions.itp.result?.applicability, "not_subject");
+  assert.notEqual(privateSeller.engineExecutions.itp.result?.taxAmount, 0);
+
+  const unknownSeller = await calculate(professionalItpDeclarationScenarioDto({ sellerType: "unknown", vatRegime: "rebu" }));
+  assert.notEqual(unknownSeller.engineExecutions.itp.status, "calculated_scenario");
+  assert.notEqual(unknownSeller.engineExecutions.itp.result?.applicability, "not_subject");
+
+  const intermediaryAsUnknown = await calculate(professionalItpDeclarationScenarioDto({ sellerType: "unknown", buyerType: "professional", vatRegime: "general_vat" }));
+  assert.notEqual(intermediaryAsUnknown.engineExecutions.itp.status, "calculated_scenario");
+  assert.notEqual(intermediaryAsUnknown.engineExecutions.itp.result?.applicability, "not_subject");
+
+  const conflictInput = professionalItpDeclarationScenarioDto({ vatRegime: "rebu" });
+  conflictInput.evidence.push(evidence({ evidenceId: "ev-899", documentId: "doc-8001", candidateId: null, page: null, field: "transaction.sellerType", normalizedValue: "private", valueType: "enum", sourceType: "user_declaration", verificationStatus: "scenario" }));
+  const conflict = await calculate(conflictInput);
+  assert.equal(conflict.classification.status, "conflict");
+  assert.notEqual(conflict.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(conflict.engineExecutions.itp.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), true);
+  assert.equal(conflict.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), true);
+  assert.equal(conflict.warningCodes.includes("BONUS_STATUS_UNKNOWN"), true);
+  assert.equal(conflict.warningCodes.includes("MUNICIPAL_RATE_YEAR_OUTDATED"), true);
+
+  const strict = await calculate(professionalItpDeclarationScenarioDto({ vatRegime: "rebu", scenarioPolicy: "confirmed_only" }));
+  assert.notEqual(strict.engineExecutions.itp.status, "calculated_scenario");
+  assert.notEqual(strict.engineExecutions.itp.result?.applicability, "not_subject");
+});
+
 test("profesional REBU sin factura calcula ITP no sujeto solo como escenario", async () => {
   for (const intendedForResale of [undefined, true, false]) {
     const result = await calculate(bmwProfessionalRebuScenarioDto({ buyerType: "professional", intendedForResale }));
@@ -486,11 +641,11 @@ test("profesional REBU sin factura calcula ITP no sujeto solo como escenario", a
     assert.equal(result.engineExecutions.iedmt.result.tax.toFixed(2), "81.65");
     assert.equal(result.engineExecutions.itp.result.applicability, "not_subject");
     assert.equal(result.engineExecutions.itp.result.taxAmount, 0);
-    assert.equal(result.engineExecutions.itp.inputsUsed.documentType, "invoice");
+    assert.equal(result.engineExecutions.itp.inputsUsed.documentType, "unknown");
     assert.equal(result.engineExecutions.itp.inputsUsed.vatRegime, "rebu");
     assert.equal(result.engineExecutions.itp.inputsUsed.assumedTransactionDate, "2026-08-09");
-    assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), true);
-    assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_REBU"), true);
+    assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), false);
+    assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_REBU"), false);
     assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_TRANSACTION_DATE"), true);
     assert.equal(result.engineExecutions.itp.evidenceIds.some((id) => id.includes("doc")), false);
     assert.equal(result.engineExecutions.ivtm.result.referenceProratedTax, 30.8);
@@ -520,9 +675,9 @@ test("profesional IVA general sin factura calcula ITP no sujeto solo como escena
       for (const engineId of ["iedmt", "itp", "ivtm", "dgt_registration_fee"]) assert.equal(result.engineExecutions[engineId].status, "calculated_scenario", `${buyerType}-${intendedForResale}-${engineId}`);
       assert.equal(result.engineExecutions.itp.result.applicability, "not_subject");
       assert.equal(result.engineExecutions.itp.result.taxAmount, 0);
-      assert.equal(result.engineExecutions.itp.inputsUsed.documentType, "invoice");
+      assert.equal(result.engineExecutions.itp.inputsUsed.documentType, "unknown");
       assert.equal(result.engineExecutions.itp.inputsUsed.vatRegime, "general_vat");
-      assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), true);
+      assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_INVOICE"), false);
       assert.equal(result.engineExecutions.itp.warningCodes.includes("ASSUMED_PROFESSIONAL_REBU"), false);
       assert.equal(result.engineExecutions.itp.warnings.some((warning) => warning.includes("REBU")), false);
       assert.equal(result.engineExecutions.itp.evidenceIds.some((id) => id.includes("doc")), false);
@@ -629,7 +784,9 @@ test("inferencia de contrato privado no se aplica a professional unknown conflic
   const professional = volvoNaturalWithoutDocumentTypeDto();
   professional.evidence.find((item) => item.evidenceId === "ev-volvo-seller").normalizedValue = "professional";
   const professionalResult = await calculate(professional);
-  assert.notEqual(professionalResult.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(professionalResult.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(professionalResult.engineExecutions.itp.result.applicability, "not_subject");
+  assert.equal(professionalResult.engineExecutions.itp.inputsUsed.documentType, "unknown");
   assert.notEqual(professionalResult.engineExecutions.itp.inputsUsed.documentType, "private_sale_contract");
   assert.equal(professionalResult.engineExecutions.itp.warningCodes.includes("ASSUMED_PRIVATE_SALE_CONTRACT"), false);
 

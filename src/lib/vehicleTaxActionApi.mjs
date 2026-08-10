@@ -1,4 +1,4 @@
-import { calculateVehicleTaxCase } from "./vehicleTaxCalculationOrchestrator.mjs";
+import { VEHICLE_TAX_ORCHESTRATOR_REVISION, calculateVehicleTaxCase } from "./vehicleTaxCalculationOrchestrator.mjs";
 import { buildVehicleTaxCaseFromActionDto, VehicleTaxActionDtoError } from "./vehicleTaxActionAdapter.mjs";
 import {
   VEHICLE_TAX_ESTIMATE_MAX_BODY_BYTES,
@@ -48,12 +48,36 @@ const PROHIBITED_CONFIG_KEYS = new Set([
   "downloadurl", "callbackurl", "webhookurl", "fileurl", "instruction", "instructions", "prompt", "command", "shell", "route", "credential", "credentials", "secret", "token", "password",
 ]);
 
-function jsonResponse(statusCode, requestId, payload, headers = {}) {
+function safeScenarioPolicy(value) {
+  return value === "documentary_scenarios" || value === "confirmed_only" ? value : "unknown";
+}
+
+function diagnosticHeaders(scenarioPolicy = "unknown") {
+  return {
+    "X-PGC-Orchestrator-Revision": VEHICLE_TAX_ORCHESTRATOR_REVISION,
+    "X-PGC-Node-Version": process.version,
+    "X-PGC-Scenario-Policy": safeScenarioPolicy(scenarioPolicy),
+  };
+}
+
+function withActionDiagnostics(response, scenarioPolicy = "unknown") {
+  if (!response || typeof response !== "object") return response;
+  return {
+    ...response,
+    headers: {
+      ...(response.headers ?? {}),
+      ...diagnosticHeaders(scenarioPolicy),
+    },
+  };
+}
+
+function jsonResponse(statusCode, requestId, payload, headers = {}, scenarioPolicy = "unknown") {
   return {
     statusCode,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store",
+      ...diagnosticHeaders(scenarioPolicy),
       ...headers,
     },
     body: {
@@ -64,8 +88,8 @@ function jsonResponse(statusCode, requestId, payload, headers = {}) {
   };
 }
 
-function errorResponse(statusCode, requestId, code, message) {
-  return jsonResponse(statusCode, requestId, { ok: false, error: { code, message } });
+function errorResponse(statusCode, requestId, code, message, scenarioPolicy = "unknown") {
+  return jsonResponse(statusCode, requestId, { ok: false, error: { code, message } }, {}, scenarioPolicy);
 }
 
 function requestIdFrom(response) {
@@ -194,7 +218,7 @@ export async function handleVehicleTaxActionRequest(req, config = {}) {
   } catch {
     return errorResponse(500, "request_error", "INTERNAL_ERROR", "Internal error.");
   }
-  if (gate.statusCode !== 200 || gate.body?.ok !== true) return gate;
+  if (gate.statusCode !== 200 || gate.body?.ok !== true) return withActionDiagnostics(gate);
   const requestId = requestIdFrom(gate);
   const read = await readBody(req, config.maxBodyBytes ?? VEHICLE_TAX_ESTIMATE_MAX_BODY_BYTES);
   if (!read.ok) return errorResponse(read.statusCode, requestId, read.code, read.message);
@@ -204,17 +228,18 @@ export async function handleVehicleTaxActionRequest(req, config = {}) {
   } catch {
     return errorResponse(400, requestId, "JSON_INVALID", "Request body must contain valid JSON.");
   }
+  const scenarioPolicy = safeScenarioPolicy(dto?.options?.scenarioPolicy);
   const safe = inspectActionJsonValue(dto);
-  if (!safe.ok) return errorResponse(safe.statusCode, requestId, safe.code, safe.message);
+  if (!safe.ok) return errorResponse(safe.statusCode, requestId, safe.code, safe.message, scenarioPolicy);
   let adapted;
   try {
     const adapter = config.buildVehicleTaxCaseFromActionDto ?? buildVehicleTaxCaseFromActionDto;
     adapted = adapter(dto);
   } catch (error) {
-    if (error instanceof VehicleTaxActionDtoError) return errorResponse(error.statusCode, requestId, error.code, error.message);
-    return errorResponse(500, requestId, "ACTION_ADAPTER_FAILED", "Action adapter failed.");
+    if (error instanceof VehicleTaxActionDtoError) return errorResponse(error.statusCode, requestId, error.code, error.message, scenarioPolicy);
+    return errorResponse(500, requestId, "ACTION_ADAPTER_FAILED", "Action adapter failed.", scenarioPolicy);
   }
-  return handleVehicleTaxEstimateRequest(
+  return withActionDiagnostics(await handleVehicleTaxEstimateRequest(
     {
       method: "POST",
       headers: { "content-type": "application/json", authorization: req?.headers?.authorization ?? req?.headers?.Authorization },
@@ -226,5 +251,5 @@ export async function handleVehicleTaxActionRequest(req, config = {}) {
       createRequestId: () => requestId,
       calculateVehicleTaxCase: config.calculateVehicleTaxCase ?? calculateVehicleTaxCase,
     }
-  );
+  ), scenarioPolicy);
 }

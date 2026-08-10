@@ -6,6 +6,7 @@ import apiHandler from "../../api/vehicle-tax-estimate-action.js";
 import { VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION, buildVehicleTaxCaseFromActionDto } from "./vehicleTaxActionAdapter.mjs";
 import { handleVehicleTaxActionRequest } from "./vehicleTaxActionApi.mjs";
 import { VEHICLE_TAX_ESTIMATE_MAX_BODY_BYTES, VEHICLE_TAX_ESTIMATE_RESPONSE_SCHEMA_VERSION, handleVehicleTaxEstimateRequest } from "./vehicleTaxEstimateApi.mjs";
+import { VEHICLE_TAX_ORCHESTRATOR_REVISION } from "./vehicleTaxCalculationOrchestrator.mjs";
 
 const API_KEY = "test-secret-key";
 const OPTIONS = Object.freeze({ calculationDate: "2025-07-15", taxYear: 2025, scenarioPolicy: "confirmed_only", maxScenarios: 0, currency: "EUR" });
@@ -55,6 +56,42 @@ function ev(evidenceId, documentId, candidateId, field, normalizedValue, valueTy
   return { evidenceId, documentId, candidateId, page: documentId ? 1 : null, field, normalizedValue, valueType, sourceType, extractionMethod: "manual", verificationStatus };
 }
 
+function professionalItpDeclarationScenarioDto() {
+  const candidateId = "candidate-8001";
+  const docId = "doc-8001";
+  const item = (evidenceId, field, normalizedValue, valueType, candidateIdOverride = null) => ev(evidenceId, docId, candidateIdOverride, field, normalizedValue, valueType, "user_declaration", "scenario");
+  return {
+    schemaVersion: VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION,
+    caseId: "case-itp-professional-declaration",
+    documents: [{ documentId: docId, documentType: "user_declaration", pageCount: null, candidateId: null }],
+    evidence: [
+      item("ev-801", "vehicle.category", "passenger_car", "enum", candidateId),
+      item("ev-802", "vehicle.engineDisplacementCc", 1598, "number", candidateId),
+      item("ev-803", "vehicle.fiscalHorsepower", 9.7, "number", candidateId),
+      item("ev-804", "vehicle.firstRegistrationDate", "2012-03-01", "date", candidateId),
+      item("ev-805", "vehicle.condition", "usado_importado", "enum", candidateId),
+      item("ev-806", "vehicle.co2Wltp", 132, "number", candidateId),
+      item("ev-807", "vehicle.emissionsStandard", "wltp", "enum", candidateId),
+      item("ev-808", "vehicle.zeroEmissionStatus", "not_zero_emission", "enum", candidateId),
+      item("ev-809", "vehicle.isHistoricVehicle", false, "boolean", candidateId),
+      item("ev-810", "vehicle.isEndOfLifeVehicle", false, "boolean", candidateId),
+      item("ev-811", "vehicle.boeValue", 21100, "money", candidateId),
+      item("ev-812", "transaction.purchasePrice", 12000, "money"),
+      item("ev-815", "transaction.sellerType", "professional", "enum"),
+      item("ev-816", "transaction.buyerType", "private", "enum"),
+      item("ev-820", "transaction.vatRegime", "rebu", "enum"),
+      item("ev-821", "transaction.rebuStatus", "confirmed", "enum"),
+      item("ev-813", "parties.sellerCountry", "DE", "country"),
+      item("ev-814", "parties.buyerTaxResidenceCountry", "ES", "country"),
+      item("ev-817", "taxDestination.autonomousCommunity", "la_rioja", "enum"),
+      item("ev-818", "taxDestination.province", "la_rioja", "enum"),
+      item("ev-819", "taxDestination.municipalityCode", "26089", "ine_code"),
+    ],
+    selectedVehicleCandidateId: candidateId,
+    options: { calculationDate: "2026-08-09", taxYear: 2026, scenarioPolicy: "documentary_scenarios", maxScenarios: 3, currency: "EUR" },
+  };
+}
+
 function req(body = dto(), overrides = {}) {
   return { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${API_KEY}` }, body, ...overrides };
 }
@@ -72,6 +109,12 @@ function assertCanonical(response) {
   assert.equal(response.body.requestId, "req-action-1");
   assert.equal(Object.hasOwn(response.headers, "Access-Control-Allow-Origin"), false);
   assert.match(response.headers["Cache-Control"], /no-store/);
+}
+
+function assertActionDiagnostics(headers, scenarioPolicy) {
+  assert.equal(headers["X-PGC-Orchestrator-Revision"], VEHICLE_TAX_ORCHESTRATOR_REVISION);
+  assert.equal(headers["X-PGC-Scenario-Policy"], scenarioPolicy);
+  assert.equal(headers["X-PGC-Node-Version"], process.version);
 }
 
 function calculationResult(overrides = {}) {
@@ -97,11 +140,18 @@ function calculationResult(overrides = {}) {
 }
 
 test("auth ausente, incorrecta, correcta y secreto no configurado", async () => {
-  assert.equal((await handleVehicleTaxActionRequest(req(dto(), { headers: { "content-type": "application/json" } }), config())).statusCode, 401);
-  assert.equal((await handleVehicleTaxActionRequest(req(dto(), { headers: { "content-type": "application/json", authorization: "Bearer wrong" } }), config())).statusCode, 403);
-  assert.equal((await handleVehicleTaxActionRequest(req(), config({ apiKey: "" }))).statusCode, 503);
+  const missingAuth = await handleVehicleTaxActionRequest(req(dto(), { headers: { "content-type": "application/json" } }), config());
+  assert.equal(missingAuth.statusCode, 401);
+  assertActionDiagnostics(missingAuth.headers, "unknown");
+  const wrongAuth = await handleVehicleTaxActionRequest(req(dto(), { headers: { "content-type": "application/json", authorization: "Bearer wrong" } }), config());
+  assert.equal(wrongAuth.statusCode, 403);
+  assertActionDiagnostics(wrongAuth.headers, "unknown");
+  const missingSecret = await handleVehicleTaxActionRequest(req(), config({ apiKey: "" }));
+  assert.equal(missingSecret.statusCode, 503);
+  assertActionDiagnostics(missingSecret.headers, "unknown");
   const ok = await handleVehicleTaxActionRequest(req(), config({ calculateVehicleTaxCase: async () => calculationResult() }));
   assert.equal(ok.statusCode, 200);
+  assertActionDiagnostics(ok.headers, "confirmed_only");
   assertCanonical(ok);
 });
 
@@ -124,6 +174,7 @@ test("DTO valido llama adapter y orquestador una vez y conserva parcial", async 
   assert.equal(response.body.ok, true);
   assert.equal(response.body.data.taxSummary.confirmedSubtotal, 64.5);
   assert.deepEqual(response.body.data.taxSummary.exactTotalBlockedBy, ["itp"]);
+  assertActionDiagnostics(response.headers, "confirmed_only");
   assert.equal(adapterCalls, 1);
   assert.equal(runnerCalls, 1);
   assertCanonical(response);
@@ -138,12 +189,15 @@ test("400, 413, 415, 422, 500 y 503 canonicos", async () => {
   const invalid = await handleVehicleTaxActionRequest(req(), config({ calculateVehicleTaxCase: async () => calculationResult({ status: "invalid" }) }));
   assert.equal(invalid.statusCode, 422);
   assert.equal(invalid.body.error.code, "CASE_FILE_NOT_PROCESSABLE");
+  assertActionDiagnostics(invalid.headers, "confirmed_only");
   const failed = await handleVehicleTaxActionRequest(req(), config({ buildVehicleTaxCaseFromActionDto: () => { throw new Error("C:\\Users\\secret\\stack"); } }));
   assert.equal(failed.statusCode, 500);
   assert.equal(failed.body.error.code, "ACTION_ADAPTER_FAILED");
+  assertActionDiagnostics(failed.headers, "confirmed_only");
   const timeout = await handleVehicleTaxActionRequest(req(), config({ timeoutMs: 1, calculateVehicleTaxCase: () => new Promise((resolve) => setTimeout(() => resolve(calculationResult()), 25)) }));
   assert.equal(timeout.statusCode, 503);
   assert.equal(timeout.body.error.code, "CALCULATION_TIMEOUT");
+  assertActionDiagnostics(timeout.headers, "confirmed_only");
   for (const response of [invalid, failed, timeout]) {
     assert.equal(responseText(response).includes("sourceExcerpt"), false);
     assert.equal(responseText(response).includes("C:\\Users"), false);
@@ -174,6 +228,7 @@ test("stream, endpoint Vercel e IVTM local con datasets disponibles", async () =
   const real = await handleVehicleTaxActionRequest(req(), config());
   assert.equal(real.statusCode, 200);
   assert.equal(real.body.ok, true);
+  assertActionDiagnostics(real.headers, "confirmed_only");
   assert.equal(real.body.data.engineExecutions.ivtm.status, "calculated_confirmed");
   assert.equal(real.body.data.engineExecutions.ivtm.result.dataStatus, "verified_municipal");
 
@@ -183,11 +238,40 @@ test("stream, endpoint Vercel e IVTM local con datasets disponibles", async () =
     const res = { headers: {}, statusCode: null, jsonBody: null, setHeader(name, value) { this.headers[name] = value; return this; }, status(code) { this.statusCode = code; return this; }, json(body) { this.jsonBody = body; return this; } };
     await apiHandler(req(dto()), res);
     assert.equal(res.statusCode, 200);
+    assertActionDiagnostics(res.headers, "confirmed_only");
     assert.equal(res.jsonBody.schemaVersion, VEHICLE_TAX_ESTIMATE_RESPONSE_SCHEMA_VERSION);
   } finally {
     if (old === undefined) delete process.env.VEHICLE_TAX_ESTIMATE_API_KEY;
     else process.env.VEHICLE_TAX_ESTIMATE_API_KEY = old;
   }
+});
+
+test("endpoint Action real expone diagnostico no sensible sin alterar resultado fiscal", async () => {
+  const body = professionalItpDeclarationScenarioDto();
+  const baseline = await handleVehicleTaxActionRequest(req(body), config());
+  assert.equal(baseline.statusCode, 200);
+  assert.equal(baseline.body.data.engineExecutions.itp.status, "calculated_scenario");
+  assert.equal(baseline.body.data.engineExecutions.itp.result.applicability, "not_subject");
+  assert.equal(baseline.body.data.engineExecutions.itp.result.taxAmount, 0);
+  const old = process.env.VEHICLE_TAX_ESTIMATE_API_KEY;
+  process.env.VEHICLE_TAX_ESTIMATE_API_KEY = API_KEY;
+  try {
+    const res = { headers: {}, statusCode: null, jsonBody: null, setHeader(name, value) { this.headers[name] = value; return this; }, status(code) { this.statusCode = code; return this; }, json(body) { this.jsonBody = body; return this; } };
+    await apiHandler(req(body), res);
+    assert.equal(res.statusCode, 200);
+    assertActionDiagnostics(res.headers, "documentary_scenarios");
+    assert.equal(res.headers["Cache-Control"], baseline.headers["Cache-Control"]);
+    assert.deepEqual(res.jsonBody.data.engineExecutions.itp, baseline.body.data.engineExecutions.itp);
+    assert.deepEqual(res.jsonBody.data.taxSummary, baseline.body.data.taxSummary);
+    assert.deepEqual(res.jsonBody.data.estimatedSummary, baseline.body.data.estimatedSummary);
+  } finally {
+    if (old === undefined) delete process.env.VEHICLE_TAX_ESTIMATE_API_KEY;
+    else process.env.VEHICLE_TAX_ESTIMATE_API_KEY = old;
+  }
+
+  const invalidPolicy = await handleVehicleTaxActionRequest(req({ ...body, options: { ...body.options, scenarioPolicy: "invalid" } }), config());
+  assert.equal(invalidPolicy.statusCode, 400);
+  assertActionDiagnostics(invalidPolicy.headers, "unknown");
 });
 
 function deepActionJson(depth) {

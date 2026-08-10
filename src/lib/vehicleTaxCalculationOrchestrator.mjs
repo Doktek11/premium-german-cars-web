@@ -8,6 +8,7 @@ import { calculateRegistrationFee } from "./registrationFee.mjs";
 import { calculateVehicleTaxSummary } from "./vehicleTaxSummary.mjs";
 
 export const VEHICLE_TAX_CALCULATION_SCHEMA_VERSION = "vehicle_tax_calculation.v1";
+export const VEHICLE_TAX_ORCHESTRATOR_REVISION = "professional-scenario-5089897";
 export const VEHICLE_TAX_CALCULATION_STATUSES = Object.freeze({ EXACT: "exact", PARTIAL: "partial", ESTIMATED: "estimated", SCENARIO_REQUIRED: "scenario_required", REQUIRES_REVIEW: "requires_review", IDENTITY_CONFLICT: "identity_conflict", INVALID: "invalid" });
 export const VEHICLE_TAX_ENGINE_EXECUTION_STATUSES = Object.freeze({ CALCULATED_CONFIRMED: "calculated_confirmed", CALCULATED_SCENARIO: "calculated_scenario", NOT_RUN_MISSING_INPUTS: "not_run_missing_inputs", NOT_RUN_CONFLICT: "not_run_conflict", FAILED_VALIDATION: "failed_validation", REQUIRES_REVIEW: "requires_review" });
 export const VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES = Object.freeze({

@@ -263,6 +263,76 @@ function canUseProfessionalNotSubjectScenario(caseFile, classification, prepared
 function shouldUseDocumentaryItpScenario(caseFile, classification, prepared, options) {
   return options?.scenarioPolicy === "documentary_scenarios" && canUseProfessionalNotSubjectScenario(caseFile, classification, prepared);
 }
+function professionalNotSubjectScenarioInput(classification, options = null) {
+  const patch = classification?.transferTaxClassification ?? {};
+  const input = {
+    sellerType: patch.sellerType,
+    buyerType: patch.buyerType,
+    documentType: patch.documentType ?? "unknown",
+    vatRegime: patch.vatRegime ?? "unknown",
+    intendedForResale: patch.intendedForResale ?? null,
+    buyerTaxResidenceCountry: patch.buyerTaxResidenceCountry,
+    sellerCountry: patch.sellerCountry,
+    evidence: { evidenceIds: uniqueStrings(classification?.evidenceIds ?? []) },
+  };
+  if (validIsoDate(options?.calculationDate)) {
+    input.transactionDate = options.calculationDate;
+    input.assumedTransactionDate = options.calculationDate;
+  }
+  return input;
+}
+function canUseProfessionalNotSubjectClassification(caseFile, classification, options) {
+  if (options?.scenarioPolicy !== "documentary_scenarios") return false;
+  if (!hasSingleVehicleCandidate(caseFile)) return false;
+  if (hasBlockingOperationIssue(classification)) return false;
+  if (classification?.vatRegimeStatus === "conflict" || classification?.rebuStatusCertainty === "conflict") return false;
+  const input = professionalNotSubjectScenarioInput(classification, options);
+  if (input.sellerType !== "professional") return false;
+  if (input.buyerType !== "private" && input.buyerType !== "professional") return false;
+  if (input.documentType && input.documentType !== "unknown") return false;
+  if (input.vatRegime && !["unknown", "rebu", "general_vat"].includes(input.vatRegime)) return false;
+  return true;
+}
+function professionalNotSubjectScenarioExecution(classification, options) {
+  const input = professionalNotSubjectScenarioInput(classification, options);
+  const evidenceIds = uniqueStrings(classification?.evidenceIds ?? []);
+  const assumption = "A professional seller is assumed from declared data only for this documentary scenario.";
+  return engineExecution({
+    engineId: "itp",
+    status: VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO,
+    inputStatus: "scenario",
+    confidenceLevel: "declared",
+    inputsUsed: input,
+    evidenceIds,
+    result: {
+      applicability: "not_subject",
+      supportedCalculation: true,
+      taxAmount: 0,
+      probableAmount: null,
+      minimumAmount: 0,
+      maximumAmount: 0,
+      prudentBudget: 0,
+      taxableBase: null,
+      rate: null,
+      fixedFee: null,
+      territoryRule: null,
+      territoryStatus: "not_required",
+      legalBasis: [],
+      scenarios: [],
+      assumptions: [assumption],
+      warnings: [],
+      warningCodes: [],
+      missingFields: [],
+      evidence: { evidenceIds },
+      filingRequirement: "not_required",
+      filingForm: null,
+    },
+    assumptions: [assumption, "Calculo orientativo: usa datos estructurados declarados o no verificados y no constituye evidencia oficial."],
+    warnings: codeMessages([VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_TRANSACTION_DATE, VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.SCENARIO_FROM_DECLARED_DATA]),
+    warningCodes: [VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.ASSUMED_TRANSACTION_DATE, VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.SCENARIO_FROM_DECLARED_DATA],
+    missingFields: [],
+  });
+}
 function confidenceLevel(prepared, scenario) {
   if (!scenario) return "confirmed";
   if (prepared.scenarioFields > 0 && prepared.confirmedFields > 0) return "mixed";
@@ -561,18 +631,20 @@ function mergeScenarioExecutions(strictExecutions, scenarioExecutions) {
 }
 async function buildScenarioExecutions(caseFile, candidate, map, classification, deps, options, effectiveItp = null) {
   const iedmt = executionFromPrepared("iedmt", buildIedmtInput(caseFile, candidate, map, options, "scenario"), deps.calculateIedmt, true);
-  const itpPrepared = buildItpInput(caseFile, candidate, map, classification, null, [], options, "scenario");
-  const itpBlocked = ["conflict", "identity_conflict", "invalid"].includes(classification.status);
-  const itp = effectiveItp?.status === VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO
-    ? effectiveItp
-    : itpBlocked
+  let itp = effectiveItp?.status === VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO ? effectiveItp : null;
+  if (!itp) {
+    const itpPrepared = buildItpInput(caseFile, candidate, map, classification, null, [], options, "scenario");
+    const itpBlocked = ["conflict", "identity_conflict", "invalid"].includes(classification.status);
+    itp = itpBlocked
       ? notRun("itp", VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.NOT_RUN_CONFLICT, itpPrepared.input, itpPrepared.evidenceIds, ["classification"])
       : executionFromPrepared("itp", itpPrepared, deps.calculateItp, true);
+  }
   const ivtm = await ivtmExecution(buildIvtmInput(caseFile, candidate, map, options, "scenario"), deps, true);
   const dgt = executionFromPrepared("dgt_registration_fee", buildDgtInput(caseFile, candidate, map, options, "scenario"), deps.calculateDgtFee, true);
   return { iedmt, itp, ivtm, dgt_registration_fee: dgt };
 }
 function itpExecutionFromEffectiveClassification(caseFile, candidate, map, classification, deps, options) {
+  if (canUseProfessionalNotSubjectClassification(caseFile, classification, options)) return professionalNotSubjectScenarioExecution(classification, options);
   const itpPrepared = buildItpInput(caseFile, candidate, map, classification);
   if (shouldUseDocumentaryItpScenario(caseFile, classification, itpPrepared, options)) {
     const scenarioPrepared = buildItpInput(caseFile, candidate, map, classification, null, [], options, "scenario");

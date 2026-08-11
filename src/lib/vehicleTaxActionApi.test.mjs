@@ -98,6 +98,93 @@ function professionalItpDeclarationScenarioDto() {
   };
 }
 
+function cloneBody(body) {
+  return JSON.parse(JSON.stringify(body));
+}
+
+function setEvidenceValue(body, field, normalizedValue) {
+  for (const item of body.evidence) if (item.field === field) item.normalizedValue = normalizedValue;
+  return body;
+}
+
+function removeEvidenceFields(body, fields) {
+  const blocked = new Set(fields);
+  body.evidence = body.evidence.filter((item) => !blocked.has(item.field));
+  return body;
+}
+
+function professionalMinimumItpScenarioDto({ sellerType = "professional", buyerType = "private", vatRegime = "rebu", scenarioPolicy = "documentary_scenarios" } = {}) {
+  const docId = "doc-8101";
+  const item = (evidenceId, field, normalizedValue, valueType) => ev(evidenceId, docId, null, field, normalizedValue, valueType, "user_declaration", "scenario");
+  return {
+    schemaVersion: VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION,
+    caseId: "case-itp-professional-minimum",
+    documents: [{ documentId: docId, documentType: "user_declaration", pageCount: null, candidateId: null }],
+    evidence: [
+      item("ev-8101", "transaction.sellerType", sellerType, "enum"),
+      item("ev-8102", "transaction.buyerType", buyerType, "enum"),
+      item("ev-8103", "transaction.vatRegime", vatRegime, "enum"),
+      item("ev-8104", "transaction.rebuStatus", "confirmed", "enum"),
+      item("ev-8105", "parties.sellerCountry", "DE", "country"),
+      item("ev-8106", "parties.buyerTaxResidenceCountry", "ES", "country"),
+      item("ev-8107", "taxDestination.autonomousCommunity", "la_rioja", "enum"),
+    ],
+    selectedVehicleCandidateId: null,
+    options: { calculationDate: "2026-08-09", taxYear: 2026, scenarioPolicy, maxScenarios: scenarioPolicy === "documentary_scenarios" ? 3 : 0, currency: "EUR" },
+  };
+}
+
+function professionalBmwWithoutLifecycleFlagsDto() {
+  return removeEvidenceFields(cloneBody(professionalItpDeclarationScenarioDto()), ["vehicle.isHistoricVehicle", "vehicle.isEndOfLifeVehicle"]);
+}
+
+function privateItpCharacterizationDto({ buyerType = "private", sellerType = "private", isHistoricVehicle = false, isEndOfLifeVehicle = false } = {}) {
+  return {
+    schemaVersion: VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION,
+    caseId: "case-private-itp-characterization",
+    documents: [
+      { documentId: "doc-tech-1", documentType: "coc", pageCount: 3, candidateId: "candidate-1" },
+      { documentId: "doc-contract-1", documentType: "private_sale_contract", pageCount: 2, candidateId: null },
+    ],
+    evidence: [
+      ev("ev-boe", "doc-tech-1", "candidate-1", "vehicle.boeValue", 24000, "money"),
+      ev("ev-first-reg", "doc-tech-1", "candidate-1", "vehicle.firstRegistrationDate", "2021-06-15", "date"),
+      ev("ev-category", "doc-tech-1", "candidate-1", "vehicle.category", "passenger_car", "enum"),
+      ev("ev-engine", "doc-tech-1", "candidate-1", "vehicle.engineDisplacementCc", 1598, "number"),
+      ev("ev-cvf", "doc-tech-1", "candidate-1", "vehicle.fiscalHorsepower", 12, "number"),
+      ev("ev-zero", "doc-tech-1", "candidate-1", "vehicle.zeroEmissionStatus", "not_zero_emission", "enum"),
+      ev("ev-historic", "doc-tech-1", "candidate-1", "vehicle.isHistoricVehicle", isHistoricVehicle, "boolean"),
+      ev("ev-end-life", "doc-tech-1", "candidate-1", "vehicle.isEndOfLifeVehicle", isEndOfLifeVehicle, "boolean"),
+      ev("ev-tx-date", "doc-contract-1", null, "transaction.date", "2025-07-15", "date", "contractual_document", "confirmed_professional"),
+      ev("ev-price", "doc-contract-1", null, "transaction.purchasePrice", 21500, "money", "contractual_document", "confirmed_professional"),
+      ev("ev-doc-type", "doc-contract-1", null, "transaction.documentType", "private_sale_contract", "enum", "contractual_document", "confirmed_professional"),
+      ev("ev-seller", "doc-contract-1", null, "transaction.sellerType", sellerType, "enum", "contractual_document", "confirmed_professional"),
+      ev("ev-buyer", "doc-contract-1", null, "transaction.buyerType", buyerType, "enum", "contractual_document", "confirmed_professional"),
+      ev("ev-vat", "doc-contract-1", null, "transaction.vatRegime", "not_applicable_private_sale", "enum", "contractual_document", "confirmed_professional"),
+      ev("ev-buyer-country", "doc-contract-1", null, "parties.buyerTaxResidenceCountry", "ES", "country", "contractual_document", "confirmed_professional"),
+      ev("ev-seller-country", "doc-contract-1", null, "parties.sellerCountry", "DE", "country", "contractual_document", "confirmed_professional"),
+      ev("ev-region", "doc-contract-1", null, "taxDestination.autonomousCommunity", "la_rioja", "enum", "contractual_document", "confirmed_professional"),
+      ev("ev-province", "doc-contract-1", null, "taxDestination.province", "la_rioja", "enum", "contractual_document", "confirmed_professional"),
+      ev("ev-municipality", null, null, "taxDestination.municipalityCode", "26089", "ine_code", "user_declaration", "confirmed_user"),
+      ev("ev-settlement", null, null, "taxDestination.expectedSettlementDate", "2025-07-15", "date", "user_declaration", "confirmed_user"),
+    ],
+    selectedVehicleCandidateId: "candidate-1",
+    options: { calculationDate: "2025-07-15", taxYear: 2025, scenarioPolicy: "confirmed_only", maxScenarios: 0, currency: "EUR" },
+  };
+}
+
+async function actionData(body) {
+  const response = await callRealActionHandler(apiHandler, body);
+  assert.equal(response.statusCode, 200);
+  return response.jsonBody.data;
+}
+
+function assertNoProfessionalNotSubjectBranch(data) {
+  const itp = data.engineExecutions.itp;
+  assert.notEqual(itp.result?.applicability, "not_subject");
+  assert.notEqual(itp.result?.taxAmount, 0);
+  assert.equal(itp.assumptions.some((item) => /professional seller is assumed|venta profesional declarada/i.test(item)), false);
+}
 function req(body = dto(), overrides = {}) {
   return { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${API_KEY}` }, body, ...overrides };
 }
@@ -334,6 +421,114 @@ test("endpoint Action real expone diagnostico no sensible sin alterar resultado 
   const invalidPolicy = await handleVehicleTaxActionRequest(req({ ...body, options: { ...body.options, scenarioPolicy: "invalid" } }), config());
   assert.equal(invalidPolicy.statusCode, 400);
   assertActionDiagnostics(invalidPolicy.headers, "unknown");
+});
+test("endpoint Action real caracteriza flujos no profesionales antes del cambio ITP", async () => {
+  const privatePrivate = await actionData(privateItpCharacterizationDto());
+  const privateItp = privatePrivate.engineExecutions.itp;
+  assert.equal(privatePrivate.classification.sellerType, "private");
+  assert.equal(privatePrivate.classification.buyerType, "private");
+  assert.equal(privateItp.status, "calculated_confirmed");
+  assert.equal(privateItp.inputStatus, "confirmed");
+  assert.equal(privateItp.confidenceLevel, "confirmed");
+  assert.equal(privateItp.result.applicability, "taxable");
+  assert.equal(privateItp.result.taxableBase, 21500);
+  assert.equal(privateItp.result.rate, 0.04);
+  assert.equal(privateItp.result.taxAmount, 860);
+  assert.equal(privateItp.result.territoryRule, "la_rioja");
+  assert.equal(privateItp.inputsUsed.officialMarketValue, 11280);
+  assert.equal(privateItp.inputsUsed.purchasePrice, 21500);
+  assert.deepEqual(privateItp.missingFields, []);
+  assertNoProfessionalNotSubjectBranch(privatePrivate);
+
+  const privateProfessional = await actionData(privateItpCharacterizationDto({ buyerType: "professional" }));
+  assert.equal(privateProfessional.classification.sellerType, "private");
+  assert.equal(privateProfessional.classification.buyerType, "professional");
+  assert.equal(privateProfessional.engineExecutions.itp.result.applicability, "taxable");
+  assert.equal(privateProfessional.engineExecutions.itp.result.taxAmount, 860);
+  assert.equal(privateProfessional.warningCodes.includes("RESALE_ELIGIBILITY_UNRESOLVED"), true);
+  assertNoProfessionalNotSubjectBranch(privateProfessional);
+
+  const sellerUnknown = await actionData(professionalMinimumItpScenarioDto({ sellerType: "unknown" }));
+  assert.notEqual(sellerUnknown.engineExecutions.itp.status, "calculated_scenario");
+  assertNoProfessionalNotSubjectBranch(sellerUnknown);
+
+  const intermediaryLikeActionInput = await actionData(professionalMinimumItpScenarioDto({ sellerType: "unknown", buyerType: "professional", vatRegime: "general_vat" }));
+  assert.notEqual(intermediaryLikeActionInput.engineExecutions.itp.status, "calculated_scenario");
+  assertNoProfessionalNotSubjectBranch(intermediaryLikeActionInput);
+
+  const conflictBody = professionalMinimumItpScenarioDto();
+  conflictBody.evidence.push(ev("ev-8199", "doc-8101", null, "transaction.sellerType", "private", "enum", "user_declaration", "scenario"));
+  const conflict = await actionData(conflictBody);
+  assert.equal(conflict.classification.status, "conflict");
+  assert.equal(conflict.engineExecutions.itp.status, "not_run_conflict");
+  assert.equal(conflict.engineExecutions.itp.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), true);
+  assert.equal(conflict.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), true);
+
+  const confirmedOnly = await actionData(professionalMinimumItpScenarioDto({ scenarioPolicy: "confirmed_only" }));
+  assert.notEqual(confirmedOnly.engineExecutions.itp.status, "calculated_scenario");
+  assertNoProfessionalNotSubjectBranch(confirmedOnly);
+
+  for (const lifecycle of [
+    { isHistoricVehicle: true, isEndOfLifeVehicle: false },
+    { isHistoricVehicle: false, isEndOfLifeVehicle: true },
+  ]) {
+    const data = await actionData(privateItpCharacterizationDto(lifecycle));
+    assert.equal(data.engineExecutions.itp.status, "calculated_confirmed");
+    assert.equal(data.engineExecutions.itp.result.applicability, "taxable");
+    assert.equal(data.engineExecutions.itp.result.taxableBase, 21500);
+    assert.equal(data.engineExecutions.itp.result.rate, 0.04);
+    assert.equal(data.engineExecutions.itp.result.taxAmount, 860);
+    assertNoProfessionalNotSubjectBranch(data);
+  }
+
+  const scenario = await actionData(professionalItpDeclarationScenarioDto());
+  assert.equal(scenario.warningCodes.includes("ASSUMED_SPANISH_REGISTRATION_DATE"), true);
+  assert.equal(scenario.warningCodes.includes("BONUS_STATUS_UNKNOWN"), true);
+  assert.equal(scenario.warningCodes.includes("MUNICIPAL_RATE_YEAR_OUTDATED"), true);
+  assert.equal(scenario.warningCodes.includes("SCENARIO_FROM_DECLARED_DATA"), true);
+  assert.equal(scenario.estimatedSummary.warningCodes.includes("BONUS_STATUS_UNKNOWN"), true);
+  assert.equal(scenario.estimatedSummary.warningCodes.includes("MUNICIPAL_RATE_YEAR_OUTDATED"), true);
+});
+
+test("endpoint Action real debe resolver ITP profesional minimo aunque falten datos del vehiculo", async () => {
+  const data = await actionData(professionalMinimumItpScenarioDto());
+  const itp = data.engineExecutions.itp;
+  assert.equal(itp.status, "calculated_scenario");
+  assert.equal(itp.inputStatus, "scenario");
+  assert.equal(itp.confidenceLevel, "declared");
+  assert.equal(itp.result.applicability, "not_subject");
+  assert.equal(itp.result.taxAmount, 0);
+  assert.deepEqual(itp.missingFields, []);
+  assert.equal(itp.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), false);
+  assert.equal(itp.warningCodes.includes("ENGINE_INPUTS_MISSING"), false);
+  assert.equal(data.engineExecutions.iedmt.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), true);
+  assert.equal(data.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), true);
+  assert.equal(data.warningCodes.includes("ENGINE_INPUTS_MISSING"), true);
+  assert.equal(data.warningCodes.includes("VEHICLE_CANDIDATE_REQUIRED"), true);
+  assert.equal(data.warningCodes.includes("SUMMARY_NOT_AVAILABLE"), true);
+  assert.equal(data.warningCodes.includes("SCENARIO_FROM_DECLARED_DATA"), true);
+});
+
+test("endpoint Action real debe resolver BMW profesional REBU sin flags historico ni fin de vida", async () => {
+  const data = await actionData(professionalBmwWithoutLifecycleFlagsDto());
+  const itp = data.engineExecutions.itp;
+  assert.equal(itp.status, "calculated_scenario");
+  assert.equal(itp.inputStatus, "scenario");
+  assert.equal(itp.confidenceLevel, "declared");
+  assert.equal(itp.result.applicability, "not_subject");
+  assert.equal(itp.result.taxAmount, 0);
+  assert.deepEqual(itp.missingFields, []);
+  assert.equal(itp.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), false);
+  assert.equal(itp.warningCodes.includes("ENGINE_INPUTS_MISSING"), false);
+  assert.equal(data.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), false);
+  assert.equal(data.warningCodes.includes("ENGINE_INPUTS_MISSING"), false);
+  assert.equal(data.estimatedSummary.exactTotal, null);
+  assert.equal(data.estimatedSummary.estimatedTotal, 212.22);
+  assert.equal(data.estimatedSummary.minimumTotal, 198.46);
+  assert.equal(data.estimatedSummary.maximumTotal, 215.5);
+  assert.equal(data.estimatedSummary.prudentBudget, 215.5);
+  const itpLine = data.estimatedSummary.lineItems.find((item) => item.id === "itp");
+  assert.equal(itpLine.amount, 0);
 });
 
 function deepActionJson(depth) {

@@ -173,6 +173,64 @@ function privateItpCharacterizationDto({ buyerType = "private", sellerType = "pr
   };
 }
 
+function resellerProvisionalExemptionDto(config = {}) {
+  const {
+    caseId = "case-9400",
+    sellerType = "private",
+    buyerType = "vehicle_reseller",
+    vatRegime,
+    includePurchasePrice = false,
+    includePrivateContract = false,
+    includeVehicleData = false,
+    scenarioPolicy = "documentary_scenarios",
+  } = config;
+  const intendedForResale = Object.hasOwn(config, "intendedForResale") ? config.intendedForResale : true;
+  const declarationDocId = "doc-9400";
+  const contractDocId = "doc-9401";
+  const technicalDocId = "doc-9402";
+  const candidateId = "candidate-9400";
+  const transactionDocId = includePrivateContract ? contractDocId : declarationDocId;
+  const transactionSource = includePrivateContract ? "contractual_document" : "user_declaration";
+  const transactionStatus = includePrivateContract ? "confirmed_professional" : "scenario";
+  const item = (evidenceId, documentId, candidateIdOverride, field, normalizedValue, valueType, sourceType = transactionSource, verificationStatus = transactionStatus) =>
+    ev(evidenceId, documentId, candidateIdOverride, field, normalizedValue, valueType, sourceType, verificationStatus);
+  const evidence = [
+    item("ev-9401", transactionDocId, null, "transaction.sellerType", sellerType, "enum"),
+    item("ev-9402", transactionDocId, null, "transaction.buyerType", buyerType, "enum"),
+    item("ev-9403", transactionDocId, null, "parties.buyerTaxResidenceCountry", "ES", "country"),
+    item("ev-9404", transactionDocId, null, "parties.sellerCountry", "DE", "country"),
+    item("ev-9405", transactionDocId, null, "taxDestination.autonomousCommunity", "la_rioja", "enum"),
+    item("ev-9406", transactionDocId, null, "taxDestination.province", "la_rioja", "enum"),
+  ];
+  if (intendedForResale !== undefined) evidence.push(item("ev-9407", transactionDocId, null, "transaction.intendedForResale", intendedForResale, "boolean"));
+  if (vatRegime !== undefined) evidence.push(item("ev-9408", transactionDocId, null, "transaction.vatRegime", vatRegime, "enum"));
+  if (includePrivateContract) evidence.push(item("ev-9409", contractDocId, null, "transaction.documentType", "private_sale_contract", "enum"));
+  if (includePurchasePrice) evidence.push(item("ev-9410", transactionDocId, null, "transaction.purchasePrice", 21500, "money"));
+  if (includeVehicleData) {
+    evidence.push(
+      item("ev-9411", technicalDocId, candidateId, "vehicle.boeValue", 24000, "money", "professional_document", "confirmed_professional"),
+      item("ev-9412", technicalDocId, candidateId, "vehicle.firstRegistrationDate", "2021-06-15", "date", "professional_document", "confirmed_professional"),
+      item("ev-9413", technicalDocId, candidateId, "vehicle.category", "passenger_car", "enum", "professional_document", "confirmed_professional"),
+      item("ev-9414", technicalDocId, candidateId, "vehicle.engineDisplacementCc", 1598, "number", "professional_document", "confirmed_professional"),
+      item("ev-9415", technicalDocId, candidateId, "vehicle.fiscalHorsepower", 12, "number", "professional_document", "confirmed_professional"),
+      item("ev-9416", technicalDocId, candidateId, "vehicle.zeroEmissionStatus", "not_zero_emission", "enum", "professional_document", "confirmed_professional"),
+      item("ev-9417", technicalDocId, candidateId, "vehicle.isHistoricVehicle", false, "boolean", "professional_document", "confirmed_professional"),
+      item("ev-9418", technicalDocId, candidateId, "vehicle.isEndOfLifeVehicle", false, "boolean", "professional_document", "confirmed_professional"),
+      item("ev-9419", transactionDocId, null, "transaction.date", "2025-07-15", "date")
+    );
+  }
+  return {
+    schemaVersion: VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION,
+    caseId,
+    documents: [
+      includePrivateContract ? { documentId: contractDocId, documentType: "private_sale_contract", pageCount: 2, candidateId: null } : { documentId: declarationDocId, documentType: "user_declaration", pageCount: null, candidateId: null },
+      ...(includeVehicleData ? [{ documentId: technicalDocId, documentType: "professional_report", pageCount: 1, candidateId }] : []),
+    ],
+    evidence,
+    selectedVehicleCandidateId: includeVehicleData ? candidateId : null,
+    options: { calculationDate: "2026-08-09", taxYear: 2026, scenarioPolicy, maxScenarios: scenarioPolicy === "documentary_scenarios" ? 3 : 0, currency: "EUR" },
+  };
+}
 async function actionData(body) {
   const response = await callRealActionHandler(apiHandler, body);
   assert.equal(response.statusCode, 200);
@@ -184,6 +242,31 @@ function assertNoProfessionalNotSubjectBranch(data) {
   assert.notEqual(itp.result?.applicability, "not_subject");
   assert.notEqual(itp.result?.taxAmount, 0);
   assert.equal(itp.assumptions.some((item) => /professional seller is assumed|venta profesional declarada/i.test(item)), false);
+}
+function assertResellerProvisionalExemptionItp(data) {
+  const itp = data.engineExecutions.itp;
+  assert.equal(itp.status, "calculated_scenario");
+  assert.equal(itp.inputStatus, "scenario");
+  assert.equal(itp.confidenceLevel, "declared");
+  assert.equal(itp.result.applicability, "exempt");
+  assert.equal(itp.result.taxAmount, 0);
+  assert.notEqual(itp.result.applicability, "not_subject");
+  assert.deepEqual(itp.missingFields, []);
+  assert.equal(itp.warningCodes.includes("RESELLER_EXEMPTION_REQUIRES_EVIDENCE"), true);
+  assert.equal(itp.warningCodes.includes("ENGINE_INPUTS_CONFLICT"), false);
+  assert.equal(itp.warningCodes.includes("ENGINE_INPUTS_MISSING"), false);
+  const assumptions = itp.assumptions.join(" ");
+  assert.match(assumptions, /habitual|vehicle reseller|compraventa/i);
+  assert.match(assumptions, /resale|reventa/i);
+  assert.match(assumptions, /provisional/i);
+  assert.match(assumptions, /one year|ano siguiente|año siguiente/i);
+  const itpLine = data.estimatedSummary?.lineItems?.find((item) => item.id === "itp");
+  assert.equal(itpLine?.amount, 0);
+  assert.equal(data.estimatedSummary?.exactTotal, null);
+}
+
+function assertNoResellerExemption(data) {
+  assert.notEqual(data.engineExecutions.itp.result?.applicability, "exempt");
 }
 function req(body = dto(), overrides = {}) {
   return { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${API_KEY}` }, body, ...overrides };
@@ -421,6 +504,106 @@ test("endpoint Action real expone diagnostico no sensible sin alterar resultado 
   const invalidPolicy = await handleVehicleTaxActionRequest(req({ ...body, options: { ...body.options, scenarioPolicy: "invalid" } }), config());
   assert.equal(invalidPolicy.statusCode, 400);
   assertActionDiagnostics(invalidPolicy.headers, "unknown");
+});
+test("endpoint Action real debe estimar exencion provisional ITP de revendedor sin precio ni documento", async () => {
+  const variants = [
+    resellerProvisionalExemptionDto({ caseId: "case-9400" }),
+    resellerProvisionalExemptionDto({ caseId: "case-9401", vatRegime: "unknown" }),
+    resellerProvisionalExemptionDto({ caseId: "case-9402", vatRegime: "not_applicable_private_sale" }),
+  ];
+  const results = [];
+  for (const body of variants) {
+    const data = await actionData(body);
+    const itp = data.engineExecutions.itp;
+    results.push({
+      status: itp.status,
+      inputStatus: itp.inputStatus,
+      confidenceLevel: itp.confidenceLevel,
+      applicability: itp.result?.applicability,
+      taxAmount: itp.result?.taxAmount,
+      missingFields: itp.missingFields,
+      warningCodes: itp.warningCodes,
+      exactTotal: data.estimatedSummary?.exactTotal,
+      itpLineAmount: data.estimatedSummary?.lineItems?.find((item) => item.id === "itp")?.amount,
+    });
+  }
+  assert.deepEqual(results, variants.map(() => ({
+    status: "calculated_scenario",
+    inputStatus: "scenario",
+    confidenceLevel: "declared",
+    applicability: "exempt",
+    taxAmount: 0,
+    missingFields: [],
+    warningCodes: ["RESELLER_EXEMPTION_REQUIRES_EVIDENCE", "SCENARIO_FROM_DECLARED_DATA"],
+    exactTotal: null,
+    itpLineAmount: 0,
+  })));
+});
+
+test("endpoint Action real debe ignorar el precio para la exencion provisional ITP de revendedor", async () => {
+  const data = await actionData(resellerProvisionalExemptionDto({ caseId: "case-9403", includePurchasePrice: true, vatRegime: "not_applicable_private_sale" }));
+  assertResellerProvisionalExemptionItp(data);
+});
+
+test("endpoint Action real no convierte vendedor profesional en exencion provisional de revendedor", async () => {
+  const professionalPrivate = await actionData(professionalMinimumItpScenarioDto());
+  assert.equal(professionalPrivate.engineExecutions.itp.result.applicability, "not_subject");
+  assert.equal(professionalPrivate.engineExecutions.itp.result.taxAmount, 0);
+  assertNoResellerExemption(professionalPrivate);
+
+  const professionalReseller = await actionData(resellerProvisionalExemptionDto({ caseId: "case-9404", sellerType: "professional", vatRegime: "rebu" }));
+  assertNoResellerExemption(professionalReseller);
+});
+
+test("endpoint Action real mantiene sujeto el flujo particular sin reventa profesional", async () => {
+  const privatePrivate = await actionData(privateItpCharacterizationDto());
+  assert.equal(privatePrivate.engineExecutions.itp.result.applicability, "taxable");
+  assert.equal(privatePrivate.engineExecutions.itp.result.taxableBase, 21500);
+  assert.equal(privatePrivate.engineExecutions.itp.inputsUsed.officialMarketValue, 11280);
+  assert.equal(privatePrivate.engineExecutions.itp.result.rate, 0.04);
+  assert.equal(privatePrivate.engineExecutions.itp.result.taxAmount, 860);
+  assert.equal(privatePrivate.engineExecutions.itp.result.territoryRule, "la_rioja");
+  assertNoResellerExemption(privatePrivate);
+
+  const ownUse = await actionData(resellerProvisionalExemptionDto({
+    caseId: "case-9405",
+    buyerType: "professional",
+    intendedForResale: false,
+    vatRegime: "not_applicable_private_sale",
+    includePurchasePrice: true,
+    includePrivateContract: true,
+    includeVehicleData: true,
+  }));
+  assert.equal(ownUse.engineExecutions.itp.result.applicability, "taxable");
+  assert.equal(ownUse.engineExecutions.itp.result.taxAmount, 860);
+  assertNoResellerExemption(ownUse);
+});
+
+test("endpoint Action real no concede exencion provisional ITP a negativos de reventa", async () => {
+  const cases = [
+    resellerProvisionalExemptionDto({ caseId: "case-9406", buyerType: "private", intendedForResale: true, includePurchasePrice: true, includePrivateContract: true, includeVehicleData: true }),
+    resellerProvisionalExemptionDto({ caseId: "case-9407", sellerType: "unknown", includePurchasePrice: true, includePrivateContract: true, includeVehicleData: true }),
+    resellerProvisionalExemptionDto({ caseId: "case-9408", intendedForResale: undefined, includePurchasePrice: true, includePrivateContract: true, includeVehicleData: true }),
+    resellerProvisionalExemptionDto({ caseId: "case-9409", intendedForResale: false, includePurchasePrice: true, includePrivateContract: true, includeVehicleData: true }),
+    resellerProvisionalExemptionDto({ caseId: "case-9410", sellerType: "unknown", buyerType: "professional", vatRegime: "general_vat" }),
+  ];
+  for (const body of cases) {
+    const data = await actionData(body);
+    assertNoResellerExemption(data);
+  }
+
+  const conflictBody = resellerProvisionalExemptionDto({ caseId: "case-9411" });
+  conflictBody.evidence.push(ev("ev-9420", "doc-9400", null, "transaction.sellerType", "professional", "enum", "user_declaration", "scenario"));
+  const conflict = await actionData(conflictBody);
+  assert.equal(conflict.classification.status, "conflict");
+  assertNoResellerExemption(conflict);
+});
+
+test("endpoint Action real confirmed_only no confirma exencion provisional con evidencia scenario", async () => {
+  const data = await actionData(resellerProvisionalExemptionDto({ caseId: "case-9412", scenarioPolicy: "confirmed_only" }));
+  const itp = data.engineExecutions.itp;
+  assert.notEqual(`${itp.status}/${itp.result?.applicability}/${itp.result?.taxAmount}`, "calculated_scenario/exempt/0");
+  assertNoResellerExemption(data);
 });
 test("endpoint Action real caracteriza flujos no profesionales antes del cambio ITP", async () => {
   const privatePrivate = await actionData(privateItpCharacterizationDto());

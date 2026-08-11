@@ -49,6 +49,7 @@ export const TRANSFER_TAX_APPLICABILITY = {
   TAXABLE: "taxable",
   BONIFIED: "bonified",
   NOT_SUBJECT: "not_subject",
+  EXEMPT: "exempt",
   FILING_NOT_REQUIRED: "filing_not_required",
   SCENARIO_REQUIRED: "scenario_required",
   REVIEW_REQUIRED: "review_required",

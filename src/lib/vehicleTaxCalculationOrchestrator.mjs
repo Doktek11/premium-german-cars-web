@@ -1,7 +1,7 @@
 import { VEHICLE_TAX_CASE_FILE_SCHEMA_VERSION, VEHICLE_TAX_CASE_FILE_FACT_STATUSES } from "../data/vehicleTaxCaseFileCatalogs.mjs";
 import { classifyVehicleTaxOperation } from "./vehicleTaxOperationClassifier.mjs";
 import { calculateRegistrationTax, getDepreciationCoefficient, getMonthsFromFirstRegistrationDate, getTerritoryFromParam } from "./registrationTax.mjs";
-import { calculateTransferTax } from "./transferTax.mjs";
+import { calculateTransferTax, TRANSFER_TAX_APPLICABILITY, TRANSFER_TAX_FILING_REQUIREMENTS, TRANSFER_TAX_WARNING_CODES } from "./transferTax.mjs";
 import { resolveIvtmMunicipalityData } from "./ivtmDataLookup.mjs";
 import { calculateMunicipalVehicleTax } from "./municipalVehicleTax.mjs";
 import { calculateRegistrationFee } from "./registrationFee.mjs";
@@ -333,7 +333,79 @@ function professionalNotSubjectScenarioExecution(classification, options) {
     missingFields: [],
   });
 }
-function confidenceLevel(prepared, scenario) {
+function resellerProvisionalExemptionScenarioInput(classification) {
+  const patch = classification?.transferTaxClassification ?? {};
+  return {
+    sellerType: patch.sellerType,
+    buyerType: patch.buyerType,
+    documentType: patch.documentType ?? "unknown",
+    vatRegime: patch.vatRegime ?? "unknown",
+    intendedForResale: patch.intendedForResale ?? null,
+    buyerTaxResidenceCountry: patch.buyerTaxResidenceCountry,
+    sellerCountry: patch.sellerCountry,
+    evidence: { evidenceIds: uniqueStrings(classification?.evidenceIds ?? []) },
+  };
+}
+function canUseResellerProvisionalExemptionClassification(caseFile, classification, map, options) {
+  if (options?.scenarioPolicy !== "documentary_scenarios") return false;
+  if (!hasSingleVehicleCandidate(caseFile)) return false;
+  if (hasBlockingOperationIssue(classification)) return false;
+  if (classification?.vatRegimeStatus === "conflict" || classification?.rebuStatusCertainty === "conflict") return false;
+  const resaleFact = scenarioFact(caseFile, null, "transaction.intendedForResale", map, "any");
+  const explicitResaleEvidence = (caseFile?.evidence ?? []).some((item) => item?.field === "transaction.intendedForResale" && item.normalizedValue === true && item.verificationStatus !== "rejected");
+  if (!resaleFact.ok || resaleFact.value !== true || !explicitResaleEvidence) return false;
+  const input = resellerProvisionalExemptionScenarioInput(classification);
+  if (input.sellerType !== "private") return false;
+  if (input.buyerType !== "vehicle_reseller") return false;
+  if (input.intendedForResale !== true) return false;
+  if (input.documentType && !["unknown", "private_sale_contract"].includes(input.documentType)) return false;
+  if (input.vatRegime && !["unknown", "not_applicable_private_sale"].includes(input.vatRegime)) return false;
+  return true;
+}
+function resellerProvisionalExemptionScenarioExecution(classification) {
+  const input = resellerProvisionalExemptionScenarioInput(classification);
+  const evidenceIds = uniqueStrings(classification?.evidenceIds ?? []);
+  const assumptions = [
+    "The buyer is assumed from declared data only to be a habitual vehicle reseller acquiring the vehicle for resale in this documentary scenario.",
+    "The ITP reseller exemption is provisional and must be supported by evidence of resale within one year to become definitive; otherwise the corresponding transfer tax may apply.",
+  ];
+  const resellerWarning = "La exencion de revendedor es provisional y exige acreditar compraventa habitual, destino a reventa y venta en plazo.";
+  return engineExecution({
+    engineId: "itp",
+    status: VEHICLE_TAX_ENGINE_EXECUTION_STATUSES.CALCULATED_SCENARIO,
+    inputStatus: "scenario",
+    confidenceLevel: "declared",
+    inputsUsed: input,
+    evidenceIds,
+    result: {
+      applicability: TRANSFER_TAX_APPLICABILITY.EXEMPT,
+      supportedCalculation: true,
+      taxAmount: 0,
+      probableAmount: null,
+      minimumAmount: 0,
+      maximumAmount: 0,
+      prudentBudget: 0,
+      taxableBase: null,
+      rate: 0,
+      fixedFee: null,
+      territoryRule: null,
+      territoryStatus: "supported_with_conditions",
+      legalBasis: [{ source: "TRLITPAJD", article: "Articulo 45.I.B.17", summary: "Exencion provisional para empresarios dedicados habitualmente a la compraventa de vehiculos usados que adquieren para reventa.", url: "https://www.boe.es/buscar/act.php?id=BOE-A-1993-25359" }],
+      scenarios: [],
+      assumptions,
+      warnings: [resellerWarning],
+      warningCodes: [TRANSFER_TAX_WARNING_CODES.RESELLER_EXEMPTION_REQUIRES_EVIDENCE],
+      missingFields: [],
+      evidence: { evidenceIds },
+      filingRequirement: TRANSFER_TAX_FILING_REQUIREMENTS.CONDITIONAL,
+      filingForm: "620",
+    },
+    assumptions: [...assumptions, "Calculo orientativo: usa datos estructurados declarados o no verificados y no constituye evidencia oficial."],
+    warnings: [resellerWarning, ...codeMessages([VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.SCENARIO_FROM_DECLARED_DATA])],
+    warningCodes: [TRANSFER_TAX_WARNING_CODES.RESELLER_EXEMPTION_REQUIRES_EVIDENCE, VEHICLE_TAX_ORCHESTRATOR_WARNING_CODES.SCENARIO_FROM_DECLARED_DATA],
+    missingFields: [],
+  });
+}function confidenceLevel(prepared, scenario) {
   if (!scenario) return "confirmed";
   if (prepared.scenarioFields > 0 && prepared.confirmedFields > 0) return "mixed";
   return prepared.scenarioFields > 0 ? "declared" : "confirmed";
@@ -645,6 +717,7 @@ async function buildScenarioExecutions(caseFile, candidate, map, classification,
 }
 function itpExecutionFromEffectiveClassification(caseFile, candidate, map, classification, deps, options) {
   if (canUseProfessionalNotSubjectClassification(caseFile, classification, options)) return professionalNotSubjectScenarioExecution(classification, options);
+  if (canUseResellerProvisionalExemptionClassification(caseFile, classification, map, options)) return resellerProvisionalExemptionScenarioExecution(classification);
   const itpPrepared = buildItpInput(caseFile, candidate, map, classification);
   if (shouldUseDocumentaryItpScenario(caseFile, classification, itpPrepared, options)) {
     const scenarioPrepared = buildItpInput(caseFile, candidate, map, classification, null, [], options, "scenario");

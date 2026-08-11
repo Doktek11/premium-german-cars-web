@@ -6,6 +6,7 @@ import {
   BUYER_TYPES,
   calculateTransferTax,
   SELLER_TYPES,
+  TRANSFER_TAX_APPLICABILITY,
   TRANSFER_TAX_WARNING_CODES,
   VAT_REGIMES,
 } from "./transferTax.mjs";
@@ -24,6 +25,7 @@ const baseInput = {
   fiscalHorsepower: 14.7,
   firstRegistrationDate: "2018-06-01",
 };
+
 
 test("particular espanol sujeto calcula ITP en comunidad soportada", () => {
   const result = calculateTransferTax(baseInput);
@@ -294,6 +296,7 @@ test("revendedor sin evidencia suficiente conserva escenario ordinario y posible
   assert.equal(result.scenarios[1].id, "reseller_provisional_exemption");
   assert.ok(result.warningCodes.includes("RESELLER_EXEMPTION_REQUIRES_EVIDENCE"));
   assert.equal(result.prudentBudget, 480);
+  assert.equal(TRANSFER_TAX_APPLICABILITY.EXEMPT, "exempt");
 });
 
 test("no confunde cuota no calculable con cuota cero de no sujecion", () => {

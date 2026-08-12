@@ -182,11 +182,16 @@ export function calculateRegistrationFee(input = {}) {
   });
 
   if (feeDate.time > calculationDate.time) {
+    const futureSameYearAmount = sameYearRule ? sameYearRule.amount : null;
     return output({
       supportedCalculation: false,
       applicability: REGISTRATION_FEE_APPLICABILITY.APPLICABLE,
       status: REGISTRATION_FEE_STATUSES.REQUIRES_REVIEW,
-      referenceAmount: sameYearRule?.amount ?? (latestRule && feeDate.year > latestRule.feeYear ? latestRule.amount : null),
+      referenceAmount: futureSameYearAmount ?? (latestRule && feeDate.year > latestRule.feeYear ? latestRule.amount : null),
+      probableAmount: futureSameYearAmount,
+      minimumAmount: futureSameYearAmount,
+      maximumAmount: futureSameYearAmount,
+      prudentAmount: futureSameYearAmount,
       warningCodes: [REGISTRATION_FEE_WARNING_CODES.FUTURE_FEE_DATE],
       ...(sameYearRule ? ruleFields(sameYearRule) : latestRule ? ruleFields(latestRule) : { currency }),
     });

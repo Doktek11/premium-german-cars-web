@@ -77,6 +77,19 @@ test("fecha futura respecto a calculationDate no confirma tasa", () => {
   assert.ok(result.warningCodes.includes(REGISTRATION_FEE_WARNING_CODES.FUTURE_FEE_DATE));
 });
 
+test("fecha futura dentro del ejercicio con tarifa disponible conserva importe orientativo no confirmado", () => {
+  const result = calculateRegistrationFee(input({ feeDate: "2026-12-01", calculationDate: "2026-07-29" }));
+  assert.equal(result.supportedCalculation, false);
+  assert.equal(result.status, REGISTRATION_FEE_STATUSES.REQUIRES_REVIEW);
+  assert.equal(result.amount, null);
+  assert.equal(result.referenceAmount, 99.77);
+  assert.equal(result.probableAmount, 99.77);
+  assert.equal(result.minimumAmount, 99.77);
+  assert.equal(result.maximumAmount, 99.77);
+  assert.equal(result.prudentAmount, 99.77);
+  assert.ok(result.warningCodes.includes(REGISTRATION_FEE_WARNING_CODES.FUTURE_FEE_DATE));
+});
+
 test("2027 sin regla cargada conserva referencia 2026 como outdated", () => {
   const result = calculateRegistrationFee(input({ feeDate: "2027-01-10", calculationDate: "2027-01-10" }));
   assert.equal(result.supportedCalculation, false);

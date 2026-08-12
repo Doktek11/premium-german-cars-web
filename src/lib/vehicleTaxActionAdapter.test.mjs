@@ -272,6 +272,33 @@ async function calculate(dtoInput) {
   return calculateVehicleTaxCase(adapted.caseFile, adapted.options);
 }
 
+test("contrato Action de CO2 acepta solo numeros reales hasta 600", async (t) => {
+  for (const field of ["vehicle.co2Wltp", "vehicle.co2Nedc"]) {
+    await t.test(`${field} acepta 0, 600 y rechaza tipos no numericos`, async () => {
+      for (const value of [0, 120.01, 600]) {
+        const input = dto();
+        input.evidence = [evidence({ evidenceId: `ev-${field.endsWith("Wltp") ? "wltp" : "nedc"}-${String(value).replace(".", "-")}`, field, normalizedValue: value, valueType: "number" })];
+        input.selectedVehicleCandidateId = "candidate-1";
+        assert.equal(buildVehicleTaxCaseFromActionDto(input).caseFile.vehicleCandidates.length, 1);
+      }
+
+      for (const value of ["0", "120.01", null, false, true, [], [0], {}]) {
+        const input = dto();
+        input.evidence = [evidence({ evidenceId: `ev-bad-${field.endsWith("Wltp") ? "wltp" : "nedc"}`, field, normalizedValue: value, valueType: "number" })];
+        assertActionError(() => buildVehicleTaxCaseFromActionDto(input), "ACTION_VALUE_INVALID");
+      }
+    });
+
+    await t.test(`${field} rechaza CO2 fuera del contrato del motor`, async () => {
+      for (const value of [600.01, 601]) {
+        const input = dto();
+        input.evidence = [evidence({ evidenceId: `ev-too-high-${field.endsWith("Wltp") ? "wltp" : "nedc"}-${String(value).replace(".", "-")}`, field, normalizedValue: value, valueType: "number" })];
+        assertActionError(() => buildVehicleTaxCaseFromActionDto(input), "ACTION_VALUE_INVALID");
+      }
+    });
+  }
+});
+
 test("construye expediente canonico completo sin mutar input y ejecuta IVTM", async () => {
   const input = dto();
   const before = JSON.stringify(input);

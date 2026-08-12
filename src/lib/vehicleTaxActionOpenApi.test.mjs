@@ -283,6 +283,15 @@ test("field/valueType, enums y patrones derivan de runtime", () => {
   }
 });
 
+test("OpenAPI declara CO2 maximo 600 para ambos ciclos", () => {
+  for (const field of ["vehicle.co2Wltp", "vehicle.co2Nedc"]) {
+    const normalizedValue = schemaForField(field).properties.normalizedValue;
+    assert.equal(normalizedValue.type, "number", field);
+    assert.equal(normalizedValue.minimum, 0, field);
+    assert.equal(normalizedValue.maximum, 600, field);
+  }
+});
+
 test("fechas estructurales en OpenAPI y validacion semantica runtime", () => {
   const { Options } = OPENAPI.components.schemas;
   assert.equal(Options.properties.calculationDate.format, "date");

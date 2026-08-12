@@ -231,6 +231,82 @@ function resellerProvisionalExemptionDto(config = {}) {
     options: { calculationDate: "2026-08-09", taxYear: 2026, scenarioPolicy, maxScenarios: scenarioPolicy === "documentary_scenarios" ? 3 : 0, currency: "EUR" },
   };
 }
+function canonicalVolvoLaRiojaDto({ expectedSettlementDate = undefined } = {}) {
+  const candidateId = "candidate-2601";
+  const docId = "doc-2601";
+  const item = (evidenceId, field, normalizedValue, valueType, candidateIdOverride = null) =>
+    ev(evidenceId, docId, candidateIdOverride, field, normalizedValue, valueType, "user_declaration", "scenario");
+  const evidence = [
+    item("ev-2601", "vehicle.category", "passenger_car", "enum", candidateId),
+    item("ev-2602", "vehicle.fuelType", "gasoline", "enum", candidateId),
+    item("ev-2603", "vehicle.engineDisplacementCc", 1969, "number", candidateId),
+    item("ev-2604", "vehicle.fiscalHorsepower", 13.4, "number", candidateId),
+    item("ev-2605", "vehicle.firstRegistrationDate", "2024-06", "date", candidateId),
+    item("ev-2606", "vehicle.condition", "usado_importado", "enum", candidateId),
+    item("ev-2607", "vehicle.co2Wltp", 138, "number", candidateId),
+    item("ev-2608", "vehicle.emissionsStandard", "wltp", "enum", candidateId),
+    item("ev-2609", "vehicle.zeroEmissionStatus", "not_zero_emission", "enum", candidateId),
+    item("ev-2610", "vehicle.isHistoricVehicle", false, "boolean", candidateId),
+    item("ev-2611", "vehicle.isEndOfLifeVehicle", false, "boolean", candidateId),
+    item("ev-2612", "vehicle.boeValue", 47100, "money", candidateId),
+    item("ev-2613", "vehicle.boeValueYear", 2026, "year", candidateId),
+    item("ev-2614", "transaction.purchasePrice", 30000, "money"),
+    item("ev-2615", "transaction.documentType", "private_sale_contract", "enum"),
+    item("ev-2616", "transaction.sellerType", "private", "enum"),
+    item("ev-2617", "transaction.buyerType", "private", "enum"),
+    item("ev-2618", "transaction.vatRegime", "not_applicable_private_sale", "enum"),
+    item("ev-2619", "transaction.date", "2026-08-02", "date"),
+    item("ev-2620", "taxDestination.autonomousCommunity", "la_rioja", "enum"),
+    item("ev-2621", "taxDestination.municipalityCode", "26089", "ine_code"),
+    item("ev-2622", "parties.buyerTaxResidenceCountry", "ES", "country"),
+    item("ev-2623", "parties.sellerCountry", "DE", "country"),
+  ];
+  if (expectedSettlementDate !== undefined) evidence.push(item("ev-2624", "taxDestination.expectedSettlementDate", expectedSettlementDate, "date"));
+  return {
+    schemaVersion: VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION,
+    caseId: "case-2601",
+    documents: [{ documentId: docId, documentType: "user_declaration", pageCount: null, candidateId }],
+    evidence,
+    selectedVehicleCandidateId: candidateId,
+    options: { calculationDate: "2026-08-02", taxYear: 2026, scenarioPolicy: "documentary_scenarios", maxScenarios: 3, currency: "EUR" },
+  };
+}
+
+function canonicalMercedesGlcDto(co2Nedc) {
+  const candidateId = "candidate-2201";
+  const docId = "doc-2201";
+  const item = (evidenceId, field, normalizedValue, valueType, candidateIdOverride = null) =>
+    ev(evidenceId, docId, candidateIdOverride, field, normalizedValue, valueType, "user_declaration", "scenario");
+  return {
+    schemaVersion: VEHICLE_TAX_ACTION_REQUEST_SCHEMA_VERSION,
+    caseId: `case-220-${co2Nedc}`,
+    documents: [{ documentId: docId, documentType: "user_declaration", pageCount: null, candidateId }],
+    evidence: [
+      item("ev-2201", "vehicle.category", "passenger_car", "enum", candidateId),
+      item("ev-2202", "vehicle.fuelType", "diesel", "enum", candidateId),
+      item("ev-2203", "vehicle.engineDisplacementCc", 2143, "number", candidateId),
+      item("ev-2204", "vehicle.fiscalHorsepower", 13.88, "number", candidateId),
+      item("ev-2205", "vehicle.firstRegistrationDate", "2017-04", "date", candidateId),
+      item("ev-2206", "vehicle.condition", "usado_importado", "enum", candidateId),
+      item("ev-2207", "vehicle.co2Nedc", co2Nedc, "number", candidateId),
+      item("ev-2208", "vehicle.emissionsStandard", "nedc", "enum", candidateId),
+      item("ev-2209", "vehicle.zeroEmissionStatus", "not_zero_emission", "enum", candidateId),
+      item("ev-2210", "vehicle.isHistoricVehicle", false, "boolean", candidateId),
+      item("ev-2211", "vehicle.isEndOfLifeVehicle", false, "boolean", candidateId),
+      item("ev-2212", "vehicle.boeValue", 47300, "money", candidateId),
+      item("ev-2213", "transaction.sellerType", "professional", "enum"),
+      item("ev-2214", "transaction.buyerType", "private", "enum"),
+      item("ev-2215", "transaction.vatRegime", "rebu", "enum"),
+      item("ev-2216", "transaction.rebuStatus", "confirmed", "enum"),
+      item("ev-2217", "taxDestination.autonomousCommunity", "cataluna", "enum"),
+      item("ev-2218", "parties.buyerTaxResidenceCountry", "ES", "country"),
+      item("ev-2219", "parties.sellerCountry", "DE", "country"),
+    ],
+    selectedVehicleCandidateId: candidateId,
+    options: { calculationDate: "2026-08-12", taxYear: 2026, scenarioPolicy: "documentary_scenarios", maxScenarios: 3, currency: "EUR" },
+  };
+}
+
 async function actionData(body) {
   const response = await callRealActionHandler(apiHandler, body);
   assert.equal(response.statusCode, 200);
@@ -712,6 +788,71 @@ test("endpoint Action real debe resolver BMW profesional REBU sin flags historic
   assert.equal(data.estimatedSummary.prudentBudget, 215.5);
   const itpLine = data.estimatedSummary.lineItems.find((item) => item.id === "itp");
   assert.equal(itpLine.amount, 0);
+});
+
+test("endpoint Action real reproduce el caso canonico Volvo La Rioja usado en desarrollo", async () => {
+  const data = await actionData(canonicalVolvoLaRiojaDto());
+  assert.equal(data.engineExecutions.iedmt.result.tax.toFixed(2), "1192.01");
+  assert.equal(data.engineExecutions.itp.result.taxAmount, 1262.28);
+  assert.equal(data.engineExecutions.itp.result.taxableBase, 31557);
+  assert.equal(data.engineExecutions.dgt_registration_fee.result.amount, 99.77);
+  assert.equal(data.engineExecutions.ivtm.result.dataStatus, "outdated");
+  assert.equal(data.engineExecutions.ivtm.result.referenceProratedTax, 65);
+  assert.equal(data.taxSummary, null);
+  assert.equal(data.estimatedSummary.exactTotal, null);
+  assert.equal(data.estimatedSummary.estimatedTotal, 2619.06);
+  assert.equal(data.estimatedSummary.minimumTotal, 2590.03);
+  assert.equal(data.estimatedSummary.maximumTotal, 2626);
+  assert.equal(data.estimatedSummary.prudentBudget, 2626);
+});
+
+test("endpoint Action real conserva mismo tramo IEDMT Mercedes GLC con 131 o 143 NEDC", async () => {
+  const co2_131 = await actionData(canonicalMercedesGlcDto(131));
+  const co2_143 = await actionData(canonicalMercedesGlcDto(143));
+  assert.equal(co2_131.engineExecutions.iedmt.result.rate, 4.75);
+  assert.equal(co2_143.engineExecutions.iedmt.result.rate, 4.75);
+  assert.equal(co2_131.engineExecutions.iedmt.result.tax.toFixed(2), "339.47");
+  assert.equal(co2_143.engineExecutions.iedmt.result.tax.toFixed(2), "339.47");
+  assert.equal(co2_131.engineExecutions.iedmt.result.tax, co2_143.engineExecutions.iedmt.result.tax);
+  assert.equal(co2_131.engineExecutions.itp.result.applicability, "not_subject");
+  assert.equal(co2_143.engineExecutions.itp.result.applicability, "not_subject");
+  assert.equal(co2_131.engineExecutions.itp.result.taxAmount, 0);
+  assert.equal(co2_143.engineExecutions.itp.result.taxAmount, 0);
+});
+
+test("endpoint Action real debe incluir tasa DGT futura del mismo ejercicio solo en estimatedSummary", async () => {
+  const data = await actionData(canonicalVolvoLaRiojaDto({ expectedSettlementDate: "2026-12-01" }));
+  const dgt = data.engineExecutions.dgt_registration_fee;
+  assert.equal(dgt.status, "calculated_scenario");
+  assert.equal(dgt.inputStatus, "scenario");
+  assert.notEqual(dgt.confidenceLevel, "confirmed");
+  assert.notEqual(dgt.result.status, "confirmed");
+  assert.equal(dgt.result.amount, null);
+  assert.equal(dgt.result.referenceAmount, 99.77);
+  assert.equal(dgt.result.probableAmount, 99.77);
+  assert.equal(dgt.result.minimumAmount, 99.77);
+  assert.equal(dgt.result.maximumAmount, 99.77);
+  assert.equal(dgt.result.prudentAmount, 99.77);
+  assert.equal(dgt.warningCodes.includes("REGISTRATION_FEE_FUTURE_FEE_DATE"), true);
+  const dgtLine = data.estimatedSummary.lineItems.find((item) => item.id === "dgt_registration_fee");
+  assert.equal(dgtLine.amount, 99.77);
+  assert.equal(dgtLine.minimumAmount, 99.77);
+  assert.equal(dgtLine.maximumAmount, 99.77);
+  assert.equal(dgtLine.prudentAmount, 99.77);
+  assert.equal(data.estimatedSummary.estimatedTotal, 2586.56);
+  assert.equal(data.estimatedSummary.prudentBudget, 2590.03);
+  assert.equal(data.estimatedSummary.exactTotal, null);
+  assert.equal(data.taxSummary?.exactTotal ?? null, null);
+});
+
+test("endpoint Action real no inventa tasa DGT para fecha futura sin tarifa de ejercicio", async () => {
+  const data = await actionData(canonicalVolvoLaRiojaDto({ expectedSettlementDate: "2027-01-10" }));
+  const dgt = data.engineExecutions.dgt_registration_fee;
+  assert.equal(dgt.status, "calculated_scenario");
+  assert.equal(dgt.result.amount, null);
+  assert.equal(dgt.warningCodes.includes("REGISTRATION_FEE_FUTURE_FEE_DATE"), true);
+  assert.equal(data.estimatedSummary.lineItems.some((item) => item.id === "dgt_registration_fee" && item.amount !== null), false);
+  assert.equal(data.estimatedSummary.exactTotal, null);
 });
 
 function deepActionJson(depth) {

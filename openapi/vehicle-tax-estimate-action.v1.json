@@ -1056,7 +1056,7 @@
           "normalizedValue": {
             "type": "number",
             "minimum": 0,
-            "maximum": 1000
+            "maximum": 600
           },
           "valueType": {
             "const": "number"
@@ -1125,7 +1125,7 @@
           "normalizedValue": {
             "type": "number",
             "minimum": 0,
-            "maximum": 1000
+            "maximum": 600
           },
           "valueType": {
             "const": "number"

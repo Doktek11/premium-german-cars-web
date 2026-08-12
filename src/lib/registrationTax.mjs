@@ -284,6 +284,14 @@ function safeNumber(value) {
   return Number.isFinite(numberValue) ? numberValue : null;
 }
 
+function isValidEmissionsValue(value) {
+  return (
+    typeof value === "number" &&
+    Number.isFinite(value) &&
+    value >= 0 &&
+    value <= 600
+  );
+}
 function isValidYearMonth(value) {
   if (!/^\d{4}-\d{2}$/.test(String(value))) {
     return false;
@@ -420,12 +428,11 @@ export function getDepreciationCoefficient(months) {
 }
 
 function getRegistrationTaxEpigraphFromEmissionsMatrix(emissions, matrix) {
-  const numericEmissions = safeNumber(emissions);
-
-  if (numericEmissions === null || numericEmissions < 0) {
+  if (!isValidEmissionsValue(emissions)) {
     return null;
   }
 
+  const numericEmissions = emissions;
   if (numericEmissions <= matrix.zeroMax) {
     return "epigraph1";
   }
@@ -895,7 +902,7 @@ export function calculateRegistrationTax({
     validationFailures.push("Valor BOE no valido.");
   }
 
-  if (safeNumber(emissions) === null || safeNumber(emissions) < 0 || safeNumber(emissions) > 600) {
+  if (!isValidEmissionsValue(emissions)) {
     validationFailures.push("CO2 no valido.");
   }
 

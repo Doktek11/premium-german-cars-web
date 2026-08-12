@@ -524,7 +524,36 @@ test("valor cero, negativo, NaN e Infinity no devuelven NaN ni cuota", () => {
   }
 });
 
-test("CO2 invalido no devuelve cuota ni base imponible", () => {
+const assertInvalidEmissions = (emissions) => {
+  const result = calculateRegistrationTax({
+    boeValue: 20000,
+    emissions,
+    firstRegistrationDate: "2025-07",
+    calculationDate: CALCULATION_DATE,
+    territoryId: "peninsula_general",
+    vehicleCondition: VEHICLE_CONDITIONS.USED_IMPORTED,
+  });
+
+  assert.equal(result.supportedCalculation, false);
+  assert.equal(result.tax, null);
+  assert.equal(result.taxableBase, null);
+  assert.equal(result.currentRegistrationTaxRate === 0, false);
+  assert.equal(result.residualRegistrationTaxRate === 0, false);
+  assert.equal(result.warningCodes.includes("INVALID_INPUT"), true);
+  assert.equal(
+    result.exclusionReason,
+    "Los datos introducidos no permiten calcular el impuesto con seguridad."
+  );
+};
+
+const describeEmissionInput = (value) => {
+  if (typeof value === "string") return JSON.stringify(value);
+  if (Array.isArray(value)) return JSON.stringify(value);
+  if (value && typeof value === "object") return "{}";
+  return String(value);
+};
+
+test("CO2 invalido no devuelve cuota ni base imponible", async (t) => {
   for (const emissions of [-1, 601, Number.NaN, Infinity]) {
     const result = calculate({ emissions });
 
@@ -533,8 +562,76 @@ test("CO2 invalido no devuelve cuota ni base imponible", () => {
     assert.equal(result.taxableBase, null);
     assert.equal(result.warningCodes.includes("INVALID_INPUT"), true);
   }
-});
 
+  await t.test("CO2 vacio o tipo incompatible no se convierte implicitamente en epigrafe 1", async (t) => {
+    for (const emissions of [null, "", "   ", undefined, false, true, [], [0], {}, "0", "120.01"]) {
+      await t.test(describeEmissionInput(emissions), () => {
+        assertInvalidEmissions(emissions);
+      });
+    }
+  });
+
+  await t.test("CO2 numerico real conserva limites ordinarios y maximo valido", () => {
+    const cases = [
+      [0, 0],
+      [120, 0],
+      [120.01, 0.0475],
+      [159.99, 0.0475],
+      [160, 0.0975],
+      [199.99, 0.0975],
+      [200, 0.1475],
+      [600, 0.1475],
+    ];
+
+    for (const [emissions, expectedRate] of cases) {
+      const result = calculate({ emissions });
+
+      assert.equal(result.supportedCalculation, true);
+      assert.equal(result.currentRegistrationTaxRate, expectedRate);
+      assert.equal(result.warningCodes.includes("INVALID_INPUT"), false);
+    }
+
+    assertInvalidEmissions(600.01);
+  });
+
+  await t.test("fronteras decimales CO2 ordinarias no dejan huecos entre epigrafes", () => {
+    const cases = [
+      [120, 0],
+      [120.01, 0.0475],
+      [159.99, 0.0475],
+      [160, 0.0975],
+      [199.99, 0.0975],
+      [200, 0.1475],
+    ];
+
+    for (const [emissions, expectedRate] of cases) {
+      assert.equal(getResidualRegistrationTaxRate({
+        firstRegistrationDate: "2022-01-01",
+        emissions,
+        territoryId: "peninsula_general",
+      }).rate, expectedRate);
+    }
+  });
+
+  await t.test("fronteras decimales CO2 de la ventana 2021 no dejan huecos entre epigrafes", () => {
+    const cases = [
+      [144, 0],
+      [144.01, 0.0475],
+      [191.99, 0.0475],
+      [192, 0.0975],
+      [239.99, 0.0975],
+      [240, 0.1475],
+    ];
+
+    for (const [emissions, expectedRate] of cases) {
+      assert.equal(getResidualRegistrationTaxRate({
+        firstRegistrationDate: "2021-07-11",
+        emissions,
+        territoryId: "peninsula_general",
+      }).rate, expectedRate);
+    }
+  });
+});
 test("conflicto entre boeValue y price prioriza boeValue y advierte", () => {
   const result = calculate({ boeValue: 20000, price: 30000 });
 

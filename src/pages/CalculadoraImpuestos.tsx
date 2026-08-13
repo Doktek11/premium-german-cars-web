@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { AlertTriangle, ArrowRight, Bot, Calendar, Car, CheckCircle2, Euro, Gauge, HelpCircle, RotateCcw, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowRight, Calendar, Car, CheckCircle2, ChevronDown, Euro, Gauge, HelpCircle, RotateCcw, Sparkles } from "lucide-react";
 import { getLeadContext } from "../lib/leadAttribution";
 import { getCalculatorActionState } from "../lib/calculatorActionState";
 import { trackLeadEvent } from "../lib/analytics";
@@ -18,8 +18,22 @@ import { SeoIntentLinks, seoIntentLinks } from "../components/SeoIntentLinks";
 const PRECIO_DEFAULT = 45000;
 const EMISIONES_DEFAULT = 155;
 const MESES_DEFAULT = 36;
+const BOE_PARAM_NAMES = ["valor", "valor_boe", "valorBoe", "precio", "valor_fiscal", "valorFiscal"];
+const CO2_PARAM_NAMES = ["co2", "emisiones", "emisiones_co2", "emisionesCO2"];
 const MONTH_PARAM_NAMES = ["antiguedad", "antiguedad_meses", "antiguedadMeses", "meses", "meses_antiguedad", "mesesAntiguedad"];
 const DATE_PARAM_NAMES = ["fecha_primera_matriculacion", "firstRegistrationDate", "first_registration_date"];
+const TERRITORY_PARAM_NAMES = ["territorio", "territory", "territoryId"];
+const VEHICLE_CONDITION_PARAM_NAMES = ["condicion", "vehicleCondition"];
+const EMISSIONS_STANDARD_PARAM_NAMES = ["norma_emisiones", "emissionsStandard"];
+const SPECIAL_CASE_PARAM_NAMES = ["supuesto_especial", "emisiones_no_acreditadas", "sin_emisiones_acreditadas"];
+const CALCULATOR_PREFILL_PARAM_NAMES = [...BOE_PARAM_NAMES, ...CO2_PARAM_NAMES, ...MONTH_PARAM_NAMES, ...DATE_PARAM_NAMES, ...TERRITORY_PARAM_NAMES, ...VEHICLE_CONDITION_PARAM_NAMES, ...EMISSIONS_STANDARD_PARAM_NAMES, ...SPECIAL_CASE_PARAM_NAMES, "tramo"];
+const MANUAL_CALCULATOR_PANEL_ID = "manual-iedmt-calculator-panel";
+const assistantSteps = [
+  "Indica el modelo o adjunta la documentación",
+  "Explica quién compra, quién vende y el municipio",
+  "Recibe la estimación de IEDMT, ITP/TPO, IVTM y DGT",
+];
+const hasManualCalculatorUrlParameters = (params: URLSearchParams) => CALCULATOR_PREFILL_PARAM_NAMES.some((paramName) => params.has(paramName));
 const euro = (value: number | null | undefined) => typeof value === "number" && Number.isFinite(value) ? `${Math.round(value).toLocaleString("es-ES")} EUR` : "No disponible";
 const euroExact = (value: number | null | undefined) => typeof value === "number" && Number.isFinite(value) ? `${value.toLocaleString("es-ES", { maximumFractionDigits: 2 })} EUR` : "No disponible";
 const percent = (value: number | null | undefined) => typeof value === "number" && Number.isFinite(value) ? `${(value * 100).toLocaleString("es-ES", { maximumFractionDigits: 2 })} %` : "No disponible";
@@ -44,20 +58,20 @@ const getInitialDate = (params: URLSearchParams, boeValue: number, emissions: nu
 export const CalculadoraImpuestos = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialTerritory = getTerritoryFromParam(getInitialStringValue(searchParams, ["territorio", "territory"]));
+  const initialTerritory = getTerritoryFromParam(getInitialStringValue(searchParams, TERRITORY_PARAM_NAMES));
   const initialUrlRateParam = getInitialRateParam(searchParams, ["tramo"]);
   const initialUrlRate = initialUrlRateParam.status === "valid" ? initialUrlRateParam.value : null;
   const initialCondition = getInitialVehicleCondition(searchParams) as VehicleCondition;
   const initialStandard = getInitialEmissionsStandard(searchParams) as EmissionsStandard;
-  const initialBoeValueParam = getInitialNumberParam(searchParams, ["valor", "valor_boe", "valorBoe", "precio", "valor_fiscal", "valorFiscal"], PRECIO_DEFAULT);
-  const initialEmissionsParam = getInitialNumberParam(searchParams, ["co2", "emisiones", "emisiones_co2", "emisionesCO2"], EMISIONES_DEFAULT);
+  const initialBoeValueParam = getInitialNumberParam(searchParams, BOE_PARAM_NAMES, PRECIO_DEFAULT);
+  const initialEmissionsParam = getInitialNumberParam(searchParams, CO2_PARAM_NAMES, EMISIONES_DEFAULT);
   const initialMonthsParam = getInitialIntegerParam(searchParams, MONTH_PARAM_NAMES, MESES_DEFAULT);
   const initialBoeValueForDate = initialBoeValueParam.status === "invalid" ? PRECIO_DEFAULT : initialBoeValueParam.value;
   const initialEmissionsForDate = initialEmissionsParam.status === "invalid" ? EMISIONES_DEFAULT : initialEmissionsParam.value;
   const initialMonthsForDate = initialMonthsParam.status === "invalid" ? null : initialMonthsParam.value;
   const initialNoAccredited = getInitialSpecialCase(searchParams);
   const hasCanonicalDateParam = DATE_PARAM_NAMES.some((name) => searchParams.has(name));
-  const hasPrefilledData = ["valor_boe", "valor", "precio", "co2", "emisiones", "antiguedad", "antiguedad_meses", "fecha_primera_matriculacion", "tramo"].some((name) => searchParams.has(name));
+  const hasPrefilledData = hasManualCalculatorUrlParameters(searchParams);
   const isAssistantPrefill = getInitialStringValue(searchParams, ["origen", "origin"]).toLocaleLowerCase("es-ES") === "asistente_pgc";
 
   const [boeValueInput, setBoeValueInput] = useState(() => getInitialNumberInputValue(initialBoeValueParam));
@@ -67,6 +81,7 @@ export const CalculadoraImpuestos = () => {
   const [vehicleCondition, setVehicleCondition] = useState<VehicleCondition>(initialCondition);
   const [emissionsStandard, setEmissionsStandard] = useState<EmissionsStandard>(initialStandard);
   const [noAccreditedEmissions, setNoAccreditedEmissions] = useState(initialNoAccredited);
+  const [isManualCalculatorOpen, setIsManualCalculatorOpen] = useState(() => hasManualCalculatorUrlParameters(searchParams));
 
   const boeValue = parseCalculatorNumberInput(boeValueInput);
   const emissions = parseCalculatorNumberInput(emissionsInput);
@@ -117,47 +132,48 @@ export const CalculadoraImpuestos = () => {
       <Navbar />
       <main className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6">
         <div className="container mx-auto max-w-5xl">
-          <header className="mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-left">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-serif font-bold mb-4 uppercase tracking-tighter">Calculadora de impuesto de matriculacion para coches importados</h1>
-              <p className="text-gray-400 text-base sm:text-lg max-w-2xl">Estimacion para vehiculos usados previamente matriculados en el extranjero y primera matriculacion definitiva en Espana.</p>
-            </div>
-            <button onClick={resetCalculadora} className="flex items-center gap-2 px-6 py-3 border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all min-h-[48px]"><RotateCcw size={14} /> Limpiar datos</button>
+          <header className="mb-5 text-left">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-3 uppercase tracking-tighter leading-tight">Calculadora de impuesto de matriculacion para coches importados</h1>
+            <p className="text-gray-400 text-sm sm:text-base max-w-2xl leading-relaxed">Estimacion para vehiculos usados previamente matriculados en el extranjero y primera matriculacion definitiva en Espana.</p>
           </header>
 
-          <button
-            type="button"
-            onClick={abrirAsistenteIA}
-            aria-label="Probar el Asistente PGC: Prueba nuestra nueva calculadora mejorada. Calcula IEDMT, ITP/TPO, IVTM y tasa DGT con ayuda del Asistente PGC."
-            className="pgc-assistant-promo group mb-6 w-full max-w-full overflow-hidden rounded-2xl border border-gold-500/25 bg-gradient-to-r from-white/[0.07] via-gold-500/10 to-white/[0.03] p-4 text-left shadow-2xl shadow-gold-500/10 transition-all hover:border-gold-400/60 hover:bg-gold-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:p-5"
-          >
-            <span className="flex min-w-0 flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <span className="flex min-w-0 items-start gap-3 sm:gap-4">
-                <span className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gold-400/25 bg-gold-500/15 text-gold-300">
-                  <Sparkles size={18} aria-hidden="true" />
-                </span>
-                <span className="min-w-0">
-                  <span className="mb-2 inline-flex rounded-full border border-gold-400/25 bg-black/30 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-gold-300">NUEVO</span>
-                  <span className="block text-base font-serif font-bold leading-tight text-white sm:text-xl">Prueba nuestra nueva calculadora mejorada</span>
-                  <span className="mt-2 block max-w-2xl text-sm leading-relaxed text-gray-300">Calcula IEDMT, ITP/TPO, IVTM y tasa DGT con ayuda del Asistente PGC.</span>
-                </span>
-              </span>
-              <span className="inline-flex min-h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-gold-500 px-4 py-3 text-center text-[10px] font-black uppercase tracking-widest text-black transition-all group-hover:bg-white sm:w-auto">
-                Probar el Asistente PGC <ArrowRight size={14} aria-hidden="true" />
-              </span>
-            </span>
-          </button>
-
-          {hasPrefilledData && <div className="mb-6 rounded-2xl border border-gold-400/20 bg-gold-400/5 p-4 text-left text-sm text-gold-100">Hemos cargado los datos localizados para este vehiculo. Puedes revisarlos o modificarlos.{isAssistantPrefill && <span> Proceden del Asistente PGC.</span>}</div>}
-
-          <section className="mb-8 bg-gold-500/5 border border-gold-500/20 p-4 sm:p-6 rounded-2xl text-left">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
-              <div className="flex items-start gap-4"><div className="rounded-2xl bg-gold-500/15 p-3 text-gold-400"><Bot size={24} /></div><div><h2 className="text-base font-bold text-white uppercase tracking-[0.15em] mb-2">Ya tienes un coche visto?</h2><p className="text-sm text-gray-300 leading-relaxed max-w-2xl">Pega el anuncio en el asistente. Localizara el Valor BOE y una referencia de CO2 para preparar la revision fiscal.</p></div></div>
-              <button onClick={abrirAsistenteIA} className="inline-flex items-center justify-center gap-3 bg-gold-500 text-black px-5 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all min-h-[44px]">Analizar coche <ArrowRight size={14} /></button>
+          <section data-assistant-pgc-block="primary" className="pgc-assistant-promo mb-5 max-w-full overflow-hidden rounded-2xl border border-gold-500/25 bg-gradient-to-r from-white/[0.07] via-gold-500/10 to-white/[0.03] p-4 text-left shadow-2xl shadow-gold-500/10 sm:p-5 md:p-6">
+            <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
+              <div className="min-w-0">
+                <div className="mb-3 flex flex-wrap items-center gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gold-400/25 bg-gold-500/15 text-gold-300"><Sparkles size={18} aria-hidden="true" /></span>
+                  <span className="inline-flex max-w-full rounded-full border border-gold-400/25 bg-black/30 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-gold-300">NUEVO · ASISTENTE FISCAL PGC</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold leading-tight text-white">Prueba nuestra nueva calculadora mejorada</h2>
+                <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-gold-300">¿Ya tienes un coche visto?</p>
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-gray-300">Calcula los impuestos de matriculación de un vehículo importado. Puedes indicar el modelo o adjuntar el COC, la documentación alemana o el contrato de compraventa.</p>
+                <ol className="mt-5 grid gap-3 md:grid-cols-3">
+                  {assistantSteps.map((step, index) => <li key={step} className="flex items-start gap-3 rounded-xl border border-white/10 bg-black/20 p-3 text-xs leading-relaxed text-gray-200"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold-500 text-[10px] font-black text-black">{index + 1}</span><span>{step}</span></li>)}
+                </ol>
+              </div>
+              <button type="button" onClick={abrirAsistenteIA} className="inline-flex min-h-[46px] w-full items-center justify-center gap-3 rounded-xl bg-gold-500 px-5 py-3 text-center text-[10px] font-black uppercase tracking-widest text-black transition-all hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black lg:w-auto">CALCULAR CON EL ASISTENTE PGC <ArrowRight size={14} aria-hidden="true" /></button>
             </div>
           </section>
 
-          <div id="calculadora-inputs" className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 mb-16">
+          <section className="mb-8 rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-left sm:p-5">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="min-w-0">
+                <h2 className="text-base font-serif font-bold leading-tight text-white sm:text-lg">¿Prefieres calcular manualmente el IEDMT?</h2>
+                <p className="mt-2 max-w-3xl text-sm leading-relaxed text-gray-400">Introduce el Valor BOE, la antigüedad y las emisiones del vehículo. Esta calculadora manual estima únicamente el IEDMT.</p>
+              </div>
+              <button type="button" aria-expanded={isManualCalculatorOpen} aria-controls={MANUAL_CALCULATOR_PANEL_ID} onClick={() => setIsManualCalculatorOpen((isOpen) => !isOpen)} className="inline-flex min-h-[44px] w-full shrink-0 items-center justify-center gap-3 rounded-xl border border-gold-500/30 px-5 py-3 text-center text-[10px] font-black uppercase tracking-widest text-gold-200 transition-all hover:border-gold-400 hover:bg-gold-500 hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black md:w-auto">
+                {isManualCalculatorOpen ? "CERRAR CALCULADORA MANUAL" : "ABRIR CALCULADORA MANUAL"}
+                <ChevronDown size={14} aria-hidden="true" className={isManualCalculatorOpen ? "rotate-180 transition-transform" : "transition-transform"} />
+              </button>
+            </div>
+            {isManualCalculatorOpen && (
+              <div id={MANUAL_CALCULATOR_PANEL_ID} className="mt-5 border-t border-white/10 pt-5">
+                <div className="mb-5 flex justify-end">
+                  <button type="button" onClick={resetCalculadora} className="flex min-h-[44px] items-center gap-2 rounded-full border border-white/10 px-5 py-3 text-[10px] font-bold uppercase tracking-widest transition-all hover:bg-white hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"><RotateCcw size={14} /> Limpiar datos</button>
+                </div>
+                {hasPrefilledData && <div className="mb-6 rounded-2xl border border-gold-400/20 bg-gold-400/5 p-4 text-left text-sm text-gold-100">Hemos cargado los datos localizados para este vehiculo. Puedes revisarlos o modificarlos.{isAssistantPrefill && <span> Proceden del Asistente PGC.</span>}</div>}
+
+                <div id="calculadora-inputs" className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 mb-10">
             <div className="lg:col-span-7 space-y-8 bg-white/[0.03] p-4 sm:p-6 md:p-8 rounded-3xl border border-white/5 shadow-2xl">
               <h3 className="text-[10px] font-black uppercase text-gray-500 tracking-[0.3em] border-b border-white/5 pb-4 text-left">Datos para el calculo</h3>
               <div className="text-left"><label className="text-xs font-bold uppercase text-gold-400 flex items-center gap-2 mb-1 tracking-widest"><Euro size={14} /> Valor BOE del vehiculo nuevo</label><p className="text-[11px] text-gray-500 mb-4">Introduce el valor publicado en las tablas oficiales. La calculadora aplicara la antiguedad y estimara la base imponible.</p><input type="text" inputMode="decimal" value={boeValueInput} onChange={(event) => setBoeValueInput(event.target.value)} className="w-full max-w-xs rounded-xl border border-white/10 bg-black px-4 py-3 text-sm text-white outline-none focus:border-gold-400" />{hasInvalidBoeValue && <p className="mt-3 text-xs text-red-200">Valor BOE no valido. Corrige este campo para calcular sin usar valores predeterminados.</p>}</div>
@@ -177,7 +193,10 @@ export const CalculadoraImpuestos = () => {
               </div></div>
               <div className="bg-red-900/5 border border-red-900/20 p-6 rounded-2xl flex gap-4 text-left"><AlertTriangle className="text-red-700 shrink-0" size={20} /><p className="text-[10px] text-gray-500 leading-relaxed uppercase tracking-wider font-medium">Este calculo es orientativo. La liquidacion final puede variar segun COC, documentacion tecnica, valor fiscal aplicable, territorio y situacion concreta del vehiculo.</p></div>
             </div>
-          </div>
+                </div>
+              </div>
+            )}
+          </section>
 
           <section className="mb-8 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl text-left"><h2 className="text-sm sm:text-base font-bold text-white uppercase tracking-[0.15em] mb-4">Como calcula esta herramienta</h2><ol className="space-y-3 text-sm text-gray-300 mb-5"><li>1. Identifica el alcance fiscal.</li><li>2. Aplica el porcentaje de antiguedad.</li><li>3. Obtiene el valor de mercado.</li><li>4. Minora los impuestos indirectos residuales.</li><li>5. Obtiene la base imponible.</li><li>6. Aplica el tipo actual.</li><li>7. Muestra supuestos y advertencias.</li></ol><p className="text-xs text-gray-500">Si solo conoces mes y ano, la calculadora mantiene compatibilidad con ese dato; julio de 2021 requiere dia exacto por cambio normativo.</p></section>
           <section className="mb-8 bg-gold-500/5 border border-gold-500/20 p-4 sm:p-6 rounded-2xl text-left"><h3 className="text-xs uppercase tracking-[0.2em] font-bold text-gold-400 mb-2">Ultima actualizacion BOE</h3><p className="text-sm text-gray-300">Revisado el 27 julio 2026. Formula alineada con Ley 38/1992, articulo 69, Orden HAC/1501/2025 y ventana temporal CO2 de Ley 11/2021 para vehiculos usados previamente matriculados en el extranjero.</p></section>

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { AlertTriangle, ArrowRight, Bot, Calendar, Car, CheckCircle2, Euro, Gauge, HelpCircle, RotateCcw } from "lucide-react";
+import { AlertTriangle, ArrowRight, Bot, Calendar, Car, CheckCircle2, Euro, Gauge, HelpCircle, RotateCcw, Sparkles } from "lucide-react";
 import { getLeadContext } from "../lib/leadAttribution";
 import { getCalculatorActionState } from "../lib/calculatorActionState";
 import { trackLeadEvent } from "../lib/analytics";
@@ -124,6 +124,29 @@ export const CalculadoraImpuestos = () => {
             </div>
             <button onClick={resetCalculadora} className="flex items-center gap-2 px-6 py-3 border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all min-h-[48px]"><RotateCcw size={14} /> Limpiar datos</button>
           </header>
+
+          <button
+            type="button"
+            onClick={abrirAsistenteIA}
+            aria-label="Probar el Asistente PGC: Prueba nuestra nueva calculadora mejorada. Calcula IEDMT, ITP/TPO, IVTM y tasa DGT con ayuda del Asistente PGC."
+            className="pgc-assistant-promo group mb-6 w-full max-w-full overflow-hidden rounded-2xl border border-gold-500/25 bg-gradient-to-r from-white/[0.07] via-gold-500/10 to-white/[0.03] p-4 text-left shadow-2xl shadow-gold-500/10 transition-all hover:border-gold-400/60 hover:bg-gold-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:p-5"
+          >
+            <span className="flex min-w-0 flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <span className="flex min-w-0 items-start gap-3 sm:gap-4">
+                <span className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gold-400/25 bg-gold-500/15 text-gold-300">
+                  <Sparkles size={18} aria-hidden="true" />
+                </span>
+                <span className="min-w-0">
+                  <span className="mb-2 inline-flex rounded-full border border-gold-400/25 bg-black/30 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-gold-300">NUEVO</span>
+                  <span className="block text-base font-serif font-bold leading-tight text-white sm:text-xl">Prueba nuestra nueva calculadora mejorada</span>
+                  <span className="mt-2 block max-w-2xl text-sm leading-relaxed text-gray-300">Calcula IEDMT, ITP/TPO, IVTM y tasa DGT con ayuda del Asistente PGC.</span>
+                </span>
+              </span>
+              <span className="inline-flex min-h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-gold-500 px-4 py-3 text-center text-[10px] font-black uppercase tracking-widest text-black transition-all group-hover:bg-white sm:w-auto">
+                Probar el Asistente PGC <ArrowRight size={14} aria-hidden="true" />
+              </span>
+            </span>
+          </button>
 
           {hasPrefilledData && <div className="mb-6 rounded-2xl border border-gold-400/20 bg-gold-400/5 p-4 text-left text-sm text-gold-100">Hemos cargado los datos localizados para este vehiculo. Puedes revisarlos o modificarlos.{isAssistantPrefill && <span> Proceden del Asistente PGC.</span>}</div>}
 
